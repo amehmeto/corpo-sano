@@ -10,8 +10,10 @@ export class ProgramService {
     @InjectRepository(Program)
     private readonly programRepository: Repository<Program>){}
 
-  async create(programInput: CreateProgramInput) {
-    const program = new Program(programInput)
+  async create(title: string) {
+    const program = new Program({
+      title
+    })
     return this.programRepository.save(program)
   }
 }

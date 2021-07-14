@@ -26,22 +26,20 @@ describe('ProgramResolver', () => {
   })
 
   it('should create a program', async () => {
-    const program = {
-      title: 'Methode Lafay 3 semaines',
-    }
+    const programTitle = 'Methode Lafay 3 semaines'
     const expectedProgram = {
       id: expect.any(String),
-      title: program.title,
+      title: programTitle,
     }
 
     programService.create = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
-      title: program.title,
+      title: programTitle,
     })
 
-    const createdProgram = await resolver.create(program)
+    const createdProgram = await resolver.create(programTitle)
 
-    expect(programService.create).toHaveBeenCalledWith(program)
+    expect(programService.create).toHaveBeenCalledWith(programTitle)
     expect(createdProgram).toStrictEqual(expectedProgram)
   })
 })

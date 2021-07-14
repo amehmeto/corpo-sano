@@ -8,5 +8,9 @@ type Program {
 }
 
 type Query {
-  create(program: String!): Program!
+  placeholder: Program!
+}
+
+type Mutation {
+  create(title: String!): Program!
 }
