@@ -8,5 +8,5 @@ type Program {
 }
 
 type Query {
-  getAuthor(id: String!): Program!
+  create(title: String!): Program!
 }
