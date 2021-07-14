@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { randomUUID } from 'crypto'
 import { ProgramResolver } from './program.resolver'
 import { ProgramService } from './program.service'
 import * as Faker from 'faker'
+import { getRepositoryToken } from '@nestjs/typeorm'
+import { Program } from './entities/program.entity'
 
 describe('ProgramResolver', () => {
   let resolver: ProgramResolver
@@ -10,7 +11,10 @@ describe('ProgramResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProgramResolver, ProgramService],
+      providers: [ProgramResolver, ProgramService, {
+        provide: getRepositoryToken(Program),
+        useValue: {}
+      }],
     }).compile()
 
     resolver = module.get<ProgramResolver>(ProgramResolver)
@@ -37,6 +41,7 @@ describe('ProgramResolver', () => {
 
     const createdProgram = await resolver.create(program)
 
+    expect(programService.create).toHaveBeenCalledWith(program)
     expect(createdProgram).toStrictEqual(expectedProgram)
   })
 })

@@ -8,7 +8,7 @@ export class ProgramResolver {
   constructor(private readonly programService: ProgramService) {}
 
   @Query((returns) => Program)
-  async create(@Args('program') program: CreateProgramInput) {
+  async create(@Args('program', { type: () => String }) program: CreateProgramInput) {
     return this.programService.create(program)
   }
 }

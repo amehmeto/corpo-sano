@@ -8,5 +8,5 @@ type Program {
 }
 
 type Query {
-  create(title: String!): Program!
+  create(program: String!): Program!
 }
