@@ -1,0 +1,12 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Program {
+  id: ID!
+  title: String!
+}
+
+type Query {
+  getAuthor(id: String!): Program!
+}
