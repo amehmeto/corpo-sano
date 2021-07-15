@@ -11,10 +11,14 @@ describe('ProgramResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProgramResolver, ProgramService, {
-        provide: getRepositoryToken(Program),
-        useValue: {}
-      }],
+      providers: [
+        ProgramResolver,
+        ProgramService,
+        {
+          provide: getRepositoryToken(Program),
+          useValue: {},
+        },
+      ],
     }).compile()
 
     resolver = module.get<ProgramResolver>(ProgramResolver)

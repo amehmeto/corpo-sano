@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Program } from './entities/program.entity';
-import { ProgramService } from './program.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { getRepositoryToken } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Program } from './entities/program.entity'
+import { ProgramService } from './program.service'
 import * as Faker from 'faker'
 
 describe('ProgramService', () => {
@@ -12,17 +12,17 @@ describe('ProgramService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ProgramService, 
+        ProgramService,
         {
           provide: getRepositoryToken(Program),
-          useValue: {}
+          useValue: {},
         },
       ],
-    }).compile();
+    }).compile()
 
     repository = module.get<Repository<Program>>(getRepositoryToken(Program))
-    service = module.get<ProgramService>(ProgramService);
-  });
+    service = module.get<ProgramService>(ProgramService)
+  })
 
   it('should be defined', () => {
     expect(service).toBeDefined()
@@ -47,4 +47,4 @@ describe('ProgramService', () => {
     })
     expect(createdProgram).toStrictEqual(expectedProgram)
   })
-});
+})

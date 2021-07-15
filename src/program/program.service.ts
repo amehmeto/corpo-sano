@@ -8,11 +8,12 @@ import { CreateProgramInput } from './types/create-program-input.type'
 export class ProgramService {
   constructor(
     @InjectRepository(Program)
-    private readonly programRepository: Repository<Program>){}
+    private readonly programRepository: Repository<Program>,
+  ) {}
 
   async create(title: string) {
     const program = new Program({
-      title
+      title,
     })
     return this.programRepository.save(program)
   }

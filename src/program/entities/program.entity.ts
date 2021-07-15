@@ -1,14 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class Program {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number
 
   @Column()
-  title: string;
+  title: string
 
   constructor(partial: Partial<Program> | undefined = {}) {
-      Object.assign(this, partial)
+    Object.assign(this, partial)
   }
 }
