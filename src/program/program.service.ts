@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Program } from './entities/program.entity'
-import { CreateProgramInput } from './types/create-program-input.type'
 
 @Injectable()
 export class ProgramService {

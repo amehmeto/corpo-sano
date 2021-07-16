@@ -5,6 +5,7 @@ import { ProgramModule } from './program/program.module'
 import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { WorkoutModule } from './workout/workout.module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       synchronize: true,
       autoLoadEntities: true,
     }),
+    WorkoutModule,
   ],
 
   controllers: [AppController],
