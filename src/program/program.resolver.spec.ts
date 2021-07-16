@@ -1,7 +1,7 @@
+import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { ProgramResolver } from './program.resolver'
 import { ProgramService } from './program.service'
-import * as Faker from 'faker'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Program } from './entities/program.entity'
 

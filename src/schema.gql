@@ -7,10 +7,16 @@ type Program {
   title: String!
 }
 
+type Workout {
+  id: ID!
+  title: String!
+}
+
 type Query {
   placeholder: Program!
 }
 
 type Mutation {
   create(title: String!): Program!
+  create_workout(title: String!): Workout!
 }
