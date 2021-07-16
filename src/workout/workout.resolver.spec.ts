@@ -30,20 +30,24 @@ describe('WorkoutResolver', () => {
   })
 
   it('should create a workout', async () => {
-    const workoutTitle = 'Bas du corps'
+    const workoutInput = {
+      title: 'Bas du corps',
+      programId: Faker.datatype.uuid(),
+    }
     const expectedWorkout = {
       id: expect.any(String),
-      title: workoutTitle,
+      ...workoutInput,
     }
 
     workoutService.create = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
-      title: workoutTitle,
+      title: expectedWorkout.title,
+      programId: expectedWorkout.programId
     })
 
-    const createdWorkout = await resolver.create(workoutTitle)
+    const createdWorkout = await resolver.create(workoutInput.title, workoutInput.programId)
 
-    expect(workoutService.create).toHaveBeenCalledWith(workoutTitle)
+    expect(workoutService.create).toHaveBeenCalledWith(workoutInput)
     expect(createdWorkout).toStrictEqual(expectedWorkout)
   })
 })
