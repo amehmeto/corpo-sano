@@ -29,21 +29,25 @@ describe('WorkoutService', () => {
   })
 
   it('should create a program', async () => {
-    const workoutTitle = 'Bas du corps'
+    const workoutInput = {
+      title: 'Bas du corps',
+      programId: Faker.datatype.uuid()
+    }
     const expectedWorkout = {
       id: expect.any(String),
-      title: workoutTitle,
+      title: workoutInput.title,
     }
 
     repository.save = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
-      title: workoutTitle,
+      title: workoutInput.title,
+      programId: workoutInput.programId
     })
 
-    const createdProgram = await service.create(workoutTitle)
+    const createdProgram = await service.create(workoutInput)
 
     expect(repository.save).toHaveBeenCalledWith({
-      title: workoutTitle,
+      title: workoutInput.title,
     })
     expect(createdProgram).toStrictEqual(expectedWorkout)
   })
