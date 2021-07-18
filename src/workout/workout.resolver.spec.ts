@@ -2,9 +2,8 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { Workout } from './entities/workout.entity'
-import { getRepositoryToken } from '@nestjs/typeorm'
-import { Program } from '../program/entities/program.entity'
+import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
+import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
 describe('WorkoutResolver', () => {
   let resolver: WorkoutResolver
@@ -14,12 +13,8 @@ describe('WorkoutResolver', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(Workout),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Program),
-          useValue: {},
+          provide: WORKOUT_REPOSITORY,
+          useClass: TypeOrmWorkoutRepository,
         },
         WorkoutResolver,
         WorkoutService,

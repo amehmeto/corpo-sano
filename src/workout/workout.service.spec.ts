@@ -5,6 +5,8 @@ import { Workout } from './entities/workout.entity'
 import { WorkoutService } from './workout.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Program } from '../program/entities/program.entity'
+import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
+import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
 describe('WorkoutService', () => {
   let service: WorkoutService
@@ -21,6 +23,10 @@ describe('WorkoutService', () => {
         {
           provide: getRepositoryToken(Program),
           useValue: {},
+        },
+        {
+          provide: WORKOUT_REPOSITORY,
+          useClass: TypeOrmWorkoutRepository,
         },
         WorkoutService,
       ],
