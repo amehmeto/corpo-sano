@@ -14,7 +14,6 @@ describe('WorkoutService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        WorkoutService,
         {
           provide: getRepositoryToken(Workout),
           useValue: {},
@@ -23,6 +22,7 @@ describe('WorkoutService', () => {
           provide: getRepositoryToken(Program),
           useValue: {},
         },
+        WorkoutService,
       ],
     }).compile()
 
