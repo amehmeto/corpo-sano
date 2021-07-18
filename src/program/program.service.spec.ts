@@ -1,26 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { getRepositoryToken } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import { Program } from './entities/program.entity'
 import { ProgramService } from './program.service'
 import * as Faker from 'faker'
+import {
+  PROGRAM_REPOSITORY,
+  ProgramRepository,
+} from './interfaces/program-repository.interface'
+import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
 
-describe('ProgramService', () => {
+describe('Program Service', () => {
   let service: ProgramService
-  let repository: Repository<Program>
+  let repository: ProgramRepository
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ProgramService,
         {
-          provide: getRepositoryToken(Program),
-          useValue: {},
+          provide: PROGRAM_REPOSITORY,
+          useClass: TypeOrmProgramRepository,
         },
+        ProgramService,
       ],
     }).compile()
 
-    repository = module.get<Repository<Program>>(getRepositoryToken(Program))
+    repository = module.get<ProgramRepository>(PROGRAM_REPOSITORY)
     service = module.get<ProgramService>(ProgramService)
   })
 

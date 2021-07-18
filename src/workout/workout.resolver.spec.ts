@@ -2,22 +2,22 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { Workout } from './entities/workout.entity'
-import { getRepositoryToken } from '@nestjs/typeorm'
+import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
+import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
-describe('WorkoutResolver', () => {
+describe('Workout Resolver', () => {
   let resolver: WorkoutResolver
   let workoutService: WorkoutService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        {
+          provide: WORKOUT_REPOSITORY,
+          useClass: TypeOrmWorkoutRepository,
+        },
         WorkoutResolver,
         WorkoutService,
-        {
-          provide: getRepositoryToken(Workout),
-          useValue: {},
-        },
       ],
     }).compile()
 
@@ -30,20 +30,27 @@ describe('WorkoutResolver', () => {
   })
 
   it('should create a workout', async () => {
-    const workoutTitle = 'Bas du corps'
+    const workoutInput = {
+      title: 'Bas du corps',
+      programId: Faker.datatype.uuid(),
+    }
     const expectedWorkout = {
       id: expect.any(String),
-      title: workoutTitle,
+      ...workoutInput,
     }
 
     workoutService.create = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
-      title: workoutTitle,
+      title: expectedWorkout.title,
+      programId: expectedWorkout.programId,
     })
 
-    const createdWorkout = await resolver.create(workoutTitle)
+    const createdWorkout = await resolver.create(
+      workoutInput.title,
+      workoutInput.programId,
+    )
 
-    expect(workoutService.create).toHaveBeenCalledWith(workoutTitle)
+    expect(workoutService.create).toHaveBeenCalledWith(workoutInput)
     expect(createdWorkout).toStrictEqual(expectedWorkout)
   })
 })

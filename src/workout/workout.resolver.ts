@@ -9,7 +9,14 @@ export class WorkoutResolver {
   @Mutation((returns) => Workout, {
     name: 'create_workout',
   })
-  async create(@Args({ name: 'title', type: () => String }) title: string) {
-    return this.workoutService.create(title)
+  async create(
+    @Args({ name: 'title', type: () => String }) title: string,
+    @Args({ name: 'programId', type: () => String }) programId: string,
+  ) {
+    const workoutInput = {
+      title,
+      programId,
+    }
+    return this.workoutService.create(workoutInput)
   }
 }
