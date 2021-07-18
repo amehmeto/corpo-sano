@@ -2,22 +2,22 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { ProgramResolver } from './program.resolver'
 import { ProgramService } from './program.service'
-import { getRepositoryToken } from '@nestjs/typeorm'
-import { Program } from './entities/program.entity'
+import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
+import { PROGRAM_REPOSITORY } from './interfaces/program-repository.interface'
 
-describe('ProgramResolver', () => {
+describe('Program Resolver', () => {
   let resolver: ProgramResolver
   let programService: ProgramService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        {
+          provide: PROGRAM_REPOSITORY,
+          useClass: TypeOrmProgramRepository,
+        },
         ProgramResolver,
         ProgramService,
-        {
-          provide: getRepositoryToken(Program),
-          useValue: {},
-        },
       ],
     }).compile()
 

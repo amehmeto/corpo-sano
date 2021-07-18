@@ -5,7 +5,7 @@ import { WorkoutService } from './workout.service'
 import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
-describe('WorkoutResolver', () => {
+describe('Workout Resolver', () => {
   let resolver: WorkoutResolver
   let workoutService: WorkoutService
 

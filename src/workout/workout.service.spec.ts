@@ -1,29 +1,19 @@
 import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
-import { Repository } from 'typeorm'
-import { Workout } from './entities/workout.entity'
 import { WorkoutService } from './workout.service'
-import { getRepositoryToken } from '@nestjs/typeorm'
-import { Program } from '../program/entities/program.entity'
-import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
+import {
+  WORKOUT_REPOSITORY,
+  WorkoutRepository,
+} from './interfaces/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
-describe('WorkoutService', () => {
+describe('Workout Service', () => {
   let service: WorkoutService
-  let repository: Repository<Workout>
-  let programRepository: Repository<Program>
+  let repository: WorkoutRepository
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        {
-          provide: getRepositoryToken(Workout),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Program),
-          useValue: {},
-        },
         {
           provide: WORKOUT_REPOSITORY,
           useClass: TypeOrmWorkoutRepository,
@@ -33,10 +23,7 @@ describe('WorkoutService', () => {
     }).compile()
 
     service = module.get<WorkoutService>(WorkoutService)
-    repository = module.get<Repository<Workout>>(getRepositoryToken(Workout))
-    programRepository = module.get<Repository<Program>>(
-      getRepositoryToken(Program),
-    )
+    repository = module.get<WorkoutRepository>(WORKOUT_REPOSITORY)
   })
 
   it('should be defined', () => {

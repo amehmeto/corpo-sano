@@ -1,8 +1,8 @@
-import { WorkoutInput } from '../../workout/types/workout-input'
-import { Workout } from '../../workout/entities/workout.entity'
+import { CreateProgramInput } from '../types/create-program-input.type'
+import { Program } from '../entities/program.entity'
 
-export const PROGRAM_REPOSITORY = 'PROGRAM REPOSITORY'
+export const PROGRAM_REPOSITORY = 'ProgramRepository'
 
 export interface ProgramRepository {
-  create(workoutInput: WorkoutInput): Promise<Workout>
+  save(program: CreateProgramInput): Promise<Program>
 }
