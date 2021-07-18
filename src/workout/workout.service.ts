@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Program } from 'src/program/entities/program.entity'
 import { Repository } from 'typeorm'
 import { Workout } from './entities/workout.entity'
 import { WorkoutInput } from './types/workout-input'
+import { Program } from '../program/entities/program.entity'
+import { v4 as uuid } from 'uuid'
 
 @Injectable()
 export class WorkoutService {
   constructor(
     @InjectRepository(Workout)
     private readonly workoutRepository: Repository<Workout>,
-    private readonly programRepository: ProgramRepository,
+    @InjectRepository(Program)
+    private readonly programRepository: Repository<Program>,
   ) {}
 
-  create(workoutInput: WorkoutInput): Promise<Workout> {
-
+  async create(workoutInput: WorkoutInput): Promise<Workout> {
     const workout = new Workout({
+      id: uuid(),
       title: workoutInput.title,
-      programId: workoutInput.programId,
     })
 
     return this.workoutRepository.save(workout)

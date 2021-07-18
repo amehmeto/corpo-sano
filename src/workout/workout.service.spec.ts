@@ -4,10 +4,12 @@ import { Repository } from 'typeorm'
 import { Workout } from './entities/workout.entity'
 import { WorkoutService } from './workout.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
+import { Program } from '../program/entities/program.entity'
 
 describe('WorkoutService', () => {
   let service: WorkoutService
   let repository: Repository<Workout>
+  let programRepository: Repository<Program>
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -17,11 +19,18 @@ describe('WorkoutService', () => {
           provide: getRepositoryToken(Workout),
           useValue: {},
         },
+        {
+          provide: getRepositoryToken(Program),
+          useValue: {},
+        },
       ],
     }).compile()
 
-    repository = module.get<Repository<Workout>>(getRepositoryToken(Workout))
     service = module.get<WorkoutService>(WorkoutService)
+    repository = module.get<Repository<Workout>>(getRepositoryToken(Workout))
+    programRepository = module.get<Repository<Program>>(
+      getRepositoryToken(Program),
+    )
   })
 
   it('should be defined', () => {
@@ -31,22 +40,22 @@ describe('WorkoutService', () => {
   it('should create a program', async () => {
     const workoutInput = {
       title: 'Bas du corps',
-      programId: Faker.datatype.uuid()
+      programId: Faker.datatype.uuid(),
     }
     const expectedWorkout = {
       id: expect.any(String),
-      title: workoutInput.title,
+      ...workoutInput,
     }
 
     repository.save = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
-      title: workoutInput.title,
-      programId: workoutInput.programId
+      ...workoutInput,
     })
 
     const createdProgram = await service.create(workoutInput)
 
     expect(repository.save).toHaveBeenCalledWith({
+      id: expect.any(String),
       title: workoutInput.title,
     })
     expect(createdProgram).toStrictEqual(expectedWorkout)

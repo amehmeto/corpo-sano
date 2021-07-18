@@ -1,15 +1,15 @@
-import { Workout } from 'src/workout/entities/workout.entity'
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Workout } from '../../workout/entities/workout.entity'
 
 @Entity()
 export class Program {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column()
   title: string
 
-  @OneToMany(type => Workout, workout => workout.program)
+  @OneToMany((type) => Workout, (workout) => workout.program)
   workouts: Workout[]
 
   constructor(partial: Partial<Program> | undefined = {}) {
