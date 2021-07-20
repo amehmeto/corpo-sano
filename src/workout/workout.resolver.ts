@@ -7,7 +7,7 @@ export class WorkoutResolver {
   constructor(private readonly workoutService: WorkoutService) {}
 
   @Mutation((returns) => Workout, {
-    name: 'create_workout',
+    name: 'createWorkout',
   })
   async create(
     @Args({ name: 'title', type: () => String }) title: string,

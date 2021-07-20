@@ -17,6 +17,6 @@ type Query {
 }
 
 type Mutation {
-  create(title: String!): Program!
-  create_workout(programId: String!, title: String!): Workout!
+  createProgram(title: String!): Program!
+  createWorkout(programId: String!, title: String!): Workout!
 }

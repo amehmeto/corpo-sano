@@ -11,7 +11,9 @@ export class ProgramResolver {
     return false //👌
   }
 
-  @Mutation((returns) => Program)
+  @Mutation((returns) => Program, {
+    name: 'createProgram',
+  })
   async create(@Args({ name: 'title', type: () => String }) title: string) {
     return this.programService.create(title)
   }
