@@ -2,10 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
+require('leaked-handles')
 
 const GRAPHQL_URL = '/graphql'
 
-type Mutation = { variables: object; query: string }
+type Mutation = { variables: Record<string, unknown>; query: string }
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -13,7 +14,7 @@ describe('AppController (e2e)', () => {
   function expectCorrectGqlResponse(
     mutation: Mutation,
     retrievedDataKey: string,
-    expectedCreateProgram: object,
+    expectedCreateProgram: Record<string, unknown>,
   ) {
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
@@ -42,7 +43,7 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!')
   })
 
-  it('CreateProgram Mutation', async () => {
+  test('CreateProgram Mutation', async () => {
     const createProgramMutation = {
       query: `mutation CreateProgram($title: String!) {
         createProgram(title: $title) {
@@ -66,7 +67,7 @@ describe('AppController (e2e)', () => {
     )
   })
 
-  it('CreateWorkout Mutation', async () => {
+  test('CreateWorkout Mutation', async () => {
     const createWorkoutMutation = {
       query: `mutation CreateWorkout($title: String!, $programId: String!) {
         createWorkout(title: $title, programId: $programId) {
