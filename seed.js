@@ -28,18 +28,28 @@ const knex = require('knex')({
     const newExercises = []
 
     for (let i = 0; i < exercises.length; i++) {
-        const n = await knex.where({ title: exercises[i] }).count('id').from('exercises')
-        if (n[0]['count(`id`)'] < 1) {
-            newExercises.push({
+        const [result] = await knex.where({ title: exercises[i] }).count('id').from('exercises')
+        const numberOfRecords = result['count(`id`)'];
+        if (exactlyZeroRecord(numberOfRecords)) {
+            const exercise = {
                 id: v4(),
                 title: exercises[i],
-            })
+            }
+            newExercises.push(exercise)
         }
     }
 
-    if (newExercises.length > 0) {
+    if (atLeastOneInsert(newExercises)) {
         await knex('exercises').insert(newExercises)
     }
 
     knex.destroy()
 })()
+
+function exactlyZeroRecord(numberOfRecords) {
+    return numberOfRecords === 0
+}
+
+function atLeastOneInsert(newExercises) {
+    return newExercises.length > 0
+}
