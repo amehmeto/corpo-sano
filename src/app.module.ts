@@ -23,6 +23,7 @@ import { WorkoutModule } from './workout/workout.module'
       entities: ['dist/**/*.entity{ .ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,
+      keepConnectionAlive: true,
     }),
     WorkoutModule,
   ],
