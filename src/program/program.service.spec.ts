@@ -6,6 +6,8 @@ import {
   ProgramRepository,
 } from './interfaces/program-repository.interface'
 import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { Program } from './entities/program.entity'
 
 describe('Program Service', () => {
   let service: ProgramService
@@ -37,10 +39,10 @@ describe('Program Service', () => {
       title: programTitle,
     }
 
-    repository.save = jest.fn().mockResolvedValue({
+    /*    repository.save = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
       title: programTitle,
-    })
+    })*/
 
     const createdProgram = await service.create(programTitle)
 
