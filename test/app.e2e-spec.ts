@@ -5,8 +5,26 @@ import { AppModule } from '../src/app.module'
 
 const GRAPHQL_URL = '/graphql'
 
+type Mutation = { variables: object; query: string }
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
+
+  function expectCorrectGqlResponse(
+    mutation: Mutation,
+    retrievedDataKey: string,
+    expectedCreateProgram: object,
+  ) {
+    return request(app.getHttpServer())
+      .post(GRAPHQL_URL)
+      .send(mutation)
+      .expect(HttpStatus.OK)
+      .expect((response: any) => {
+        expect(response.body.data[retrievedDataKey]).toStrictEqual(
+          expectedCreateProgram,
+        )
+      })
+  }
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -41,15 +59,11 @@ describe('AppController (e2e)', () => {
       title: createProgramMutation.variables.title,
     }
 
-    return request(app.getHttpServer())
-      .post(GRAPHQL_URL)
-      .send(createProgramMutation)
-      .expect(HttpStatus.OK)
-      .expect((response) => {
-        expect(response.body.data.createProgram).toStrictEqual(
-          expectedCreateProgram,
-        )
-      })
+    expectCorrectGqlResponse(
+      createProgramMutation,
+      'createProgram',
+      expectedCreateProgram,
+    )
   })
 
   it('CreateWorkout Mutation', async () => {
@@ -70,14 +84,10 @@ describe('AppController (e2e)', () => {
       title: createWorkoutMutation.variables.title,
     }
 
-    return request(app.getHttpServer())
-      .post(GRAPHQL_URL)
-      .send(createWorkoutMutation)
-      .expect(HttpStatus.OK)
-      .expect((response) => {
-        expect(response.body.data.createWorkout).toStrictEqual(
-          expectedCreateProgram,
-        )
-      })
+    return expectCorrectGqlResponse(
+      createWorkoutMutation,
+      'createWorkout',
+      expectedCreateProgram,
+    )
   })
 })
