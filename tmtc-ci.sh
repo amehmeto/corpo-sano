@@ -1,14 +1,18 @@
-echo '=========> yarn format <========='
-yarn format
+#!/bin/zsh
+scripts=(
+  'yarn format'
+  'yarn test:cov'
+  'yarn test:inte'
+  'yarn test:e2e'
+  'yarn build'
+)
 
-echo '=========> yarn test:cov <========='
-yarn test:cov
+for script in "${scripts[@]}"
+do
+  printf '\n=========> %s <=========\n' "$script"
+  eval "$script"
+done
 
-echo '=========> yarn test:inte <========='
-yarn test:inte
 
-echo echo '=========> yarn test:e2e <========='
-yarn test:e2e
 
-echo '=========> yarn build <========='
-yarn build
+
