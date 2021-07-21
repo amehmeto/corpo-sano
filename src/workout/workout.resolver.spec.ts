@@ -57,14 +57,19 @@ describe('Workout Resolver', () => {
   })
 
   it('should fill workout with exercises', async () => {
-    const exercises = Array(3).fill(Faker.datatype.uuid())
+    const fillWorkoutWithExerciseInput = { 
+      workoutId: Faker.datatype.uuid(),
+      exercises: Array(3).fill(Faker.datatype.uuid()),
+    }
     const expectedWorkout = {
       id: expect.any(String),
       title: 'Haut du bas',
       programId: expect.any(String),
     }
 
-    const filledWorkout = await workoutResolver.fillWith(exercises)
+    workoutService.fillWorkoutWithExercise = jest.fn().mockResolvedValue(expectedWorkout)
+
+    const filledWorkout = await workoutResolver.fillWorkoutWithExercise(fillWorkoutWithExerciseInput)
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
   })

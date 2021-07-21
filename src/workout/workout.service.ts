@@ -6,9 +6,11 @@ import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
 } from './interfaces/workout-repository.interface'
+import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises-input'
 
 @Injectable()
 export class WorkoutService {
+  
   constructor(
     @Inject(WORKOUT_REPOSITORY)
     private readonly workoutRepository: WorkoutRepository,
@@ -21,5 +23,9 @@ export class WorkoutService {
     })
 
     return this.workoutRepository.save(workout)
+  }
+
+  async fillWorkoutWithExercise(fillWorkoutWithExercisesInput: FillWorkoutWithExercisesInput): Promise<Workout> {
+    return new Workout
   }
 }
