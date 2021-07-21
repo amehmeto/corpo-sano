@@ -12,11 +12,15 @@ export class WorkoutResolver {
   async create(
     @Args({ name: 'title', type: () => String }) title: string,
     @Args({ name: 'programId', type: () => String }) programId: string,
-  ) {
+  ): Promise<Workout> {
     const workoutInput = {
       title,
       programId,
     }
     return this.workoutService.create(workoutInput)
+  }
+
+  async fillWith(exercices: string[]): Promise<Workout> {
+    return undefined
   }
 }
