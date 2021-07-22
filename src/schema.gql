@@ -24,9 +24,5 @@ type Mutation {
 
 input FillWorkoutWithExercisesInput {
   workoutId: ID!
-  exercises: [ExerciseInput!]!
-}
-
-input ExerciseInput {
-  id: ID!
+  exercisesId: [ID!]!
 }

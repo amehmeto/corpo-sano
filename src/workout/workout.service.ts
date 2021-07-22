@@ -7,12 +7,18 @@ import {
   WorkoutRepository,
 } from './types/workout-repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
+import {
+  EXERCISE_REPOSITORY,
+  ExerciseRepository,
+} from '../exercise/types/exercise-repository.interface'
 
 @Injectable()
 export class WorkoutService {
   constructor(
     @Inject(WORKOUT_REPOSITORY)
     private readonly workoutRepository: WorkoutRepository,
+    @Inject(EXERCISE_REPOSITORY)
+    private readonly exerciseRepository: ExerciseRepository,
   ) {}
 
   async create(workoutInput: WorkoutInput): Promise<Workout> {
@@ -27,6 +33,15 @@ export class WorkoutService {
   async fillWorkoutWithExercise(
     fillWorkoutWithExercisesInput: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    return new Workout()
+    const { workoutId, exercisesId } = fillWorkoutWithExercisesInput
+
+    const workout = await this.workoutRepository.findById(workoutId)
+    workout.exercises = await Promise.all(
+      exercisesId.map(
+        async (exerciseId) =>
+          await this.exerciseRepository.findById(exerciseId),
+      ),
+    )
+    return this.workoutRepository.save(workout)
   }
 }

@@ -4,6 +4,15 @@ import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
 import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
+
+function exerciseDataBuilder() {
+  const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
+  return {
+    id: Faker.datatype.uuid(),
+    title: Faker.random.arrayElement(exerciseTitles),
+  }
+}
 
 describe('Workout Resolver', () => {
   let workoutResolver: WorkoutResolver
@@ -15,6 +24,10 @@ describe('Workout Resolver', () => {
         {
           provide: WORKOUT_REPOSITORY,
           useClass: TypeOrmWorkoutRepository,
+        },
+        {
+          provide: EXERCISE_REPOSITORY,
+          useValue: {},
         },
         WorkoutResolver,
         WorkoutService,
@@ -55,15 +68,16 @@ describe('Workout Resolver', () => {
   })
 
   it('should fill workout with exercises', async () => {
+    const exercises = Array(3).fill(exerciseDataBuilder())
     const fillWorkoutWithExerciseInput = {
       workoutId: Faker.datatype.uuid(),
-      exercises: Array(3).fill(Faker.datatype.uuid()),
+      exercisesId: exercises.map((exercise) => exercise.id),
     }
     const expectedWorkout = {
       id: expect.any(String),
       title: 'Haut du bas',
       programId: expect.any(String),
-      exercises: fillWorkoutWithExerciseInput.exercises,
+      exercises: exercises,
     }
 
     workoutService.fillWorkoutWithExercise = jest

@@ -6,4 +6,9 @@ import { WorkoutRepository } from '../types/workout-repository.interface'
 @Injectable()
 export class TypeOrmWorkoutRepository
   extends Repository<Workout>
-  implements WorkoutRepository {}
+  implements WorkoutRepository
+{
+  findById(param: string): Promise<Workout> {
+    return Promise.resolve(undefined)
+  }
+}
