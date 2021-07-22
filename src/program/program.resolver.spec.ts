@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { ProgramResolver } from './program.resolver'
 import { ProgramService } from './program.service'
 import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
-import { PROGRAM_REPOSITORY } from './interfaces/program-repository.interface'
+import { PROGRAM_REPOSITORY } from './types/program-repository.interface'
 
 describe('Program Resolver', () => {
   let resolver: ProgramResolver

@@ -4,7 +4,7 @@ import { WorkoutService } from './workout.service'
 import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
-} from './interfaces/workout-repository.interface'
+} from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
 describe('Workout Service', () => {

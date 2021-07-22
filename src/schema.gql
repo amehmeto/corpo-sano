@@ -18,5 +18,15 @@ type Query {
 
 type Mutation {
   createProgram(title: String!): Program!
-  createWorkout(programId: String!, title: String!): Workout!
+  createWorkout(programId: ID!, title: String!): Workout!
+  fillWorkoutWithExercise(payload: FillWorkoutWithExercisesInput!): Workout!
+}
+
+input FillWorkoutWithExercisesInput {
+  workoutId: ID!
+  exercises: [ExerciseInput!]!
+}
+
+input ExerciseInput {
+  id: ID!
 }

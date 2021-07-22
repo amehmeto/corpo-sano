@@ -2,10 +2,8 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
+import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
-import { Workout } from './entities/workout.entity'
-import { Program } from '../program/entities/program.entity'
 
 describe('Workout Resolver', () => {
   let workoutResolver: WorkoutResolver
@@ -57,7 +55,7 @@ describe('Workout Resolver', () => {
   })
 
   it('should fill workout with exercises', async () => {
-    const fillWorkoutWithExerciseInput = { 
+    const fillWorkoutWithExerciseInput = {
       workoutId: Faker.datatype.uuid(),
       exercises: Array(3).fill(Faker.datatype.uuid()),
     }
@@ -65,11 +63,16 @@ describe('Workout Resolver', () => {
       id: expect.any(String),
       title: 'Haut du bas',
       programId: expect.any(String),
+      exercises: fillWorkoutWithExerciseInput.exercises,
     }
 
-    workoutService.fillWorkoutWithExercise = jest.fn().mockResolvedValue(expectedWorkout)
+    workoutService.fillWorkoutWithExercise = jest
+      .fn()
+      .mockResolvedValue(expectedWorkout)
 
-    const filledWorkout = await workoutResolver.fillWorkoutWithExercise(fillWorkoutWithExerciseInput)
+    const filledWorkout = await workoutResolver.fillWorkoutWithExercise(
+      fillWorkoutWithExerciseInput,
+    )
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
   })

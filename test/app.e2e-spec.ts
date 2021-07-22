@@ -69,7 +69,7 @@ describe('AppController (e2e)', () => {
 
   test('CreateWorkout Mutation', async () => {
     const createWorkoutMutation = {
-      query: `mutation CreateWorkout($title: String!, $programId: String!) {
+      query: `mutation CreateWorkout($title: String!, $programId: ID!) {
         createWorkout(title: $title, programId: $programId) {
           id
           title

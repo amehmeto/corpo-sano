@@ -6,7 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
-import { ExerciseModule } from './exercise/exercise.module';
+import { ExerciseModule } from './exercise/exercise.module'
 
 @Module({
   imports: [

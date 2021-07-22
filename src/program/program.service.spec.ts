@@ -4,7 +4,7 @@ import * as Faker from 'faker'
 import {
   PROGRAM_REPOSITORY,
   ProgramRepository,
-} from './interfaces/program-repository.interface'
+} from './types/program-repository.interface'
 import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
 
 describe('Program Service', () => {
