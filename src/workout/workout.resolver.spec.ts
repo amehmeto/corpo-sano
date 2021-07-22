@@ -5,6 +5,7 @@ import { WorkoutService } from './workout.service'
 import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 
 function exerciseDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -27,7 +28,7 @@ describe('Workout Resolver', () => {
         },
         {
           provide: EXERCISE_REPOSITORY,
-          useValue: {},
+          useClass: TypeOrmExerciseRepository,
         },
         WorkoutResolver,
         WorkoutService,
