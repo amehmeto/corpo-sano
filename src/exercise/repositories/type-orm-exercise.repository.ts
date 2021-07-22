@@ -8,7 +8,7 @@ export class TypeOrmExerciseRepository
   extends Repository<Exercise>
   implements ExerciseRepository
 {
-  findById(id: string): Promise<Exercise> {
-    return Promise.resolve(undefined)
+  async findById(id: string): Promise<Exercise> {
+    return this.findOne({ id })
   }
 }

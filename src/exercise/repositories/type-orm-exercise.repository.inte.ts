@@ -1,6 +1,5 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
-import { EXERCISE_REPOSITORY } from '../types/exercise-repository.interface'
 import { getRepositoryToken } from '@nestjs/typeorm'
 
 describe('TypeOrm Exercise Repository', () => {
@@ -17,5 +16,17 @@ describe('TypeOrm Exercise Repository', () => {
 
   it('should be defined', () => {
     expect(exerciseRepository).toBeDefined()
+  })
+
+  it('should find exercise by id', async () => {
+    const id = 'some real id from test DB' //TODO
+    const expectedExercise = {
+      id,
+      title: 'Pompes',
+    }
+
+    const foundExercise = await exerciseRepository.findById(id)
+
+    expect(foundExercise).toStrictEqual(expectedExercise)
   })
 })
