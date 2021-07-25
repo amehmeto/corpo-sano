@@ -10,6 +10,6 @@ export class TypeOrmWorkoutRepository
   implements WorkoutRepository
 {
   findById(param: string): Promise<Workout> {
-    return Promise.resolve(undefined)
+    return Promise.resolve(new Workout())
   }
 }

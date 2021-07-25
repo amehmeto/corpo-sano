@@ -11,13 +11,16 @@ import {
   EXERCISE_REPOSITORY,
   ExerciseRepository,
 } from '../exercise/types/exercise-repository.interface'
+import { InjectRepository } from '@nestjs/typeorm'
+import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 
 @Injectable()
 export class WorkoutService {
   constructor(
-    @Inject(WORKOUT_REPOSITORY)
+    @InjectRepository(TypeOrmWorkoutRepository)
     private readonly workoutRepository: WorkoutRepository,
-    @Inject(EXERCISE_REPOSITORY)
+    @InjectRepository(TypeOrmExerciseRepository)
     private readonly exerciseRepository: ExerciseRepository,
   ) {}
 
@@ -26,7 +29,7 @@ export class WorkoutService {
       id: uuid(),
       title: workoutInput.title,
     })
-
+    console.log(this.exerciseRepository)
     return this.workoutRepository.save(workout)
   }
 

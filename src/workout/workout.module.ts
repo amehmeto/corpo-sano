@@ -11,11 +11,14 @@ import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Workout, Program, TypeOrmExerciseRepository]),
+    TypeOrmModule.forFeature([
+      Workout,
+      Program,
+      TypeOrmExerciseRepository,
+      TypeOrmWorkoutRepository,
+    ]),
   ],
   providers: [
-    WorkoutResolver,
-    WorkoutService,
     {
       provide: EXERCISE_REPOSITORY,
       useClass: TypeOrmExerciseRepository,
@@ -24,6 +27,8 @@ import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
       provide: WORKOUT_REPOSITORY,
       useClass: TypeOrmWorkoutRepository,
     },
+    WorkoutResolver,
+    WorkoutService,
   ],
 })
 export class WorkoutModule {}

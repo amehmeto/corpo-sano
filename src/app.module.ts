@@ -10,7 +10,6 @@ import { ExerciseModule } from './exercise/exercise.module'
 
 @Module({
   imports: [
-    ProgramModule,
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
@@ -26,8 +25,9 @@ import { ExerciseModule } from './exercise/exercise.module'
       autoLoadEntities: true,
       keepConnectionAlive: true,
     }),
-    WorkoutModule,
     ExerciseModule,
+    ProgramModule,
+    WorkoutModule,
   ],
 
   controllers: [AppController],
