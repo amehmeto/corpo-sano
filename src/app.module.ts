@@ -6,10 +6,10 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
+import { ExerciseModule } from './exercise/exercise.module'
 
 @Module({
   imports: [
-    ProgramModule,
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
@@ -25,6 +25,8 @@ import { WorkoutModule } from './workout/workout.module'
       autoLoadEntities: true,
       keepConnectionAlive: true,
     }),
+    ExerciseModule,
+    ProgramModule,
     WorkoutModule,
   ],
 

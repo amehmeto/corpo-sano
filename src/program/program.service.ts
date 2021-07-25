@@ -3,7 +3,7 @@ import { Program } from './entities/program.entity'
 import {
   PROGRAM_REPOSITORY,
   ProgramRepository,
-} from './interfaces/program-repository.interface'
+} from './types/program-repository.interface'
 
 @Injectable()
 export class ProgramService {

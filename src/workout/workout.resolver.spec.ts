@@ -2,11 +2,21 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { WORKOUT_REPOSITORY } from './interfaces/workout-repository.interface'
+import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+
+function exerciseDataBuilder() {
+  const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
+  return {
+    id: Faker.datatype.uuid(),
+    title: Faker.random.arrayElement(exerciseTitles),
+  }
+}
 
 describe('Workout Resolver', () => {
-  let resolver: WorkoutResolver
+  let workoutResolver: WorkoutResolver
   let workoutService: WorkoutService
 
   beforeEach(async () => {
@@ -16,17 +26,21 @@ describe('Workout Resolver', () => {
           provide: WORKOUT_REPOSITORY,
           useClass: TypeOrmWorkoutRepository,
         },
+        {
+          provide: EXERCISE_REPOSITORY,
+          useClass: TypeOrmExerciseRepository,
+        },
         WorkoutResolver,
         WorkoutService,
       ],
     }).compile()
 
-    resolver = module.get<WorkoutResolver>(WorkoutResolver)
+    workoutResolver = module.get<WorkoutResolver>(WorkoutResolver)
     workoutService = module.get<WorkoutService>(WorkoutService)
   })
 
   it('should be defined', () => {
-    expect(resolver).toBeDefined()
+    expect(workoutResolver).toBeDefined()
   })
 
   it('should create a workout', async () => {
@@ -45,12 +59,36 @@ describe('Workout Resolver', () => {
       programId: expectedWorkout.programId,
     })
 
-    const createdWorkout = await resolver.create(
+    const createdWorkout = await workoutResolver.create(
       workoutInput.title,
       workoutInput.programId,
     )
 
     expect(workoutService.create).toHaveBeenCalledWith(workoutInput)
     expect(createdWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it('should fill workout with exercises', async () => {
+    const exercises = Array(3).fill(exerciseDataBuilder())
+    const fillWorkoutWithExerciseInput = {
+      workoutId: Faker.datatype.uuid(),
+      exercisesId: exercises.map((exercise) => exercise.id),
+    }
+    const expectedWorkout = {
+      id: expect.any(String),
+      title: 'Haut du bas',
+      programId: expect.any(String),
+      exercises: exercises,
+    }
+
+    workoutService.fillWorkoutWithExercise = jest
+      .fn()
+      .mockResolvedValue(expectedWorkout)
+
+    const filledWorkout = await workoutResolver.fillWorkoutWithExercise(
+      fillWorkoutWithExerciseInput,
+    )
+
+    expect(filledWorkout).toStrictEqual(expectedWorkout)
   })
 })

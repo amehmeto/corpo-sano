@@ -18,8 +18,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:inte": "jest -c jest-inte.json --forceExit",
     "test:e2e": "jest --config ./test/jest-e2e.json --forceExit",
-    "ci": "./tmtc.ci.sh",
+    "ci": "./tmtc-ci.sh",
     "db:seed": "node ./seed.js"
   },
   "dependencies": {
@@ -30,6 +31,8 @@
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/typeorm": "^8.0.1",
     "apollo-server-express": "^2",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "faker": "^5.5.3",
     "graphql": "^15.5.1",
     "graphql-tools": "^7.0.5",

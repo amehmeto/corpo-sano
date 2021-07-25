@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import { Repository } from 'typeorm'
+import { EntityRepository, Repository } from 'typeorm'
 import { Workout } from '../entities/workout.entity'
-import { WorkoutRepository } from '../interfaces/workout-repository.interface'
+import { WorkoutRepository } from '../types/workout-repository.interface'
 
 @Injectable()
+@EntityRepository(Workout)
 export class TypeOrmWorkoutRepository
   extends Repository<Workout>
-  implements WorkoutRepository {}
+  implements WorkoutRepository
+{
+  findById(param: string): Promise<Workout> {
+    return Promise.resolve(new Workout())
+  }
+}
