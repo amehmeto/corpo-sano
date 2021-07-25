@@ -1,16 +1,16 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
-import { getRepositoryToken } from '@nestjs/typeorm'
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseRepository: TypeOrmExerciseRepository
+
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [TypeOrmExerciseRepository],
     }).compile()
 
     exerciseRepository = module.get<TypeOrmExerciseRepository>(
-      getRepositoryToken(TypeOrmExerciseRepository),
+      TypeOrmExerciseRepository,
     )
   })
 
@@ -22,9 +22,10 @@ describe('TypeOrm Exercise Repository', () => {
     const id = 'some real id from test DB' //TODO
     const expectedExercise = {
       id,
-      title: 'Pompes',
+      title: 'Push up',
     }
 
+    console.log(exerciseRepository)
     const foundExercise = await exerciseRepository.findById(id)
 
     expect(foundExercise).toStrictEqual(expectedExercise)

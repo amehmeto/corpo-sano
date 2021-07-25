@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql'
-import { IsUUID, MinLength } from 'class-validator'
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator'
 
 @InputType()
 export class ExerciseInput {
@@ -7,7 +7,8 @@ export class ExerciseInput {
   @Field((type) => ID)
   id: string
 
-  @MinLength(1)
+  @IsNotEmpty()
+  @IsString()
   @Field((type) => String)
   title: string
 }

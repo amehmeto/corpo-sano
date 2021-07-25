@@ -37,9 +37,8 @@ export class WorkoutService {
 
     const workout = await this.workoutRepository.findById(workoutId)
     workout.exercises = await Promise.all(
-      exercisesId.map(
-        async (exerciseId) =>
-          await this.exerciseRepository.findById(exerciseId),
+      exercisesId.map(async (exerciseId) =>
+        this.exerciseRepository.findById(exerciseId),
       ),
     )
     return this.workoutRepository.save(workout)

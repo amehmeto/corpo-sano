@@ -5,6 +5,7 @@ import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
 import { Program } from '../program/entities/program.entity'
 import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Workout, Program])],
@@ -13,7 +14,7 @@ import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.inter
     WorkoutService,
     {
       provide: EXERCISE_REPOSITORY,
-      useValue: {},
+      useValue: TypeOrmExerciseRepository,
     },
   ],
 })
