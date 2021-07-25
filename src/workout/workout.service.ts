@@ -29,7 +29,6 @@ export class WorkoutService {
       id: uuid(),
       title: workoutInput.title,
     })
-    console.log(this.exerciseRepository)
     return this.workoutRepository.save(workout)
   }
 
