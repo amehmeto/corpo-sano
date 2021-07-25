@@ -9,26 +9,7 @@ const knex = require('knex')({
   },
 })
 
-async function search(exerciseTitle) {
-  return knex.where({ title: exerciseTitle }).count('id').from('exercises')
-}
-
-function createExercise(exerciseTitle) {
-  return {
-    id: v4(),
-    title: exerciseTitle,
-  }
-}
-
-function hasNoRecord(numberOfRecords) {
-  return numberOfRecords === 0
-}
-
-function hasAtLeastOneInsert(newExercises) {
-  return newExercises.length > 0
-}
-
-async function seedDatabaseWithDefaultExercises() {
+;(async function () {
   const exercises = [
     'Jumping jacks',
     'Wall sit',
@@ -42,21 +23,36 @@ async function seedDatabaseWithDefaultExercises() {
     'Push-up and rotation',
     'Side plank',
   ]
+
+  const exerciseTable = 'exercise'
   const newExercises = []
 
-  for (let exerciseTitle of exercises) {
-    const [result] = search(exerciseTitle)
-    const records = result['count(`id`)']
-    if (hasNoRecord(records)) {
-      const exercise = createExercise(exerciseTitle)
-      newExercises.push(exercise)
+  for (let exercise of exercises) {
+    const [result] = await knex
+      .where({ title: exercise })
+      .count('id')
+      .from(exerciseTable)
+    const numberOfRecords = result['count(`id`)']
+    if (exactlyZeroRecord(numberOfRecords)) {
+      const hydratedExercise = {
+        id: v4(),
+        title: exercise,
+      }
+      newExercises.push(hydratedExercise)
     }
   }
 
-  if (hasAtLeastOneInsert(newExercises))
-    await knex('exercises').insert(newExercises)
+  if (atLeastOneInsert(newExercises)) {
+    await knex(exerciseTable).insert(newExercises)
+  }
 
-  await knex.destroy()
+  knex.destroy()
+})()
+
+function exactlyZeroRecord(numberOfRecords) {
+  return numberOfRecords === 0
 }
 
-await seedDatabaseWithDefaultExercises()
+function atLeastOneInsert(newExercises) {
+  return newExercises.length > 0
+}

@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:inte": "jest -c jest-inte.json",
+    "test:inte": "jest -c jest-inte.json --forceExit",
     "test:e2e": "jest --config ./test/jest-e2e.json --forceExit",
     "ci": "./tmtc-ci.sh",
     "db:seed": "node ./seed.js"

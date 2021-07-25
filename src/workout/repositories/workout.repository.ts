@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { Repository } from 'typeorm'
+import { EntityRepository, Repository } from 'typeorm'
 import { Workout } from '../entities/workout.entity'
 import { WorkoutRepository } from '../types/workout-repository.interface'
 
 @Injectable()
+@EntityRepository(Workout)
 export class TypeOrmWorkoutRepository
   extends Repository<Workout>
   implements WorkoutRepository

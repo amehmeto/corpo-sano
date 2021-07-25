@@ -59,7 +59,7 @@ describe('Workout Service', () => {
     expect(service).toBeDefined()
   })
 
-  it('should create a program', async () => {
+  it('should create a workout', async () => {
     const workoutInput = {
       title: 'Bas du corps',
       programId: Faker.datatype.uuid(),
@@ -74,13 +74,13 @@ describe('Workout Service', () => {
       ...workoutInput,
     })
 
-    const createdProgram = await service.create(workoutInput)
+    const createdWorkout = await service.create(workoutInput)
 
     expect(workoutRepository.save).toHaveBeenCalledWith({
       id: expect.any(String),
       title: workoutInput.title,
     })
-    expect(createdProgram).toStrictEqual(expectedWorkout)
+    expect(createdWorkout).toStrictEqual(expectedWorkout)
   })
 
   it('should fill a workout with exercises', async () => {

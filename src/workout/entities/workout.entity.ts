@@ -14,6 +14,7 @@ export class Workout {
   program: Program
 
   exercises: Exercise[]
+
   constructor(partial: Partial<Workout> | undefined = {}) {
     Object.assign(this, partial)
   }

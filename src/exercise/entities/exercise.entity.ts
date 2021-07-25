@@ -7,4 +7,8 @@ export class Exercise {
 
   @Column()
   title: string
+
+  constructor(partial: Partial<Exercise> | undefined = {}) {
+    Object.assign(this, partial)
+  }
 }
