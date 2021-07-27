@@ -1,16 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Workout } from './entities/workout.entity'
 import { WorkoutInput } from './types/workout-input'
 import { v4 as uuid } from 'uuid'
-import {
-  WORKOUT_REPOSITORY,
-  WorkoutRepository,
-} from './types/workout-repository.interface'
+import { WorkoutRepository } from './types/workout-repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
-import {
-  EXERCISE_REPOSITORY,
-  ExerciseRepository,
-} from '../exercise/types/exercise-repository.interface'
+import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'

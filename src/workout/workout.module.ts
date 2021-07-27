@@ -12,10 +12,10 @@ import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      Workout,
-      Program,
       TypeOrmExerciseRepository,
       TypeOrmWorkoutRepository,
+      Program,
+      Workout,
     ]),
   ],
   providers: [

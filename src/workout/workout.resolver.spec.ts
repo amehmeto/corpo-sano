@@ -2,9 +2,7 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
-import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 
 function exerciseDataBuilder() {
@@ -22,14 +20,8 @@ describe('Workout Resolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        {
-          provide: WORKOUT_REPOSITORY,
-          useClass: TypeOrmWorkoutRepository,
-        },
-        {
-          provide: EXERCISE_REPOSITORY,
-          useClass: TypeOrmExerciseRepository,
-        },
+        TypeOrmWorkoutRepository,
+        TypeOrmExerciseRepository,
         WorkoutResolver,
         WorkoutService,
       ],
