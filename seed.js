@@ -9,50 +9,54 @@ const knex = require('knex')({
   },
 })
 
-;(async function () {
-  const exercises = [
-    'Jumping jacks',
-    'Wall sit',
-    'Push-up',
-    'Abdominal crunch',
-    'Squat',
-    'Triceps dip on chair',
-    'Plank',
-    'High knees running in place',
-    'Lunge',
-    'Push-up and rotation',
-    'Side plank',
-  ]
+const exercises = [
+  'Jumping jacks',
+  'Wall sit',
+  'Push-up',
+  'Abdominal crunch',
+  'Squat',
+  'Triceps dip on chair',
+  'Plank',
+  'High knees running in place',
+  'Lunge',
+  'Push-up and rotation',
+  'Side plank',
+  'Jumping Rope',
+]
 
-  const exerciseTable = 'exercise'
-  const newExercises = []
-
-  for (let exercise of exercises) {
-    const [result] = await knex
-      .where({ title: exercise })
-      .count('id')
-      .from(exerciseTable)
-    const numberOfRecords = result['count(`id`)']
-    if (exactlyZeroRecord(numberOfRecords)) {
-      const hydratedExercise = {
-        id: v4(),
-        title: exercise,
-      }
-      newExercises.push(hydratedExercise)
-    }
+function addExerciseInDb(exerciseTitle, newExercises) {
+  const exercise = {
+    id: v4(),
+    title: exerciseTitle,
   }
-
-  if (atLeastOneInsert(newExercises)) {
-    await knex(exerciseTable).insert(newExercises)
-  }
-
-  knex.destroy()
-})()
-
-function exactlyZeroRecord(numberOfRecords) {
-  return numberOfRecords === 0
+  console.log(`${exerciseTitle} added to DB`)
+  newExercises.push(exercise)
 }
 
-function atLeastOneInsert(newExercises) {
+function hasNoRecord(records) {
+  return records === 0
+}
+
+function hasAtLeastOneInsert(newExercises) {
   return newExercises.length > 0
 }
+
+async function search(exerciseTitle, exerciseTable) {
+  return knex.where({ title: exerciseTitle }).count('id').from(exerciseTable)[0]
+}
+
+;(async function () {
+  const EXERCISE_TABLE = 'exercise'
+  const newExercises = []
+
+  for (let exerciseTitle of exercises) {
+    const retrievedExercise = search(exerciseTitle, EXERCISE_TABLE)
+    const records = retrievedExercise['count(`id`)']
+    if (hasNoRecord(records)) addExerciseInDb(exerciseTitle, newExercises)
+  }
+
+  if (hasAtLeastOneInsert(newExercises))
+    await knex(EXERCISE_TABLE).insert(newExercises)
+
+  await knex.destroy()
+})()

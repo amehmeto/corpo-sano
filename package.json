@@ -21,7 +21,7 @@
     "test:inte": "jest -c jest-inte.json --forceExit",
     "test:e2e": "jest --config ./test/jest-e2e.json --forceExit",
     "ci": "./tmtc-ci.sh",
-    "db:seed": "node ./seed.js"
+    "db:seed": "node seed.js"
   },
   "dependencies": {
     "@apollo/gateway": "^0.33.0",

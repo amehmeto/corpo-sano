@@ -10,6 +10,8 @@ import {
   EXERCISE_REPOSITORY,
   ExerciseRepository,
 } from '../exercise/types/exercise-repository.interface'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { getRepositoryToken } from '@nestjs/typeorm'
 
 const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
 
@@ -40,19 +42,25 @@ describe('Workout Service', () => {
       providers: [
         {
           provide: WORKOUT_REPOSITORY,
-          useClass: TypeOrmWorkoutRepository,
+          useValue: {},
         },
         {
           provide: EXERCISE_REPOSITORY,
           useValue: {},
         },
+        TypeOrmWorkoutRepository,
+        TypeOrmExerciseRepository,
         WorkoutService,
       ],
     }).compile()
 
     service = module.get<WorkoutService>(WorkoutService)
-    workoutRepository = module.get<WorkoutRepository>(WORKOUT_REPOSITORY)
-    exerciseRepository = module.get<ExerciseRepository>(EXERCISE_REPOSITORY)
+    workoutRepository = module.get<TypeOrmWorkoutRepository>(
+      getRepositoryToken(TypeOrmWorkoutRepository),
+    )
+    exerciseRepository = module.get<TypeOrmExerciseRepository>(
+      getRepositoryToken(TypeOrmExerciseRepository),
+    )
   })
 
   it('should be defined', () => {
@@ -85,7 +93,6 @@ describe('Workout Service', () => {
 
   it('should fill a workout with exercises', async () => {
     const exercises = exercisesDataBuilder()
-
     const fillWorkoutWithExercisesInput = {
       workoutId: Faker.datatype.uuid(),
       exercisesId: exercises.map((exercise) => exercise.id),
