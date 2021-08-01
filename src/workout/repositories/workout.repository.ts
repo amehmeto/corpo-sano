@@ -7,7 +7,7 @@ export class TypeOrmWorkoutRepository
   extends Repository<Workout>
   implements WorkoutRepository
 {
-  findById(param: string): Promise<Workout> {
-    return Promise.resolve(new Workout())
+  async findById(param: string): Promise<Workout> {
+    return this.findOne(param)
   }
 }

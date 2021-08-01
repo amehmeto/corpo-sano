@@ -90,4 +90,34 @@ describe('AppController (e2e)', () => {
       expectedCreateProgram,
     )
   })
+
+  test('FillWorkoutWithExercises Mutation', async () => {
+    const fillWorkoutWithExercisesMutation = {
+      query: `mutation fillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
+        fillWorkoutWithExercises(payload: $payload) {
+          id
+          title
+        }
+      }`,
+      variables: {
+        payload: {
+          workoutId: '24f10d33-be99-4814-8836-f730c708b7c7',
+          exercisesId: [
+            '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b',
+            '226bd5cc-9bdb-49f0-a463-5fd3b26625af',
+          ],
+        },
+      },
+    }
+
+    const expectedWorkout = {
+      id: fillWorkoutWithExercisesMutation.variables.payload.workoutId,
+      title: 'Mon Workout',
+    }
+    return expectCorrectGqlResponse(
+      fillWorkoutWithExercisesMutation,
+      'fillWorkoutWithExercises',
+      expectedWorkout,
+    )
+  })
 })

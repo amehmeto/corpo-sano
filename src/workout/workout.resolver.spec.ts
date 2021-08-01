@@ -73,11 +73,11 @@ describe('Workout Resolver', () => {
       exercises: exercises,
     }
 
-    workoutService.fillWorkoutWithExercise = jest
+    workoutService.fillWorkoutWithExercises = jest
       .fn()
       .mockResolvedValue(expectedWorkout)
 
-    const filledWorkout = await workoutResolver.fillWorkoutWithExercise(
+    const filledWorkout = await workoutResolver.fillWorkoutWithExercises(
       fillWorkoutWithExerciseInput,
     )
 

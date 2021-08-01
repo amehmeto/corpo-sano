@@ -22,12 +22,12 @@ export class WorkoutResolver {
   }
 
   @Mutation((returns) => Workout, {
-    name: 'fillWorkoutWithExercise',
+    name: 'fillWorkoutWithExercises',
   })
-  async fillWorkoutWithExercise(
+  async fillWorkoutWithExercises(
     @Args('payload')
     payload: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    return this.workoutService.fillWorkoutWithExercise(payload)
+    return this.workoutService.fillWorkoutWithExercises(payload)
   }
 }

@@ -118,7 +118,7 @@ describe('Workout Service', () => {
       return exercise
     })
 
-    const filledWorkout = await service.fillWorkoutWithExercise(
+    const filledWorkout = await service.fillWorkoutWithExercises(
       fillWorkoutWithExercisesInput,
     )
 

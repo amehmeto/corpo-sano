@@ -26,7 +26,7 @@ export class WorkoutService {
     return this.workoutRepository.save(workout)
   }
 
-  async fillWorkoutWithExercise(
+  async fillWorkoutWithExercises(
     fillWorkoutWithExercisesInput: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
     const { workoutId, exercisesId } = fillWorkoutWithExercisesInput
@@ -37,6 +37,7 @@ export class WorkoutService {
         this.exerciseRepository.findById(exerciseId),
       ),
     )
+
     return this.workoutRepository.save(workout)
   }
 }
