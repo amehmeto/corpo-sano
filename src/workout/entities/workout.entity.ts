@@ -12,6 +12,7 @@ export class Workout {
 
   @ManyToOne(() => Program, (program) => program.workouts)
   program: Program
+
   exercises: Exercise[]
 
   constructor(partial: Partial<Workout> | undefined = {}) {
