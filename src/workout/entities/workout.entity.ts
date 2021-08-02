@@ -1,5 +1,13 @@
 import { Program } from '../../program/entities/program.entity'
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 
 @Entity()
@@ -11,9 +19,13 @@ export class Workout {
   title: string
 
   @ManyToOne(() => Program, (program) => program.workouts)
-  program: Program
+  program?: Program
 
-  exercises: Exercise[]
+  @ManyToMany(() => Exercise, (exercise) => exercise.workouts, {
+    eager: true,
+  })
+  @JoinTable()
+  exercises?: Exercise[]
 
   constructor(partial: Partial<Workout> | undefined = {}) {
     Object.assign(this, partial)

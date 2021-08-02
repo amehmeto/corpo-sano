@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Exercise } from '../../exercise/models/exercise.model'
 
 @ObjectType()
 export class Workout {
@@ -7,4 +8,7 @@ export class Workout {
 
   @Field()
   title: string
+
+  @Field(() => [Exercise])
+  exercises?: Exercise[]
 }

@@ -28,6 +28,7 @@ export class WorkoutResolver {
     @Args('payload')
     payload: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    return this.workoutService.fillWorkoutWithExercises(payload)
+    const result = await this.workoutService.fillWorkoutWithExercises(payload)
+    return result
   }
 }

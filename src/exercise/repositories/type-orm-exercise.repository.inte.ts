@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Exercise } from '../entities/exercise.entity'
+import { Workout } from '../../workout/entities/workout.entity'
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseRepository: TypeOrmExerciseRepository
@@ -21,7 +22,7 @@ describe('TypeOrm Exercise Repository', () => {
           autoLoadEntities: true,
           keepConnectionAlive: true,
         }),
-        TypeOrmModule.forFeature([TypeOrmExerciseRepository]),
+        TypeOrmModule.forFeature([TypeOrmExerciseRepository, Workout]),
       ],
     }).compile()
 
