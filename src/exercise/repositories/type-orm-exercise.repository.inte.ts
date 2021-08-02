@@ -35,10 +35,10 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   it('should find exercise by id', async () => {
-    const id = '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b'
+    const id = '4583238a-229b-4472-8d9f-bd797703c1ff'
     const expectedExercise: Exercise = {
       id,
-      title: 'Lunge',
+      title: 'Squat',
     }
 
     const foundExercise = await exerciseRepository.findById(id)

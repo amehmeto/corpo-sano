@@ -1,11 +1,10 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { TypeOrmWorkoutRepository } from './workout.repository'
-import { Workout } from '../entities/workout.entity'
 import { Program } from '../../program/entities/program.entity'
+import { TypeOrmWorkoutRepository } from './workout.repository'
 
-describe('TypeOrm Exercise Repository', () => {
-  let exerciseRepository: TypeOrmWorkoutRepository
+describe('TypeOrm Workout Repository', () => {
+  let workoutRepository: TypeOrmWorkoutRepository
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -22,17 +21,17 @@ describe('TypeOrm Exercise Repository', () => {
           autoLoadEntities: true,
           keepConnectionAlive: true,
         }),
-        TypeOrmModule.forFeature([TypeOrmWorkoutRepository]),
+        TypeOrmModule.forFeature([TypeOrmWorkoutRepository, Program]),
       ],
     }).compile()
 
-    exerciseRepository = module.get<TypeOrmWorkoutRepository>(
+    workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
   })
 
   it('should be defined', () => {
-    expect(exerciseRepository).toBeDefined()
+    expect(workoutRepository).toBeDefined()
   })
 
   it('should find exercise by id', async () => {
