@@ -6,12 +6,12 @@ import { ProgramService } from './program.service'
 export class ProgramResolver {
   constructor(private readonly programService: ProgramService) {}
 
-  @Query((returns) => Program)
+  @Query(() => Program)
   async placeholder() {
     return false //👌
   }
 
-  @Mutation((returns) => Program, {
+  @Mutation(() => Program, {
     name: 'createProgram',
   })
   async create(@Args({ name: 'title', type: () => String }) title: string) {

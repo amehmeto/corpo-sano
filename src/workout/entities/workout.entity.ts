@@ -10,7 +10,7 @@ export class Workout {
   @Column()
   title: string
 
-  @ManyToOne((type) => Program, (program) => program.workouts)
+  @ManyToOne(() => Program, (program) => program.workouts)
   program: Program
   exercises: Exercise[]
 

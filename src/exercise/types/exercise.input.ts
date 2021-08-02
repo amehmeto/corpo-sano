@@ -4,11 +4,11 @@ import { IsNotEmpty, IsString, IsUUID } from 'class-validator'
 @InputType()
 export class ExerciseInput {
   @IsUUID()
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string
 
   @IsNotEmpty()
   @IsString()
-  @Field((type) => String)
+  @Field(() => String)
   title: string
 }
