@@ -24,7 +24,7 @@
     "db:seed": "node seed.js"
   },
   "dependencies": {
-    "@apollo/gateway": "^0.37.0",
+    "@apollo/gateway": "^0.38.0",
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/graphql": "^8.0.2",
