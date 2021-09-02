@@ -1,11 +1,12 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { TypeOrmWorkoutRepository } from './workout.repository'
-import { Workout } from '../entities/workout.entity'
+import { Exercise } from '../../exercise/entities/exercise.entity'
 import { Program } from '../../program/entities/program.entity'
+import { Workout } from '../entities/workout.entity'
+import { TypeOrmWorkoutRepository } from './workout.repository'
 
-describe('TypeOrm Exercise Repository', () => {
-  let exerciseRepository: TypeOrmWorkoutRepository
+describe('TypeOrm Workout Repository', () => {
+  let workoutRepository: TypeOrmWorkoutRepository
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -22,30 +23,28 @@ describe('TypeOrm Exercise Repository', () => {
           autoLoadEntities: true,
           keepConnectionAlive: true,
         }),
-        TypeOrmModule.forFeature([TypeOrmWorkoutRepository]),
+        TypeOrmModule.forFeature([TypeOrmWorkoutRepository, Exercise, Program]),
       ],
     }).compile()
 
-    exerciseRepository = module.get<TypeOrmWorkoutRepository>(
+    workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
   })
 
   it('should be defined', () => {
-    expect(exerciseRepository).toBeDefined()
+    expect(workoutRepository).toBeDefined()
   })
 
-  it('should find exercise by id', async () => {
-    const id = '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b'
-    /*const expectedWorkout: Workout = {
+  it('should find workout by id', async () => {
+    const id = 'a5e5b221-2bb9-496f-80dc-3aebe29ce4ef'
+    const expectedWorkout: Workout = {
       id,
-      title: 'Lunge',
-      program: new Program(),
-      exercises: [],
-    }*/
+      title: 'Mon Workout',
+    }
 
-    const foundExercise = {} //await exerciseRepository.findById(id)
+    const foundExercise = await workoutRepository.findById(id)
 
-    expect(foundExercise) //.toStrictEqual(new Workout(expectedWorkout))
+    expect(foundExercise).toStrictEqual(new Workout(expectedWorkout))
   })
 })

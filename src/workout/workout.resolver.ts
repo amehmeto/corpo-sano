@@ -7,7 +7,7 @@ import { WorkoutService } from './workout.service'
 export class WorkoutResolver {
   constructor(private readonly workoutService: WorkoutService) {}
 
-  @Mutation((returns) => Workout, {
+  @Mutation(() => Workout, {
     name: 'createWorkout',
   })
   async create(
@@ -21,13 +21,14 @@ export class WorkoutResolver {
     return this.workoutService.create(workoutInput)
   }
 
-  @Mutation((returns) => Workout, {
+  @Mutation(() => Workout, {
     name: 'fillWorkoutWithExercises',
   })
   async fillWorkoutWithExercises(
     @Args('payload')
     payload: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    return this.workoutService.fillWorkoutWithExercises(payload)
+    const result = await this.workoutService.fillWorkoutWithExercises(payload)
+    return result
   }
 }

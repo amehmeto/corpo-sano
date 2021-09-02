@@ -4,9 +4,9 @@ import { IsUUID } from 'class-validator'
 @InputType()
 export class FillWorkoutWithExercisesInput {
   @IsUUID()
-  @Field((type) => ID)
+  @Field(() => ID)
   workoutId: string
 
-  @Field((type) => [ID])
+  @Field(() => [ID])
   exercisesId: string[]
 }

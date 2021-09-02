@@ -7,9 +7,15 @@ type Program {
   title: String!
 }
 
+type Exercise {
+  id: ID!
+  title: String!
+}
+
 type Workout {
   id: ID!
   title: String!
+  exercises: [Exercise!]!
 }
 
 type Query {

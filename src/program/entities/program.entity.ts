@@ -9,7 +9,7 @@ export class Program {
   @Column()
   title: string
 
-  @OneToMany((type) => Workout, (workout) => workout.program)
+  @OneToMany(() => Workout, (workout) => workout.program)
   workouts: Workout[]
 
   constructor(partial: Partial<Program> | undefined = {}) {

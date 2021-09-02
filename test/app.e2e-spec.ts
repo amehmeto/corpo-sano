@@ -97,14 +97,18 @@ describe('AppController (e2e)', () => {
         fillWorkoutWithExercises(payload: $payload) {
           id
           title
+          exercises {
+            id
+            title
+          }
         }
       }`,
       variables: {
         payload: {
-          workoutId: '24f10d33-be99-4814-8836-f730c708b7c7',
+          workoutId: '22a3be70-eec7-4f9d-9edd-9c4083438814',
           exercisesId: [
-            '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b',
-            '226bd5cc-9bdb-49f0-a463-5fd3b26625af',
+            '16d8e7c4-760e-41e9-96d1-c44312bf5970',
+            '2f8be3a5-dc4f-4739-8dec-67b33fa2fdad',
           ],
         },
       },
@@ -113,6 +117,16 @@ describe('AppController (e2e)', () => {
     const expectedWorkout = {
       id: fillWorkoutWithExercisesMutation.variables.payload.workoutId,
       title: 'Mon Workout',
+      exercises: [
+        {
+          id: '16d8e7c4-760e-41e9-96d1-c44312bf5970',
+          title: 'Abdominal crunch',
+        },
+        {
+          id: '2f8be3a5-dc4f-4739-8dec-67b33fa2fdad',
+          title: 'Plank',
+        },
+      ],
     }
     return expectCorrectGqlResponse(
       fillWorkoutWithExercisesMutation,

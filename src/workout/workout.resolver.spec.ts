@@ -70,7 +70,7 @@ describe('Workout Resolver', () => {
       id: expect.any(String),
       title: 'Haut du bas',
       programId: expect.any(String),
-      exercises: exercises,
+      exercises,
     }
 
     workoutService.fillWorkoutWithExercises = jest
