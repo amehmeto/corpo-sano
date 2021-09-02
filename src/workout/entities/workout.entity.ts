@@ -2,7 +2,6 @@ import { Program } from '../../program/entities/program.entity'
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,

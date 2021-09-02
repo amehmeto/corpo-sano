@@ -4,6 +4,8 @@ import { Exercise } from '../../exercise/entities/exercise.entity'
 import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './workout.repository'
+import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
+import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 
 describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
@@ -23,7 +25,13 @@ describe('TypeOrm Workout Repository', () => {
           autoLoadEntities: true,
           keepConnectionAlive: true,
         }),
-        TypeOrmModule.forFeature([TypeOrmWorkoutRepository, Exercise, Program]),
+        TypeOrmModule.forFeature([
+          TypeOrmWorkoutRepository,
+          TypeOrmExerciseRepository,
+          TypeOrmProgramRepository,
+          Exercise,
+          Program,
+        ]),
       ],
     }).compile()
 
@@ -37,10 +45,11 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
-    const id = 'a5e5b221-2bb9-496f-80dc-3aebe29ce4ef'
+    const id = 'f1b25314-75fd-4508-ad90-de985b453e93'
     const expectedWorkout: Workout = {
       id,
       title: 'Mon Workout',
+      exercises: [],
     }
 
     const foundExercise = await workoutRepository.findById(id)

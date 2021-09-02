@@ -3,6 +3,9 @@ import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Exercise } from '../entities/exercise.entity'
 import { Workout } from '../../workout/entities/workout.entity'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.repository'
+import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
+import { Program } from '../../program/entities/program.entity'
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseRepository: TypeOrmExerciseRepository
@@ -22,7 +25,13 @@ describe('TypeOrm Exercise Repository', () => {
           autoLoadEntities: true,
           keepConnectionAlive: true,
         }),
-        TypeOrmModule.forFeature([TypeOrmExerciseRepository, Workout]),
+        TypeOrmModule.forFeature([
+          TypeOrmExerciseRepository,
+          TypeOrmWorkoutRepository,
+          TypeOrmProgramRepository,
+          Program,
+          Workout,
+        ]),
       ],
     }).compile()
 
@@ -36,7 +45,7 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   it('should find exercise by id', async () => {
-    const id = '4583238a-229b-4472-8d9f-bd797703c1ff'
+    const id = 'd3f3e8a8-d021-44a4-a6c9-caec202ccb1d'
     const expectedExercise: Exercise = {
       id,
       title: 'Squat',

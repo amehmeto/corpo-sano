@@ -105,10 +105,10 @@ describe('AppController (e2e)', () => {
       }`,
       variables: {
         payload: {
-          workoutId: '22a3be70-eec7-4f9d-9edd-9c4083438814',
+          workoutId: '044f1a70-bef0-481c-9b17-ff4e0fbb13d8',
           exercisesId: [
-            '16d8e7c4-760e-41e9-96d1-c44312bf5970',
-            '2f8be3a5-dc4f-4739-8dec-67b33fa2fdad',
+            '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b',
+            '226bd5cc-9bdb-49f0-a463-5fd3b26625af',
           ],
         },
       },
@@ -119,12 +119,12 @@ describe('AppController (e2e)', () => {
       title: 'Mon Workout',
       exercises: [
         {
-          id: '16d8e7c4-760e-41e9-96d1-c44312bf5970',
-          title: 'Abdominal crunch',
+          id: '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b',
+          title: 'Lunge',
         },
         {
-          id: '2f8be3a5-dc4f-4739-8dec-67b33fa2fdad',
-          title: 'Plank',
+          id: '226bd5cc-9bdb-49f0-a463-5fd3b26625af',
+          title: 'Wall sit',
         },
       ],
     }
