@@ -10,7 +10,7 @@ import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-
 describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
@@ -38,6 +38,18 @@ describe('TypeOrm Workout Repository', () => {
     workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
+  })
+
+  beforeEach(async () => {
+    await workoutRepository.insert({
+      id: 'f1b25314-75fd-4508-ad90-de985b453e93',
+      title: 'Mon Workout',
+      exercises: [],
+    })
+  })
+
+  afterEach(async () => {
+    await workoutRepository.query('DELETE FROM workout')
   })
 
   it('should be defined', () => {

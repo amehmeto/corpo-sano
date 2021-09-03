@@ -19,6 +19,7 @@ type Workout {
 }
 
 type Query {
+  getAllExercises: [Exercise!]!
   placeholder: Program!
 }
 
