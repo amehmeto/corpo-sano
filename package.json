@@ -35,7 +35,7 @@
     "class-validator": "^0.13.1",
     "faker": "^5.5.3",
     "graphql": "^15.5.1",
-    "graphql-tools": "^7.0.5",
+    "graphql-tools": "^8.2.0",
     "knex": "^0.95.7",
     "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.13",
