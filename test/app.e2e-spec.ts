@@ -12,8 +12,11 @@ const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
-async function populateDbWithWorkout(connection: Connection) {
+const WORKOUT_ID = '4f58abaf-e026-47c8-be10-0eab9a017b07'
+
+async function populateDbWithProgramAndWorkout(connection: Connection) {
   const programId = faker.datatype.uuid()
+
   await connection
     .createQueryBuilder()
     .insert()
@@ -29,7 +32,7 @@ async function populateDbWithWorkout(connection: Connection) {
     .insert()
     .into(Workout)
     .values({
-      id: '4f58abaf-e026-47c8-be10-0eab9a017b07',
+      id: WORKOUT_ID,
       title: 'Mon Workout',
       program: {
         id: programId,
@@ -131,7 +134,7 @@ describe('AppController (e2e)', () => {
   })
 
   test('FillWorkoutWithExercises Mutation', async () => {
-    await populateDbWithWorkout(connection)
+    await populateDbWithProgramAndWorkout(connection)
 
     const fillWorkoutWithExercisesMutation = {
       query: `mutation fillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
@@ -146,7 +149,7 @@ describe('AppController (e2e)', () => {
       }`,
       variables: {
         payload: {
-          workoutId: '4f58abaf-e026-47c8-be10-0eab9a017b07',
+          workoutId: WORKOUT_ID,
           exercisesId: [
             '00000000-0000-0000-0000-000000000008',
             '00000000-0000-0000-0000-000000000001',
