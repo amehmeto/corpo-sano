@@ -49,16 +49,14 @@ describe('AppController (e2e)', () => {
   function expectCorrectGqlResponse(
     mutation: Mutation,
     retrievedDataKey: string,
-    expectedCreateProgram: Record<string, unknown>,
+    expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
   ) {
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
       .send(mutation)
       .expect(HttpStatus.OK)
       .expect((response: any) => {
-        expect(response.body.data[retrievedDataKey]).toStrictEqual(
-          expectedCreateProgram,
-        )
+        expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
 
@@ -177,6 +175,47 @@ describe('AppController (e2e)', () => {
       fillWorkoutWithExercisesMutation,
       'fillWorkoutWithExercises',
       expectedWorkout,
+    )
+  })
+
+  test('Get All Exercises', async () => {
+    const getAllExercisesQuery = {
+      query: `query {
+        getAllExercises {
+          id
+          title
+        }
+      }`,
+      variables: {},
+    }
+    const expectedExercises = [
+      { id: '00000000-0000-0000-0000-000000000000', title: 'Jumping jacks' },
+      { id: '00000000-0000-0000-0000-000000000001', title: 'Wall sit' },
+      { id: '00000000-0000-0000-0000-000000000002', title: 'Push-up' },
+      { id: '00000000-0000-0000-0000-000000000003', title: 'Abdominal crunch' },
+      { id: '00000000-0000-0000-0000-000000000004', title: 'Squat' },
+      {
+        id: '00000000-0000-0000-0000-000000000005',
+        title: 'Triceps dip on chair',
+      },
+      { id: '00000000-0000-0000-0000-000000000006', title: 'Plank' },
+      {
+        id: '00000000-0000-0000-0000-000000000007',
+        title: 'High knees running in place',
+      },
+      { id: '00000000-0000-0000-0000-000000000008', title: 'Lunge' },
+      {
+        id: '00000000-0000-0000-0000-000000000009',
+        title: 'Push-up and rotation',
+      },
+      { id: '00000000-0000-0000-0000-000000000010', title: 'Side plank' },
+      { id: '00000000-0000-0000-0000-000000000011', title: 'Jumping Rope' },
+    ]
+
+    return expectCorrectGqlResponse(
+      getAllExercisesQuery,
+      'getAllExercises',
+      expectedExercises,
     )
   })
 })
