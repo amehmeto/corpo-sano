@@ -6,25 +6,16 @@ import { Workout } from '../../workout/entities/workout.entity'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { Program } from '../../program/entities/program.entity'
+import { config } from '../../../config'
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseRepository: TypeOrmExerciseRepository
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot({
-          type: 'mysql',
-          host: 'localhost',
-          port: 3306,
-          username: 'root',
-          password: '',
-          database: 'corposano',
-          entities: ['dist/**/*.entity{ .ts,.js}'],
-          synchronize: true,
-          autoLoadEntities: true,
-          keepConnectionAlive: true,
-        }),
+        // @ts-ignore
+        TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
           TypeOrmExerciseRepository,
           TypeOrmWorkoutRepository,
@@ -35,9 +26,20 @@ describe('TypeOrm Exercise Repository', () => {
       ],
     }).compile()
 
-    exerciseRepository = module.get<TypeOrmExerciseRepository>(
+    exerciseRepository = await module.get<TypeOrmExerciseRepository>(
       TypeOrmExerciseRepository,
     )
+  })
+
+  beforeEach(async () => {
+    await exerciseRepository.insert({
+      id: 'd3f3e8a8-d021-44a4-a6c9-caec202ccb1d',
+      title: 'Squat',
+    })
+  })
+
+  afterEach(async () => {
+    await exerciseRepository.query(`DELETE FROM exercise;`)
   })
 
   it('should be defined', () => {

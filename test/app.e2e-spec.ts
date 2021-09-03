@@ -2,13 +2,46 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
+import { execSync } from 'child_process'
+import { Connection } from 'typeorm'
+import { Workout } from '../src/workout/entities/workout.entity'
+import * as faker from 'faker'
+import { Program } from '../src/program/entities/program.entity'
 
 const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
+async function populateDbWithWorkout(connection: Connection) {
+  const programId = faker.datatype.uuid()
+  await connection
+    .createQueryBuilder()
+    .insert()
+    .into(Program)
+    .values({
+      id: programId,
+      title: 'Mon programme',
+    })
+    .execute()
+
+  await connection
+    .createQueryBuilder()
+    .insert()
+    .into(Workout)
+    .values({
+      id: '4f58abaf-e026-47c8-be10-0eab9a017b07',
+      title: 'Mon Workout',
+      program: {
+        id: programId,
+      },
+      exercises: [],
+    })
+    .execute()
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
+  let connection: Connection
 
   function expectCorrectGqlResponse(
     mutation: Mutation,
@@ -33,6 +66,12 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication()
     await app.init()
+    await execSync('yarn db:seed')
+    connection = app.get(Connection)
+  })
+
+  afterEach(async () => {
+    await connection.createQueryBuilder().delete().from(Workout).execute()
   })
 
   it('/ (GET)', () => {
@@ -92,6 +131,8 @@ describe('AppController (e2e)', () => {
   })
 
   test('FillWorkoutWithExercises Mutation', async () => {
+    await populateDbWithWorkout(connection)
+
     const fillWorkoutWithExercisesMutation = {
       query: `mutation fillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
         fillWorkoutWithExercises(payload: $payload) {
@@ -105,10 +146,10 @@ describe('AppController (e2e)', () => {
       }`,
       variables: {
         payload: {
-          workoutId: '044f1a70-bef0-481c-9b17-ff4e0fbb13d8',
+          workoutId: '4f58abaf-e026-47c8-be10-0eab9a017b07',
           exercisesId: [
-            '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b',
-            '226bd5cc-9bdb-49f0-a463-5fd3b26625af',
+            '00000000-0000-0000-0000-000000000008',
+            '00000000-0000-0000-0000-000000000001',
           ],
         },
       },
@@ -119,15 +160,16 @@ describe('AppController (e2e)', () => {
       title: 'Mon Workout',
       exercises: [
         {
-          id: '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b',
+          id: '00000000-0000-0000-0000-000000000008',
           title: 'Lunge',
         },
         {
-          id: '226bd5cc-9bdb-49f0-a463-5fd3b26625af',
+          id: '00000000-0000-0000-0000-000000000001',
           title: 'Wall sit',
         },
       ],
     }
+
     return expectCorrectGqlResponse(
       fillWorkoutWithExercisesMutation,
       'fillWorkoutWithExercises',
