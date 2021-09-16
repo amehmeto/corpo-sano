@@ -1,13 +1,19 @@
 import { EntityRepository, Repository } from 'typeorm'
 import { Workout } from '../entities/workout.entity'
 import { WorkoutRepository } from '../types/workout-repository.interface'
+import { Exercise } from '../../exercise/entities/exercise.entity'
 
 @EntityRepository(Workout)
 export class TypeOrmWorkoutRepository
   extends Repository<Workout>
   implements WorkoutRepository
 {
-  async findById(param: string): Promise<Workout> {
-    return this.findOne(param)
+  async findById(workoutId: string): Promise<Workout> {
+    console.log('wesh', this, this.findOne)
+    return this.findOne(workoutId)
+  }
+
+  getExercises(workoutId: string): Promise<Exercise[]> {
+    return Promise.resolve([])
   }
 }

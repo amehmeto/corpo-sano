@@ -2,8 +2,10 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
+import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
 
 function exerciseDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -20,8 +22,14 @@ describe('Workout Resolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        TypeOrmWorkoutRepository,
-        TypeOrmExerciseRepository,
+        {
+          provide: WORKOUT_REPOSITORY,
+          useClass: TypeOrmWorkoutRepository,
+        },
+        {
+          provide: EXERCISE_REPOSITORY,
+          useClass: TypeOrmExerciseRepository,
+        },
         WorkoutResolver,
         WorkoutService,
       ],
@@ -82,5 +90,17 @@ describe('Workout Resolver', () => {
     )
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it('should get all workouts exercises', async () => {
+    const workoutId = Faker.datatype.uuid()
+    const expectedExercises = Array(3).fill(exerciseDataBuilder())
+
+    workoutService.getExercises = jest.fn().mockResolvedValue(expectedExercises)
+
+    const retrievedExercises = await workoutResolver.getExercises(workoutId)
+
+    expect(workoutService.getExercises).toHaveBeenCalled()
+    expect(retrievedExercises).toBe(expectedExercises)
   })
 })

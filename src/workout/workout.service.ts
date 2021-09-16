@@ -1,20 +1,24 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { Workout } from './entities/workout.entity'
+import { Exercise } from '../exercise/entities/exercise.entity'
 import { WorkoutInput } from './types/workout-input'
 import { v4 as uuid } from 'uuid'
-import { WorkoutRepository } from './types/workout-repository.interface'
+import {
+  WORKOUT_REPOSITORY,
+  WorkoutRepository,
+} from './types/workout-repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
-import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
-import { InjectRepository } from '@nestjs/typeorm'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import {
+  EXERCISE_REPOSITORY,
+  ExerciseRepository,
+} from '../exercise/types/exercise-repository.interface'
 
 @Injectable()
 export class WorkoutService {
   constructor(
-    @InjectRepository(TypeOrmWorkoutRepository)
+    @Inject(WORKOUT_REPOSITORY)
     private readonly workoutRepository: WorkoutRepository,
-    @InjectRepository(TypeOrmExerciseRepository)
+    @Inject(EXERCISE_REPOSITORY)
     private readonly exerciseRepository: ExerciseRepository,
   ) {}
 
@@ -31,6 +35,8 @@ export class WorkoutService {
   ): Promise<Workout> {
     const { workoutId, exercisesId } = fillWorkoutWithExercisesInput
 
+    console.log(this.workoutRepository)
+
     const workout = await this.workoutRepository.findById(workoutId)
     workout.exercises = await Promise.all(
       exercisesId.map(async (exerciseId) =>
@@ -39,5 +45,9 @@ export class WorkoutService {
     )
 
     return this.workoutRepository.save(workout)
+  }
+
+  getExercises(workoutId: string): Promise<Exercise[]> {
+    return this.workoutRepository.getExercises(workoutId)
   }
 }

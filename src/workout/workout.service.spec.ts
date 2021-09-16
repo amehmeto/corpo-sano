@@ -5,13 +5,12 @@ import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
 } from './types/workout-repository.interface'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
 import {
   EXERCISE_REPOSITORY,
   ExerciseRepository,
 } from '../exercise/types/exercise-repository.interface'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
-import { getRepositoryToken } from '@nestjs/typeorm'
+import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
+import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 
 const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
 
@@ -33,7 +32,7 @@ function exercisesDataBuilder() {
 }
 
 describe('Workout Service', () => {
-  let service: WorkoutService
+  let workoutService: WorkoutService
   let workoutRepository: WorkoutRepository
   let exerciseRepository: ExerciseRepository
 
@@ -42,29 +41,23 @@ describe('Workout Service', () => {
       providers: [
         {
           provide: WORKOUT_REPOSITORY,
-          useValue: {},
+          useClass: InMemoryWorkoutRepository,
         },
         {
           provide: EXERCISE_REPOSITORY,
-          useValue: {},
+          useClass: InMemoryExerciseRepository,
         },
-        TypeOrmWorkoutRepository,
-        TypeOrmExerciseRepository,
         WorkoutService,
       ],
     }).compile()
 
-    service = module.get<WorkoutService>(WorkoutService)
-    workoutRepository = module.get<TypeOrmWorkoutRepository>(
-      getRepositoryToken(TypeOrmWorkoutRepository),
-    )
-    exerciseRepository = module.get<TypeOrmExerciseRepository>(
-      getRepositoryToken(TypeOrmExerciseRepository),
-    )
+    workoutService = module.get<WorkoutService>(WorkoutService)
+    workoutRepository = module.get<WorkoutRepository>(WORKOUT_REPOSITORY)
+    exerciseRepository = module.get<ExerciseRepository>(EXERCISE_REPOSITORY)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(workoutService).toBeDefined()
   })
 
   it('should create a workout', async () => {
@@ -82,7 +75,7 @@ describe('Workout Service', () => {
       ...workoutInput,
     })
 
-    const createdWorkout = await service.create(workoutInput)
+    const createdWorkout = await workoutService.create(workoutInput)
 
     expect(workoutRepository.save).toHaveBeenCalledWith({
       id: expect.any(String),
@@ -118,10 +111,24 @@ describe('Workout Service', () => {
       return exercise
     })
 
-    const filledWorkout = await service.fillWorkoutWithExercises(
+    const filledWorkout = await workoutService.fillWorkoutWithExercises(
       fillWorkoutWithExercisesInput,
     )
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it("should get all workout's exercises", async () => {
+    const workoutId = Faker.datatype.uuid()
+    const expectedExercises = [
+      {
+        id: expect.any(String),
+        title: 'Push ups',
+      },
+    ]
+
+    const retrievedExercises = await workoutService.getExercises(workoutId)
+
+    expect(retrievedExercises).toStrictEqual(expectedExercises)
   })
 })

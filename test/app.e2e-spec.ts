@@ -43,7 +43,7 @@ async function populateDbWithProgramAndWorkout(connection: Connection) {
 }
 
 function generateExercisesWithHardCodedUuid(defaultExercisesNames: string[]) {
-  let defaultExercises = []
+  const defaultExercises = []
   for (let i = 0; defaultExercisesNames[i]; i++) {
     const baseUuid = '00000000-0000-0000-0000-000000000000'
     const stringifiedIndex = i.toString()

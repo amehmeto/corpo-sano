@@ -3,21 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Workout } from './entities/workout.entity'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { Program } from '../program/entities/program.entity'
 import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      TypeOrmExerciseRepository,
-      TypeOrmWorkoutRepository,
-      Program,
-      Workout,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([Workout])],
   providers: [
     {
       provide: EXERCISE_REPOSITORY,

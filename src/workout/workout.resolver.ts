@@ -2,6 +2,7 @@ import { Args, ID, Mutation, Resolver } from '@nestjs/graphql'
 import { Workout } from './models/workout.model'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import { WorkoutService } from './workout.service'
+import { Exercise } from '../exercise/models/exercise.model'
 
 @Resolver()
 export class WorkoutResolver {
@@ -28,7 +29,10 @@ export class WorkoutResolver {
     @Args('payload')
     payload: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    const result = await this.workoutService.fillWorkoutWithExercises(payload)
-    return result
+    return this.workoutService.fillWorkoutWithExercises(payload)
+  }
+
+  async getExercises(workoutId: string): Promise<Exercise[]> {
+    return this.workoutService.getExercises(workoutId)
   }
 }

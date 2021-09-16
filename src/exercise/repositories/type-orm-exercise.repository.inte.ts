@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { Exercise } from '../entities/exercise.entity'
 import { Workout } from '../../workout/entities/workout.entity'
-import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { Program } from '../../program/entities/program.entity'
 import { config } from '../../../config'
@@ -14,8 +14,7 @@ describe('TypeOrm Exercise Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        // @ts-ignore
-        TypeOrmModule.forRoot(config.db),
+        TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
           TypeOrmExerciseRepository,
           TypeOrmWorkoutRepository,
