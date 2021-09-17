@@ -1,11 +1,12 @@
 import { Test } from '@nestjs/testing'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { config } from '../../../config'
 
 describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
@@ -13,18 +14,7 @@ describe('TypeOrm Workout Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot({
-          type: 'mysql',
-          host: 'localhost',
-          port: 3306,
-          username: 'root',
-          password: '',
-          database: 'corposano',
-          entities: ['dist/**/*.entity{ .ts,.js}'],
-          synchronize: true,
-          autoLoadEntities: true,
-          keepConnectionAlive: true,
-        }),
+        TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
           TypeOrmWorkoutRepository,
           TypeOrmExerciseRepository,
