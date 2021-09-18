@@ -12,7 +12,8 @@ export class TypeOrmWorkoutRepository
     return this.findOne(workoutId)
   }
 
-  getExercises(workoutId: string): Promise<Exercise[]> {
-    return Promise.resolve([])
+  async getExercises(workoutId: string): Promise<Exercise[]> {
+    const workout = await this.findOne(workoutId)
+    return workout.exercises
   }
 }
