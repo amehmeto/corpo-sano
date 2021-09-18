@@ -1,14 +1,8 @@
 import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
-import {
-  WORKOUT_REPOSITORY,
-  WorkoutRepository,
-} from './types/workout-repository.interface'
-import {
-  EXERCISE_REPOSITORY,
-  ExerciseRepository,
-} from '../exercise/types/exercise-repository.interface'
+import { WorkoutRepository } from './types/workout-repository.interface'
+import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
 import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 import { getRepositoryToken } from '@nestjs/typeorm'
