@@ -7,6 +7,7 @@ import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { config } from '../../../config'
+import { execSync } from 'child_process'
 
 describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
@@ -30,15 +31,27 @@ describe('TypeOrm Workout Repository', () => {
     )
   })
 
-  beforeEach(async () => {
+  beforeAll(async () => {
+    await execSync('yarn db:seed')
+    const FORCED_UUID = 'f1b25314-75fd-4508-ad90-de985b453e93'
     await workoutRepository.insert({
-      id: 'f1b25314-75fd-4508-ad90-de985b453e93',
+      id: FORCED_UUID,
       title: 'Mon Workout',
       exercises: [],
     })
+    const workout = await workoutRepository.findById(FORCED_UUID)
+    workout.exercises = [
+      {
+        id: '00000000-0000-0000-0000-000000000000',
+        title: 'Jumping jacks',
+      },
+      { id: '00000000-0000-0000-0000-000000000001', title: 'Wall sit' },
+      { id: '00000000-0000-0000-0000-000000000002', title: 'Push-up' },
+    ]
+    await workoutRepository.save(workout)
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await workoutRepository.query('DELETE FROM workout')
   })
 
@@ -51,11 +64,40 @@ describe('TypeOrm Workout Repository', () => {
     const expectedWorkout: Workout = {
       id,
       title: 'Mon Workout',
-      exercises: [],
+      exercises: [
+        new Exercise({
+          id: '00000000-0000-0000-0000-000000000000',
+          title: 'Jumping jacks',
+        }),
+        new Exercise({
+          id: '00000000-0000-0000-0000-000000000001',
+          title: 'Wall sit',
+        }),
+        new Exercise({
+          id: '00000000-0000-0000-0000-000000000002',
+          title: 'Push-up',
+        }),
+      ],
     }
 
     const foundExercise = await workoutRepository.findById(id)
 
     expect(foundExercise).toStrictEqual(new Workout(expectedWorkout))
+  })
+
+  it("should get workout's exercises", async () => {
+    const workoutId = 'f1b25314-75fd-4508-ad90-de985b453e93'
+    const expectedExercises = [
+      {
+        id: '00000000-0000-0000-0000-000000000000',
+        title: 'Jumping jacks',
+      },
+      { id: '00000000-0000-0000-0000-000000000001', title: 'Wall sit' },
+      { id: '00000000-0000-0000-0000-000000000002', title: 'Push-up' },
+    ]
+
+    const retrievedExercises = await workoutRepository.getExercises(workoutId)
+
+    expect(retrievedExercises).toStrictEqual(expectedExercises)
   })
 })

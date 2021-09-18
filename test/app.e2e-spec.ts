@@ -103,7 +103,7 @@ describe('AppController (e2e)', () => {
     connection = app.get(Connection)
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await connection.createQueryBuilder().delete().from(Workout).execute()
   })
 

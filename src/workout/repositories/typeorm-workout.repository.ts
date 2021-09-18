@@ -9,7 +9,6 @@ export class TypeOrmWorkoutRepository
   implements WorkoutRepository
 {
   async findById(workoutId: string): Promise<Workout> {
-    console.log('wesh', this, this.findOne)
     return this.findOne(workoutId)
   }
 
