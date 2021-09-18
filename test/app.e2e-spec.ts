@@ -74,6 +74,10 @@ function defaultExercisesDataBuilder() {
   return generateExercisesWithHardCodedUuid(defaultExercisesNames)
 }
 
+async function deleteWorkoutFixture(connection: Connection) {
+  await connection.createQueryBuilder().delete().from(Workout).execute()
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
   let connection: Connection
@@ -104,7 +108,7 @@ describe('AppController (e2e)', () => {
   })
 
   afterAll(async () => {
-    await connection.createQueryBuilder().delete().from(Workout).execute()
+    await deleteWorkoutFixture(connection)
   })
 
   describe('Queries', () => {

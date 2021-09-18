@@ -35,8 +35,6 @@ export class WorkoutService {
   ): Promise<Workout> {
     const { workoutId, exercisesId } = fillWorkoutWithExercisesInput
 
-    console.log(this.workoutRepository)
-
     const workout = await this.workoutRepository.findById(workoutId)
     workout.exercises = await Promise.all(
       exercisesId.map(async (exerciseId) =>
