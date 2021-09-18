@@ -9,16 +9,17 @@ import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-
 import { config } from '../../../config'
 import { execSync } from 'child_process'
 
+const FIXTURE_UUID = 'f1b25314-75fd-4508-ad90-de985b453e93'
+
 async function createWorkoutFilledWithExercises(
   workoutRepository: TypeOrmWorkoutRepository,
 ) {
-  const FORCED_UUID = 'f1b25314-75fd-4508-ad90-de985b453e93'
   await workoutRepository.insert({
-    id: FORCED_UUID,
+    id: FIXTURE_UUID,
     title: 'Mon Workout',
     exercises: [],
   })
-  const workout = await workoutRepository.findById(FORCED_UUID)
+  const workout = await workoutRepository.findById(FIXTURE_UUID)
   workout.exercises = [
     {
       id: '00000000-0000-0000-0000-000000000000',
@@ -28,6 +29,23 @@ async function createWorkoutFilledWithExercises(
     { id: '00000000-0000-0000-0000-000000000002', title: 'Push-up' },
   ]
   await workoutRepository.save(workout)
+}
+
+function fixtureExercisesDataBuilder() {
+  return [
+    new Exercise({
+      id: '00000000-0000-0000-0000-000000000000',
+      title: 'Jumping jacks',
+    }),
+    new Exercise({
+      id: '00000000-0000-0000-0000-000000000001',
+      title: 'Wall sit',
+    }),
+    new Exercise({
+      id: '00000000-0000-0000-0000-000000000002',
+      title: 'Push-up',
+    }),
+  ]
 }
 
 describe('TypeOrm Workout Repository', () => {
@@ -66,24 +84,11 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
-    const id = 'f1b25314-75fd-4508-ad90-de985b453e93'
-    const expectedWorkout: Workout = {
+    const id = FIXTURE_UUID
+    const expectedWorkout = {
       id,
       title: 'Mon Workout',
-      exercises: [
-        new Exercise({
-          id: '00000000-0000-0000-0000-000000000000',
-          title: 'Jumping jacks',
-        }),
-        new Exercise({
-          id: '00000000-0000-0000-0000-000000000001',
-          title: 'Wall sit',
-        }),
-        new Exercise({
-          id: '00000000-0000-0000-0000-000000000002',
-          title: 'Push-up',
-        }),
-      ],
+      exercises: fixtureExercisesDataBuilder(),
     }
 
     const foundExercise = await workoutRepository.findById(id)
@@ -92,21 +97,8 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it("should get workout's exercises", async () => {
-    const workoutId = 'f1b25314-75fd-4508-ad90-de985b453e93'
-    const expectedExercises = [
-      new Exercise({
-        id: '00000000-0000-0000-0000-000000000000',
-        title: 'Jumping jacks',
-      }),
-      new Exercise({
-        id: '00000000-0000-0000-0000-000000000001',
-        title: 'Wall sit',
-      }),
-      new Exercise({
-        id: '00000000-0000-0000-0000-000000000002',
-        title: 'Push-up',
-      }),
-    ]
+    const workoutId = FIXTURE_UUID
+    const expectedExercises = fixtureExercisesDataBuilder()
 
     const retrievedExercises = await workoutRepository.getExercises(workoutId)
 
