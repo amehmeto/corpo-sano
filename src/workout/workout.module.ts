@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { Workout } from './entities/workout.entity'
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
 import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
@@ -9,18 +8,12 @@ import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Workout])],
-  providers: [
-    {
-      provide: EXERCISE_REPOSITORY,
-      useClass: TypeOrmExerciseRepository,
-    },
-    {
-      provide: WORKOUT_REPOSITORY,
-      useClass: TypeOrmWorkoutRepository,
-    },
-    WorkoutResolver,
-    WorkoutService,
+  imports: [
+    TypeOrmModule.forFeature([
+      TypeOrmExerciseRepository,
+      TypeOrmWorkoutRepository,
+    ]),
   ],
+  providers: [WorkoutResolver, WorkoutService],
 })
 export class WorkoutModule {}

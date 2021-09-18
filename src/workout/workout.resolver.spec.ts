@@ -6,6 +6,9 @@ import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.reposit
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { WORKOUT_REPOSITORY } from './types/workout-repository.interface'
 import { EXERCISE_REPOSITORY } from '../exercise/types/exercise-repository.interface'
+import { getRepositoryToken } from '@nestjs/typeorm'
+import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
+import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
 
 function exerciseDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -22,14 +25,8 @@ describe('Workout Resolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        {
-          provide: WORKOUT_REPOSITORY,
-          useClass: TypeOrmWorkoutRepository,
-        },
-        {
-          provide: EXERCISE_REPOSITORY,
-          useClass: TypeOrmExerciseRepository,
-        },
+        TypeOrmWorkoutRepository,
+        TypeOrmExerciseRepository,
         WorkoutResolver,
         WorkoutService,
       ],
