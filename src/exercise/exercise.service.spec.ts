@@ -1,10 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ExerciseService } from './exercise.service'
 import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repository'
-import {
-  ExerciseRepository,
-  EXERCISE_REPOSITORY,
-} from './types/exercise-repository.interface'
+import { ExerciseRepository } from './types/exercise-repository.interface'
+import { getRepositoryToken } from '@nestjs/typeorm'
 
 function getDefaultExercises() {
   return [
@@ -39,14 +37,16 @@ describe('ExerciseService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: EXERCISE_REPOSITORY,
+          provide: getRepositoryToken(TypeOrmExerciseRepository),
           useClass: TypeOrmExerciseRepository,
         },
         ExerciseService,
       ],
     }).compile()
 
-    repository = module.get<ExerciseRepository>(EXERCISE_REPOSITORY)
+    repository = module.get<ExerciseRepository>(
+      getRepositoryToken(TypeOrmExerciseRepository),
+    )
     exerciseService = module.get<ExerciseService>(ExerciseService)
   })
 

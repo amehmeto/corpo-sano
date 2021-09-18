@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { ExerciseResolver } from './exercise.resolver'
 import { ExerciseService } from './exercise.service'
 import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repository'
-import { EXERCISE_REPOSITORY } from './types/exercise-repository.interface'
 
 describe('ExerciseResolver', () => {
   let resolver: ExerciseResolver
@@ -10,14 +9,7 @@ describe('ExerciseResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        {
-          provide: EXERCISE_REPOSITORY,
-          useClass: TypeOrmExerciseRepository,
-        },
-        ExerciseResolver,
-        ExerciseService,
-      ],
+      providers: [TypeOrmExerciseRepository, ExerciseResolver, ExerciseService],
     }).compile()
 
     exerciseService = module.get<ExerciseService>(ExerciseService)
