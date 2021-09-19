@@ -9,6 +9,7 @@ import { ExerciseRepository } from '../exercise/types/exercise-repository.interf
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { WeekDays } from './types/week-days.enum'
 
 @Injectable()
 export class WorkoutService {
@@ -46,7 +47,7 @@ export class WorkoutService {
     return this.workoutRepository.getExercises(workoutId)
   }
 
-  async scheduleWorkout(daysOfTheWeek: string[]): Promise<Workout> {
-    return Promise.resolve(new Workout())
+  async scheduleWorkout(daysOfTheWeek: WeekDays[]): Promise<Workout> {
+    return this.workoutRepository.scheduleWorkout(daysOfTheWeek)
   }
 }

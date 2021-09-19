@@ -26,6 +26,11 @@ export class Workout {
   @JoinTable()
   exercises?: Exercise[]
 
+  @Column('text', {
+    array: true,
+  })
+  scheduledDays?: string[]
+
   constructor(partial: Partial<Workout> | undefined = {}) {
     Object.assign(this, partial)
   }

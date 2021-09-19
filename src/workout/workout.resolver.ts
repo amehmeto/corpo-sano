@@ -37,6 +37,7 @@ export class WorkoutResolver {
   }
 
   async scheduleWorkout(daysOfTheWeek: string[]): Promise<Workout> {
+    // @ts-ignore // TODO: remove ts-ignore with e2e test
     return this.workoutService.scheduleWorkout(daysOfTheWeek)
   }
 }

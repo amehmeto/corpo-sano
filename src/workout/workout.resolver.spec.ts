@@ -5,6 +5,7 @@ import { WorkoutService } from './workout.service'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { Workout } from './entities/workout.entity'
+import { WeekDays } from './types/week-days.enum'
 
 function exerciseDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -98,8 +99,10 @@ describe('Workout Resolver', () => {
   })
 
   it('should schedule a workout', async () => {
-    const daysOfTheWeek = ['monday', 'tuesday']
-    const expectedWorkout = new Workout()
+    const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.THURSDAY]
+    const expectedWorkout = new Workout({
+      scheduledDays: daysOfTheWeek,
+    })
 
     workoutService.scheduleWorkout = jest
       .fn()

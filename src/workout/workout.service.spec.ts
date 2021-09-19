@@ -8,6 +8,8 @@ import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repo
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { Workout } from './entities/workout.entity'
+import { WeekDays } from './types/week-days.enum'
 
 const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
 
@@ -131,5 +133,16 @@ describe('Workout Service', () => {
     const retrievedExercises = await workoutService.getExercises(workoutId)
 
     expect(retrievedExercises).toStrictEqual(expectedExercises)
+  })
+
+  it('should schedule workout', async () => {
+    const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
+    const expectedWorkout = new Workout({
+      scheduledDays: daysOfTheWeek,
+    })
+
+    const scheduledWorkout = await workoutService.scheduleWorkout(daysOfTheWeek)
+
+    expect(scheduledWorkout).toStrictEqual(expectedWorkout)
   })
 })
