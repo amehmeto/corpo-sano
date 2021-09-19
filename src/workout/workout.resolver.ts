@@ -35,4 +35,8 @@ export class WorkoutResolver {
   async getExercises(workoutId: string): Promise<Exercise[]> {
     return this.workoutService.getExercises(workoutId)
   }
+
+  async scheduleWorkout(daysOfTheWeek: string[]): Promise<Workout> {
+    return this.workoutService.scheduleWorkout(daysOfTheWeek)
+  }
 }

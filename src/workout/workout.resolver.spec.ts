@@ -4,6 +4,7 @@ import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { Workout } from './entities/workout.entity'
 
 function exerciseDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -94,5 +95,21 @@ describe('Workout Resolver', () => {
 
     expect(workoutService.getExercises).toHaveBeenCalled()
     expect(retrievedExercises).toBe(expectedExercises)
+  })
+
+  it('should schedule a workout', async () => {
+    const daysOfTheWeek = ['monday', 'tuesday']
+    const expectedWorkout = new Workout()
+
+    workoutService.scheduleWorkout = jest
+      .fn()
+      .mockResolvedValue(expectedWorkout)
+
+    const scheduledWorkout = await workoutResolver.scheduleWorkout(
+      daysOfTheWeek,
+    )
+
+    expect(workoutService.scheduleWorkout).toHaveBeenCalledWith(daysOfTheWeek)
+    expect(scheduledWorkout).toStrictEqual(expectedWorkout)
   })
 })
