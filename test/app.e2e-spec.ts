@@ -14,7 +14,7 @@ type Mutation = { variables: Record<string, unknown>; query: string }
 
 const WORKOUT_ID = '4f58abaf-e026-47c8-be10-0eab9a017b07'
 
-async function populateDbWithProgramAndWorkout(connection: Connection) {
+async function generateProgramAndWorkoutFixtures(connection: Connection) {
   const programId = faker.datatype.uuid()
 
   await connection
@@ -74,8 +74,9 @@ function defaultExercisesDataBuilder() {
   return generateExercisesWithHardCodedUuid(defaultExercisesNames)
 }
 
-async function deleteWorkoutFixture(connection: Connection) {
+async function deleteProgramAndWorkoutFixture(connection: Connection) {
   await connection.createQueryBuilder().delete().from(Workout).execute()
+  await connection.createQueryBuilder().delete().from(Program).execute()
 }
 
 describe('AppController (e2e)', () => {
@@ -92,6 +93,7 @@ describe('AppController (e2e)', () => {
       .send(mutation)
       .expect(HttpStatus.OK)
       .expect((response: any) => {
+        console.log(response.body.data)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -105,10 +107,11 @@ describe('AppController (e2e)', () => {
     await app.init()
     await execSync('yarn db:seed')
     connection = app.get(Connection)
+    await generateProgramAndWorkoutFixtures(connection)
   })
 
   afterAll(async () => {
-    await deleteWorkoutFixture(connection)
+    await deleteProgramAndWorkoutFixture(connection)
   })
 
   describe('Queries', () => {
@@ -119,14 +122,14 @@ describe('AppController (e2e)', () => {
         .expect('Hello World!')
     })
 
-    test('Get All Exercises', async () => {
+    test('Get All Exercises', () => {
       const getAllExercisesQuery = {
         query: `query GetAllExercises {
-        getAllExercises {
-          id
-          title
-        }
-      }`,
+          getAllExercises {
+            id
+            title
+          }
+        }`,
         variables: {},
       }
 
@@ -138,10 +141,32 @@ describe('AppController (e2e)', () => {
         expectedExercises,
       )
     })
+
+    test('Get Workout Exercises', () => {
+      const getWorkoutExercisesQuery = {
+        query: `query GetWorkoutExercises($workoutId: ID!){
+          getWorkoutExercises(workoutId: $workoutId) {
+            exercises {
+              title
+            }
+          }
+        }`,
+        variables: {
+          workoutId: WORKOUT_ID,
+        },
+      }
+      const expectedGetWorkoutExercises = {}
+
+      return expectCorrectGqlResponse(
+        getWorkoutExercisesQuery,
+        'getWorkoutExercises',
+        expectedGetWorkoutExercises,
+      )
+    })
   })
 
   describe('Mutation', () => {
-    test('Create Program', async () => {
+    test('Create Program', () => {
       const createProgramMutation = {
         query: `mutation CreateProgram($title: String!) {
         createProgram(title: $title) {
@@ -165,14 +190,14 @@ describe('AppController (e2e)', () => {
       )
     })
 
-    test('Create Workout', async () => {
+    test('Create Workout', () => {
       const createWorkoutMutation = {
         query: `mutation CreateWorkout($title: String!, $programId: ID!) {
-        createWorkout(title: $title, programId: $programId) {
-          id
-          title
-        }
-      }`,
+          createWorkout(title: $title, programId: $programId) {
+            id
+            title
+          }
+        }`,
         variables: {
           title: 'Mon Workout',
           programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
@@ -191,19 +216,17 @@ describe('AppController (e2e)', () => {
     })
 
     test('Fill Workout With Exercises', async () => {
-      await populateDbWithProgramAndWorkout(connection)
-
       const fillWorkoutWithExercisesMutation = {
-        query: `mutation fillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
-        fillWorkoutWithExercises(payload: $payload) {
-          id
-          title
-          exercises {
+        query: `mutation FillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
+          fillWorkoutWithExercises(payload: $payload) {
             id
             title
+            exercises {
+              id
+              title
+            }
           }
-        }
-      }`,
+        }`,
         variables: {
           payload: {
             workoutId: WORKOUT_ID,

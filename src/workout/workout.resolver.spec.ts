@@ -90,7 +90,9 @@ describe('Workout Resolver', () => {
 
     workoutService.getExercises = jest.fn().mockResolvedValue(expectedExercises)
 
-    const retrievedExercises = await workoutResolver.getExercises(workoutId)
+    const retrievedExercises = await workoutResolver.getWorkoutExercises(
+      workoutId,
+    )
 
     expect(workoutService.getExercises).toHaveBeenCalled()
     expect(retrievedExercises).toBe(expectedExercises)
