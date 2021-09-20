@@ -21,7 +21,7 @@ type Workout {
 type Query {
   getAllExercises: [Exercise!]!
   placeholder: Program!
-  getWorkoutExercises(workoutId: ID!): Workout!
+  getWorkoutExercises(workoutId: ID!): [Exercise!]!
 }
 
 type Mutation {

@@ -8,7 +8,7 @@ import { Exercise } from '../exercise/models/exercise.model'
 export class WorkoutResolver {
   constructor(private readonly workoutService: WorkoutService) {}
 
-  @Query(() => Workout)
+  @Query(() => [Exercise])
   async getWorkoutExercises(
     @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
   ): Promise<Exercise[]> {
@@ -29,9 +29,7 @@ export class WorkoutResolver {
     return this.workoutService.create(workoutInput)
   }
 
-  @Mutation(() => Workout, {
-    name: 'fillWorkoutWithExercises',
-  })
+  @Mutation(() => Workout)
   async fillWorkoutWithExercises(
     @Args('payload')
     payload: FillWorkoutWithExercisesInput,

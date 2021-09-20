@@ -37,7 +37,16 @@ async function generateProgramAndWorkoutFixtures(connection: Connection) {
       program: {
         id: programId,
       },
-      exercises: [],
+      exercises: [
+        {
+          id: '00000000-0000-0000-0000-000000000008',
+          title: 'Lunge',
+        },
+        {
+          id: '00000000-0000-0000-0000-000000000001',
+          title: 'Wall sit',
+        },
+      ],
     })
     .execute()
 }
@@ -93,7 +102,6 @@ describe('AppController (e2e)', () => {
       .send(mutation)
       .expect(HttpStatus.OK)
       .expect((response: any) => {
-        console.log(response.body.data)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -146,16 +154,15 @@ describe('AppController (e2e)', () => {
       const getWorkoutExercisesQuery = {
         query: `query GetWorkoutExercises($workoutId: ID!){
           getWorkoutExercises(workoutId: $workoutId) {
-            exercises {
-              title
-            }
+            id
+            title
           }
         }`,
         variables: {
           workoutId: WORKOUT_ID,
         },
       }
-      const expectedGetWorkoutExercises = {}
+      const expectedGetWorkoutExercises: any[] = []
 
       return expectCorrectGqlResponse(
         getWorkoutExercisesQuery,
