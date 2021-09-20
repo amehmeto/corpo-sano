@@ -105,7 +105,7 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication()
     await app.init()
-    await execSync('yarn db:seed')
+    execSync('yarn db:seed')
     connection = app.get(Connection)
     await generateProgramAndWorkoutFixtures(connection)
   })

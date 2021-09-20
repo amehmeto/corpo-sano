@@ -10,7 +10,7 @@ export class WorkoutResolver {
 
   @Query(() => Workout)
   async getWorkoutExercises(
-    @Args('workoutId') workoutId: string,
+    @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
   ): Promise<Exercise[]> {
     return this.workoutService.getExercises(workoutId)
   }
