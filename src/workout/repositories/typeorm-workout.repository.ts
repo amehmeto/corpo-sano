@@ -16,4 +16,8 @@ export class TypeOrmWorkoutRepository
     const workout = await this.findOne(workoutId)
     return workout.exercises
   }
+
+  scheduleWorkout(daysOfTheWeek: any[]): Promise<Workout> {
+    return Promise.resolve(undefined)
+  }
 }

@@ -45,4 +45,9 @@ export class WorkoutService {
   getExercises(workoutId: string): Promise<Exercise[]> {
     return this.workoutRepository.getExercises(workoutId)
   }
+
+  async scheduleWorkout(daysOfTheWeek: string[]): Promise<Workout> {
+    // @ts-ignore // TODO: remove ts-ignore with e2e test
+    return this.workoutRepository.scheduleWorkout(daysOfTheWeek)
+  }
 }

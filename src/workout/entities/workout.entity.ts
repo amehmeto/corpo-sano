@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { Exercise } from '../../exercise/entities/exercise.entity'
+import { WeekDays } from '../types/week-days.enum'
 
 @Entity()
 export class Workout {
@@ -25,6 +26,9 @@ export class Workout {
   })
   @JoinTable()
   exercises?: Exercise[]
+
+  @Column()
+  scheduledDays?: WeekDays[]
 
   constructor(partial: Partial<Workout> | undefined = {}) {
     Object.assign(this, partial)

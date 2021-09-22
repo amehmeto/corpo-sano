@@ -3,6 +3,7 @@ import { Workout } from './models/workout.model'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import { WorkoutService } from './workout.service'
 import { Exercise } from '../exercise/models/exercise.model'
+import { WeekDays } from './types/week-days.enum'
 
 @Resolver()
 export class WorkoutResolver {
@@ -35,5 +36,9 @@ export class WorkoutResolver {
     payload: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
     return this.workoutService.fillWorkoutWithExercises(payload)
+  }
+
+  async scheduleWorkout(daysOfTheWeek: WeekDays[]) {
+    return this.workoutService.scheduleWorkout(daysOfTheWeek)
   }
 }
