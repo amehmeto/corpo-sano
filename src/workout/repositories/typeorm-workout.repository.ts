@@ -17,7 +17,12 @@ export class TypeOrmWorkoutRepository
     return workout.exercises
   }
 
-  scheduleWorkout(daysOfTheWeek: any[]): Promise<Workout> {
-    return Promise.resolve(undefined)
+  async scheduleWorkout(
+    workoutId: string,
+    daysOfTheWeek: any[],
+  ): Promise<Workout> {
+    const workout = await this.findOne(workoutId)
+    workout.scheduledDays = daysOfTheWeek
+    return this.save(workout)
   }
 }

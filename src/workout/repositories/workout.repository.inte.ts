@@ -8,6 +8,7 @@ import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-pr
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { config } from '../../../config'
 import { execSync } from 'child_process'
+import { WeekDays } from '../types/week-days.enum'
 
 const FIXTURE_UUID = 'f1b25314-75fd-4508-ad90-de985b453e93'
 
@@ -103,5 +104,17 @@ describe('TypeOrm Workout Repository', () => {
     const retrievedExercises = await workoutRepository.getExercises(workoutId)
 
     expect(retrievedExercises).toStrictEqual(expectedExercises)
+  })
+
+  it('should schedule workout', async () => {
+    const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
+    const workoutId = FIXTURE_UUID
+
+    const scheduledWorkout = await workoutRepository.scheduleWorkout(
+      workoutId,
+      daysOfTheWeek,
+    )
+
+    expect(scheduledWorkout.scheduledDays).toStrictEqual(daysOfTheWeek)
   })
 })

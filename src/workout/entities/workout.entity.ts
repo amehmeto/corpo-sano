@@ -27,10 +27,15 @@ export class Workout {
   @JoinTable()
   exercises?: Exercise[]
 
-  @Column()
+  @Column({
+    type: 'enum',
+    array: true,
+    enum: WeekDays,
+    default: [],
+  })
   scheduledDays?: WeekDays[]
 
-  constructor(partial: Partial<Workout> | undefined = {}) {
+  constructor(partial: Partial<Workout> | {} = {}) {
     Object.assign(this, partial)
   }
 }
