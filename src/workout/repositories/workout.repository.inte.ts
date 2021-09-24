@@ -90,6 +90,7 @@ describe('TypeOrm Workout Repository', () => {
       id,
       title: 'Mon Workout',
       exercises: fixtureExercisesDataBuilder(),
+      scheduledDays: [] as WeekDays[],
     }
 
     const foundExercise = await workoutRepository.findById(id)

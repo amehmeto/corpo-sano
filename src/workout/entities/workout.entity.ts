@@ -27,9 +27,8 @@ export class Workout {
   @JoinTable()
   exercises?: Exercise[]
 
-  @Column({
-    type: 'enum',
-    array: true,
+ @Column({
+    type: 'set',
     enum: WeekDays,
     default: [],
   })
