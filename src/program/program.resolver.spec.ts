@@ -4,6 +4,7 @@ import { ProgramResolver } from './program.resolver'
 import { ProgramService } from './program.service'
 import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
 import { PROGRAM_REPOSITORY } from './types/program-repository.interface'
+import { Program } from './entities/program.entity'
 
 describe('Program Resolver', () => {
   let resolver: ProgramResolver
@@ -45,5 +46,17 @@ describe('Program Resolver', () => {
 
     expect(programService.create).toHaveBeenCalledWith(programTitle)
     expect(createdProgram).toStrictEqual(expectedProgram)
+  })
+
+  it('should get all programs', async () => {
+    const expectedPrograms = [new Program(), new Program()]
+
+    programService.getAllPrograms = jest
+      .fn()
+      .mockResolvedValue(expectedPrograms)
+
+    const retrievedPrograms = await resolver.getAllPrograms()
+
+    expect(retrievedPrograms).toStrictEqual(expectedPrograms)
   })
 })

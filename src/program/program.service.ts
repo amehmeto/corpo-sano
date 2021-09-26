@@ -12,10 +12,14 @@ export class ProgramService {
     private readonly programRepository: ProgramRepository,
   ) {}
 
-  async create(title: string) {
+  async create(title: string): Promise<Program> {
     const program = new Program({
       title,
     })
     return this.programRepository.save(program)
+  }
+
+  async getAllPrograms(): Promise<Program[]> {
+    return Promise.resolve([])
   }
 }

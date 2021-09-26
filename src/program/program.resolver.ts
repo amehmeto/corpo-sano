@@ -17,4 +17,8 @@ export class ProgramResolver {
   async create(@Args({ name: 'title', type: () => String }) title: string) {
     return this.programService.create(title)
   }
+
+  async getAllPrograms(): Promise<Program[]> {
+    return this.programService.getAllPrograms()
+  }
 }
