@@ -125,8 +125,7 @@ describe('Workout Service', () => {
     const workoutId = Faker.datatype.uuid()
     const expectedExercises = [
       {
-        id: expect.any(String),
-        title: 'Push ups',
+        workoutId,
       },
     ]
 

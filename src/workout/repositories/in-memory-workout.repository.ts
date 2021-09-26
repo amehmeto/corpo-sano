@@ -1,6 +1,5 @@
 import { WorkoutRepository } from '../types/workout-repository.interface'
 import { Workout } from '../entities/workout.entity'
-import { Exercise } from '../../exercise/entities/exercise.entity'
 import { WeekDays } from '../types/week-days.enum'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
@@ -8,24 +7,19 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
     return Promise.resolve(new Workout({ id }))
   }
 
-  getExercises(workoutId: string): Promise<Exercise[]> {
+  getExercises(workoutId: string): Promise<any[]> {
     return Promise.resolve([
       {
-        id: workoutId,
-        title: 'Push ups',
+        workoutId,
       },
     ])
   }
 
   save(workout: Workout): Promise<Workout> {
     return Promise.resolve({
-      id: 'qwerty',
+      id: '4f58abaf-e026-47c8-be10-0eab9a017b07', // random
       ...workout,
     })
-  }
-
-  findOne(id: string): Promise<Workout> {
-    return Promise.resolve(new Workout({ id }))
   }
 
   scheduleWorkout(
