@@ -3,7 +3,7 @@ import { Workout } from './models/workout.model'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import { WorkoutService } from './workout.service'
 import { Exercise } from '../exercise/models/exercise.model'
-import { WeekDays } from './types/week-days.enum'
+import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 
 @Resolver()
 export class WorkoutResolver {
@@ -38,7 +38,11 @@ export class WorkoutResolver {
     return this.workoutService.fillWorkoutWithExercises(payload)
   }
 
-  async scheduleWorkout(daysOfTheWeek: WeekDays[]) {
-    return this.workoutService.scheduleWorkout(daysOfTheWeek)
+  @Mutation(() => Workout)
+  async scheduleWorkout(
+    @Args({ name: 'payload', type: () => [String] })
+    payload: ScheduleWorkoutInput,
+  ): Promise<Workout> {
+    return this.workoutService.scheduleWorkout(payload)
   }
 }

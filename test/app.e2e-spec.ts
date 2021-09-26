@@ -7,6 +7,7 @@ import { Connection } from 'typeorm'
 import { Workout } from '../src/workout/entities/workout.entity'
 import * as faker from 'faker'
 import { Program } from '../src/program/entities/program.entity'
+import { WeekDays } from '../src/workout/types/week-days.enum'
 
 const GRAPHQL_URL = '/graphql'
 
@@ -263,6 +264,36 @@ describe('AppController (e2e)', () => {
       return expectCorrectGqlResponse(
         fillWorkoutWithExercisesMutation,
         'fillWorkoutWithExercises',
+        expectedWorkout,
+      )
+    })
+
+    test('Schedule Workout', () => {
+      const scheduleWorkoutMutation = {
+        query: `mutation scheduleWorkout($payload: ScheduleWorkoutInput!) {
+          scheduleWorkout(payload: $payload) {
+            id
+            title
+            exercises {
+              id
+              title
+            }
+            scheduledDays
+          }
+        }`,
+        variables: {
+          payload: {
+            id: WORKOUT_ID,
+            daysOfTheWeek: [WeekDays.FRIDAY],
+          },
+        },
+      }
+
+      const expectedWorkout = {}
+
+      return expectCorrectGqlResponse(
+        scheduleWorkoutMutation,
+        'scheduleWorkoutMutation',
         expectedWorkout,
       )
     })

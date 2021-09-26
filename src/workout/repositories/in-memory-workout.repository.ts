@@ -5,7 +5,7 @@ import { WeekDays } from '../types/week-days.enum'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
   findById(id: string): Promise<Workout> {
-    return Promise.resolve(undefined)
+    return Promise.resolve(new Workout({ id }))
   }
 
   getExercises(workoutId: string): Promise<Exercise[]> {
@@ -25,12 +25,16 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
   }
 
   findOne(id: string): Promise<Workout> {
-    return Promise.resolve(undefined)
+    return Promise.resolve(new Workout({ id }))
   }
 
-  scheduleWorkout(daysOfTheWeek: WeekDays[]): Promise<Workout> {
+  scheduleWorkout(
+    workoutId: string,
+    daysOfTheWeek: WeekDays[],
+  ): Promise<Workout> {
     return Promise.resolve(
       new Workout({
+        id: workoutId,
         scheduledDays: daysOfTheWeek,
       }),
     )

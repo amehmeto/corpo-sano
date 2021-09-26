@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql'
+
 export enum WeekDays {
   MONDAY = 'monday',
   TUESDAY = 'tuesday',
@@ -7,3 +9,7 @@ export enum WeekDays {
   SATURDAY = 'saturday',
   SUNDAY = 'sunday',
 }
+
+registerEnumType(WeekDays, {
+  name: 'WeekDays',
+})

@@ -1,5 +1,5 @@
+import { Exercise } from '../entities/exercise.entity'
 import { ExerciseRepository } from '../types/exercise-repository.interface'
-import { Exercise } from '../models/exercise.model'
 
 export class InMemoryExerciseRepository implements ExerciseRepository {
   find(): Promise<Exercise[]> {
@@ -7,6 +7,6 @@ export class InMemoryExerciseRepository implements ExerciseRepository {
   }
 
   findById(id: string): Promise<Exercise> {
-    return Promise.resolve(undefined)
+    return Promise.resolve(new Exercise({ id }))
   }
 }

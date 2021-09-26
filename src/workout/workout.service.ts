@@ -9,6 +9,7 @@ import { ExerciseRepository } from '../exercise/types/exercise-repository.interf
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 
 @Injectable()
 export class WorkoutService {
@@ -46,8 +47,10 @@ export class WorkoutService {
     return this.workoutRepository.getExercises(workoutId)
   }
 
-  async scheduleWorkout(daysOfTheWeek: string[]): Promise<Workout> {
-    // @ts-ignore // TODO: remove ts-ignore with e2e test
-    return this.workoutRepository.scheduleWorkout(daysOfTheWeek)
+  async scheduleWorkout(
+    scheduleWorkoutInput: ScheduleWorkoutInput,
+  ): Promise<Workout> {
+    const { daysOfTheWeek, workoutId } = scheduleWorkoutInput
+    return this.workoutRepository.scheduleWorkout(workoutId, daysOfTheWeek)
   }
 }

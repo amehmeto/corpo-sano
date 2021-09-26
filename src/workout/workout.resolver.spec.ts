@@ -102,7 +102,10 @@ describe('Workout Resolver', () => {
 
   it('should schedule a workout', async () => {
     const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.THURSDAY]
+    const workoutId = Faker.datatype.uuid()
+    const scheduleWorkoutInput = { workoutId, daysOfTheWeek }
     const expectedWorkout = new Workout({
+      id: workoutId,
       scheduledDays: daysOfTheWeek,
     })
 
@@ -111,10 +114,12 @@ describe('Workout Resolver', () => {
       .mockResolvedValue(expectedWorkout)
 
     const scheduledWorkout = await workoutResolver.scheduleWorkout(
-      daysOfTheWeek,
+      scheduleWorkoutInput,
     )
 
-    expect(workoutService.scheduleWorkout).toHaveBeenCalledWith(daysOfTheWeek)
+    expect(workoutService.scheduleWorkout).toHaveBeenCalledWith(
+      scheduleWorkoutInput,
+    )
     expect(scheduledWorkout).toStrictEqual(expectedWorkout)
   })
 })
