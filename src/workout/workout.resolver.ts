@@ -40,7 +40,7 @@ export class WorkoutResolver {
 
   @Mutation(() => Workout)
   async scheduleWorkout(
-    @Args({ name: 'payload', type: () => [String] })
+    @Args({ name: 'payload', type: () => ScheduleWorkoutInput })
     payload: ScheduleWorkoutInput,
   ): Promise<Workout> {
     return this.workoutService.scheduleWorkout(payload)

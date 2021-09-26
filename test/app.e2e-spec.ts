@@ -101,8 +101,8 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
       .send(mutation)
-      .expect(HttpStatus.OK)
       .expect((response: any) => {
+        if (response.body.data.error) console.error(response.body.data.error)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -272,28 +272,24 @@ describe('AppController (e2e)', () => {
       const scheduleWorkoutMutation = {
         query: `mutation scheduleWorkout($payload: ScheduleWorkoutInput!) {
           scheduleWorkout(payload: $payload) {
-            id
-            title
-            exercises {
-              id
-              title
-            }
             scheduledDays
           }
         }`,
         variables: {
           payload: {
-            id: WORKOUT_ID,
+            workoutId: WORKOUT_ID,
             daysOfTheWeek: [WeekDays.FRIDAY],
           },
         },
       }
 
-      const expectedWorkout = {}
+      const expectedWorkout = {
+        scheduledDays: ['FRIDAY'],
+      }
 
       return expectCorrectGqlResponse(
         scheduleWorkoutMutation,
-        'scheduleWorkoutMutation',
+        'scheduleWorkout',
         expectedWorkout,
       )
     })
