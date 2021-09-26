@@ -20,6 +20,6 @@ export class ProgramService {
   }
 
   async getAllPrograms(): Promise<Program[]> {
-    return Promise.resolve([])
+    return this.programRepository.getAllPrograms()
   }
 }

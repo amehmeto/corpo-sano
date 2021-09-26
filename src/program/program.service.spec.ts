@@ -5,29 +5,30 @@ import {
   PROGRAM_REPOSITORY,
   ProgramRepository,
 } from './types/program-repository.interface'
-import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
+import { Program } from './entities/program.entity'
+import { InMemoryProgramRepository } from './repositories/in-memory-program.repository'
 
 describe('Program Service', () => {
-  let service: ProgramService
-  let repository: ProgramRepository
+  let programService: ProgramService
+  let programRepository: ProgramRepository
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
           provide: PROGRAM_REPOSITORY,
-          useClass: TypeOrmProgramRepository,
+          useClass: InMemoryProgramRepository,
         },
         ProgramService,
       ],
     }).compile()
 
-    repository = module.get<ProgramRepository>(PROGRAM_REPOSITORY)
-    service = module.get<ProgramService>(ProgramService)
+    programRepository = module.get<ProgramRepository>(PROGRAM_REPOSITORY)
+    programService = module.get<ProgramService>(ProgramService)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(programService).toBeDefined()
   })
 
   it('should create a program', async () => {
@@ -37,16 +38,24 @@ describe('Program Service', () => {
       title: programTitle,
     }
 
-    repository.save = jest.fn().mockResolvedValue({
+    programRepository.save = jest.fn().mockResolvedValue({
       id: Faker.datatype.uuid(),
       title: programTitle,
     })
 
-    const createdProgram = await service.create(programTitle)
+    const createdProgram = await programService.create(programTitle)
 
-    expect(repository.save).toHaveBeenCalledWith({
+    expect(programRepository.save).toHaveBeenCalledWith({
       title: programTitle,
     })
     expect(createdProgram).toStrictEqual(expectedProgram)
+  })
+
+  it('should get all programs', async () => {
+    const expectedPrograms = [new Program(), new Program()]
+
+    const retrievedPrograms = await programService.getAllPrograms()
+
+    expect(retrievedPrograms).toStrictEqual(expectedPrograms)
   })
 })
