@@ -2,8 +2,10 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { WeekDays } from './types/week-days.enum'
+import { Workout } from './entities/workout.entity'
 
 function exerciseDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -82,5 +84,42 @@ describe('Workout Resolver', () => {
     )
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it('should get all workouts exercises', async () => {
+    const workoutId = Faker.datatype.uuid()
+    const expectedExercises = Array(3).fill(exerciseDataBuilder())
+
+    workoutService.getExercises = jest.fn().mockResolvedValue(expectedExercises)
+
+    const retrievedExercises = await workoutResolver.getWorkoutExercises(
+      workoutId,
+    )
+
+    expect(workoutService.getExercises).toHaveBeenCalled()
+    expect(retrievedExercises).toBe(expectedExercises)
+  })
+
+  it('should schedule a workout', async () => {
+    const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.THURSDAY]
+    const workoutId = Faker.datatype.uuid()
+    const scheduleWorkoutInput = { workoutId, daysOfTheWeek }
+    const expectedWorkout = new Workout({
+      id: workoutId,
+      scheduledDays: daysOfTheWeek,
+    })
+
+    workoutService.scheduleWorkout = jest
+      .fn()
+      .mockResolvedValue(expectedWorkout)
+
+    const scheduledWorkout = await workoutResolver.scheduleWorkout(
+      scheduleWorkoutInput,
+    )
+
+    expect(workoutService.scheduleWorkout).toHaveBeenCalledWith(
+      scheduleWorkoutInput,
+    )
+    expect(scheduledWorkout).toStrictEqual(expectedWorkout)
   })
 })

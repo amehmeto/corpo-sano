@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common'
 import { Workout } from './entities/workout.entity'
+import { Exercise } from '../exercise/entities/exercise.entity'
 import { WorkoutInput } from './types/workout-input'
 import { v4 as uuid } from 'uuid'
 import { WorkoutRepository } from './types/workout-repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
 import { InjectRepository } from '@nestjs/typeorm'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
+import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 
 @Injectable()
 export class WorkoutService {
@@ -39,5 +41,16 @@ export class WorkoutService {
     )
 
     return this.workoutRepository.save(workout)
+  }
+
+  getExercises(workoutId: string): Promise<Exercise[]> {
+    return this.workoutRepository.getExercises(workoutId)
+  }
+
+  async scheduleWorkout(
+    scheduleWorkoutInput: ScheduleWorkoutInput,
+  ): Promise<Workout> {
+    const { daysOfTheWeek, workoutId } = scheduleWorkoutInput
+    return this.workoutRepository.scheduleWorkout(workoutId, daysOfTheWeek)
   }
 }

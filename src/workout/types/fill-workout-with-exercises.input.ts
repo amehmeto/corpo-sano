@@ -7,6 +7,7 @@ export class FillWorkoutWithExercisesInput {
   @Field(() => ID)
   workoutId: string
 
+  @IsUUID()
   @Field(() => [ID])
   exercisesId: string[]
 }

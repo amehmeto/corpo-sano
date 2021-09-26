@@ -1,17 +1,15 @@
 import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
-import {
-  WORKOUT_REPOSITORY,
-  WorkoutRepository,
-} from './types/workout-repository.interface'
-import { TypeOrmWorkoutRepository } from './repositories/workout.repository'
-import {
-  EXERCISE_REPOSITORY,
-  ExerciseRepository,
-} from '../exercise/types/exercise-repository.interface'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { WorkoutRepository } from './types/workout-repository.interface'
+import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
+import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
+import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 import { getRepositoryToken } from '@nestjs/typeorm'
+import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { Workout } from './entities/workout.entity'
+import { WeekDays } from './types/week-days.enum'
 
 const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
 
@@ -33,7 +31,7 @@ function exercisesDataBuilder() {
 }
 
 describe('Workout Service', () => {
-  let service: WorkoutService
+  let workoutService: WorkoutService
   let workoutRepository: WorkoutRepository
   let exerciseRepository: ExerciseRepository
 
@@ -41,30 +39,28 @@ describe('Workout Service', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: WORKOUT_REPOSITORY,
-          useValue: {},
+          provide: getRepositoryToken(TypeOrmWorkoutRepository),
+          useClass: InMemoryWorkoutRepository,
         },
         {
-          provide: EXERCISE_REPOSITORY,
-          useValue: {},
+          provide: getRepositoryToken(TypeOrmExerciseRepository),
+          useClass: InMemoryExerciseRepository,
         },
-        TypeOrmWorkoutRepository,
-        TypeOrmExerciseRepository,
         WorkoutService,
       ],
     }).compile()
 
-    service = module.get<WorkoutService>(WorkoutService)
-    workoutRepository = module.get<TypeOrmWorkoutRepository>(
+    workoutService = module.get<WorkoutService>(WorkoutService)
+    workoutRepository = module.get<WorkoutRepository>(
       getRepositoryToken(TypeOrmWorkoutRepository),
     )
-    exerciseRepository = module.get<TypeOrmExerciseRepository>(
+    exerciseRepository = module.get<ExerciseRepository>(
       getRepositoryToken(TypeOrmExerciseRepository),
     )
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(workoutService).toBeDefined()
   })
 
   it('should create a workout', async () => {
@@ -82,7 +78,7 @@ describe('Workout Service', () => {
       ...workoutInput,
     })
 
-    const createdWorkout = await service.create(workoutInput)
+    const createdWorkout = await workoutService.create(workoutInput)
 
     expect(workoutRepository.save).toHaveBeenCalledWith({
       id: expect.any(String),
@@ -118,10 +114,42 @@ describe('Workout Service', () => {
       return exercise
     })
 
-    const filledWorkout = await service.fillWorkoutWithExercises(
+    const filledWorkout = await workoutService.fillWorkoutWithExercises(
       fillWorkoutWithExercisesInput,
     )
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it("should get all workout's exercises", async () => {
+    const workoutId = Faker.datatype.uuid()
+    const expectedExercises = [
+      {
+        workoutId,
+      },
+    ]
+
+    const retrievedExercises = await workoutService.getExercises(workoutId)
+
+    expect(retrievedExercises).toStrictEqual(expectedExercises)
+  })
+
+  it('should schedule workout', async () => {
+    const workoutId = Faker.datatype.uuid()
+    const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
+    const scheduleWorkoutInput = {
+      workoutId,
+      daysOfTheWeek,
+    }
+    const expectedWorkout = new Workout({
+      id: workoutId,
+      scheduledDays: daysOfTheWeek,
+    })
+
+    const scheduledWorkout = await workoutService.scheduleWorkout(
+      scheduleWorkoutInput,
+    )
+
+    expect(scheduledWorkout).toStrictEqual(expectedWorkout)
   })
 })

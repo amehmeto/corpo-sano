@@ -7,7 +7,7 @@ export class ExerciseResolver {
   constructor(private readonly exerciseService: ExerciseService) {}
 
   @Query(() => [Exercise])
-  async getAllExercises(): Promise<any> {
+  async getAllExercises(): Promise<Exercise[]> {
     return this.exerciseService.getAllExercises()
   }
 }

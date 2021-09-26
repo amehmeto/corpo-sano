@@ -16,20 +16,38 @@ type Workout {
   id: ID!
   title: String!
   exercises: [Exercise!]!
+  scheduledDays: [String!]!
 }
 
 type Query {
   getAllExercises: [Exercise!]!
   placeholder: Program!
+  getWorkoutExercises(workoutId: ID!): [Exercise!]!
 }
 
 type Mutation {
   createProgram(title: String!): Program!
   createWorkout(programId: ID!, title: String!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
+  scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
 }
 
 input FillWorkoutWithExercisesInput {
   workoutId: ID!
   exercisesId: [ID!]!
+}
+
+input ScheduleWorkoutInput {
+  workoutId: ID!
+  daysOfTheWeek: [WeekDays!]!
+}
+
+enum WeekDays {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
 }

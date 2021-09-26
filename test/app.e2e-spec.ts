@@ -7,6 +7,7 @@ import { Connection } from 'typeorm'
 import { Workout } from '../src/workout/entities/workout.entity'
 import * as faker from 'faker'
 import { Program } from '../src/program/entities/program.entity'
+import { WeekDays } from '../src/workout/types/week-days.enum'
 
 const GRAPHQL_URL = '/graphql'
 
@@ -14,7 +15,7 @@ type Mutation = { variables: Record<string, unknown>; query: string }
 
 const WORKOUT_ID = '4f58abaf-e026-47c8-be10-0eab9a017b07'
 
-async function populateDbWithProgramAndWorkout(connection: Connection) {
+async function generateProgramAndWorkoutFixtures(connection: Connection) {
   const programId = faker.datatype.uuid()
 
   await connection
@@ -37,13 +38,22 @@ async function populateDbWithProgramAndWorkout(connection: Connection) {
       program: {
         id: programId,
       },
-      exercises: [],
+      exercises: [
+        {
+          id: '00000000-0000-0000-0000-000000000008',
+          title: 'Lunge',
+        },
+        {
+          id: '00000000-0000-0000-0000-000000000001',
+          title: 'Wall sit',
+        },
+      ],
     })
     .execute()
 }
 
 function generateExercisesWithHardCodedUuid(defaultExercisesNames: string[]) {
-  let defaultExercises = []
+  const defaultExercises = []
   for (let i = 0; defaultExercisesNames[i]; i++) {
     const baseUuid = '00000000-0000-0000-0000-000000000000'
     const stringifiedIndex = i.toString()
@@ -74,6 +84,11 @@ function defaultExercisesDataBuilder() {
   return generateExercisesWithHardCodedUuid(defaultExercisesNames)
 }
 
+async function deleteProgramAndWorkoutFixture(connection: Connection) {
+  await connection.createQueryBuilder().delete().from(Workout).execute()
+  await connection.createQueryBuilder().delete().from(Program).execute()
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
   let connection: Connection
@@ -86,8 +101,8 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
       .send(mutation)
-      .expect(HttpStatus.OK)
       .expect((response: any) => {
+        if (response.body.data.error) console.error(response.body.data.error)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -99,12 +114,13 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication()
     await app.init()
-    await execSync('yarn db:seed')
+    execSync('yarn db:seed')
     connection = app.get(Connection)
+    await generateProgramAndWorkoutFixtures(connection)
   })
 
-  afterEach(async () => {
-    await connection.createQueryBuilder().delete().from(Workout).execute()
+  afterAll(async () => {
+    await deleteProgramAndWorkoutFixture(connection)
   })
 
   describe('Queries', () => {
@@ -115,14 +131,14 @@ describe('AppController (e2e)', () => {
         .expect('Hello World!')
     })
 
-    test('Get All Exercises', async () => {
+    test('Get All Exercises', () => {
       const getAllExercisesQuery = {
         query: `query GetAllExercises {
-        getAllExercises {
-          id
-          title
-        }
-      }`,
+          getAllExercises {
+            id
+            title
+          }
+        }`,
         variables: {},
       }
 
@@ -134,10 +150,31 @@ describe('AppController (e2e)', () => {
         expectedExercises,
       )
     })
+
+    test('Get Workout Exercises', () => {
+      const getWorkoutExercisesQuery = {
+        query: `query GetWorkoutExercises($workoutId: ID!){
+          getWorkoutExercises(workoutId: $workoutId) {
+            id
+            title
+          }
+        }`,
+        variables: {
+          workoutId: WORKOUT_ID,
+        },
+      }
+      const expectedGetWorkoutExercises: any[] = []
+
+      return expectCorrectGqlResponse(
+        getWorkoutExercisesQuery,
+        'getWorkoutExercises',
+        expectedGetWorkoutExercises,
+      )
+    })
   })
 
   describe('Mutation', () => {
-    test('Create Program', async () => {
+    test('Create Program', () => {
       const createProgramMutation = {
         query: `mutation CreateProgram($title: String!) {
         createProgram(title: $title) {
@@ -161,14 +198,14 @@ describe('AppController (e2e)', () => {
       )
     })
 
-    test('Create Workout', async () => {
+    test('Create Workout', () => {
       const createWorkoutMutation = {
         query: `mutation CreateWorkout($title: String!, $programId: ID!) {
-        createWorkout(title: $title, programId: $programId) {
-          id
-          title
-        }
-      }`,
+          createWorkout(title: $title, programId: $programId) {
+            id
+            title
+          }
+        }`,
         variables: {
           title: 'Mon Workout',
           programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
@@ -187,19 +224,17 @@ describe('AppController (e2e)', () => {
     })
 
     test('Fill Workout With Exercises', async () => {
-      await populateDbWithProgramAndWorkout(connection)
-
       const fillWorkoutWithExercisesMutation = {
-        query: `mutation fillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
-        fillWorkoutWithExercises(payload: $payload) {
-          id
-          title
-          exercises {
+        query: `mutation FillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
+          fillWorkoutWithExercises(payload: $payload) {
             id
             title
+            exercises {
+              id
+              title
+            }
           }
-        }
-      }`,
+        }`,
         variables: {
           payload: {
             workoutId: WORKOUT_ID,
@@ -229,6 +264,32 @@ describe('AppController (e2e)', () => {
       return expectCorrectGqlResponse(
         fillWorkoutWithExercisesMutation,
         'fillWorkoutWithExercises',
+        expectedWorkout,
+      )
+    })
+
+    test('Schedule Workout', () => {
+      const scheduleWorkoutMutation = {
+        query: `mutation scheduleWorkout($payload: ScheduleWorkoutInput!) {
+          scheduleWorkout(payload: $payload) {
+            scheduledDays
+          }
+        }`,
+        variables: {
+          payload: {
+            workoutId: WORKOUT_ID,
+            daysOfTheWeek: [WeekDays.FRIDAY],
+          },
+        },
+      }
+
+      const expectedWorkout = {
+        scheduledDays: ['FRIDAY'],
+      }
+
+      return expectCorrectGqlResponse(
+        scheduleWorkoutMutation,
+        'scheduleWorkout',
         expectedWorkout,
       )
     })
