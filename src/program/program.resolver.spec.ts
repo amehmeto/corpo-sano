@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { ProgramResolver } from './program.resolver'
 import { ProgramService } from './program.service'
 import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
-import { PROGRAM_REPOSITORY } from './types/program-repository.interface'
 import { Program } from './entities/program.entity'
+import { getRepositoryToken } from '@nestjs/typeorm'
 
 describe('Program Resolver', () => {
   let resolver: ProgramResolver
@@ -14,7 +14,7 @@ describe('Program Resolver', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: PROGRAM_REPOSITORY,
+          provide: getRepositoryToken(TypeOrmProgramRepository),
           useClass: TypeOrmProgramRepository,
         },
         ProgramResolver,

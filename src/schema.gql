@@ -22,6 +22,7 @@ type Workout {
 type Query {
   getAllExercises: [Exercise!]!
   placeholder: Program!
+  getAllPrograms: [Program!]!
   getWorkoutExercises(workoutId: ID!): [Exercise!]!
 }
 

@@ -1,12 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ProgramService } from './program.service'
 import * as Faker from 'faker'
-import {
-  PROGRAM_REPOSITORY,
-  ProgramRepository,
-} from './types/program-repository.interface'
+import { ProgramRepository } from './types/program-repository.interface'
 import { Program } from './entities/program.entity'
 import { InMemoryProgramRepository } from './repositories/in-memory-program.repository'
+import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
+import { getRepositoryToken } from '@nestjs/typeorm'
 
 describe('Program Service', () => {
   let programService: ProgramService
@@ -16,14 +15,16 @@ describe('Program Service', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: PROGRAM_REPOSITORY,
+          provide: getRepositoryToken(TypeOrmProgramRepository),
           useClass: InMemoryProgramRepository,
         },
         ProgramService,
       ],
     }).compile()
 
-    programRepository = module.get<ProgramRepository>(PROGRAM_REPOSITORY)
+    programRepository = module.get<ProgramRepository>(
+      getRepositoryToken(TypeOrmProgramRepository),
+    )
     programService = module.get<ProgramService>(ProgramService)
   })
 

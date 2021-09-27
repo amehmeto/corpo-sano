@@ -8,6 +8,10 @@ export class TypeOrmProgramRepository
   implements ProgramRepository
 {
   getAllPrograms(): Promise<Program[]> {
-    return this.find()
+    return this.find({
+      order: {
+        title: 'ASC',
+      },
+    })
   }
 }
