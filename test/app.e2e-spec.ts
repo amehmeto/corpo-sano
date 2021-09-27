@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module'
 import { execSync } from 'child_process'
 import { Connection } from 'typeorm'
 import { Workout } from '../src/workout/entities/workout.entity'
-import * as faker from 'faker'
+import * as Faker from 'faker'
 import { Program } from '../src/program/entities/program.entity'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 
@@ -13,17 +13,16 @@ const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
-const WORKOUT_ID = '4f58abaf-e026-47c8-be10-0eab9a017b07'
+const WORKOUT_ID = Faker.datatype.uuid()
+const PROGRAM_ID = Faker.datatype.uuid()
 
 async function generateProgramAndWorkoutFixtures(connection: Connection) {
-  const programId = faker.datatype.uuid()
-
   await connection
     .createQueryBuilder()
     .insert()
     .into(Program)
     .values({
-      id: programId,
+      id: PROGRAM_ID,
       title: 'Mon programme',
     })
     .execute()
@@ -36,7 +35,7 @@ async function generateProgramAndWorkoutFixtures(connection: Connection) {
       id: WORKOUT_ID,
       title: 'Mon Workout',
       program: {
-        id: programId,
+        id: PROGRAM_ID,
       },
       exercises: [
         {
@@ -102,7 +101,7 @@ describe('AppController (e2e)', () => {
       .post(GRAPHQL_URL)
       .send(mutation)
       .expect((response: any) => {
-        if (response.body.data.error) console.error(response.body.data.error)
+        if (response?.body?.errors) console.error(response.body)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -169,6 +168,27 @@ describe('AppController (e2e)', () => {
         getWorkoutExercisesQuery,
         'getWorkoutExercises',
         expectedGetWorkoutExercises,
+      )
+    })
+
+    test('Get All Programs', () => {
+      const getAllProgramsQuery = {
+        query: `query GetAllPrograms {
+          getAllPrograms {
+            id
+            title
+          }
+        }`,
+        variables: {},
+      }
+      const expectedGetAllPrograms = [
+        { id: PROGRAM_ID, title: 'Mon programme' },
+      ]
+
+      return expectCorrectGqlResponse(
+        getAllProgramsQuery,
+        'getAllPrograms',
+        expectedGetAllPrograms,
       )
     })
   })

@@ -11,6 +11,11 @@ export class ProgramResolver {
     return false //👌
   }
 
+  @Query(() => [Program])
+  async getAllPrograms(): Promise<Program[]> {
+    return this.programService.getAllPrograms()
+  }
+
   @Mutation(() => Program, {
     name: 'createProgram',
   })

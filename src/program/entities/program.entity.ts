@@ -9,10 +9,10 @@ export class Program {
   @Column()
   title: string
 
-  @OneToMany(() => Workout, (workout) => workout.program)
+  @OneToMany(() => Workout, (workout) => workout.program, { eager: true })
   workouts: Workout[]
 
-  constructor(partial: Partial<Program> | undefined = {}) {
+  constructor(partial: Partial<Program> = {}) {
     Object.assign(this, partial)
   }
 }
