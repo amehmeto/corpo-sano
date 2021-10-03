@@ -100,9 +100,6 @@ describe('Workout Service', () => {
       exercises: exercises,
     })
 
-    workoutRepository.save = jest
-      .fn()
-      .mockImplementation((receivedWorkout) => receivedWorkout)
     exerciseRepository.findById = jest.fn().mockImplementation((exerciseId) => {
       const [exercise] = exercises.filter(
         (exercise) => exercise.id === exerciseId,

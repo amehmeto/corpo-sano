@@ -23,10 +23,12 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
   }
 
   save(workout: Workout): Promise<Workout> {
-    return Promise.resolve({
-      id: '4f58abaf-e026-47c8-be10-0eab9a017b07', // random
-      ...workout,
-    })
+    return Promise.resolve(
+      new Workout({
+        id: '4f58abaf-e026-47c8-be10-0eab9a017b07', // random
+        ...workout,
+      }),
+    )
   }
 
   scheduleWorkout(
