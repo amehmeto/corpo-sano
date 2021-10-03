@@ -90,20 +90,16 @@ describe('Workout Service', () => {
   it('should fill a workout with exercises', async () => {
     const exercises = exercisesDataBuilder()
     const fillWorkoutWithExercisesInput = {
-      workoutId: Faker.datatype.uuid(),
+      workoutId: '872edf9d-5bfa-42ac-abdd-2411b0b0e2de',
       exercisesId: exercises.map((exercise) => exercise.id),
     }
-    const retrievedWorkout = {
-      id: expect.any(String),
-      title: 'Haut du bas',
-      programId: expect.any(String),
-    }
-    const expectedWorkout = {
-      ...retrievedWorkout,
-      exercises: exercises,
-    }
 
-    workoutRepository.findById = jest.fn().mockResolvedValue(retrievedWorkout)
+    const expectedWorkout = new Workout({
+      id: fillWorkoutWithExercisesInput.workoutId,
+      title: 'Haut du bas',
+      exercises: exercises,
+    })
+
     workoutRepository.save = jest
       .fn()
       .mockImplementation((receivedWorkout) => receivedWorkout)

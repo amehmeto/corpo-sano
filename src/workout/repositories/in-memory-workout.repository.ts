@@ -3,8 +3,15 @@ import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
+  private workouts = [
+    new Workout({
+      id: '872edf9d-5bfa-42ac-abdd-2411b0b0e2de',
+      title: 'Haut du bas',
+    }),
+  ]
+
   findById(id: string): Promise<Workout> {
-    return Promise.resolve(new Workout({ id }))
+    return Promise.resolve(this.workouts.find((workout) => workout.id === id))
   }
 
   getExercises(workoutId: string): Promise<any[]> {
