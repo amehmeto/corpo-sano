@@ -1,7 +1,6 @@
 import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
-import { WorkoutRepository } from './types/workout-repository.interface'
 import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
 import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
@@ -11,28 +10,8 @@ import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exe
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
 
-const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
-
-function exercisesDataBuilder() {
-  return [
-    {
-      id: Faker.datatype.uuid(),
-      title: Faker.random.arrayElement(exerciseTitles),
-    },
-    {
-      id: Faker.datatype.uuid(),
-      title: Faker.random.arrayElement(exerciseTitles),
-    },
-    {
-      id: Faker.datatype.uuid(),
-      title: Faker.random.arrayElement(exerciseTitles),
-    },
-  ]
-}
-
 describe('Workout Service', () => {
   let workoutService: WorkoutService
-  let workoutRepository: WorkoutRepository
   let exerciseRepository: ExerciseRepository
 
   beforeEach(async () => {
@@ -51,9 +30,6 @@ describe('Workout Service', () => {
     }).compile()
 
     workoutService = module.get<WorkoutService>(WorkoutService)
-    workoutRepository = module.get<WorkoutRepository>(
-      getRepositoryToken(TypeOrmWorkoutRepository),
-    )
     exerciseRepository = module.get<ExerciseRepository>(
       getRepositoryToken(TypeOrmExerciseRepository),
     )
@@ -68,43 +44,26 @@ describe('Workout Service', () => {
       title: 'Bas du corps',
       programId: Faker.datatype.uuid(),
     }
-    const expectedWorkout = {
+    const expectedWorkout = new Workout({
       id: expect.any(String),
-      ...workoutInput,
-    }
-
-    workoutRepository.save = jest.fn().mockResolvedValue({
-      id: Faker.datatype.uuid(),
-      ...workoutInput,
+      title: workoutInput.title,
     })
 
     const createdWorkout = await workoutService.create(workoutInput)
 
-    expect(workoutRepository.save).toHaveBeenCalledWith({
-      id: expect.any(String),
-      title: workoutInput.title,
-    })
     expect(createdWorkout).toStrictEqual(expectedWorkout)
   })
 
   it('should fill a workout with exercises', async () => {
-    const exercises = exercisesDataBuilder()
+    const exercises = await exerciseRepository.find()
     const fillWorkoutWithExercisesInput = {
       workoutId: '872edf9d-5bfa-42ac-abdd-2411b0b0e2de',
       exercisesId: exercises.map((exercise) => exercise.id),
     }
-
     const expectedWorkout = new Workout({
       id: fillWorkoutWithExercisesInput.workoutId,
       title: 'Haut du bas',
       exercises: exercises,
-    })
-
-    exerciseRepository.findById = jest.fn().mockImplementation((exerciseId) => {
-      const [exercise] = exercises.filter(
-        (exercise) => exercise.id === exerciseId,
-      )
-      return exercise
     })
 
     const filledWorkout = await workoutService.fillWorkoutWithExercises(
