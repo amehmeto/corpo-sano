@@ -22,11 +22,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql root password: ''
-        mysql database: 'corposano'
-        mysql version: '8.0'
+    #- uses: mirromutth/mysql-action@v1.1
+    #  with:
+    #    mysql root password: ''
+    #    mysql database: 'corposano'
+    #    mysql version: '8.0'
     - run: yarn
     - run: yarn jest
     - run: yarn test:inte
