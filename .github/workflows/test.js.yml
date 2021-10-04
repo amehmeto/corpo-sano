@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+    - run: sudo /etc/init.d/mysql start
+    - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
+    - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
+
+    - run: yarn
+    - run: yarn jest
+    - run: yarn test:inte
+    - run: yarn test:e2e
