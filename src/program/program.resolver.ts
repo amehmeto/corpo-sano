@@ -6,11 +6,6 @@ import { ProgramService } from './program.service'
 export class ProgramResolver {
   constructor(private readonly programService: ProgramService) {}
 
-  @Query(() => Program)
-  async placeholder() {
-    return false //👌
-  }
-
   @Query(() => [Program])
   async getAllPrograms(): Promise<Program[]> {
     return this.programService.getAllPrograms()
