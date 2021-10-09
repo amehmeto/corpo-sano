@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmExerciseTemplateRepository } from '../exercise-template/repositories/type-orm-exercise-template.repository'
 import { WeekDays } from './types/week-days.enum'
 import { Workout } from './entities/workout.entity'
 
@@ -23,7 +23,7 @@ describe('Workout Resolver', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TypeOrmWorkoutRepository,
-        TypeOrmExerciseRepository,
+        TypeOrmExerciseTemplateRepository,
         WorkoutResolver,
         WorkoutService,
       ],

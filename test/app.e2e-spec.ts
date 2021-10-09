@@ -101,7 +101,8 @@ describe('AppController (e2e)', () => {
       .post(GRAPHQL_URL)
       .send(mutation)
       .expect((response: any) => {
-        if (response?.body?.errors) console.error(response.body)
+        if (response?.body?.errors || response.body === undefined)
+          console.error(response.body)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -130,10 +131,10 @@ describe('AppController (e2e)', () => {
         .expect('Hello World!')
     })
 
-    test('Get All Exercises', () => {
-      const getAllExercisesQuery = {
-        query: `query GetAllExercises {
-          getAllExercises {
+    test('Get All Exercise Templates', () => {
+      const getAllExerciseTemplatesQuery = {
+        query: `query GetAllExerciseTemplates {
+          getAllExerciseTemplates {
             id
             title
           }
@@ -144,8 +145,8 @@ describe('AppController (e2e)', () => {
       const expectedExercises = defaultExercisesDataBuilder()
 
       return expectCorrectGqlResponse(
-        getAllExercisesQuery,
-        'getAllExercises',
+        getAllExerciseTemplatesQuery,
+        'getAllExerciseTemplates',
         expectedExercises,
       )
     })

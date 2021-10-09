@@ -7,7 +7,7 @@ type Program {
   title: String!
 }
 
-type Exercise {
+type ExerciseTemplate {
   id: ID!
   title: String!
 }
@@ -15,14 +15,14 @@ type Exercise {
 type Workout {
   id: ID!
   title: String!
-  exercises: [Exercise!]!
+  exercises: [ExerciseTemplate!]!
   scheduledDays: [String!]!
 }
 
 type Query {
-  getAllExercises: [Exercise!]!
+  getAllExerciseTemplates: [ExerciseTemplate!]!
   getAllPrograms: [Program!]!
-  getWorkoutExercises(workoutId: ID!): [Exercise!]!
+  getWorkoutExercises(workoutId: ID!): [ExerciseTemplate!]!
 }
 
 type Mutation {

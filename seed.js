@@ -53,7 +53,7 @@ async function search(exercise, exerciseTable) {
 }
 
 ;(async function () {
-  const EXERCISE_TABLE = 'exercise'
+  const EXERCISE_TABLE = 'exercise_template'
   const newExercises = []
 
   for (let exercise of exercises) {

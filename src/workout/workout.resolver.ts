@@ -2,17 +2,17 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Workout } from './models/workout.model'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import { WorkoutService } from './workout.service'
-import { Exercise } from '../exercise/models/exercise.model'
+import { ExerciseTemplate } from '../exercise-template/models/exercise-template.model'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 
 @Resolver()
 export class WorkoutResolver {
   constructor(private readonly workoutService: WorkoutService) {}
 
-  @Query(() => [Exercise])
+  @Query(() => [ExerciseTemplate])
   async getWorkoutExercises(
     @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
-  ): Promise<Exercise[]> {
+  ): Promise<ExerciseTemplate[]> {
     return this.workoutService.getExercises(workoutId)
   }
 

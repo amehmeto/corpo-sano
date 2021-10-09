@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing'
-import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
+import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.repository'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { Exercise } from '../entities/exercise.entity'
+import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { Workout } from '../../workout/entities/workout.entity'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
@@ -9,14 +9,14 @@ import { Program } from '../../program/entities/program.entity'
 import { config } from '../../../config'
 
 describe('TypeOrm Exercise Repository', () => {
-  let exerciseRepository: TypeOrmExerciseRepository
+  let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
-          TypeOrmExerciseRepository,
+          TypeOrmExerciseTemplateRepository,
           TypeOrmWorkoutRepository,
           TypeOrmProgramRepository,
           Program,
@@ -25,13 +25,13 @@ describe('TypeOrm Exercise Repository', () => {
       ],
     }).compile()
 
-    exerciseRepository = module.get<TypeOrmExerciseRepository>(
-      TypeOrmExerciseRepository,
+    exerciseTemplateRepository = module.get<TypeOrmExerciseTemplateRepository>(
+      TypeOrmExerciseTemplateRepository,
     )
   })
 
   beforeEach(async () => {
-    await exerciseRepository.insert([
+    await exerciseTemplateRepository.insert([
       { id: '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b', title: 'Lunge' },
       { id: '226bd5cc-9bdb-49f0-a463-5fd3b26625af', title: 'Wall sit' },
       {
@@ -56,27 +56,27 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   afterEach(async () => {
-    await exerciseRepository.query(`DELETE FROM exercise;`)
+    await exerciseTemplateRepository.query(`DELETE FROM exercise_template;`)
   })
 
   it('should be defined', () => {
-    expect(exerciseRepository).toBeDefined()
+    expect(exerciseTemplateRepository).toBeDefined()
   })
 
-  it('should find exercise by id', async () => {
+  it('should find exercise-template by id', async () => {
     const id = 'd3f3e8a8-d021-44a4-a6c9-caec202ccb1d'
-    const expectedExercise: Exercise = {
+    const expectedExercise: ExerciseTemplate = {
       id,
       title: 'Squat',
     }
 
-    const foundExercise = await exerciseRepository.findById(id)
+    const foundExercise = await exerciseTemplateRepository.findById(id)
 
-    expect(foundExercise).toStrictEqual(new Exercise(expectedExercise))
+    expect(foundExercise).toStrictEqual(new ExerciseTemplate(expectedExercise))
   })
 
-  it('should find all exercises', async () => {
-    const expectedExercise: Exercise[] = [
+  it("should find all exercise's template", async () => {
+    const expectedExerciseTemplates: ExerciseTemplate[] = [
       { id: '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b', title: 'Lunge' },
       { id: '226bd5cc-9bdb-49f0-a463-5fd3b26625af', title: 'Wall sit' },
       {
@@ -99,10 +99,12 @@ describe('TypeOrm Exercise Repository', () => {
       },
     ]
 
-    const foundExercises = await exerciseRepository.find()
+    const foundExerciseTemplates = await exerciseTemplateRepository.find()
 
-    expect(foundExercises).toStrictEqual(
-      expectedExercise.map((exercise) => new Exercise(exercise)),
+    expect(foundExerciseTemplates).toStrictEqual(
+      expectedExerciseTemplates.map(
+        (exercise) => new ExerciseTemplate(exercise),
+      ),
     )
   })
 })

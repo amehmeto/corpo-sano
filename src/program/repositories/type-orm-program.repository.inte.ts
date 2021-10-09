@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
-import { Exercise } from '../../exercise/entities/exercise.entity'
+import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
 import { Program } from '../entities/program.entity'
 import { execSync } from 'child_process'
 import { Workout } from '../../workout/entities/workout.entity'
@@ -35,7 +35,7 @@ describe('TypeOrm Program Repository', () => {
         TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
           TypeOrmProgramRepository,
-          Exercise,
+          ExerciseTemplate,
           Workout,
           Program,
         ]),

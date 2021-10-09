@@ -1,8 +1,10 @@
-import { Exercise } from '../entities/exercise.entity'
-import { ExerciseRepository } from '../types/exercise-repository.interface'
+import { ExerciseTemplate } from '../entities/exercise-template.entity'
+import { ExerciseTemplateRepository } from '../types/exercise-repository.interface'
 import * as Faker from 'faker'
 
-export class InMemoryExerciseRepository implements ExerciseRepository {
+export class InMemoryExerciseTemplateRepository
+  implements ExerciseTemplateRepository
+{
   private exercisesTitles = [
     'Lunge',
     'Wall sit',
@@ -18,17 +20,17 @@ export class InMemoryExerciseRepository implements ExerciseRepository {
   ]
   private exercises = this.exercisesTitles.map(
     (title: string) =>
-      new Exercise({
+      new ExerciseTemplate({
         id: Faker.datatype.uuid(),
         title,
       }),
   )
 
-  find(): Promise<Exercise[]> {
+  find(): Promise<ExerciseTemplate[]> {
     return Promise.resolve(this.exercises)
   }
 
-  findById(id: string): Promise<Exercise> {
+  findById(id: string): Promise<ExerciseTemplate> {
     return Promise.resolve(
       this.exercises.find((exercise) => exercise.id === id),
     )
