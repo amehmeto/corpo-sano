@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
-import { Exercise } from '../../exercise/entities/exercise.entity'
+import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
 import { WeekDays } from '../types/week-days.enum'
 
 @Entity()
@@ -21,11 +21,11 @@ export class Workout {
   @ManyToOne(() => Program, (program) => program.workouts)
   program?: Program
 
-  @ManyToMany(() => Exercise, (exercise) => exercise.workouts, {
+  @ManyToMany(() => ExerciseTemplate, (exercise) => exercise.workouts, {
     eager: true,
   })
   @JoinTable()
-  exercises?: Exercise[]
+  exercises?: ExerciseTemplate[]
 
   @Column({
     type: 'set',

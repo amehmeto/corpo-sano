@@ -1,11 +1,11 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { Exercise } from '../../exercise/entities/exercise.entity'
+import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
 import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
-import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../exercise-template/repositories/type-orm-exercise-template.repository'
 import { config } from '../../../config'
 import { execSync } from 'child_process'
 import { WeekDays } from '../types/week-days.enum'
@@ -34,15 +34,15 @@ async function createWorkoutFilledWithExercises(
 
 function fixtureExercisesDataBuilder() {
   return [
-    new Exercise({
+    new ExerciseTemplate({
       id: '00000000-0000-0000-0000-000000000000',
       title: 'Jumping jacks',
     }),
-    new Exercise({
+    new ExerciseTemplate({
       id: '00000000-0000-0000-0000-000000000001',
       title: 'Wall sit',
     }),
-    new Exercise({
+    new ExerciseTemplate({
       id: '00000000-0000-0000-0000-000000000002',
       title: 'Push-up',
     }),
@@ -58,9 +58,9 @@ describe('TypeOrm Workout Repository', () => {
         TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
           TypeOrmWorkoutRepository,
-          TypeOrmExerciseRepository,
+          TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
-          Exercise,
+          ExerciseTemplate,
           Program,
         ]),
       ],

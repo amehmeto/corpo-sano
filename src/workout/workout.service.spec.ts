@@ -1,18 +1,18 @@
 import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
-import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
-import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
+import { ExerciseTemplateRepository } from '../exercise-template/types/exercise-repository.interface'
+import { InMemoryExerciseTemplateRepository } from '../exercise-template/repositories/in-memory-exercise-template.repository'
 import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmExerciseTemplateRepository } from '../exercise-template/repositories/type-orm-exercise-template.repository'
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
-  let exerciseRepository: ExerciseRepository
+  let exerciseRepository: ExerciseTemplateRepository
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,16 +22,16 @@ describe('Workout Service', () => {
           useClass: InMemoryWorkoutRepository,
         },
         {
-          provide: getRepositoryToken(TypeOrmExerciseRepository),
-          useClass: InMemoryExerciseRepository,
+          provide: getRepositoryToken(TypeOrmExerciseTemplateRepository),
+          useClass: InMemoryExerciseTemplateRepository,
         },
         WorkoutService,
       ],
     }).compile()
 
     workoutService = module.get<WorkoutService>(WorkoutService)
-    exerciseRepository = module.get<ExerciseRepository>(
-      getRepositoryToken(TypeOrmExerciseRepository),
+    exerciseRepository = module.get<ExerciseTemplateRepository>(
+      getRepositoryToken(TypeOrmExerciseTemplateRepository),
     )
   })
 
