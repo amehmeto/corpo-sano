@@ -1,18 +1,21 @@
 import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
-import { ExerciseTemplateRepository } from '../exercise-template/types/exercise-repository.interface'
-import { InMemoryExerciseTemplateRepository } from '../exercise-template/repositories/in-memory-exercise-template.repository'
+import { InMemoryExerciseTemplateRepository } from '../exercise/repositories/in-memory-exercise-template.repository'
 import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseTemplateRepository } from '../exercise-template/repositories/type-orm-exercise-template.repository'
+import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
+import { ExerciseTemplateRepository } from '../exercise/types/exercise-template-repository.interface'
+import { Exercise } from '../exercise/entities/exercise.entity'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
-  let exerciseRepository: ExerciseTemplateRepository
+  let exerciseTemplateRepository: ExerciseTemplateRepository
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,12 +28,16 @@ describe('Workout Service', () => {
           provide: getRepositoryToken(TypeOrmExerciseTemplateRepository),
           useClass: InMemoryExerciseTemplateRepository,
         },
+        {
+          provide: getRepositoryToken(TypeOrmExerciseRepository),
+          useClass: InMemoryExerciseRepository,
+        },
         WorkoutService,
       ],
     }).compile()
 
     workoutService = module.get<WorkoutService>(WorkoutService)
-    exerciseRepository = module.get<ExerciseTemplateRepository>(
+    exerciseTemplateRepository = module.get<ExerciseTemplateRepository>(
       getRepositoryToken(TypeOrmExerciseTemplateRepository),
     )
   })
@@ -55,15 +62,22 @@ describe('Workout Service', () => {
   })
 
   it('should fill a workout with exercises', async () => {
-    const exercises = await exerciseRepository.find()
+    const exerciseTemplates = await exerciseTemplateRepository.find()
     const fillWorkoutWithExercisesInput = {
       workoutId: '872edf9d-5bfa-42ac-abdd-2411b0b0e2de',
-      exercisesId: exercises.map((exercise) => exercise.id),
+      exerciseTemplateIds: exerciseTemplates.map((exercise) => exercise.id),
     }
+    const expectedExercises = await Promise.all(
+      exerciseTemplates.map(async (template) => {
+        return new Exercise({
+          template: await exerciseTemplateRepository.findById(template.id),
+        })
+      }),
+    )
     const expectedWorkout = new Workout({
       id: fillWorkoutWithExercisesInput.workoutId,
       title: 'Haut du bas',
-      exercises: exercises,
+      exercises: expectedExercises,
     })
 
     const filledWorkout = await workoutService.fillWorkoutWithExercises(

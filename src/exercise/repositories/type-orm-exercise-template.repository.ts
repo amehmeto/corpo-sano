@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
-import { ExerciseTemplateRepository } from '../types/exercise-repository.interface'
+import { ExerciseTemplateRepository } from '../types/exercise-template-repository.interface'
 
 @EntityRepository(ExerciseTemplate)
 export class TypeOrmExerciseTemplateRepository

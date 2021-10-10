@@ -7,6 +7,7 @@ import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-wor
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { Program } from '../../program/entities/program.entity'
 import { config } from '../../../config'
+import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
@@ -17,6 +18,7 @@ describe('TypeOrm Exercise Repository', () => {
         TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
           TypeOrmExerciseTemplateRepository,
+          TypeOrmExerciseRepository,
           TypeOrmWorkoutRepository,
           TypeOrmProgramRepository,
           Program,
@@ -63,7 +65,7 @@ describe('TypeOrm Exercise Repository', () => {
     expect(exerciseTemplateRepository).toBeDefined()
   })
 
-  it('should find exercise-template by id', async () => {
+  it('should find exercise by id', async () => {
     const id = 'd3f3e8a8-d021-44a4-a6c9-caec202ccb1d'
     const expectedExercise: ExerciseTemplate = {
       id,

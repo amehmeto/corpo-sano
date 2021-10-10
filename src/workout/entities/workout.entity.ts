@@ -2,13 +2,12 @@ import { Program } from '../../program/entities/program.entity'
 import {
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
-import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
 import { WeekDays } from '../types/week-days.enum'
+import { Exercise } from '../../exercise/entities/exercise.entity'
 
 @Entity()
 export class Workout {
@@ -21,11 +20,10 @@ export class Workout {
   @ManyToOne(() => Program, (program) => program.workouts)
   program?: Program
 
-  @ManyToMany(() => ExerciseTemplate, (exercise) => exercise.workouts, {
+  @OneToMany(() => Exercise, (exercise) => exercise.workout, {
     eager: true,
   })
-  @JoinTable()
-  exercises?: ExerciseTemplate[]
+  exercises?: Exercise[]
 
   @Column({
     type: 'set',

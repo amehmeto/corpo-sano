@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common'
 import { Workout } from './entities/workout.entity'
-import { ExerciseTemplate } from '../exercise-template/entities/exercise-template.entity'
 import { WorkoutInput } from './types/workout-input'
 import { v4 as uuid } from 'uuid'
 import { WorkoutRepository } from './types/workout-repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
-import { ExerciseTemplateRepository } from '../exercise-template/types/exercise-repository.interface'
+import { ExerciseTemplateRepository } from '../exercise/types/exercise-template-repository.interface'
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseTemplateRepository } from '../exercise-template/repositories/type-orm-exercise-template.repository'
+import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
+import { Exercise } from '../exercise/entities/exercise.entity'
 
 @Injectable()
 export class WorkoutService {
@@ -17,7 +17,7 @@ export class WorkoutService {
     @InjectRepository(TypeOrmWorkoutRepository)
     private readonly workoutRepository: WorkoutRepository,
     @InjectRepository(TypeOrmExerciseTemplateRepository)
-    private readonly exerciseRepository: ExerciseTemplateRepository,
+    private readonly exerciseTemplateRepository: ExerciseTemplateRepository,
   ) {}
 
   async create(workoutInput: WorkoutInput): Promise<Workout> {
@@ -31,19 +31,22 @@ export class WorkoutService {
   async fillWorkoutWithExercises(
     fillWorkoutWithExercisesInput: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    const { workoutId, exercisesId } = fillWorkoutWithExercisesInput
+    const { workoutId, exerciseTemplateIds } = fillWorkoutWithExercisesInput
 
     const workout = await this.workoutRepository.findById(workoutId)
     workout.exercises = await Promise.all(
-      exercisesId.map(async (exerciseId) =>
-        this.exerciseRepository.findById(exerciseId),
-      ),
+      exerciseTemplateIds.map(async (exerciseId) => {
+        const template = await this.exerciseTemplateRepository.findById(
+          exerciseId,
+        )
+        return new Exercise({ template })
+      }),
     )
 
     return this.workoutRepository.save(workout)
   }
 
-  getExercises(workoutId: string): Promise<ExerciseTemplate[]> {
+  getExercises(workoutId: string): Promise<Exercise[]> {
     return this.workoutRepository.getExercises(workoutId)
   }
 

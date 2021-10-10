@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm'
 import { Workout } from '../entities/workout.entity'
 import { WorkoutRepository } from '../types/workout-repository.interface'
-import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
+import { Exercise } from '../../exercise/entities/exercise.entity'
 
 @EntityRepository(Workout)
 export class TypeOrmWorkoutRepository
@@ -12,9 +12,13 @@ export class TypeOrmWorkoutRepository
     return this.findOne(workoutId)
   }
 
-  async getExercises(workoutId: string): Promise<ExerciseTemplate[]> {
+  async getExercises(workoutId: string): Promise<Exercise[]> {
     const workout = await this.findOne(workoutId)
-    return workout.exercises
+    return workout.exercises.sort((a, b) => {
+      if (a.createAt > b.createAt) return 1
+      if (a.createAt < b.createAt) return -1
+      return 0
+    })
   }
 
   async scheduleWorkout(

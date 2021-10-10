@@ -2,11 +2,12 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
-import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
+import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
 import { Program } from '../entities/program.entity'
 import { execSync } from 'child_process'
 import { Workout } from '../../workout/entities/workout.entity'
 import * as Faker from 'faker'
+import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 
 const PROGRAM_FIXTURE_UUID = Faker.datatype.uuid()
 const PROGRAM_FIXTURE_UUID_2 = Faker.datatype.uuid()
@@ -35,6 +36,7 @@ describe('TypeOrm Program Repository', () => {
         TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
         TypeOrmModule.forFeature([
           TypeOrmProgramRepository,
+          TypeOrmExerciseRepository,
           ExerciseTemplate,
           Workout,
           Program,

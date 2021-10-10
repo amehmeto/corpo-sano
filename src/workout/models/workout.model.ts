@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { ExerciseTemplate } from '../../exercise-template/models/exercise-template.model'
 import { WeekDays } from '../types/week-days.enum'
+import { Exercise } from '../../exercise/models/exercise.model'
 
 @ObjectType()
 export class Workout {
@@ -10,8 +10,8 @@ export class Workout {
   @Field()
   title: string
 
-  @Field(() => [ExerciseTemplate])
-  exercises?: ExerciseTemplate[]
+  @Field(() => [Exercise])
+  exercises?: Exercise[]
 
   @Field(() => [String])
   scheduledDays?: WeekDays[]

@@ -1,56 +1,106 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { ExerciseTemplate } from '../../exercise-template/entities/exercise-template.entity'
+import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
 import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
-import { TypeOrmExerciseTemplateRepository } from '../../exercise-template/repositories/type-orm-exercise-template.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { config } from '../../../config'
 import { execSync } from 'child_process'
 import { WeekDays } from '../types/week-days.enum'
+import { Exercise } from '../../exercise/entities/exercise.entity'
+import * as Faker from 'faker'
+import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { Connection } from 'typeorm'
 
-const FIXTURE_UUID = 'f1b25314-75fd-4508-ad90-de985b453e93'
+const FIXTURE_WORKOUT_UUID = Faker.datatype.uuid()
+const fixtureExercise1Uuid = Faker.datatype.uuid()
+const fixtureExercise2Uuid = Faker.datatype.uuid()
+const fixtureExercise3Uuid = Faker.datatype.uuid()
 
 async function createWorkoutFilledWithExercises(
+  connection: Connection,
   workoutRepository: TypeOrmWorkoutRepository,
+  exerciseRepository: TypeOrmExerciseRepository,
 ) {
   await workoutRepository.insert({
-    id: FIXTURE_UUID,
+    id: FIXTURE_WORKOUT_UUID,
     title: 'Mon Workout',
     exercises: [],
   })
-  const workout = await workoutRepository.findById(FIXTURE_UUID)
-  workout.exercises = [
+  const workout = await workoutRepository.findById(FIXTURE_WORKOUT_UUID)
+
+  const exercises = [
     {
-      id: '00000000-0000-0000-0000-000000000000',
-      title: 'Jumping jacks',
+      id: fixtureExercise1Uuid,
+      workout,
+      template: new ExerciseTemplate({
+        id: '00000000-0000-0000-0000-000000000000',
+        title: 'Jumping jacks',
+      }),
     },
-    { id: '00000000-0000-0000-0000-000000000001', title: 'Wall sit' },
-    { id: '00000000-0000-0000-0000-000000000002', title: 'Push-up' },
+    {
+      id: fixtureExercise2Uuid,
+      workout,
+      template: new ExerciseTemplate({
+        id: '00000000-0000-0000-0000-000000000001',
+        title: 'Wall sit',
+      }),
+    },
+    {
+      id: fixtureExercise3Uuid,
+      workout,
+      template: new ExerciseTemplate({
+        id: '00000000-0000-0000-0000-000000000002',
+        title: 'Push-up',
+      }),
+    },
   ]
+  const savedExercises = []
+  for (const exercise of exercises) {
+    const savedExercise = await exerciseRepository.create(exercise)
+    await exerciseRepository.save(exercise)
+    savedExercises.push(savedExercise)
+  }
+
+  workout.exercises = savedExercises
   await workoutRepository.save(workout)
 }
 
-function fixtureExercisesDataBuilder() {
+function exercisesDataBuilder() {
   return [
-    new ExerciseTemplate({
-      id: '00000000-0000-0000-0000-000000000000',
-      title: 'Jumping jacks',
+    new Exercise({
+      id: fixtureExercise1Uuid,
+      createAt: expect.any(Date),
+      template: new ExerciseTemplate({
+        id: '00000000-0000-0000-0000-000000000000',
+        title: 'Jumping jacks',
+      }),
     }),
-    new ExerciseTemplate({
-      id: '00000000-0000-0000-0000-000000000001',
-      title: 'Wall sit',
+    new Exercise({
+      id: fixtureExercise2Uuid,
+      createAt: expect.any(Date),
+      template: new ExerciseTemplate({
+        id: '00000000-0000-0000-0000-000000000001',
+        title: 'Wall sit',
+      }),
     }),
-    new ExerciseTemplate({
-      id: '00000000-0000-0000-0000-000000000002',
-      title: 'Push-up',
+    new Exercise({
+      id: fixtureExercise3Uuid,
+      createAt: expect.any(Date),
+      template: new ExerciseTemplate({
+        id: '00000000-0000-0000-0000-000000000002',
+        title: 'Push-up',
+      }),
     }),
   ]
 }
 
 describe('TypeOrm Workout Repository', () => {
+  let connection: Connection
   let workoutRepository: TypeOrmWorkoutRepository
+  let exerciseRepository: TypeOrmExerciseRepository
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -59,6 +109,7 @@ describe('TypeOrm Workout Repository', () => {
         TypeOrmModule.forFeature([
           TypeOrmWorkoutRepository,
           TypeOrmExerciseTemplateRepository,
+          TypeOrmExerciseRepository,
           TypeOrmProgramRepository,
           ExerciseTemplate,
           Program,
@@ -69,14 +120,21 @@ describe('TypeOrm Workout Repository', () => {
     workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
-  })
+    exerciseRepository = module.get<TypeOrmExerciseRepository>(
+      TypeOrmExerciseRepository,
+    )
 
-  beforeAll(async () => {
     await execSync('yarn db:seed')
-    await createWorkoutFilledWithExercises(workoutRepository)
+    connection = module.get(Connection)
+    await createWorkoutFilledWithExercises(
+      connection,
+      workoutRepository,
+      exerciseRepository,
+    )
   })
 
   afterAll(async () => {
+    await workoutRepository.query('DELETE FROM exercise')
     await workoutRepository.query('DELETE FROM workout')
   })
 
@@ -84,12 +142,12 @@ describe('TypeOrm Workout Repository', () => {
     expect(workoutRepository).toBeDefined()
   })
 
-  it('should find workout by id', async () => {
-    const id = FIXTURE_UUID
+  it.only('should find workout by id', async () => {
+    const id = FIXTURE_WORKOUT_UUID
     const expectedWorkout = {
       id,
       title: 'Mon Workout',
-      exercises: fixtureExercisesDataBuilder(),
+      exercises: exercisesDataBuilder(),
       scheduledDays: [] as WeekDays[],
     }
 
@@ -99,8 +157,8 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it("should get workout's exercises", async () => {
-    const workoutId = FIXTURE_UUID
-    const expectedExercises = fixtureExercisesDataBuilder()
+    const workoutId = FIXTURE_WORKOUT_UUID
+    const expectedExercises = exercisesDataBuilder()
 
     const retrievedExercises = await workoutRepository.getExercises(workoutId)
 
@@ -109,7 +167,7 @@ describe('TypeOrm Workout Repository', () => {
 
   it('should schedule workout', async () => {
     const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
-    const workoutId = FIXTURE_UUID
+    const workoutId = FIXTURE_WORKOUT_UUID
 
     const scheduledWorkout = await workoutRepository.scheduleWorkout(
       workoutId,

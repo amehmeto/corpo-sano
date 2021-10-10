@@ -8,6 +8,7 @@ import { Workout } from '../src/workout/entities/workout.entity'
 import * as Faker from 'faker'
 import { Program } from '../src/program/entities/program.entity'
 import { WeekDays } from '../src/workout/types/week-days.enum'
+import { Exercise } from '../src/exercise/entities/exercise.entity'
 
 const GRAPHQL_URL = '/graphql'
 
@@ -38,14 +39,18 @@ async function generateProgramAndWorkoutFixtures(connection: Connection) {
         id: PROGRAM_ID,
       },
       exercises: [
-        {
-          id: '00000000-0000-0000-0000-000000000008',
-          title: 'Lunge',
-        },
-        {
-          id: '00000000-0000-0000-0000-000000000001',
-          title: 'Wall sit',
-        },
+        new Exercise({
+          template: {
+            id: '00000000-0000-0000-0000-000000000008',
+            title: 'Lunge',
+          },
+        }),
+        new Exercise({
+          template: {
+            id: '00000000-0000-0000-0000-000000000001',
+            title: 'Wall sit',
+          },
+        }),
       ],
     })
     .execute()
