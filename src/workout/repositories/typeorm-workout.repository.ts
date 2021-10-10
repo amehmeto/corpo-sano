@@ -9,16 +9,23 @@ export class TypeOrmWorkoutRepository
   implements WorkoutRepository
 {
   async findById(workoutId: string): Promise<Workout> {
-    return this.findOne(workoutId)
+    const workout = await this.findOne(workoutId)
+    workout.exercises.sort((a, b) =>
+      TypeOrmWorkoutRepository.sortByCreateAt(a, b),
+    )
+    return workout
   }
 
   async getExercises(workoutId: string): Promise<Exercise[]> {
     const workout = await this.findOne(workoutId)
-    return workout.exercises.sort((a, b) => {
-      if (a.createAt > b.createAt) return 1
-      if (a.createAt < b.createAt) return -1
-      return 0
-    })
+    return workout.exercises.sort((a, b) =>
+      TypeOrmWorkoutRepository.sortByCreateAt(a, b),
+    )
+  }
+
+  private static sortByCreateAt(a: Exercise, b: Exercise) {
+    if (a.createAt === b.createAt) return 0
+    return a.createAt > b.createAt ? 1 : -1
   }
 
   async scheduleWorkout(

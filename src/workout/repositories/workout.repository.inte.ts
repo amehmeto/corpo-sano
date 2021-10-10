@@ -14,7 +14,7 @@ import * as Faker from 'faker'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { Connection } from 'typeorm'
 
-const FIXTURE_WORKOUT_UUID = Faker.datatype.uuid()
+const fixtureWorkoutUuid = Faker.datatype.uuid()
 const fixtureExercise1Uuid = Faker.datatype.uuid()
 const fixtureExercise2Uuid = Faker.datatype.uuid()
 const fixtureExercise3Uuid = Faker.datatype.uuid()
@@ -25,11 +25,11 @@ async function createWorkoutFilledWithExercises(
   exerciseRepository: TypeOrmExerciseRepository,
 ) {
   await workoutRepository.insert({
-    id: FIXTURE_WORKOUT_UUID,
+    id: fixtureWorkoutUuid,
     title: 'Mon Workout',
     exercises: [],
   })
-  const workout = await workoutRepository.findById(FIXTURE_WORKOUT_UUID)
+  const workout = await workoutRepository.findById(fixtureWorkoutUuid)
 
   const exercises = [
     {
@@ -142,8 +142,8 @@ describe('TypeOrm Workout Repository', () => {
     expect(workoutRepository).toBeDefined()
   })
 
-  it.only('should find workout by id', async () => {
-    const id = FIXTURE_WORKOUT_UUID
+  it('should find workout by id', async () => {
+    const id = fixtureWorkoutUuid
     const expectedWorkout = {
       id,
       title: 'Mon Workout',
@@ -157,7 +157,7 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it("should get workout's exercises", async () => {
-    const workoutId = FIXTURE_WORKOUT_UUID
+    const workoutId = fixtureWorkoutUuid
     const expectedExercises = exercisesDataBuilder()
 
     const retrievedExercises = await workoutRepository.getExercises(workoutId)
@@ -167,7 +167,7 @@ describe('TypeOrm Workout Repository', () => {
 
   it('should schedule workout', async () => {
     const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
-    const workoutId = FIXTURE_WORKOUT_UUID
+    const workoutId = fixtureWorkoutUuid
 
     const scheduledWorkout = await workoutRepository.scheduleWorkout(
       workoutId,
