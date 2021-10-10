@@ -14,93 +14,76 @@ import * as Faker from 'faker'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { Connection } from 'typeorm'
 
-const fixtureWorkoutUuid = Faker.datatype.uuid()
-const fixtureExercise1Uuid = Faker.datatype.uuid()
-const fixtureExercise2Uuid = Faker.datatype.uuid()
-const fixtureExercise3Uuid = Faker.datatype.uuid()
+const workoutFixture = {
+  id: Faker.datatype.uuid(),
+  title: 'Mon Workout',
+  exercises: [] as Exercise[],
+}
 
-async function createWorkoutFilledWithExercises(
-  connection: Connection,
-  workoutRepository: TypeOrmWorkoutRepository,
+const exercises = [
+  {
+    id: '00000000-0000-0000-0000-000000000000',
+    title: 'Jumping jacks',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000001',
+    title: 'Wall sit',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000002',
+    title: 'Push-up',
+  },
+]
+
+const exercisesFixture = exercises.map((exercise) => ({
+  id: Faker.datatype.uuid(),
+  template: new ExerciseTemplate({ ...exercise }),
+}))
+
+async function saveExercisesFixture(
+  workout: Workout,
   exerciseRepository: TypeOrmExerciseRepository,
 ) {
-  await workoutRepository.insert({
-    id: fixtureWorkoutUuid,
-    title: 'Mon Workout',
-    exercises: [],
-  })
-  const workout = await workoutRepository.findById(fixtureWorkoutUuid)
-
-  const exercises = [
-    {
-      id: fixtureExercise1Uuid,
-      workout,
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000000',
-        title: 'Jumping jacks',
-      }),
-    },
-    {
-      id: fixtureExercise2Uuid,
-      workout,
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000001',
-        title: 'Wall sit',
-      }),
-    },
-    {
-      id: fixtureExercise3Uuid,
-      workout,
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000002',
-        title: 'Push-up',
-      }),
-    },
-  ]
   const savedExercises = []
-  for (const exercise of exercises) {
-    const savedExercise = await exerciseRepository.create(exercise)
-    await exerciseRepository.save(exercise)
+  for (const exercise of exercisesFixture) {
+    const hydratedExercise = { ...exercise, workout }
+    const savedExercise = await exerciseRepository.create(hydratedExercise)
+    await exerciseRepository.save(hydratedExercise)
     savedExercises.push(savedExercise)
   }
+  return savedExercises
+}
 
-  workout.exercises = savedExercises
+async function createWorkoutFilledWithExercises(connection: Connection) {
+  const workoutRepository = await connection.getCustomRepository(
+    TypeOrmWorkoutRepository,
+  )
+  const exerciseRepository = await connection.getCustomRepository(
+    TypeOrmExerciseRepository,
+  )
+
+  workoutRepository.insert(workoutFixture)
+  const workout = await workoutRepository.findById(workoutFixture.id)
+  workout.exercises = await saveExercisesFixture(workout, exerciseRepository)
   await workoutRepository.save(workout)
 }
 
 function exercisesDataBuilder() {
-  return [
-    new Exercise({
-      id: fixtureExercise1Uuid,
-      createAt: expect.any(Date),
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000000',
-        title: 'Jumping jacks',
+  return exercisesFixture.map(
+    (fixtureExercise) =>
+      new Exercise({
+        id: fixtureExercise.id,
+        createAt: expect.any(Date),
+        template: new ExerciseTemplate({
+          ...fixtureExercise.template,
+        }),
       }),
-    }),
-    new Exercise({
-      id: fixtureExercise2Uuid,
-      createAt: expect.any(Date),
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000001',
-        title: 'Wall sit',
-      }),
-    }),
-    new Exercise({
-      id: fixtureExercise3Uuid,
-      createAt: expect.any(Date),
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000002',
-        title: 'Push-up',
-      }),
-    }),
-  ]
+  )
 }
 
 describe('TypeOrm Workout Repository', () => {
   let connection: Connection
   let workoutRepository: TypeOrmWorkoutRepository
-  let exerciseRepository: TypeOrmExerciseRepository
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -120,17 +103,10 @@ describe('TypeOrm Workout Repository', () => {
     workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
-    exerciseRepository = module.get<TypeOrmExerciseRepository>(
-      TypeOrmExerciseRepository,
-    )
 
     await execSync('yarn db:seed')
     connection = module.get(Connection)
-    await createWorkoutFilledWithExercises(
-      connection,
-      workoutRepository,
-      exerciseRepository,
-    )
+    await createWorkoutFilledWithExercises(connection)
   })
 
   afterAll(async () => {
@@ -143,34 +119,33 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
-    const id = fixtureWorkoutUuid
     const expectedWorkout = {
-      id,
+      id: workoutFixture.id,
       title: 'Mon Workout',
       exercises: exercisesDataBuilder(),
       scheduledDays: [] as WeekDays[],
     }
 
-    const foundExercise = await workoutRepository.findById(id)
+    const foundExercise = await workoutRepository.findById(workoutFixture.id)
 
     expect(foundExercise).toStrictEqual(new Workout(expectedWorkout))
   })
 
   it("should get workout's exercises", async () => {
-    const workoutId = fixtureWorkoutUuid
     const expectedExercises = exercisesDataBuilder()
 
-    const retrievedExercises = await workoutRepository.getExercises(workoutId)
+    const retrievedExercises = await workoutRepository.getExercises(
+      workoutFixture.id,
+    )
 
     expect(retrievedExercises).toStrictEqual(expectedExercises)
   })
 
   it('should schedule workout', async () => {
     const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
-    const workoutId = fixtureWorkoutUuid
 
     const scheduledWorkout = await workoutRepository.scheduleWorkout(
-      workoutId,
+      workoutFixture.id,
       daysOfTheWeek,
     )
 
