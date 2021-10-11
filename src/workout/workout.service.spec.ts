@@ -70,6 +70,7 @@ describe('Workout Service', () => {
     const expectedExercises = await Promise.all(
       exerciseTemplates.map(async (template) => {
         return new Exercise({
+          id: expect.any(String),
           template: await exerciseTemplateRepository.findById(template.id),
         })
       }),

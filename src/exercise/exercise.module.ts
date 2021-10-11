@@ -14,4 +14,4 @@ import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repo
   ],
   providers: [ExerciseTemplateResolver, ExerciseTemplateService],
 })
-export class ExerciseTemplateModule {}
+export class ExerciseModule {}

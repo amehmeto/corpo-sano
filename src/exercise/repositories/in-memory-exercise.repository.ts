@@ -27,7 +27,6 @@ export class InMemoryExerciseRepository implements ExerciseRepository {
         }),
       }),
   )
-
   find(): Promise<Exercise[]> {
     return Promise.resolve(this.exercises)
   }

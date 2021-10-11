@@ -8,6 +8,7 @@ import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-pr
 import * as Faker from 'faker'
 import { Exercise } from '../entities/exercise.entity'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
+import { execSync } from 'child_process'
 
 const exerciseFixture = {
   id: Faker.datatype.uuid(),
@@ -36,6 +37,8 @@ describe('TypeOrm Exercise Repository', () => {
     exerciseRepository = module.get<TypeOrmExerciseRepository>(
       TypeOrmExerciseRepository,
     )
+
+    execSync('yarn db:seed')
   })
 
   beforeEach(async () => {
