@@ -258,14 +258,17 @@ describe('AppController (e2e)', () => {
             title
             exercises {
               id
-              title
+              template {
+                id
+                title
+              }
             }
           }
         }`,
         variables: {
           payload: {
             workoutId: WORKOUT_ID,
-            exercisesId: [
+            exerciseTemplateIds: [
               '00000000-0000-0000-0000-000000000008',
               '00000000-0000-0000-0000-000000000001',
             ],
@@ -278,12 +281,18 @@ describe('AppController (e2e)', () => {
         title: 'Mon Workout',
         exercises: [
           {
-            id: '00000000-0000-0000-0000-000000000008',
-            title: 'Lunge',
+            id: expect.any(String),
+            template: {
+              id: '00000000-0000-0000-0000-000000000008',
+              title: 'Lunge',
+            },
           },
           {
-            id: '00000000-0000-0000-0000-000000000001',
-            title: 'Wall sit',
+            id: expect.any(String),
+            template: {
+              id: '00000000-0000-0000-0000-000000000001',
+              title: 'Wall sit',
+            },
           },
         ],
       }

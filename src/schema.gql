@@ -12,10 +12,15 @@ type ExerciseTemplate {
   title: String!
 }
 
+type Exercise {
+  id: ID!
+  template: ExerciseTemplate!
+}
+
 type Workout {
   id: ID!
   title: String!
-  exercises: [ExerciseTemplate!]!
+  exercises: [Exercise!]!
   scheduledDays: [String!]!
 }
 
@@ -34,7 +39,7 @@ type Mutation {
 
 input FillWorkoutWithExercisesInput {
   workoutId: ID!
-  exercisesId: [ID!]!
+  exerciseTemplateIds: [ID!]!
 }
 
 input ScheduleWorkoutInput {

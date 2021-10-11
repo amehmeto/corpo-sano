@@ -39,7 +39,7 @@ export class WorkoutService {
         const template = await this.exerciseTemplateRepository.findById(
           exerciseId,
         )
-        return new Exercise({ template })
+        return new Exercise({ id: uuid(), template })
       }),
     )
 

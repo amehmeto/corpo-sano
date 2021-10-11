@@ -4,8 +4,21 @@ import { Exercise } from '../entities/exercise.entity'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 
 export class InMemoryExerciseRepository implements ExerciseRepository {
-  private exercisesData: string[] = ['wes']
-  private exercises = this.exercisesData.map(
+  private exerciseTemplates: string[] = [
+    'Jumping jacks',
+    'Wall sit',
+    'Push-up',
+    'Abdominal crunch',
+    'Squat',
+    'Triceps dip on chair',
+    'Plank',
+    'High knees running in place',
+    'Lunge',
+    'Push-up and rotation',
+    'Side plank',
+    'Jumping Rope',
+  ]
+  private exercises = this.exerciseTemplates.map(
     (title: string) =>
       new Exercise({
         id: Faker.datatype.uuid(),
