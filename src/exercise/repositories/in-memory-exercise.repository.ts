@@ -36,4 +36,8 @@ export class InMemoryExerciseRepository implements ExerciseRepository {
       this.exercises.find((exercise) => exercise.id === id),
     )
   }
+
+  save(exercise: Partial<Exercise>): Promise<Exercise> {
+    return Promise.resolve(new Exercise({ ...exercise }))
+  }
 }
