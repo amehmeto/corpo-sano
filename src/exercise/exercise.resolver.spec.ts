@@ -37,7 +37,7 @@ describe('ExerciseResolver', () => {
 
     exerciseService.saveDetails = jest.fn().mockResolvedValue(expectedExercise)
 
-    const savedExerciseDetails = await exerciseResolver.saveDetails(
+    const savedExerciseDetails = await exerciseResolver.saveExerciseDetails(
       exerciseDetailsInput,
     )
     expect(savedExerciseDetails).toStrictEqual(expectedExercise)

@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -20,6 +21,18 @@ export class Exercise {
     },
   )
   template: ExerciseTemplate
+
+  @Column({ default: 0 })
+  numberOfSets: number
+
+  @Column({ default: 0 })
+  numberOfReps: number
+
+  @Column({ default: 0 })
+  interSetsRestTime: number
+
+  @Column({ default: 0 })
+  finalRestTime: number
 
   @ManyToOne(() => Workout, (workout) => workout.exercises)
   workout: Workout

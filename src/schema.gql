@@ -15,6 +15,10 @@ type ExerciseTemplate {
 type Exercise {
   id: ID!
   template: ExerciseTemplate!
+  numberOfSets: Float!
+  numberOfReps: Float!
+  finalRestTime: Float!
+  interSetsRestTime: Float!
 }
 
 type Workout {
@@ -31,10 +35,19 @@ type Query {
 }
 
 type Mutation {
+  saveExerciseDetails(payload: ExerciseDetailsInput!): Exercise!
   createProgram(title: String!): Program!
   createWorkout(programId: ID!, title: String!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
+}
+
+input ExerciseDetailsInput {
+  exerciseId: ID!
+  numberOfSets: Float!
+  numberOfReps: Float!
+  finalRestTime: Float!
+  interSetsRestTime: Float!
 }
 
 input FillWorkoutWithExercisesInput {

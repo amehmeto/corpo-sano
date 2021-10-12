@@ -1,21 +1,21 @@
-import { Field, InputType } from '@nestjs/graphql'
-import { IsNumber, IsUUID } from 'class-validator'
+import { Field, ID, InputType } from '@nestjs/graphql'
+import { IsUUID } from 'class-validator'
 
 @InputType()
 export class ExerciseDetailsInput {
   @IsUUID()
-  @Field()
+  @Field(() => ID)
   exerciseId: string
 
-  @IsNumber()
+  @Field()
   numberOfSets: number
 
-  @IsNumber()
+  @Field()
   numberOfReps: number
 
-  @IsNumber()
+  @Field()
   finalRestTime: number
 
-  @IsNumber()
+  @Field()
   interSetsRestTime: number
 }

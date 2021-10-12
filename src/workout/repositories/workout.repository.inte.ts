@@ -38,6 +38,10 @@ const exercises = [
 const exercisesFixture = exercises.map((exercise) => ({
   id: Faker.datatype.uuid(),
   template: new ExerciseTemplate({ ...exercise }),
+  numberOfSets: 0,
+  numberOfReps: 0,
+  interSetsRestTime: 0,
+  finalRestTime: 0,
 }))
 
 async function saveExercisesFixture(
@@ -77,6 +81,10 @@ function exercisesDataBuilder() {
         template: new ExerciseTemplate({
           ...fixtureExercise.template,
         }),
+        numberOfSets: 0,
+        numberOfReps: 0,
+        interSetsRestTime: 0,
+        finalRestTime: 0,
       }),
   )
 }

@@ -10,12 +10,28 @@ import { Exercise } from '../entities/exercise.entity'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { execSync } from 'child_process'
 
-const exerciseFixture = {
+const exerciseFixture = new Exercise({
   id: Faker.datatype.uuid(),
   template: new ExerciseTemplate({
     id: '00000000-0000-0000-0000-000000000008',
     title: 'Lunge',
   }),
+})
+
+function exerciseDataBuilder(exercise = {}) {
+  const template = {
+    id: Faker.datatype.uuid(),
+    createAt: expect.any(Date),
+    template: new ExerciseTemplate({
+      id: '00000000-0000-0000-0000-000000000008',
+      title: 'Lunge',
+    }),
+    numberOfSets: 0,
+    numberOfReps: 0,
+    interSetsRestTime: 0,
+    finalRestTime: 0,
+  }
+  return { ...template, ...exercise }
 }
 
 describe('TypeOrm Exercise Repository', () => {
@@ -42,7 +58,7 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   beforeEach(async () => {
-    const createdExercise = await exerciseRepository.create(exerciseFixture)
+    const createdExercise = new Exercise(exerciseFixture)
     await exerciseRepository.save(createdExercise)
   })
 
@@ -56,14 +72,9 @@ describe('TypeOrm Exercise Repository', () => {
 
   it('should find exercise by id', async () => {
     const exerciseId = exerciseFixture.id
-    const expectedExercise = new Exercise({
-      id: exerciseId,
-      createAt: expect.any(Date),
-      template: new ExerciseTemplate({
-        id: '00000000-0000-0000-0000-000000000008',
-        title: 'Lunge',
-      }),
-    })
+    const expectedExercise = new Exercise(
+      exerciseDataBuilder({ id: exerciseId }),
+    )
 
     const retrievedExercise = await exerciseRepository.findById(exerciseId)
 

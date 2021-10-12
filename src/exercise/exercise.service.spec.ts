@@ -37,7 +37,10 @@ describe('ExerciseService', () => {
     }
     const expectedExercise = new Exercise({
       id: exerciseDetailsInput.exerciseId,
-      ...exerciseDetailsInput,
+      numberOfSets: exerciseDetailsInput.numberOfSets,
+      numberOfReps: exerciseDetailsInput.numberOfReps,
+      interSetsRestTime: exerciseDetailsInput.interSetsRestTime,
+      finalRestTime: exerciseDetailsInput.finalRestTime,
     })
 
     const savedExercise = await exerciseService.saveDetails(
