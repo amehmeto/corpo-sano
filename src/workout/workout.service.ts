@@ -10,6 +10,8 @@ import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.reposit
 import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { Exercise } from '../exercise/entities/exercise.entity'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
+import { ExerciseRepository } from '../exercise/types/exercise-repository.interface'
 
 @Injectable()
 export class WorkoutService {
@@ -18,6 +20,8 @@ export class WorkoutService {
     private readonly workoutRepository: WorkoutRepository,
     @InjectRepository(TypeOrmExerciseTemplateRepository)
     private readonly exerciseTemplateRepository: ExerciseTemplateRepository,
+    @InjectRepository(TypeOrmExerciseRepository)
+    private readonly exerciseRepository: ExerciseRepository,
   ) {}
 
   async create(workoutInput: WorkoutInput): Promise<Workout> {
@@ -39,10 +43,10 @@ export class WorkoutService {
         const template = await this.exerciseTemplateRepository.findById(
           exerciseId,
         )
-        return new Exercise({ id: uuid(), template })
+        const exercise = new Exercise({ id: uuid(), template })
+        return this.exerciseRepository.save(exercise)
       }),
     )
-
     return this.workoutRepository.save(workout)
   }
 

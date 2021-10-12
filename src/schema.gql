@@ -27,7 +27,7 @@ type Workout {
 type Query {
   getAllExerciseTemplates: [ExerciseTemplate!]!
   getAllPrograms: [Program!]!
-  getWorkoutExercises(workoutId: ID!): [ExerciseTemplate!]!
+  getWorkoutExercises(workoutId: ID!): [Exercise!]!
 }
 
 type Mutation {

@@ -6,6 +6,7 @@ import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.reposit
 import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
 import { WeekDays } from './types/week-days.enum'
 import { Workout } from './entities/workout.entity'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 
 function exerciseTemplateDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
@@ -24,6 +25,7 @@ describe('Workout Resolver', () => {
       providers: [
         TypeOrmWorkoutRepository,
         TypeOrmExerciseTemplateRepository,
+        TypeOrmExerciseRepository,
         WorkoutResolver,
         WorkoutService,
       ],
