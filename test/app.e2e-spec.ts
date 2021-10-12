@@ -8,46 +8,51 @@ import { Workout } from '../src/workout/entities/workout.entity'
 import * as Faker from 'faker'
 import { Program } from '../src/program/entities/program.entity'
 import { WeekDays } from '../src/workout/types/week-days.enum'
+import { Exercise } from '../src/exercise/entities/exercise.entity'
 
 const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
-const WORKOUT_ID = Faker.datatype.uuid()
-const PROGRAM_ID = Faker.datatype.uuid()
+const programFixture = {
+  id: Faker.datatype.uuid(),
+  title: 'Mon programme',
+}
+const workoutFixture = {
+  id: Faker.datatype.uuid(),
+  title: 'Mon Workout',
+  program: {
+    id: programFixture.id,
+  },
+  exercises: [
+    new Exercise({
+      template: {
+        id: '00000000-0000-0000-0000-000000000008',
+        title: 'Lunge',
+      },
+    }),
+    new Exercise({
+      template: {
+        id: '00000000-0000-0000-0000-000000000001',
+        title: 'Wall sit',
+      },
+    }),
+  ],
+}
 
 async function generateProgramAndWorkoutFixtures(connection: Connection) {
   await connection
     .createQueryBuilder()
     .insert()
     .into(Program)
-    .values({
-      id: PROGRAM_ID,
-      title: 'Mon programme',
-    })
+    .values(programFixture)
     .execute()
 
   await connection
     .createQueryBuilder()
     .insert()
     .into(Workout)
-    .values({
-      id: WORKOUT_ID,
-      title: 'Mon Workout',
-      program: {
-        id: PROGRAM_ID,
-      },
-      exercises: [
-        {
-          id: '00000000-0000-0000-0000-000000000008',
-          title: 'Lunge',
-        },
-        {
-          id: '00000000-0000-0000-0000-000000000001',
-          title: 'Wall sit',
-        },
-      ],
-    })
+    .values(workoutFixture)
     .execute()
 }
 
@@ -84,8 +89,9 @@ function defaultExercisesDataBuilder() {
 }
 
 async function deleteProgramAndWorkoutFixture(connection: Connection) {
-  await connection.createQueryBuilder().delete().from(Workout).execute()
-  await connection.createQueryBuilder().delete().from(Program).execute()
+  const entities = [Exercise, Workout, Program]
+  for (const entity of entities)
+    await connection.createQueryBuilder().delete().from(entity).execute()
 }
 
 describe('AppController (e2e)', () => {
@@ -114,6 +120,7 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication()
     await app.init()
+
     execSync('yarn db:seed')
     connection = app.get(Connection)
     await generateProgramAndWorkoutFixtures(connection)
@@ -155,12 +162,15 @@ describe('AppController (e2e)', () => {
       const getWorkoutExercisesQuery = {
         query: `query GetWorkoutExercises($workoutId: ID!){
           getWorkoutExercises(workoutId: $workoutId) {
-            id
-            title
+            id 
+            template {
+              id
+              title
+            }
           }
         }`,
         variables: {
-          workoutId: WORKOUT_ID,
+          workoutId: workoutFixture.id,
         },
       }
       const expectedGetWorkoutExercises: any[] = []
@@ -183,7 +193,7 @@ describe('AppController (e2e)', () => {
         variables: {},
       }
       const expectedGetAllPrograms = [
-        { id: PROGRAM_ID, title: 'Mon programme' },
+        { id: programFixture.id, title: 'Mon programme' },
       ]
 
       return expectCorrectGqlResponse(
@@ -252,14 +262,17 @@ describe('AppController (e2e)', () => {
             title
             exercises {
               id
-              title
+              template {
+                id
+                title
+              }
             }
           }
         }`,
         variables: {
           payload: {
-            workoutId: WORKOUT_ID,
-            exercisesId: [
+            workoutId: workoutFixture.id,
+            exerciseTemplateIds: [
               '00000000-0000-0000-0000-000000000008',
               '00000000-0000-0000-0000-000000000001',
             ],
@@ -272,12 +285,18 @@ describe('AppController (e2e)', () => {
         title: 'Mon Workout',
         exercises: [
           {
-            id: '00000000-0000-0000-0000-000000000008',
-            title: 'Lunge',
+            id: expect.any(String),
+            template: {
+              id: '00000000-0000-0000-0000-000000000008',
+              title: 'Lunge',
+            },
           },
           {
-            id: '00000000-0000-0000-0000-000000000001',
-            title: 'Wall sit',
+            id: expect.any(String),
+            template: {
+              id: '00000000-0000-0000-0000-000000000001',
+              title: 'Wall sit',
+            },
           },
         ],
       }
@@ -298,7 +317,7 @@ describe('AppController (e2e)', () => {
         }`,
         variables: {
           payload: {
-            workoutId: WORKOUT_ID,
+            workoutId: workoutFixture.id,
             daysOfTheWeek: [WeekDays.FRIDAY],
           },
         },

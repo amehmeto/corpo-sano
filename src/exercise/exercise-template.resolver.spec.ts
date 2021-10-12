@@ -28,7 +28,7 @@ describe('ExerciseTemplateResolver', () => {
     expect(exerciseTemplateResolver).toBeDefined()
   })
 
-  it('should get all exercise-template templates', async () => {
+  it('should get all exercise templates', async () => {
     const expectedExerciseTemplates: any[] = [
       { id: '0ef7340f-49a0-4d50-9b6f-a155bab5fe7b', title: 'Lunge' },
       { id: '226bd5cc-9bdb-49f0-a463-5fd3b26625af', title: 'Wall sit' },

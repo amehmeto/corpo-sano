@@ -9,5 +9,5 @@ export class FillWorkoutWithExercisesInput {
 
   @IsUUID()
   @Field(() => [ID])
-  exercisesId: string[]
+  exerciseTemplateIds: string[]
 }

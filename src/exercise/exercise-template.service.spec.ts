@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ExerciseTemplateService } from './exercise-template.service'
 import { TypeOrmExerciseTemplateRepository } from './repositories/type-orm-exercise-template.repository'
-import { ExerciseTemplateRepository } from './types/exercise-repository.interface'
+import { ExerciseTemplateRepository } from './types/exercise-template-repository.interface'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { InMemoryExerciseTemplateRepository } from './repositories/in-memory-exercise-template.repository'
 
@@ -32,7 +32,7 @@ describe('ExerciseTemplateService', () => {
     expect(exerciseTemplateService).toBeDefined()
   })
 
-  it('should get all exercise-template templates', async () => {
+  it('should get all exercise templates', async () => {
     const expectedExerciseTemplates = await exerciseTemplateRepository.find()
 
     const fetchedExerciseTemplates =

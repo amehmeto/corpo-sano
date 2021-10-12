@@ -3,11 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutResolver } from './workout.resolver'
 import { WorkoutService } from './workout.service'
 import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseTemplateRepository } from '../exercise-template/repositories/type-orm-exercise-template.repository'
+import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
 import { WeekDays } from './types/week-days.enum'
 import { Workout } from './entities/workout.entity'
+import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 
-function exerciseDataBuilder() {
+function exerciseTemplateDataBuilder() {
   const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
   return {
     id: Faker.datatype.uuid(),
@@ -24,6 +25,7 @@ describe('Workout Resolver', () => {
       providers: [
         TypeOrmWorkoutRepository,
         TypeOrmExerciseTemplateRepository,
+        TypeOrmExerciseRepository,
         WorkoutResolver,
         WorkoutService,
       ],
@@ -63,10 +65,14 @@ describe('Workout Resolver', () => {
   })
 
   it('should fill workout with exercises', async () => {
-    const exercises = Array(3).fill(exerciseDataBuilder())
-    const fillWorkoutWithExerciseInput = {
+    const exerciseTemplates = Array(3).fill(exerciseTemplateDataBuilder())
+    const exercises = exerciseTemplates.map((template) => ({
+      id: Faker.datatype.uuid(),
+      template,
+    }))
+    const fillWorkoutWithExercisesInput = {
       workoutId: Faker.datatype.uuid(),
-      exercisesId: exercises.map((exercise) => exercise.id),
+      exerciseTemplateIds: exerciseTemplates.map((exercise) => exercise.id),
     }
     const expectedWorkout = {
       id: expect.any(String),
@@ -80,7 +86,7 @@ describe('Workout Resolver', () => {
       .mockResolvedValue(expectedWorkout)
 
     const filledWorkout = await workoutResolver.fillWorkoutWithExercises(
-      fillWorkoutWithExerciseInput,
+      fillWorkoutWithExercisesInput,
     )
 
     expect(filledWorkout).toStrictEqual(expectedWorkout)
@@ -88,7 +94,7 @@ describe('Workout Resolver', () => {
 
   it('should get all workouts exercises', async () => {
     const workoutId = Faker.datatype.uuid()
-    const expectedExercises = Array(3).fill(exerciseDataBuilder())
+    const expectedExercises = Array(3).fill(exerciseTemplateDataBuilder())
 
     workoutService.getExercises = jest.fn().mockResolvedValue(expectedExercises)
 
