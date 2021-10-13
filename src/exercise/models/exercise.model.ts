@@ -8,4 +8,16 @@ export class Exercise {
 
   @Field()
   template: ExerciseTemplate
+
+  @Field()
+  numberOfSets: number
+
+  @Field()
+  numberOfReps: number
+
+  @Field()
+  finalRestTime: number
+
+  @Field()
+  interSetsRestTime: number
 }

@@ -26,6 +26,7 @@ const workoutFixture = {
   },
   exercises: [
     new Exercise({
+      id: Faker.datatype.uuid(),
       template: {
         id: '00000000-0000-0000-0000-000000000008',
         title: 'Lunge',
@@ -331,6 +332,41 @@ describe('AppController (e2e)', () => {
         scheduleWorkoutMutation,
         'scheduleWorkout',
         expectedWorkout,
+      )
+    })
+
+    test("Save Exercise's details", async () => {
+      const saveExerciseDetailsMutation = {
+        query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
+          saveExerciseDetails(payload: $payload) {
+            id
+            numberOfSets
+            numberOfReps
+            finalRestTime
+            interSetsRestTime
+          }
+        }`,
+        variables: {
+          payload: {
+            exerciseId: workoutFixture.exercises[0].id,
+            numberOfSets: 3,
+            numberOfReps: 8,
+            interSetsRestTime: 120,
+            finalRestTime: 120,
+          },
+        },
+      }
+      const expectedExercise = {
+        finalRestTime: 120,
+        id: workoutFixture.exercises[0].id,
+        interSetsRestTime: 120,
+        numberOfReps: 8,
+        numberOfSets: 3,
+      }
+      return expectCorrectGqlResponse(
+        saveExerciseDetailsMutation,
+        'saveExerciseDetails',
+        expectedExercise,
       )
     })
   })
