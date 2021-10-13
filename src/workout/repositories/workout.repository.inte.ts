@@ -112,6 +112,8 @@ describe('TypeOrm Workout Repository', () => {
       TypeOrmWorkoutRepository,
     )
 
+    await workoutRepository.query('DELETE FROM exercise')
+    await workoutRepository.query('DELETE FROM workout')
     await execSync('yarn db:seed')
     connection = module.get(Connection)
     await createWorkoutFilledWithExercises(connection)
