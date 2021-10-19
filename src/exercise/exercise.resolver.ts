@@ -15,4 +15,8 @@ export class ExerciseResolver {
   ): Promise<Exercise> {
     return this.exerciseService.saveDetails(exerciseDetailsInput)
   }
+
+  async getExercise(exerciseId: string): Promise<Exercise> {
+    return this.exerciseService.getExercise(exerciseId)
+  }
 }

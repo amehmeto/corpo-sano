@@ -40,6 +40,22 @@ describe('ExerciseResolver', () => {
     const savedExerciseDetails = await exerciseResolver.saveExerciseDetails(
       exerciseDetailsInput,
     )
+
+    expect(exerciseService.saveDetails).toHaveBeenCalledWith(
+      exerciseDetailsInput,
+    )
     expect(savedExerciseDetails).toStrictEqual(expectedExercise)
+  })
+
+  it('should get an exercise by id', async () => {
+    const exerciseId = Faker.datatype.uuid()
+    const expectedExercise = new Exercise({ id: exerciseId })
+
+    exerciseService.getExercise = jest.fn().mockResolvedValue(expectedExercise)
+
+    const retrievedExercise = await exerciseResolver.getExercise(exerciseId)
+
+    expect(exerciseService.getExercise).toHaveBeenCalledWith(exerciseId)
+    expect(retrievedExercise).toStrictEqual(expectedExercise)
   })
 })

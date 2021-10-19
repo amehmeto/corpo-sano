@@ -22,4 +22,8 @@ export class ExerciseService {
       ...exerciseDetailsInput,
     })
   }
+
+  async getExercise(exerciseId: string): Promise<Exercise> {
+    return Promise.resolve(new Exercise({ id: exerciseId }))
+  }
 }
