@@ -50,6 +50,11 @@ describe('TypeOrm Program Repository', () => {
   })
 
   beforeAll(async () => {
+    await programRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Program)
+      .execute()
     await execSync('yarn db:seed')
     await createProgramFixture(programRepository)
   })
