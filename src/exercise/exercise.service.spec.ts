@@ -5,9 +5,12 @@ import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repo
 import { InMemoryExerciseRepository } from './repositories/in-memory-exercise.repository'
 import * as Faker from 'faker'
 import { Exercise } from './entities/exercise.entity'
+import { ExerciseRepository } from './types/exercise-repository.interface'
+import { ExerciseTemplate } from './entities/exercise-template.entity'
 
 describe('ExerciseService', () => {
   let exerciseService: ExerciseService
+  let exerciseRepository: ExerciseRepository
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,6 +24,9 @@ describe('ExerciseService', () => {
     }).compile()
 
     exerciseService = module.get<ExerciseService>(ExerciseService)
+    exerciseRepository = module.get<ExerciseRepository>(
+      getRepositoryToken(TypeOrmExerciseRepository),
+    )
   })
 
   it('should be defined', () => {
@@ -48,5 +54,18 @@ describe('ExerciseService', () => {
     )
 
     expect(savedExercise).toStrictEqual(expectedExercise)
+  })
+
+  it('should get an exercise by id', async () => {
+    const [exercise] = await exerciseRepository.find()
+    const exerciseId = exercise.id
+    const expectedExercise = new Exercise({
+      id: exerciseId,
+      template: new ExerciseTemplate({ title: 'Jumping jacks' }),
+    })
+
+    const retrievedExercise = await exerciseService.getExercise(exerciseId)
+
+    expect(retrievedExercise).toStrictEqual(expectedExercise)
   })
 })

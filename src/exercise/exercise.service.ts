@@ -24,6 +24,6 @@ export class ExerciseService {
   }
 
   async getExercise(exerciseId: string): Promise<Exercise> {
-    return Promise.resolve(new Exercise({ id: exerciseId }))
+    return this.exerciseRepository.findById(exerciseId)
   }
 }
