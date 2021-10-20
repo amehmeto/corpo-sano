@@ -46,7 +46,9 @@ async function insertFixture(
     .execute()
 }
 
-export async function programAndWorkoutFixtures(connection: Connection) {
+export async function generateProgramAndWorkoutFixtures(
+  connection: Connection,
+) {
   const entityFixturePairs = [
     [Program, programFixture],
     [Workout, workoutFixture],

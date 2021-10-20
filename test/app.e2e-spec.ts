@@ -9,10 +9,10 @@ import {
   defaultExercisesDataBuilder,
   deleteProgramAndWorkoutFixture,
   exercisesFixture,
-  programAndWorkoutFixtures,
+  generateProgramAndWorkoutFixtures,
   programFixture,
   workoutFixture,
-} from './program-and-workout.fixtures'
+} from './generate-program-and-workout.fixtures'
 
 const GRAPHQL_URL = '/graphql'
 
@@ -22,7 +22,7 @@ function hasErrors(response: any) {
   return response?.body?.errors || response.body === undefined
 }
 
-function formatResponse(response: any) {
+function displayErrors(response: any) {
   if (hasErrors(response)) {
     const formattedError = JSON.stringify(response.body, null, 2)
     console.error(formattedError)
@@ -42,7 +42,7 @@ describe('AppController (e2e)', () => {
       .post(GRAPHQL_URL)
       .send(mutation)
       .expect((response: any) => {
-        formatResponse(response)
+        displayErrors(response)
         const retrievedData = response.body.data[retrievedDataKey]
         expect(retrievedData).toStrictEqual(expectedData)
       })
@@ -58,7 +58,7 @@ describe('AppController (e2e)', () => {
 
     execSync('yarn db:seed')
     connection = app.get(Connection)
-    await programAndWorkoutFixtures(connection)
+    await generateProgramAndWorkoutFixtures(connection)
   })
 
   afterAll(async () => {
