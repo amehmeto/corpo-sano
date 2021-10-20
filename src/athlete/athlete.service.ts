@@ -4,6 +4,7 @@ import { CreateAthleteWithPhysicalInfosInput } from './types/create-athlete-with
 import { InjectRepository } from '@nestjs/typeorm'
 import { AthleteRepository } from './repositories/athlete-repository.interface'
 import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
+import { v4 as uuid } from 'uuid'
 
 @Injectable()
 export class AthleteService {
@@ -14,8 +15,9 @@ export class AthleteService {
   createAthleteWithPhysicalInfos(
     createAthleteWithPhysicalInfosInput: CreateAthleteWithPhysicalInfosInput,
   ): Promise<Athlete> {
-    return this.athleteRepository.createAthleteWithPhysicalInfos(
-      createAthleteWithPhysicalInfosInput,
-    )
+    return this.athleteRepository.save({
+      id: uuid(),
+      ...createAthleteWithPhysicalInfosInput,
+    })
   }
 }

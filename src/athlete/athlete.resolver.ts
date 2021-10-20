@@ -6,7 +6,7 @@ import { Athlete } from './models/athlete.model'
 @Resolver()
 export class AthleteResolver {
   constructor(private readonly athleteService: AthleteService) {}
-  async savePhysicalInfos(
+  async createAthleteWithPhysicalInfos(
     savePhysicalInfosInput: CreateAthleteWithPhysicalInfosInput,
   ): Promise<Athlete> {
     return this.athleteService.createAthleteWithPhysicalInfos(

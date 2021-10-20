@@ -1,4 +1,4 @@
-import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql'
 import { Gender } from '../types/gender.enum'
 
 @ObjectType()

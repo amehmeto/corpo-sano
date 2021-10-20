@@ -4,7 +4,7 @@ import { Athlete } from '../entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
 
 export class InMemoryAthleteRepository implements AthleteRepository {
-  createAthleteWithPhysicalInfos(
+  save(
     savePhysicalInfosInput: CreateAthleteWithPhysicalInfosInput,
   ): Promise<Athlete> {
     return Promise.resolve(

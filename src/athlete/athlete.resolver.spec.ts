@@ -4,6 +4,7 @@ import { Gender } from './types/gender.enum'
 import * as Faker from 'faker'
 import { Athlete } from './entities/athlete.entity'
 import { AthleteService } from './athlete.service'
+import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
 
 describe('AthleteResolver', () => {
   let athleteResolver: AthleteResolver
@@ -11,7 +12,7 @@ describe('AthleteResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AthleteResolver, AthleteService],
+      providers: [AthleteResolver, AthleteService, TypeOrmAthleteRepository],
     }).compile()
 
     athleteResolver = module.get<AthleteResolver>(AthleteResolver)
@@ -35,9 +36,10 @@ describe('AthleteResolver', () => {
       .fn()
       .mockResolvedValue(expectedAthlete)
 
-    const preregisteredAthlete = await athleteResolver.savePhysicalInfos(
-      savePhysicalInfosInput,
-    )
+    const preregisteredAthlete =
+      await athleteResolver.createAthleteWithPhysicalInfos(
+        savePhysicalInfosInput,
+      )
 
     expect(preregisteredAthlete).toStrictEqual(expectedAthlete)
   })

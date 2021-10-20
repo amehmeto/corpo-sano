@@ -1,4 +1,4 @@
-import { WorkoutRepository } from '../types/workout-repository.interface'
+import { WorkoutRepository } from './workout-repository.interface'
 import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
 

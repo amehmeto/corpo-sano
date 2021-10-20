@@ -1,4 +1,4 @@
-import { CreateProgramInput } from './create-program-input.type'
+import { CreateProgramInput } from '../types/create-program-input.type'
 import { Program } from '../entities/program.entity'
 
 export interface ProgramRepository {

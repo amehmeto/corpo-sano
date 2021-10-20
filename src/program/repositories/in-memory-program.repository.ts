@@ -1,4 +1,4 @@
-import { ProgramRepository } from '../types/program-repository.interface'
+import { ProgramRepository } from './program-repository.interface'
 import { CreateProgramInput } from '../types/create-program-input.type'
 import { Program } from '../entities/program.entity'
 import { v4 as uuid } from 'uuid'

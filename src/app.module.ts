@@ -8,7 +8,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
 import { ExerciseModule } from './exercise/exercise.module'
 import { config } from '../config'
-import { AthleteModule } from './athlete/athlete.module';
+import { AthleteModule } from './athlete/athlete.module'
 
 @Module({
   imports: [
