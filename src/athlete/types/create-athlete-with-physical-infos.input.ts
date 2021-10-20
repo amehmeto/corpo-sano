@@ -2,7 +2,7 @@ import { Field, InputType, Int, GraphQLISODateTime } from '@nestjs/graphql'
 import { Gender } from './gender.enum'
 
 @InputType()
-export class SavePhysicalInfosInput {
+export class CreateAthleteWithPhysicalInfosInput {
   @Field(() => Int)
   height: number
 

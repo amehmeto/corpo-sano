@@ -31,7 +31,7 @@ describe('AthleteResolver', () => {
     }
     const expectedAthlete = new Athlete(savePhysicalInfosInput)
 
-    athleteService.savePhysicalInfos = jest
+    athleteService.createAthleteWithPhysicalInfos = jest
       .fn()
       .mockResolvedValue(expectedAthlete)
 
