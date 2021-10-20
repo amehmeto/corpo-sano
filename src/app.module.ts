@@ -8,6 +8,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
 import { ExerciseModule } from './exercise/exercise.module'
 import { config } from '../config'
+import { AthleteModule } from './athlete/athlete.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { config } from '../config'
     ExerciseModule,
     ProgramModule,
     WorkoutModule,
+    AthleteModule,
   ],
 
   controllers: [AppController],

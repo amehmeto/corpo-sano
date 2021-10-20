@@ -45,10 +45,10 @@ type Mutation {
 
 input ExerciseDetailsInput {
   exerciseId: ID!
-  numberOfSets: Float!
-  numberOfReps: Float!
-  finalRestTime: Float!
-  interSetsRestTime: Float!
+  numberOfSets: Int!
+  numberOfReps: Int!
+  finalRestTime: Int!
+  interSetsRestTime: Int!
 }
 
 input FillWorkoutWithExercisesInput {
