@@ -4,109 +4,19 @@ import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
 import { execSync } from 'child_process'
 import { Connection } from 'typeorm'
-import { Workout } from '../src/workout/entities/workout.entity'
-import * as Faker from 'faker'
-import { Program } from '../src/program/entities/program.entity'
 import { WeekDays } from '../src/workout/types/week-days.enum'
-import { Exercise } from '../src/exercise/entities/exercise.entity'
-import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
+import {
+  defaultExercisesDataBuilder,
+  deleteProgramAndWorkoutFixture,
+  exercisesFixture,
+  programAndWorkoutFixtures,
+  programFixture,
+  workoutFixture,
+} from './program-and-workout.fixtures'
 
 const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
-
-const programFixture = {
-  id: Faker.datatype.uuid(),
-  title: 'Mon programme',
-}
-const workoutFixture = {
-  id: Faker.datatype.uuid(),
-  title: 'Mon Workout',
-  program: {
-    id: programFixture.id,
-  },
-  exercises: [] as Exercise[],
-}
-const exercisesFixture = [
-  new Exercise({
-    id: Faker.datatype.uuid(),
-    template: {
-      id: '00000000-0000-0000-0000-000000000008',
-      title: 'Lunge',
-    },
-  }),
-  new Exercise({
-    template: {
-      id: '00000000-0000-0000-0000-000000000001',
-      title: 'Wall sit',
-    },
-  }),
-]
-
-async function insertFixture(
-  connection: Connection,
-  entity: any,
-  fixture: any,
-) {
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(entity as EntityClassOrSchema)
-    .values(fixture as any)
-    .execute()
-}
-
-async function generateProgramAndWorkoutFixtures(connection: Connection) {
-  const entityFixturePairs = [
-    [Program, programFixture],
-    [Workout, workoutFixture],
-    [Exercise, exercisesFixture[0]],
-    [Exercise, exercisesFixture[1]],
-  ]
-
-  for (let i = 0; i < entityFixturePairs.length; i++) {
-    const [entity, fixture] = entityFixturePairs[i]
-    await insertFixture(connection, entity, fixture)
-  }
-}
-
-function generateExercisesWithHardCodedUuid(defaultExercisesNames: string[]) {
-  const defaultExercises = []
-  for (let i = 0; defaultExercisesNames[i]; i++) {
-    const baseUuid = '00000000-0000-0000-0000-000000000000'
-    const stringifiedIndex = i.toString()
-    const exercise = {
-      id: baseUuid.slice(0, -stringifiedIndex.length) + stringifiedIndex,
-      title: defaultExercisesNames[i],
-    }
-    defaultExercises.push(exercise)
-  }
-  return defaultExercises
-}
-
-function defaultExercisesDataBuilder() {
-  const defaultExercisesNames = [
-    'Jumping jacks',
-    'Wall sit',
-    'Push-up',
-    'Abdominal crunch',
-    'Squat',
-    'Triceps dip on chair',
-    'Plank',
-    'High knees running in place',
-    'Lunge',
-    'Push-up and rotation',
-    'Side plank',
-    'Jumping Rope',
-  ]
-  return generateExercisesWithHardCodedUuid(defaultExercisesNames)
-}
-
-async function deleteProgramAndWorkoutFixture(connection: Connection) {
-  const entities = [Exercise, Workout, Program]
-  for (const entity of entities)
-    await connection.createQueryBuilder().delete().from(entity).execute()
-}
 
 function hasErrors(response: any) {
   return response?.body?.errors || response.body === undefined
@@ -133,7 +43,8 @@ describe('AppController (e2e)', () => {
       .send(mutation)
       .expect((response: any) => {
         formatResponse(response)
-        expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
+        const retrievedData = response.body.data[retrievedDataKey]
+        expect(retrievedData).toStrictEqual(expectedData)
       })
   }
 
@@ -147,7 +58,7 @@ describe('AppController (e2e)', () => {
 
     execSync('yarn db:seed')
     connection = app.get(Connection)
-    await generateProgramAndWorkoutFixtures(connection)
+    await programAndWorkoutFixtures(connection)
   })
 
   afterAll(async () => {
