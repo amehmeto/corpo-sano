@@ -9,6 +9,7 @@ import * as Faker from 'faker'
 import { Program } from '../src/program/entities/program.entity'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import { Exercise } from '../src/exercise/entities/exercise.entity'
+import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
 
 const GRAPHQL_URL = '/graphql'
 
@@ -24,37 +25,49 @@ const workoutFixture = {
   program: {
     id: programFixture.id,
   },
-  exercises: [
-    new Exercise({
-      id: Faker.datatype.uuid(),
-      template: {
-        id: '00000000-0000-0000-0000-000000000008',
-        title: 'Lunge',
-      },
-    }),
-    new Exercise({
-      template: {
-        id: '00000000-0000-0000-0000-000000000001',
-        title: 'Wall sit',
-      },
-    }),
-  ],
+  exercises: [] as Exercise[],
+}
+const exercisesFixture = [
+  new Exercise({
+    id: Faker.datatype.uuid(),
+    template: {
+      id: '00000000-0000-0000-0000-000000000008',
+      title: 'Lunge',
+    },
+  }),
+  new Exercise({
+    template: {
+      id: '00000000-0000-0000-0000-000000000001',
+      title: 'Wall sit',
+    },
+  }),
+]
+
+async function insertFixture(
+  connection: Connection,
+  entity: any,
+  fixture: any,
+) {
+  await connection
+    .createQueryBuilder()
+    .insert()
+    .into(entity as EntityClassOrSchema)
+    .values(fixture as any)
+    .execute()
 }
 
 async function generateProgramAndWorkoutFixtures(connection: Connection) {
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(Program)
-    .values(programFixture)
-    .execute()
+  const entityFixturePairs = [
+    [Program, programFixture],
+    [Workout, workoutFixture],
+    [Exercise, exercisesFixture[0]],
+    [Exercise, exercisesFixture[1]],
+  ]
 
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(Workout)
-    .values(workoutFixture)
-    .execute()
+  for (let i = 0; i < entityFixturePairs.length; i++) {
+    const [entity, fixture] = entityFixturePairs[i]
+    await insertFixture(connection, entity, fixture)
+  }
 }
 
 function generateExercisesWithHardCodedUuid(defaultExercisesNames: string[]) {
@@ -95,6 +108,17 @@ async function deleteProgramAndWorkoutFixture(connection: Connection) {
     await connection.createQueryBuilder().delete().from(entity).execute()
 }
 
+function hasErrors(response: any) {
+  return response?.body?.errors || response.body === undefined
+}
+
+function formatResponse(response: any) {
+  if (hasErrors(response)) {
+    const formattedError = JSON.stringify(response.body, null, 2)
+    console.error(formattedError)
+  }
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
   let connection: Connection
@@ -108,8 +132,7 @@ describe('AppController (e2e)', () => {
       .post(GRAPHQL_URL)
       .send(mutation)
       .expect((response: any) => {
-        if (response?.body?.errors || response.body === undefined)
-          console.error(response.body)
+        formatResponse(response)
         expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
       })
   }
@@ -201,6 +224,38 @@ describe('AppController (e2e)', () => {
         getAllProgramsQuery,
         'getAllPrograms',
         expectedGetAllPrograms,
+      )
+    })
+
+    test('Get Exercise By Id', () => {
+      const getExercise = {
+        query: `query GetExercise($exerciseId: ID!) {
+          getExercise(exerciseId: $exerciseId) {
+            id
+            template {
+              id
+              title
+            }
+            numberOfSets
+          }
+        }`,
+        variables: {
+          exerciseId: exercisesFixture[0].id,
+        },
+      }
+      const expectedGetExerciseById = {
+        id: exercisesFixture[0].id,
+        numberOfSets: 0,
+        template: {
+          id: '00000000-0000-0000-0000-000000000008',
+          title: 'Lunge',
+        },
+      }
+
+      return expectCorrectGqlResponse(
+        getExercise,
+        'getExercise',
+        expectedGetExerciseById,
       )
     })
   })
@@ -348,7 +403,7 @@ describe('AppController (e2e)', () => {
         }`,
         variables: {
           payload: {
-            exerciseId: workoutFixture.exercises[0].id,
+            exerciseId: exercisesFixture[0].id,
             numberOfSets: 3,
             numberOfReps: 8,
             interSetsRestTime: 120,
@@ -358,7 +413,7 @@ describe('AppController (e2e)', () => {
       }
       const expectedExercise = {
         finalRestTime: 120,
-        id: workoutFixture.exercises[0].id,
+        id: exercisesFixture[0].id,
         interSetsRestTime: 120,
         numberOfReps: 8,
         numberOfSets: 3,
