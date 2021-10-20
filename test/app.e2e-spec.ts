@@ -4,95 +4,29 @@ import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
 import { execSync } from 'child_process'
 import { Connection } from 'typeorm'
-import { Workout } from '../src/workout/entities/workout.entity'
-import * as Faker from 'faker'
-import { Program } from '../src/program/entities/program.entity'
 import { WeekDays } from '../src/workout/types/week-days.enum'
-import { Exercise } from '../src/exercise/entities/exercise.entity'
+import {
+  defaultExercisesDataBuilder,
+  deleteProgramAndWorkoutFixture,
+  exercisesFixture,
+  programAndWorkoutFixtures,
+  programFixture,
+  workoutFixture,
+} from './program-and-workout.fixtures'
 
 const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
-const programFixture = {
-  id: Faker.datatype.uuid(),
-  title: 'Mon programme',
-}
-const workoutFixture = {
-  id: Faker.datatype.uuid(),
-  title: 'Mon Workout',
-  program: {
-    id: programFixture.id,
-  },
-  exercises: [
-    new Exercise({
-      id: Faker.datatype.uuid(),
-      template: {
-        id: '00000000-0000-0000-0000-000000000008',
-        title: 'Lunge',
-      },
-    }),
-    new Exercise({
-      template: {
-        id: '00000000-0000-0000-0000-000000000001',
-        title: 'Wall sit',
-      },
-    }),
-  ],
+function hasErrors(response: any) {
+  return response?.body?.errors || response.body === undefined
 }
 
-async function generateProgramAndWorkoutFixtures(connection: Connection) {
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(Program)
-    .values(programFixture)
-    .execute()
-
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(Workout)
-    .values(workoutFixture)
-    .execute()
-}
-
-function generateExercisesWithHardCodedUuid(defaultExercisesNames: string[]) {
-  const defaultExercises = []
-  for (let i = 0; defaultExercisesNames[i]; i++) {
-    const baseUuid = '00000000-0000-0000-0000-000000000000'
-    const stringifiedIndex = i.toString()
-    const exercise = {
-      id: baseUuid.slice(0, -stringifiedIndex.length) + stringifiedIndex,
-      title: defaultExercisesNames[i],
-    }
-    defaultExercises.push(exercise)
+function formatResponse(response: any) {
+  if (hasErrors(response)) {
+    const formattedError = JSON.stringify(response.body, null, 2)
+    console.error(formattedError)
   }
-  return defaultExercises
-}
-
-function defaultExercisesDataBuilder() {
-  const defaultExercisesNames = [
-    'Jumping jacks',
-    'Wall sit',
-    'Push-up',
-    'Abdominal crunch',
-    'Squat',
-    'Triceps dip on chair',
-    'Plank',
-    'High knees running in place',
-    'Lunge',
-    'Push-up and rotation',
-    'Side plank',
-    'Jumping Rope',
-  ]
-  return generateExercisesWithHardCodedUuid(defaultExercisesNames)
-}
-
-async function deleteProgramAndWorkoutFixture(connection: Connection) {
-  const entities = [Exercise, Workout, Program]
-  for (const entity of entities)
-    await connection.createQueryBuilder().delete().from(entity).execute()
 }
 
 describe('AppController (e2e)', () => {
@@ -108,9 +42,9 @@ describe('AppController (e2e)', () => {
       .post(GRAPHQL_URL)
       .send(mutation)
       .expect((response: any) => {
-        if (response?.body?.errors || response.body === undefined)
-          console.error(response.body)
-        expect(response.body.data[retrievedDataKey]).toStrictEqual(expectedData)
+        formatResponse(response)
+        const retrievedData = response.body.data[retrievedDataKey]
+        expect(retrievedData).toStrictEqual(expectedData)
       })
   }
 
@@ -124,7 +58,7 @@ describe('AppController (e2e)', () => {
 
     execSync('yarn db:seed')
     connection = app.get(Connection)
-    await generateProgramAndWorkoutFixtures(connection)
+    await programAndWorkoutFixtures(connection)
   })
 
   afterAll(async () => {
@@ -201,6 +135,38 @@ describe('AppController (e2e)', () => {
         getAllProgramsQuery,
         'getAllPrograms',
         expectedGetAllPrograms,
+      )
+    })
+
+    test('Get Exercise By Id', () => {
+      const getExercise = {
+        query: `query GetExercise($exerciseId: ID!) {
+          getExercise(exerciseId: $exerciseId) {
+            id
+            template {
+              id
+              title
+            }
+            numberOfSets
+          }
+        }`,
+        variables: {
+          exerciseId: exercisesFixture[0].id,
+        },
+      }
+      const expectedGetExerciseById = {
+        id: exercisesFixture[0].id,
+        numberOfSets: 0,
+        template: {
+          id: '00000000-0000-0000-0000-000000000008',
+          title: 'Lunge',
+        },
+      }
+
+      return expectCorrectGqlResponse(
+        getExercise,
+        'getExercise',
+        expectedGetExerciseById,
       )
     })
   })
@@ -348,7 +314,7 @@ describe('AppController (e2e)', () => {
         }`,
         variables: {
           payload: {
-            exerciseId: workoutFixture.exercises[0].id,
+            exerciseId: exercisesFixture[0].id,
             numberOfSets: 3,
             numberOfReps: 8,
             interSetsRestTime: 120,
@@ -358,7 +324,7 @@ describe('AppController (e2e)', () => {
       }
       const expectedExercise = {
         finalRestTime: 120,
-        id: workoutFixture.exercises[0].id,
+        id: exercisesFixture[0].id,
         interSetsRestTime: 120,
         numberOfReps: 8,
         numberOfSets: 3,
