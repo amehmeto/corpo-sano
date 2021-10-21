@@ -40,10 +40,9 @@ describe('AthleteService', () => {
       ...createAthleteWithPhysicalInfosInput,
     })
 
-    const preregisteredAthlete =
-      await athleteService.createAthleteWithPhysicalInfos(
-        createAthleteWithPhysicalInfosInput,
-      )
+    const preregisteredAthlete = await athleteService.registerAthlete(
+      createAthleteWithPhysicalInfosInput,
+    )
 
     expect(preregisteredAthlete).toStrictEqual(expectedAthlete)
   })

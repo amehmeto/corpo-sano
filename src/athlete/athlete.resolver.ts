@@ -1,16 +1,14 @@
 import { Resolver } from '@nestjs/graphql'
-import { CreateAthleteWithPhysicalInfosInput } from './types/create-athlete-with-physical-infos.input'
+import { RegisterAthleteInput } from './types/register-athlete.input'
 import { AthleteService } from './athlete.service'
 import { Athlete } from './models/athlete.model'
 
 @Resolver()
 export class AthleteResolver {
   constructor(private readonly athleteService: AthleteService) {}
-  async createAthleteWithPhysicalInfos(
-    savePhysicalInfosInput: CreateAthleteWithPhysicalInfosInput,
+  async registerAthlete(
+    registerAthleteInput: RegisterAthleteInput,
   ): Promise<Athlete> {
-    return this.athleteService.createAthleteWithPhysicalInfos(
-      savePhysicalInfosInput,
-    )
+    return this.athleteService.registerAthlete(registerAthleteInput)
   }
 }

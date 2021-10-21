@@ -5,6 +5,9 @@ import * as Faker from 'faker'
 import { Athlete } from './entities/athlete.entity'
 import { AthleteService } from './athlete.service'
 import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
+import { WeightUnit } from './types/weight-unit.enum'
+import { MetricUnit } from './types/metric-system.enum'
+import { WeightGoal } from './types/weight-goal.enum'
 
 describe('AthleteResolver', () => {
   let athleteResolver: AthleteResolver
@@ -23,23 +26,27 @@ describe('AthleteResolver', () => {
     expect(athleteResolver).toBeDefined()
   })
 
-  it('should pre-register an athlete with height, weight, gender and birthday', async () => {
-    const savePhysicalInfosInput = {
+  it('should register the athlete', async () => {
+    const registerAthleteInput = {
       height: 179,
+      metricUnit: MetricUnit.METRE,
       weight: 102,
+      weightUnit: WeightUnit.KILOGRAM,
       gender: Gender.MALE,
       birthday: Faker.date.past(1990),
+      weightGoal: WeightGoal.SLOW_LOSS,
+      email: Faker.internet.email(),
+      password: Faker.random.alphaNumeric(),
     }
-    const expectedAthlete = new Athlete(savePhysicalInfosInput)
+    const expectedAthlete = new Athlete(registerAthleteInput)
 
-    athleteService.createAthleteWithPhysicalInfos = jest
+    athleteService.registerAthlete = jest
       .fn()
       .mockResolvedValue(expectedAthlete)
 
-    const preregisteredAthlete =
-      await athleteResolver.createAthleteWithPhysicalInfos(
-        savePhysicalInfosInput,
-      )
+    const preregisteredAthlete = await athleteResolver.registerAthlete(
+      registerAthleteInput,
+    )
 
     expect(preregisteredAthlete).toStrictEqual(expectedAthlete)
   })

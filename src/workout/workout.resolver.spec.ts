@@ -55,7 +55,7 @@ describe('Workout Resolver', () => {
       programId: expectedWorkout.programId,
     })
 
-    const createdWorkout = await workoutResolver.create(
+    const createdWorkout = await workoutResolver.createWorkout(
       workoutInput.title,
       workoutInput.programId,
     )
