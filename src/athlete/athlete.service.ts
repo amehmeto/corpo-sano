@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { Athlete } from './entities/athlete.entity'
 import { RegisterAthleteInput } from './types/register-athlete.input'
 import { InjectRepository } from '@nestjs/typeorm'
 import { AthleteRepository } from './repositories/athlete-repository.interface'
 import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
 import { v4 as uuid } from 'uuid'
+import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
 
 @Injectable()
 export class AthleteService {
   constructor(
     @InjectRepository(TypeOrmAthleteRepository)
     private readonly athleteRepository: AthleteRepository,
+    @Inject(EmailGatewayToken)
+    private readonly emailGateway: EmailGateway,
   ) {}
 
   register(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
@@ -20,7 +23,8 @@ export class AthleteService {
     })
   }
 
-  sendConfirmationEmail(athleteId: string): Promise<boolean> {
-    return Promise.resolve(true)
+  async sendConfirmationEmail(athleteId: string): Promise<void> {
+    const { email } = await this.athleteRepository.findById(athleteId)
+    return this.emailGateway.sendConfirmationEmail(email)
   }
 }

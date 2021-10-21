@@ -9,9 +9,12 @@ import { InMemoryAthleteRepository } from './repositories/in-memory-athlete.repo
 import { MetricUnit } from './types/metric-system.enum'
 import { WeightUnit } from './types/weight-unit.enum'
 import { WeightGoal } from './types/weight-goal.enum'
+import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
+import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 
 describe('AthleteService', () => {
   let athleteService: AthleteService
+  let emailGateway: EmailGateway
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,11 +23,16 @@ describe('AthleteService', () => {
           provide: getRepositoryToken(TypeOrmAthleteRepository),
           useClass: InMemoryAthleteRepository,
         },
+        {
+          provide: EmailGatewayToken,
+          useClass: InMemoryEmailGateway,
+        },
         AthleteService,
       ],
     }).compile()
 
     athleteService = module.get<AthleteService>(AthleteService)
+    emailGateway = module.get<EmailGateway>(EmailGatewayToken)
   })
 
   it('should be defined', () => {
@@ -51,5 +59,18 @@ describe('AthleteService', () => {
     const registeredAthlete = await athleteService.register(registerAthlete)
 
     expect(registeredAthlete).toStrictEqual(expectedAthlete)
+  })
+
+  it('should send a confirmation email', async () => {
+    const athleteId = Faker.datatype.uuid()
+    const athleteEmail = expect.any(String)
+
+    emailGateway.sendConfirmationEmail = jest.fn()
+
+    await athleteService.sendConfirmationEmail(athleteId)
+
+    expect(emailGateway.sendConfirmationEmail).toHaveBeenCalledWith(
+      athleteEmail,
+    )
   })
 })

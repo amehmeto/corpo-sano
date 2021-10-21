@@ -58,8 +58,8 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   beforeEach(async () => {
-    const createdExercise = new Exercise(exerciseFixture)
-    await exerciseRepository.save(createdExercise)
+    const exercise = new Exercise(exerciseFixture)
+    await exerciseRepository.save(exercise)
   })
 
   afterAll(async () => {

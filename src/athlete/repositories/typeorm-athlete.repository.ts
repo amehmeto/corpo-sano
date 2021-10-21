@@ -5,4 +5,9 @@ import { AthleteRepository } from './athlete-repository.interface'
 @EntityRepository(Athlete)
 export class TypeOrmAthleteRepository
   extends Repository<Athlete>
-  implements AthleteRepository {}
+  implements AthleteRepository
+{
+  findById(athleteId: string): Promise<Athlete> {
+    return this.findOne(athleteId)
+  }
+}

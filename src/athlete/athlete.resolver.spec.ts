@@ -8,6 +8,8 @@ import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.reposit
 import { WeightUnit } from './types/weight-unit.enum'
 import { MetricUnit } from './types/metric-system.enum'
 import { WeightGoal } from './types/weight-goal.enum'
+import { EmailGatewayToken } from './gateways/email.gateway'
+import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 
 describe('AthleteResolver', () => {
   let athleteResolver: AthleteResolver
@@ -15,7 +17,12 @@ describe('AthleteResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AthleteResolver, AthleteService, TypeOrmAthleteRepository],
+      providers: [
+        { provide: EmailGatewayToken, useClass: InMemoryEmailGateway },
+        AthleteResolver,
+        AthleteService,
+        TypeOrmAthleteRepository,
+      ],
     }).compile()
 
     athleteResolver = module.get<AthleteResolver>(AthleteResolver)
@@ -52,13 +59,11 @@ describe('AthleteResolver', () => {
 
   it('should send a confirmation email', async () => {
     const athleteId = Faker.datatype.uuid()
-    const expectedEmail = true
 
-    athleteService.sendConfirmationEmail = jest.fn().mockResolvedValue(true)
+    athleteService.sendConfirmationEmail = jest.fn()
 
-    const sentEmail = await athleteResolver.sendConfirmationEmail(athleteId)
+    await athleteResolver.sendConfirmationEmail(athleteId)
 
     expect(athleteService.sendConfirmationEmail).toHaveBeenCalledWith(athleteId)
-    expect(sentEmail).toStrictEqual(expectedEmail)
   })
 })

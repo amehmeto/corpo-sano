@@ -14,7 +14,7 @@ export class AthleteResolver {
     return this.athleteService.register(registerAthleteInput)
   }
 
-  async sendConfirmationEmail(athleteId: string): Promise<boolean> {
+  async sendConfirmationEmail(athleteId: string): Promise<void> {
     return this.athleteService.sendConfirmationEmail(athleteId)
   }
 }

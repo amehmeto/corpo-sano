@@ -9,31 +9,32 @@ export class Athlete {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column({ default: 0 })
   height: number
 
-  @Column()
+  @Column({ default: MetricUnit.METRE })
   metricUnit: MetricUnit
 
-  @Column()
+  @Column({ default: 0 })
   weight: number
 
-  @Column()
+  @Column({ default: WeightUnit.KILOGRAM })
   weightUnit: WeightUnit
 
-  @Column()
+  @Column({ default: Gender.FEMALE })
   gender: Gender
 
-  @Column()
+  // TODO: bypass after trying to use { type: 'timestamp', default: new Date() }
+  @Column({ nullable: true })
   birthday: Date
 
-  @Column()
+  @Column({ default: WeightGoal.SLOW_LOSS })
   weightGoal: WeightGoal
 
-  @Column()
+  @Column({ default: 'default@email.com' })
   email: string
 
-  @Column()
+  @Column({ default: 'azerty' })
   password: string
 
   constructor(partial: Partial<Athlete> = {}) {
