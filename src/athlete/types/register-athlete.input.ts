@@ -9,22 +9,22 @@ export class RegisterAthleteInput {
   @Field(() => Int)
   height: number
 
-  @Field(() => MetricUnit)
+  @Field(() => String)
   metricUnit: MetricUnit
 
   @Field(() => Int)
   weight: number
 
-  @Field(() => WeightUnit)
+  @Field(() => String)
   weightUnit: WeightUnit
 
-  @Field(() => Gender)
+  @Field(() => String)
   gender: Gender
 
   @Field(() => GraphQLISODateTime)
   birthday: Date
 
-  @Field(() => WeightGoal)
+  @Field(() => String)
   weightGoal: WeightGoal
 
   @Field()

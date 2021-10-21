@@ -4,6 +4,7 @@ import { Workout } from '../src/workout/entities/workout.entity'
 import { Exercise } from '../src/exercise/entities/exercise.entity'
 import * as Faker from 'faker'
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
+import { Athlete } from '../src/athlete/entities/athlete.entity'
 
 export const programFixture = {
   id: Faker.datatype.uuid(),
@@ -95,7 +96,7 @@ export function defaultExercisesDataBuilder() {
 }
 
 export async function deleteProgramAndWorkoutFixture(connection: Connection) {
-  const entities = [Exercise, Workout, Program]
+  const entities = [Exercise, Workout, Program, Athlete]
   for (const entity of entities)
     await connection.createQueryBuilder().delete().from(entity).execute()
 }

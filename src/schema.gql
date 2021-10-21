@@ -28,6 +28,24 @@ type Workout {
   scheduledDays: [String!]!
 }
 
+type Athlete {
+  id: ID!
+  height: Int!
+  metricUnit: String!
+  weight: Int!
+  weightUnit: String!
+  gender: String!
+  birthday: DateTime!
+  weightGoal: String!
+  email: String!
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   getAllExerciseTemplates: [ExerciseTemplate!]!
   getExercise(exerciseId: ID!): Exercise!
@@ -41,6 +59,7 @@ type Mutation {
   createWorkout(programId: ID!, title: String!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
+  registerAthlete(payload: RegisterAthleteInput!): Athlete!
 }
 
 input ExerciseDetailsInput {
@@ -69,4 +88,16 @@ enum WeekDays {
   FRIDAY
   SATURDAY
   SUNDAY
+}
+
+input RegisterAthleteInput {
+  height: Int!
+  metricUnit: String!
+  weight: Int!
+  weightUnit: String!
+  gender: String!
+  birthday: DateTime!
+  weightGoal: String!
+  email: String!
+  password: String!
 }
