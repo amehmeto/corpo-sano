@@ -42,7 +42,7 @@ describe('Program Resolver', () => {
       title: programTitle,
     })
 
-    const createdProgram = await resolver.create(programTitle)
+    const createdProgram = await resolver.createProgram(programTitle)
 
     expect(programService.create).toHaveBeenCalledWith(programTitle)
     expect(createdProgram).toStrictEqual(expectedProgram)

@@ -1,5 +1,5 @@
 import * as Faker from 'faker'
-import { ExerciseRepository } from '../types/exercise-repository.interface'
+import { ExerciseRepository } from './exercise-repository.interface'
 import { Exercise } from '../entities/exercise.entity'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 

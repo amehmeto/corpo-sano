@@ -13,6 +13,11 @@ import {
   programFixture,
   workoutFixture,
 } from './generate-program-and-workout.fixtures'
+import { MetricUnit } from '../src/athlete/types/metric-system.enum'
+import { WeightUnit } from '../src/athlete/types/weight-unit.enum'
+import { Gender } from '../src/athlete/types/gender.enum'
+import * as Faker from 'faker'
+import { WeightGoal } from '../src/athlete/types/weight-goal.enum'
 
 const GRAPHQL_URL = '/graphql'
 
@@ -333,6 +338,49 @@ describe('AppController (e2e)', () => {
         saveExerciseDetailsMutation,
         'saveExerciseDetails',
         expectedExercise,
+      )
+    })
+
+    test('Register Athlete', () => {
+      const registerAthleteMutation = {
+        query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
+          registerAthlete(payload: $payload) {
+            id
+            height
+            metricUnit
+            weight
+            weightUnit
+            gender
+            birthday
+            weightGoal
+            email
+            password 
+          }
+         }`,
+        variables: {
+          payload: {
+            height: 179,
+            metricUnit: MetricUnit.METRE,
+            weight: 102,
+            weightUnit: WeightUnit.KILOGRAM,
+            gender: Gender.MALE,
+            birthday: Faker.date.past(1990),
+            weightGoal: WeightGoal.SLOW_LOSS,
+            email: Faker.internet.email(),
+            password: Faker.random.alphaNumeric(),
+          },
+        },
+      }
+      const expectedAthlete = {
+        id: expect.any(String),
+        ...registerAthleteMutation.variables.payload,
+        birthday:
+          registerAthleteMutation.variables.payload.birthday.toISOString(),
+      }
+      return expectCorrectGqlResponse(
+        registerAthleteMutation,
+        'registerAthlete',
+        expectedAthlete,
       )
     })
   })

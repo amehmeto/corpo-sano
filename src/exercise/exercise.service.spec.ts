@@ -5,7 +5,7 @@ import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repo
 import { InMemoryExerciseRepository } from './repositories/in-memory-exercise.repository'
 import * as Faker from 'faker'
 import { Exercise } from './entities/exercise.entity'
-import { ExerciseRepository } from './types/exercise-repository.interface'
+import { ExerciseRepository } from './repositories/exercise-repository.interface'
 import { ExerciseTemplate } from './entities/exercise-template.entity'
 
 describe('ExerciseService', () => {

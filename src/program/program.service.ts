@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Program } from './entities/program.entity'
-import { ProgramRepository } from './types/program-repository.interface'
+import { ProgramRepository } from './repositories/program-repository.interface'
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
 

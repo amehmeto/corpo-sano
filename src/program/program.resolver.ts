@@ -11,10 +11,10 @@ export class ProgramResolver {
     return this.programService.getAllPrograms()
   }
 
-  @Mutation(() => Program, {
-    name: 'createProgram',
-  })
-  async create(@Args({ name: 'title', type: () => String }) title: string) {
+  @Mutation(() => Program)
+  async createProgram(
+    @Args({ name: 'title', type: () => String }) title: string,
+  ) {
     return this.programService.create(title)
   }
 }

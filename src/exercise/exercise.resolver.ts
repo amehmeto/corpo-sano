@@ -14,9 +14,7 @@ export class ExerciseResolver {
     return this.exerciseService.getExercise(exerciseId)
   }
 
-  @Mutation(() => Exercise, {
-    name: 'saveExerciseDetails',
-  })
+  @Mutation(() => Exercise)
   async saveExerciseDetails(
     @Args('payload') exerciseDetailsInput: ExerciseDetailsInput,
   ): Promise<Exercise> {

@@ -1,4 +1,4 @@
-import { ProgramRepository } from '../types/program-repository.interface'
+import { ProgramRepository } from './program-repository.interface'
 import { EntityRepository, Repository } from 'typeorm'
 import { Program } from '../entities/program.entity'
 
