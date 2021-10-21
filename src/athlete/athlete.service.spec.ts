@@ -6,6 +6,9 @@ import { Athlete } from './entities/athlete.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
 import { InMemoryAthleteRepository } from './repositories/in-memory-athlete.repository'
+import { MetricUnit } from './types/metric-system.enum'
+import { WeightUnit } from './types/weight-unit.enum'
+import { WeightGoal } from './types/weight-goal.enum'
 
 describe('AthleteService', () => {
   let athleteService: AthleteService
@@ -29,19 +32,24 @@ describe('AthleteService', () => {
   })
 
   it('should pre-register an athlete with height, weight, gender and birthday', async () => {
-    const createAthleteWithPhysicalInfosInput = {
+    const registerAthlete = {
       height: 179,
+      metricUnit: MetricUnit.METRE,
       weight: 102,
+      weightUnit: WeightUnit.KILOGRAM,
       gender: Gender.MALE,
       birthday: Faker.date.past(1990),
+      weightGoal: WeightGoal.SLOW_LOSS,
+      email: Faker.internet.email(),
+      password: Faker.random.alphaNumeric(),
     }
     const expectedAthlete = new Athlete({
       id: expect.any(String),
-      ...createAthleteWithPhysicalInfosInput,
+      ...registerAthlete,
     })
 
     const preregisteredAthlete = await athleteService.registerAthlete(
-      createAthleteWithPhysicalInfosInput,
+      registerAthlete,
     )
 
     expect(preregisteredAthlete).toStrictEqual(expectedAthlete)

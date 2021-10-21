@@ -335,5 +335,22 @@ describe('AppController (e2e)', () => {
         expectedExercise,
       )
     })
+
+    test('Register Athlete', () => {
+      const registerAthleteMutation = {
+        query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
+          registerAthlete(payload: $payload) {
+            
+          }
+         }`,
+        variables: {},
+      }
+      const expectedAthlete = {}
+      return expectCorrectGqlResponse(
+        registerAthleteMutation,
+        'registerAthlete',
+        expectedAthlete,
+      )
+    })
   })
 })
