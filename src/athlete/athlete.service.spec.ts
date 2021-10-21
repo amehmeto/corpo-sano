@@ -31,7 +31,7 @@ describe('AthleteService', () => {
     expect(athleteService).toBeDefined()
   })
 
-  it('should pre-register an athlete with height, weight, gender and birthday', async () => {
+  it('should register the athlete', async () => {
     const registerAthlete = {
       height: 179,
       metricUnit: MetricUnit.METRE,
@@ -48,10 +48,10 @@ describe('AthleteService', () => {
       ...registerAthlete,
     })
 
-    const preregisteredAthlete = await athleteService.registerAthlete(
+    const registeredAthlete = await athleteService.registerAthlete(
       registerAthlete,
     )
 
-    expect(preregisteredAthlete).toStrictEqual(expectedAthlete)
+    expect(registeredAthlete).toStrictEqual(expectedAthlete)
   })
 })
