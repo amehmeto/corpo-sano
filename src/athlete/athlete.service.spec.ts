@@ -48,9 +48,7 @@ describe('AthleteService', () => {
       ...registerAthlete,
     })
 
-    const registeredAthlete = await athleteService.registerAthlete(
-      registerAthlete,
-    )
+    const registeredAthlete = await athleteService.register(registerAthlete)
 
     expect(registeredAthlete).toStrictEqual(expectedAthlete)
   })

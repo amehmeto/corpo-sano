@@ -13,12 +13,14 @@ export class AthleteService {
     private readonly athleteRepository: AthleteRepository,
   ) {}
 
-  registerAthlete(
-    registerAthleteInput: RegisterAthleteInput,
-  ): Promise<Athlete> {
+  register(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
     return this.athleteRepository.save({
       id: uuid(),
       ...registerAthleteInput,
     })
+  }
+
+  sendConfirmationEmail(athleteId: string): Promise<boolean> {
+    return Promise.resolve(true)
   }
 }

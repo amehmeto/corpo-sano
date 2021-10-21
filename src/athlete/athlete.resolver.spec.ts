@@ -40,14 +40,25 @@ describe('AthleteResolver', () => {
     }
     const expectedAthlete = new Athlete(registerAthleteInput)
 
-    athleteService.registerAthlete = jest
-      .fn()
-      .mockResolvedValue(expectedAthlete)
+    athleteService.register = jest.fn().mockResolvedValue(expectedAthlete)
 
-    const preregisteredAthlete = await athleteResolver.registerAthlete(
+    const registeredAthlete = await athleteResolver.registerAthlete(
       registerAthleteInput,
     )
 
-    expect(preregisteredAthlete).toStrictEqual(expectedAthlete)
+    expect(athleteService.register).toHaveBeenCalledWith(registerAthleteInput)
+    expect(registeredAthlete).toStrictEqual(expectedAthlete)
+  })
+
+  it('should send a confirmation email', async () => {
+    const athleteId = Faker.datatype.uuid()
+    const expectedEmail = true
+
+    athleteService.sendConfirmationEmail = jest.fn().mockResolvedValue(true)
+
+    const sentEmail = await athleteResolver.sendConfirmationEmail(athleteId)
+
+    expect(athleteService.sendConfirmationEmail).toHaveBeenCalledWith(athleteId)
+    expect(sentEmail).toStrictEqual(expectedEmail)
   })
 })
