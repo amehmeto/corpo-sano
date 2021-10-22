@@ -9,6 +9,9 @@ export class Athlete {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
+  @Column({ nullable: true })
+  name: string
+
   @Column({ default: 0 })
   height: number
 

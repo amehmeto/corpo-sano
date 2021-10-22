@@ -15,6 +15,7 @@ const athleteFixture = new Athlete(athleteDataBuilder())
 function athleteDataBuilder(athlete = {}) {
   const template = {
     id: Faker.datatype.uuid(),
+    name: Faker.name.firstName(),
     height: Faker.datatype.number(),
     metricUnit: MetricUnit.METRE,
     weight: Faker.datatype.number(),

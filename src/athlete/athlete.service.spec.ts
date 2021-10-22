@@ -63,14 +63,19 @@ describe('AthleteService', () => {
 
   it('should send a confirmation email', async () => {
     const athleteId = Faker.datatype.uuid()
-    const athleteEmail = expect.any(String)
+    const athlete = new Athlete({
+      id: athleteId,
+      email: expect.any(String),
+      name: expect.any(String),
+    })
 
-    emailGateway.sendConfirmationEmail = jest.fn()
+    const sendConfirmationEmail = jest.spyOn(
+      emailGateway,
+      'sendConfirmationEmail',
+    )
 
     await athleteService.sendConfirmationEmail(athleteId)
 
-    expect(emailGateway.sendConfirmationEmail).toHaveBeenCalledWith(
-      athleteEmail,
-    )
+    expect(sendConfirmationEmail).toHaveBeenCalledWith(athlete)
   })
 })

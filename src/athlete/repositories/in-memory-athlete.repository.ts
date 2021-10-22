@@ -18,6 +18,7 @@ export class InMemoryAthleteRepository implements AthleteRepository {
     return Promise.resolve(
       new Athlete({
         id: athleteId,
+        name: Faker.name.firstName(),
         email: Faker.internet.email(),
       }),
     )
