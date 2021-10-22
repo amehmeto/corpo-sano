@@ -23,8 +23,9 @@ export class AthleteService {
     })
   }
 
-  async sendConfirmationEmail(athleteId: string): Promise<void> {
+  async sendConfirmationEmail(athleteId: string): Promise<Athlete> {
     const athlete = await this.athleteRepository.findById(athleteId)
-    return this.emailGateway.sendConfirmationEmail(athlete)
+    await this.emailGateway.sendConfirmationEmail(athlete)
+    return athlete
   }
 }

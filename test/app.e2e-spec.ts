@@ -6,13 +6,14 @@ import { execSync } from 'child_process'
 import { Connection } from 'typeorm'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
+  athleteFixture,
   defaultExercisesDataBuilder,
   deleteProgramAndWorkoutFixture,
   exercisesFixture,
-  generateProgramAndWorkoutFixtures,
+  generateFixtures,
   programFixture,
   workoutFixture,
-} from './generate-program-and-workout.fixtures'
+} from './generate.fixtures'
 import { MetricUnit } from '../src/athlete/types/metric-system.enum'
 import { WeightUnit } from '../src/athlete/types/weight-unit.enum'
 import { Gender } from '../src/athlete/types/gender.enum'
@@ -63,7 +64,7 @@ describe('AppController (e2e)', () => {
 
     execSync('yarn db:seed')
     connection = app.get(Connection)
-    await generateProgramAndWorkoutFixtures(connection)
+    await generateFixtures(connection)
   })
 
   afterAll(async () => {
@@ -381,6 +382,25 @@ describe('AppController (e2e)', () => {
         registerAthleteMutation,
         'registerAthlete',
         expectedAthlete,
+      )
+    })
+
+    test('Send Confirmation Email', () => {
+      const sendConfirmationEmailMutation = {
+        query: `mutation sendConfirmationEmail($athleteId: ID!) {
+          sendConfirmationEmail(athleteId: $athleteId) {
+            id
+          }
+        }`,
+        variables: {
+          athleteId: athleteFixture.id,
+        },
+      }
+      const expectedResponse = { id: athleteFixture.id }
+      return expectCorrectGqlResponse(
+        sendConfirmationEmailMutation,
+        'sendConfirmationEmail',
+        expectedResponse,
       )
     })
   })

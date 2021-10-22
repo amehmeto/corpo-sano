@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql'
+import { Args, ID, Mutation, Resolver } from '@nestjs/graphql'
 import { RegisterAthleteInput } from './types/register-athlete.input'
 import { AthleteService } from './athlete.service'
 import { Athlete } from './models/athlete.model'
@@ -14,7 +14,10 @@ export class AthleteResolver {
     return this.athleteService.register(registerAthleteInput)
   }
 
-  async sendConfirmationEmail(athleteId: string): Promise<void> {
+  @Mutation(() => Athlete) //TODO: C'est bien de la merde de retourner un Athlete mais je trouve pas comment ne rien envoyer
+  async sendConfirmationEmail(
+    @Args({ name: 'athleteId', type: () => ID }) athleteId: string,
+  ): Promise<Athlete> {
     return this.athleteService.sendConfirmationEmail(athleteId)
   }
 }

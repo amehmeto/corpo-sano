@@ -34,6 +34,10 @@ export const exercisesFixture = [
   }),
 ]
 
+export const athleteFixture = new Athlete({
+  id: Faker.datatype.uuid(),
+})
+
 async function insertFixture(
   connection: Connection,
   entity: any,
@@ -47,14 +51,13 @@ async function insertFixture(
     .execute()
 }
 
-export async function generateProgramAndWorkoutFixtures(
-  connection: Connection,
-) {
+export async function generateFixtures(connection: Connection) {
   const entityFixturePairs = [
     [Program, programFixture],
     [Workout, workoutFixture],
     [Exercise, exercisesFixture[0]],
     [Exercise, exercisesFixture[1]],
+    [Athlete, athleteFixture],
   ]
 
   for (const entityFixture of entityFixturePairs) {

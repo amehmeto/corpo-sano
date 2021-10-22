@@ -60,6 +60,7 @@ type Mutation {
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
   registerAthlete(payload: RegisterAthleteInput!): Athlete!
+  sendConfirmationEmail(athleteId: ID!): Athlete!
 }
 
 input ExerciseDetailsInput {
