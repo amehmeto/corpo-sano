@@ -7,20 +7,13 @@ import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type
 import { WeekDays } from './types/week-days.enum'
 import { Workout } from './entities/workout.entity'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
-
-function exerciseTemplateDataBuilder() {
-  const exerciseTitles = ['pompes', 'dips', 'tractions', 'abdos']
-  return {
-    id: Faker.datatype.uuid(),
-    title: Faker.random.arrayElement(exerciseTitles),
-  }
-}
+import { exerciseTemplateDataBuilder } from '../../test/data-builders/exercise-template.data-builder'
 
 describe('Workout Resolver', () => {
   let workoutResolver: WorkoutResolver
   let workoutService: WorkoutService
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TypeOrmWorkoutRepository,

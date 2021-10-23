@@ -30,8 +30,9 @@ type Workout {
 
 type Athlete {
   id: ID!
+  name: String!
   height: Int!
-  metricUnit: String!
+  lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!
@@ -92,8 +93,9 @@ enum WeekDays {
 }
 
 input RegisterAthleteInput {
+  name: String!
   height: Int!
-  metricUnit: String!
+  lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!

@@ -1,4 +1,4 @@
-export enum MetricUnit {
-  METRE = 'METRE',
-  INCH = 'INCH',
+export enum UnitSystem {
+  METRIC = 'METRIC',
+  IMPERIAL = 'IMPERIAL',
 }

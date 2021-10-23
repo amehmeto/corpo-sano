@@ -1,15 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { AthleteResolver } from './athlete.resolver'
-import { Gender } from './types/gender.enum'
 import * as Faker from 'faker'
 import { Athlete } from './entities/athlete.entity'
 import { AthleteService } from './athlete.service'
 import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
-import { WeightUnit } from './types/weight-unit.enum'
-import { MetricUnit } from './types/metric-system.enum'
-import { WeightGoal } from './types/weight-goal.enum'
 import { EmailGatewayToken } from './gateways/email.gateway'
 import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
+import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
 
 describe('AthleteResolver', () => {
   let athleteResolver: AthleteResolver
@@ -34,18 +31,11 @@ describe('AthleteResolver', () => {
   })
 
   it('should register the athlete', async () => {
-    const registerAthleteInput = {
-      height: 179,
-      metricUnit: MetricUnit.METRE,
-      weight: 102,
-      weightUnit: WeightUnit.KILOGRAM,
-      gender: Gender.MALE,
-      birthday: Faker.date.past(1990),
-      weightGoal: WeightGoal.SLOW_LOSS,
-      email: Faker.internet.email(),
-      password: Faker.random.alphaNumeric(),
-    }
-    const expectedAthlete = new Athlete(registerAthleteInput)
+    const registerAthleteInput = registerAthleteInputDataBuilder()
+    const expectedAthlete = new Athlete({
+      id: Faker.datatype.uuid(),
+      ...registerAthleteInput,
+    })
 
     athleteService.register = jest.fn().mockResolvedValue(expectedAthlete)
 

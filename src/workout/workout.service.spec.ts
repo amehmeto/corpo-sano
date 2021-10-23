@@ -10,14 +10,18 @@ import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
-import { ExerciseTemplateRepository } from '../exercise/types/exercise-template-repository.interface'
+import { ExerciseTemplateRepository } from '../exercise/repositories/exercise-template-repository.interface'
 import { Exercise } from '../exercise/entities/exercise.entity'
+import { workoutInputDataBuilder } from '../../test/data-builders/workout-input.data-builder'
+import { WorkoutRepository } from './repositories/workout-repository.interface'
+import { workoutDataBuilder } from '../../test/data-builders/workout.data-builder'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
+  let workoutRepository: WorkoutRepository
   let exerciseTemplateRepository: ExerciseTemplateRepository
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
@@ -37,6 +41,9 @@ describe('Workout Service', () => {
     }).compile()
 
     workoutService = module.get<WorkoutService>(WorkoutService)
+    workoutRepository = module.get<WorkoutRepository>(
+      getRepositoryToken(TypeOrmWorkoutRepository),
+    )
     exerciseTemplateRepository = module.get<ExerciseTemplateRepository>(
       getRepositoryToken(TypeOrmExerciseTemplateRepository),
     )
@@ -47,10 +54,7 @@ describe('Workout Service', () => {
   })
 
   it('should create a workout', async () => {
-    const workoutInput = {
-      title: 'Bas du corps',
-      programId: Faker.datatype.uuid(),
-    }
+    const workoutInput = workoutInputDataBuilder()
     const expectedWorkout = new Workout({
       id: expect.any(String),
       title: workoutInput.title,
@@ -63,8 +67,9 @@ describe('Workout Service', () => {
 
   it('should fill a workout with exercises', async () => {
     const exerciseTemplates = await exerciseTemplateRepository.find()
+    const [workout] = await workoutRepository.find()
     const fillWorkoutWithExercisesInput = {
-      workoutId: '872edf9d-5bfa-42ac-abdd-2411b0b0e2de',
+      workoutId: workout.id,
       exerciseTemplateIds: exerciseTemplates.map((exercise) => exercise.id),
     }
     const expectedExercises = await Promise.all(
@@ -75,11 +80,12 @@ describe('Workout Service', () => {
         })
       }),
     )
-    const expectedWorkout = new Workout({
-      id: fillWorkoutWithExercisesInput.workoutId,
-      title: 'Haut du bas',
-      exercises: expectedExercises,
-    })
+    const expectedWorkout = new Workout(
+      workoutDataBuilder({
+        id: fillWorkoutWithExercisesInput.workoutId,
+        exercises: expectedExercises,
+      }),
+    )
 
     const filledWorkout = await workoutService.fillWorkoutWithExercises(
       fillWorkoutWithExercisesInput,

@@ -17,10 +17,11 @@ export class AthleteService {
   ) {}
 
   register(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
-    return this.athleteRepository.save({
+    const athlete = new Athlete({
       id: uuid(),
       ...registerAthleteInput,
     })
+    return this.athleteRepository.save(athlete)
   }
 
   async sendConfirmationEmail(athleteId: string): Promise<Athlete> {

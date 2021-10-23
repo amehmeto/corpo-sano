@@ -2,9 +2,18 @@ import { AthleteRepository } from './athlete-repository.interface'
 import { RegisterAthleteInput } from '../types/register-athlete.input'
 import { Athlete } from '../entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
-import * as Faker from 'faker'
+import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-builder'
 
 export class InMemoryAthleteRepository implements AthleteRepository {
+  private athletesData = [
+    athleteDataBuilder(),
+    athleteDataBuilder(),
+    athleteDataBuilder(),
+  ]
+  private athletes = this.athletesData.map(
+    (athleteData) => new Athlete(athleteData),
+  )
+
   save(savePhysicalInfosInput: RegisterAthleteInput): Promise<Athlete> {
     return Promise.resolve(
       new Athlete({
@@ -16,11 +25,11 @@ export class InMemoryAthleteRepository implements AthleteRepository {
 
   findById(athleteId: string): Promise<Athlete> {
     return Promise.resolve(
-      new Athlete({
-        id: athleteId,
-        name: Faker.name.firstName(),
-        email: Faker.internet.email(),
-      }),
+      this.athletes.find((athlete: any) => athlete.id === athleteId),
     )
+  }
+
+  find(): Promise<Athlete[]> {
+    return Promise.resolve(this.athletes)
   }
 }

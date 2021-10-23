@@ -3,10 +3,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repository'
 import { InMemoryExerciseRepository } from './repositories/in-memory-exercise.repository'
-import * as Faker from 'faker'
 import { Exercise } from './entities/exercise.entity'
 import { ExerciseRepository } from './repositories/exercise-repository.interface'
-import { ExerciseTemplate } from './entities/exercise-template.entity'
+import { exerciseDetailsInputDataBuilder } from '../../test/data-builders/exercise-details-input.data-builder'
 
 describe('ExerciseService', () => {
   let exerciseService: ExerciseService
@@ -34,13 +33,7 @@ describe('ExerciseService', () => {
   })
 
   it("should save exercise's details", async () => {
-    const exerciseDetailsInput = {
-      exerciseId: Faker.datatype.uuid(),
-      numberOfSets: Faker.datatype.number(),
-      numberOfReps: Faker.datatype.number(),
-      interSetsRestTime: Faker.datatype.number(),
-      finalRestTime: Faker.datatype.number(),
-    }
+    const exerciseDetailsInput = exerciseDetailsInputDataBuilder()
     const expectedExercise = new Exercise({
       id: exerciseDetailsInput.exerciseId,
       numberOfSets: exerciseDetailsInput.numberOfSets,
@@ -58,14 +51,9 @@ describe('ExerciseService', () => {
 
   it('should get an exercise by id', async () => {
     const [exercise] = await exerciseRepository.find()
-    const exerciseId = exercise.id
-    const expectedExercise = new Exercise({
-      id: exerciseId,
-      template: new ExerciseTemplate({ title: 'Jumping jacks' }),
-    })
 
-    const retrievedExercise = await exerciseService.getExercise(exerciseId)
+    const retrievedExercise = await exerciseService.getExercise(exercise.id)
 
-    expect(retrievedExercise).toStrictEqual(expectedExercise)
+    expect(retrievedExercise).toStrictEqual(exercise)
   })
 })
