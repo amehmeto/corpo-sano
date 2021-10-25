@@ -1,4 +1,3 @@
-import { AthleteRepository } from './athlete-repository.interface'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { Test } from '@nestjs/testing'
 import { config } from '../../../config'
@@ -9,7 +8,7 @@ import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-bui
 const athleteFixture = new Athlete(athleteDataBuilder())
 
 describe('TypeOrmAthleteRepository', () => {
-  let athleteRepository: AthleteRepository
+  let athleteRepository: TypeOrmAthleteRepository
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -31,10 +30,7 @@ describe('TypeOrmAthleteRepository', () => {
   })
 
   it('should find an athlete by id', async () => {
-    const expectedAthlete = new Athlete({
-      ...athleteFixture,
-      //birthday: expect.any(Date),
-    })
+    const expectedAthlete = new Athlete({ ...athleteFixture })
 
     const retrievedAthlete = await athleteRepository.findById(athleteFixture.id)
 
