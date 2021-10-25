@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ExerciseTemplateService } from './exercise-template.service'
 import { TypeOrmExerciseTemplateRepository } from './repositories/type-orm-exercise-template.repository'
-import { ExerciseTemplateRepository } from './types/exercise-template-repository.interface'
+import { ExerciseTemplateRepository } from './repositories/exercise-template-repository.interface'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { InMemoryExerciseTemplateRepository } from './repositories/in-memory-exercise-template.repository'
 

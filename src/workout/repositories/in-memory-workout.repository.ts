@@ -1,14 +1,19 @@
 import { WorkoutRepository } from './workout-repository.interface'
 import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
+import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
-  private workouts = [
-    new Workout({
-      id: '872edf9d-5bfa-42ac-abdd-2411b0b0e2de',
-      title: 'Haut du bas',
-    }),
+  private workoutsData = [
+    workoutDataBuilder(),
+    workoutDataBuilder(),
+    workoutDataBuilder(),
   ]
+  private workouts = this.workoutsData.map((data) => new Workout(data))
+
+  find(): Promise<Workout[]> {
+    return Promise.resolve(this.workouts)
+  }
 
   findById(id: string): Promise<Workout> {
     return Promise.resolve(this.workouts.find((workout) => workout.id === id))

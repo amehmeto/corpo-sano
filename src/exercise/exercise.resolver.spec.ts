@@ -1,9 +1,10 @@
 import { ExerciseResolver } from './exercise.resolver'
 import { Test, TestingModule } from '@nestjs/testing'
 import { ExerciseService } from './exercise.service'
-import * as Faker from 'faker'
 import { Exercise } from './entities/exercise.entity'
 import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repository'
+import { exerciseDetailsInputDataBuilder } from '../../test/data-builders/exercise-details-input.data-builder'
+import { exerciseDataBuilder } from '../../test/data-builders/exercise.data-builder'
 
 describe('ExerciseResolver', () => {
   let exerciseResolver: ExerciseResolver
@@ -23,13 +24,7 @@ describe('ExerciseResolver', () => {
   })
 
   it("should save exercise's details", async () => {
-    const exerciseDetailsInput = {
-      exerciseId: Faker.datatype.uuid(),
-      numberOfSets: Faker.datatype.number(),
-      numberOfReps: Faker.datatype.number(),
-      interSetsRestTime: Faker.datatype.number(),
-      finalRestTime: Faker.datatype.number(),
-    }
+    const exerciseDetailsInput = exerciseDetailsInputDataBuilder()
     const expectedExercise = new Exercise({
       ...exerciseDetailsInput,
       id: exerciseDetailsInput.exerciseId,
@@ -48,14 +43,13 @@ describe('ExerciseResolver', () => {
   })
 
   it('should get an exercise by id', async () => {
-    const exerciseId = Faker.datatype.uuid()
-    const expectedExercise = new Exercise({ id: exerciseId })
+    const exercise = new Exercise(exerciseDataBuilder())
 
-    exerciseService.getExercise = jest.fn().mockResolvedValue(expectedExercise)
+    exerciseService.getExercise = jest.fn().mockResolvedValue(exercise)
 
-    const retrievedExercise = await exerciseResolver.getExercise(exerciseId)
+    const retrievedExercise = await exerciseResolver.getExercise(exercise.id)
 
-    expect(exerciseService.getExercise).toHaveBeenCalledWith(exerciseId)
-    expect(retrievedExercise).toStrictEqual(expectedExercise)
+    expect(exerciseService.getExercise).toHaveBeenCalledWith(exercise.id)
+    expect(retrievedExercise).toStrictEqual(exercise)
   })
 })

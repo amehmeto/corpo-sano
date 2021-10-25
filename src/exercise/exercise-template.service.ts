@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ExerciseTemplate } from './entities/exercise-template.entity'
-import { ExerciseTemplateRepository } from './types/exercise-template-repository.interface'
+import { ExerciseTemplateRepository } from './repositories/exercise-template-repository.interface'
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeOrmExerciseTemplateRepository } from './repositories/type-orm-exercise-template.repository'
 

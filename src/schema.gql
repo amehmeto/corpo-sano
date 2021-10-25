@@ -30,8 +30,9 @@ type Workout {
 
 type Athlete {
   id: ID!
+  name: String!
   height: Int!
-  metricUnit: String!
+  lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!
@@ -60,6 +61,7 @@ type Mutation {
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
   registerAthlete(payload: RegisterAthleteInput!): Athlete!
+  sendConfirmationEmail(athleteId: ID!): Athlete!
 }
 
 input ExerciseDetailsInput {
@@ -91,8 +93,9 @@ enum WeekDays {
 }
 
 input RegisterAthleteInput {
+  name: String!
   height: Int!
-  metricUnit: String!
+  lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!

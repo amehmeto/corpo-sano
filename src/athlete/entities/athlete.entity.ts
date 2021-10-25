@@ -1,7 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { Gender } from '../types/gender.enum'
-import { MetricUnit } from '../types/metric-system.enum'
-import { WeightUnit } from '../types/weight-unit.enum'
+import { UnitSystem } from '../types/metric-system.enum'
 import { WeightGoal } from '../types/weight-goal.enum'
 
 @Entity()
@@ -10,16 +9,19 @@ export class Athlete {
   id: string
 
   @Column()
+  name: string
+
+  @Column()
   height: number
 
   @Column()
-  metricUnit: MetricUnit
+  lengthUnit: UnitSystem
 
   @Column()
   weight: number
 
   @Column()
-  weightUnit: WeightUnit
+  weightUnit: UnitSystem
 
   @Column()
   gender: Gender

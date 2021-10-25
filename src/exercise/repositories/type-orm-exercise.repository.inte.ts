@@ -5,34 +5,11 @@ import { config } from '../../../config'
 import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.repository'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
-import * as Faker from 'faker'
 import { Exercise } from '../entities/exercise.entity'
-import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { execSync } from 'child_process'
+import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
 
-const exerciseFixture = new Exercise({
-  id: Faker.datatype.uuid(),
-  template: new ExerciseTemplate({
-    id: '00000000-0000-0000-0000-000000000008',
-    title: 'Lunge',
-  }),
-})
-
-function exerciseDataBuilder(exercise = {}) {
-  const template = {
-    id: Faker.datatype.uuid(),
-    createAt: expect.any(Date),
-    template: new ExerciseTemplate({
-      id: '00000000-0000-0000-0000-000000000008',
-      title: 'Lunge',
-    }),
-    numberOfSets: 0,
-    numberOfReps: 0,
-    interSetsRestTime: 0,
-    finalRestTime: 0,
-  }
-  return { ...template, ...exercise }
-}
+const exerciseFixture = new Exercise(exerciseDataBuilder())
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseRepository: TypeOrmExerciseRepository
@@ -55,11 +32,7 @@ describe('TypeOrm Exercise Repository', () => {
     )
 
     execSync('yarn db:seed')
-  })
-
-  beforeEach(async () => {
-    const createdExercise = new Exercise(exerciseFixture)
-    await exerciseRepository.save(createdExercise)
+    await exerciseRepository.save(exerciseFixture)
   })
 
   afterAll(async () => {
@@ -71,13 +44,10 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   it('should find exercise by id', async () => {
-    const exerciseId = exerciseFixture.id
-    const expectedExercise = new Exercise(
-      exerciseDataBuilder({ id: exerciseId }),
+    const retrievedExercise = await exerciseRepository.findById(
+      exerciseFixture.id,
     )
 
-    const retrievedExercise = await exerciseRepository.findById(exerciseId)
-
-    expect(retrievedExercise).toStrictEqual(expectedExercise)
+    expect(retrievedExercise).toStrictEqual(exerciseFixture)
   })
 })
