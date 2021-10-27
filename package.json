@@ -34,7 +34,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "faker": "^5.5.3",
-    "graphql": "^15.6.1",
+    "graphql": "^15.7.0",
     "graphql-tools": "^8.2.0",
     "knex": "^0.95.11",
     "mysql2": "^2.3.2",
