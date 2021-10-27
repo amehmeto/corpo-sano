@@ -11,7 +11,9 @@ export class ExerciseResolver {
   async getExercise(
     @Args({ name: 'exerciseId', type: () => ID }) exerciseId: string,
   ): Promise<Exercise> {
-    return this.exerciseService.getExercise(exerciseId)
+    const temp = await this.exerciseService.getExercise(exerciseId)
+    console.log(temp)
+    return temp
   }
 
   @Mutation(() => Exercise)

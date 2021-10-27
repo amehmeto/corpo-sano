@@ -51,6 +51,7 @@ describe('ExerciseService', () => {
 
   it('should get an exercise by id', async () => {
     const [exercise] = await exerciseRepository.find()
+    console.log(exercise)
 
     const retrievedExercise = await exerciseService.getExercise(exercise.id)
 

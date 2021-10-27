@@ -8,6 +8,8 @@ export class TypeOrmExerciseRepository
   implements ExerciseRepository
 {
   async findById(id: string): Promise<Exercise> {
-    return this.findOne(id)
+    const workout = await this.findOne(id, { relations: ['workout'] })
+    console.log('repository', workout)
+    return workout
   }
 }
