@@ -8,6 +8,7 @@ import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
 import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
 import { AthleteRepository } from './repositories/athlete-repository.interface'
+import { ConflictException } from '@nestjs/common'
 
 describe('AthleteService', () => {
   let athleteService: AthleteService
@@ -52,6 +53,44 @@ describe('AthleteService', () => {
     )
 
     expect(registeredAthlete).toStrictEqual(expectedAthlete)
+  })
+
+  it('should throw a Conflict Exception when email is already taken', async () => {
+    const expectedError = new ConflictException('Username already taken')
+    const [alreadyRegisteredAthlete] = await athleteRepository.find()
+    const athleteWithSameEmail = registerAthleteInputDataBuilder({
+      email: alreadyRegisteredAthlete.email,
+    })
+
+    let thrownError, retrievedAthlete
+    try {
+      retrievedAthlete = await athleteService.register(athleteWithSameEmail)
+    } catch (e) {
+      thrownError = e
+    }
+
+    expect(retrievedAthlete).toBeUndefined()
+    expect(thrownError).toStrictEqual(expectedError)
+  })
+
+  it('should throw Exception as is if not Conflict Exception', async () => {
+    const expectedError = new Error('random')
+
+    athleteRepository.save = jest.fn().mockImplementation(() => {
+      throw expectedError
+    })
+
+    let thrownError, retrievedAthlete
+    try {
+      retrievedAthlete = await athleteService.register(
+        registerAthleteInputDataBuilder(),
+      )
+    } catch (e) {
+      thrownError = e
+    }
+
+    expect(retrievedAthlete).toBeUndefined()
+    expect(thrownError).toStrictEqual(expectedError)
   })
 
   it('should send a confirmation email', async () => {
