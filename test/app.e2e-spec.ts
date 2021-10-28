@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
-import { execSync } from 'child_process'
 import { Connection } from 'typeorm'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
