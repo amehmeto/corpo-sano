@@ -12,12 +12,9 @@ import {
   programFixture,
   workoutFixture,
 } from './generate.fixtures'
-import { UnitSystem } from '../src/athlete/types/metric-system.enum'
-import { WeightUnit } from '../src/athlete/types/weight-unit.enum'
-import { Gender } from '../src/athlete/types/gender.enum'
-import * as Faker from 'faker'
-import { WeightGoal } from '../src/athlete/types/weight-goal.enum'
 import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
+import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
+import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
@@ -318,22 +315,16 @@ describe('AppController (e2e)', () => {
           }
         }`,
         variables: {
-          payload: {
+          payload: exerciseDetailsInputDataBuilder({
             exerciseId: exercisesFixture[0].id,
-            numberOfSets: 3,
-            numberOfReps: 8,
-            interSetsRestTime: 120,
-            finalRestTime: 120,
-          },
+          }),
         },
       }
       const expectedExercise = {
-        finalRestTime: 120,
+        ...saveExerciseDetailsMutation.variables.payload,
         id: exercisesFixture[0].id,
-        interSetsRestTime: 120,
-        numberOfReps: 8,
-        numberOfSets: 3,
       }
+      delete expectedExercise.exerciseId
       return expectCorrectGqlResponse(
         saveExerciseDetailsMutation,
         'saveExerciseDetails',
@@ -359,23 +350,13 @@ describe('AppController (e2e)', () => {
           }
          }`,
         variables: {
-          payload: {
-            height: 179,
-            name: Faker.name.firstName(),
-            lengthUnit: UnitSystem.METRIC,
-            weight: 102,
-            weightUnit: WeightUnit.KILOGRAM,
-            gender: Gender.MALE,
-            birthday: Faker.date.past(1990),
-            weightGoal: WeightGoal.SLOW_LOSS,
-            email: Faker.internet.email(),
-            password: Faker.random.alphaNumeric(),
-          },
+          payload: registerAthleteInputDataBuilder(),
         },
       }
       const expectedAthlete = {
-        id: expect.any(String),
         ...registerAthleteMutation.variables.payload,
+        id: expect.any(String),
+        password: expect.any(String),
         birthday:
           registerAthleteMutation.variables.payload.birthday.toISOString(),
       }

@@ -7,6 +7,7 @@ import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.reposit
 import { v4 as uuid } from 'uuid'
 import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
 import { RepositoryErrors } from './types/repository-errors.enum'
+import * as Bcrypt from 'bcrypt'
 
 @Injectable()
 export class AthleteService {
@@ -17,11 +18,15 @@ export class AthleteService {
     private readonly emailGateway: EmailGateway,
   ) {}
 
-  register(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
+  async register(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
     try {
+      const { password } = registerAthleteInput
+      const salt = await Bcrypt.genSalt()
+      const hashedPassword = await Bcrypt.hash(password, salt)
       const athlete = new Athlete({
-        id: uuid(),
         ...registerAthleteInput,
+        id: uuid(),
+        password: hashedPassword,
       })
       return this.athleteRepository.save(athlete)
     } catch (e) {
