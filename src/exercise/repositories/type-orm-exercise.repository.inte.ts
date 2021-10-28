@@ -6,11 +6,11 @@ import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { Exercise } from '../entities/exercise.entity'
-import { execSync } from 'child_process'
 import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
 import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
 import { Workout } from '../../workout/entities/workout.entity'
 import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
+import { execSync } from 'child_process'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())
 const workoutFixture = new Workout(workoutDataBuilder())
@@ -39,13 +39,14 @@ describe('TypeOrm Exercise Repository', () => {
       TypeOrmWorkoutRepository,
     )
 
+    execSync('yarn db:seed')
     const exercise = await exerciseRepository.save(exerciseFixture)
     workoutFixture.exercises = [exercise]
     await workoutRepository.save(workoutFixture)
   })
 
   afterAll(async () => {
-    //await exerciseRepository.query(`DELETE FROM exercise;`)
+    await exerciseRepository.query(`DELETE FROM exercise;`)
   })
 
   it('should be defined', () => {

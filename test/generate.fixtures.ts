@@ -13,14 +13,17 @@ import { TypeOrmWorkoutRepository } from '../src/workout/repositories/typeorm-wo
 import { TypeOrmProgramRepository } from '../src/program/repositories/type-orm-program.repository'
 import { TypeOrmAthleteRepository } from '../src/athlete/repositories/typeorm-athlete.repository'
 import { execSync } from 'child_process'
+import * as Faker from 'faker'
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
 export const exercisesFixture = [
   exerciseDataBuilder({
+    createAt: Faker.date.past(30),
     template: exerciseTemplateDataBuilder(),
   }),
   exerciseDataBuilder({
+    createAt: Faker.date.past(3),
     template: exerciseTemplateDataBuilder(),
   }),
 ]

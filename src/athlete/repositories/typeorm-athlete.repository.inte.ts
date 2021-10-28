@@ -25,6 +25,10 @@ describe('TypeOrmAthleteRepository', () => {
     await athleteRepository.save(athleteFixture)
   })
 
+  afterAll(async () => {
+    await athleteRepository.query(`DELETE FROM athlete;`)
+  })
+
   it('should be defined', () => {
     expect(athleteRepository).toBeDefined()
   })

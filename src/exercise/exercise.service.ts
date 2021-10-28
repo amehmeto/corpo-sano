@@ -24,8 +24,6 @@ export class ExerciseService {
   }
 
   async getExercise(exerciseId: string): Promise<Exercise> {
-    const temp = await this.exerciseRepository.findById(exerciseId)
-    console.log(temp)
-    return temp
+    return this.exerciseRepository.findById(exerciseId)
   }
 }

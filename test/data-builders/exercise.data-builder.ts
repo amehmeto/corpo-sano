@@ -1,8 +1,6 @@
 import * as Faker from 'faker'
 import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
 import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
-import { Workout } from '../../src/workout/entities/workout.entity'
-import { workoutDataBuilder } from './workout.data-builder'
 
 export function exerciseDataBuilder(exercise = {}) {
   const template = {
