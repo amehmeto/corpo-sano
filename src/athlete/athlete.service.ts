@@ -24,8 +24,8 @@ export class AthleteService {
       const salt = await Bcrypt.genSalt()
       const hashedPassword = await Bcrypt.hash(password, salt)
       const athlete = new Athlete({
-        ...registerAthleteInput,
         id: uuid(),
+        ...registerAthleteInput,
         password: hashedPassword,
       })
       return this.athleteRepository.save(athlete)

@@ -46,8 +46,8 @@ describe('AthleteService', () => {
     it('should register the athlete with hashed and salted password', async () => {
       const registerAthleteInput = registerAthleteInputDataBuilder()
       const expectedAthlete = new Athlete({
-        ...registerAthleteInput,
         id: expect.any(String),
+        ...registerAthleteInput,
         password: expect.any(String),
       })
 
