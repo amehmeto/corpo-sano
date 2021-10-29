@@ -20,9 +20,7 @@ export class Workout {
   @ManyToOne(() => Program, (program) => program.workouts)
   program?: Program
 
-  @OneToMany(() => Exercise, (exercise) => exercise.workout, {
-    eager: true,
-  })
+  @OneToMany(() => Exercise, (exercise) => exercise.workout, { eager: true })
   exercises?: Exercise[]
 
   @Column({

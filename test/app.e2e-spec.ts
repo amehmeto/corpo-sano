@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
-import { execSync } from 'child_process'
 import { Connection } from 'typeorm'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
@@ -19,8 +18,6 @@ import { Gender } from '../src/athlete/types/gender.enum'
 import * as Faker from 'faker'
 import { WeightGoal } from '../src/athlete/types/weight-goal.enum'
 import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
-
-const GRAPHQL_URL = '/graphql'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
@@ -44,6 +41,7 @@ describe('AppController (e2e)', () => {
     retrievedDataKey: string,
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
   ) {
+    const GRAPHQL_URL = '/graphql'
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
       .send(mutation)
@@ -62,7 +60,6 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
 
-    execSync('yarn db:seed')
     connection = app.get(Connection)
     await generateFixtures(connection)
   })
@@ -104,6 +101,11 @@ describe('AppController (e2e)', () => {
         query: `query GetWorkoutExercises($workoutId: ID!){
           getWorkoutExercises(workoutId: $workoutId) {
             id 
+            createAt
+            finalRestTime
+            interSetsRestTime
+            numberOfReps 
+            numberOfSets
             template {
               id
               title
@@ -114,12 +116,14 @@ describe('AppController (e2e)', () => {
           workoutId: workoutFixture.id,
         },
       }
-      const expectedGetWorkoutExercises: any[] = []
-
+      const expected = exercisesFixture.map((exercise) => ({
+        ...exercise,
+        createAt: exercise.createAt.toISOString(),
+      }))
       return expectCorrectGqlResponse(
         getWorkoutExercisesQuery,
         'getWorkoutExercises',
-        expectedGetWorkoutExercises,
+        expected,
       )
     })
 
@@ -154,6 +158,10 @@ describe('AppController (e2e)', () => {
               title
             }
             numberOfSets
+            workout {
+              id
+              title
+            }
           }
         }`,
         variables: {
@@ -163,10 +171,8 @@ describe('AppController (e2e)', () => {
       const expectedGetExerciseById = {
         id: exercisesFixture[0].id,
         numberOfSets: 0,
-        template: {
-          id: '00000000-0000-0000-0000-000000000008',
-          title: 'Lunge',
-        },
+        template: exercisesFixture[0].template,
+        workout: workoutFixture,
       }
 
       return expectCorrectGqlResponse(
@@ -239,39 +245,32 @@ describe('AppController (e2e)', () => {
                 id
                 title
               }
+              createAt
+              finalRestTime
+              interSetsRestTime
+              numberOfReps
+              numberOfSets
             }
           }
         }`,
         variables: {
           payload: {
             workoutId: workoutFixture.id,
-            exerciseTemplateIds: [
-              '00000000-0000-0000-0000-000000000008',
-              '00000000-0000-0000-0000-000000000001',
-            ],
+            exerciseTemplateIds: exercisesFixture.map(
+              (exercise) => exercise.template.id,
+            ),
           },
         },
       }
 
       const expectedWorkout = {
-        id: fillWorkoutWithExercisesMutation.variables.payload.workoutId,
-        title: 'Mon Workout',
-        exercises: [
-          {
-            id: expect.any(String),
-            template: {
-              id: '00000000-0000-0000-0000-000000000008',
-              title: 'Lunge',
-            },
-          },
-          {
-            id: expect.any(String),
-            template: {
-              id: '00000000-0000-0000-0000-000000000001',
-              title: 'Wall sit',
-            },
-          },
-        ],
+        id: workoutFixture.id,
+        title: workoutFixture.title,
+        exercises: exercisesFixture.map((exercise) => ({
+          ...exercise,
+          id: expect.any(String),
+          createAt: expect.any(String),
+        })),
       }
 
       return expectCorrectGqlResponse(

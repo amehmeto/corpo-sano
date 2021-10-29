@@ -19,7 +19,14 @@ type Exercise {
   numberOfReps: Float!
   finalRestTime: Float!
   interSetsRestTime: Float!
+  createAt: DateTime!
+  workout: Workout!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Workout {
   id: ID!
@@ -41,11 +48,6 @@ type Athlete {
   email: String!
   password: String!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Query {
   getAllExerciseTemplates: [ExerciseTemplate!]!
