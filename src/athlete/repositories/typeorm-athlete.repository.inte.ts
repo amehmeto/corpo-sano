@@ -4,6 +4,7 @@ import { config } from '../../../config'
 import { TypeOrmAthleteRepository } from './typeorm-athlete.repository'
 import { Athlete } from '../entities/athlete.entity'
 import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-builder'
+import { RepositoryErrors } from '../types/repository-errors.enum'
 
 const athleteFixture = new Athlete(athleteDataBuilder())
 
@@ -39,5 +40,26 @@ describe('TypeOrmAthleteRepository', () => {
     const retrievedAthlete = await athleteRepository.findById(athleteFixture.id)
 
     expect(retrievedAthlete).toStrictEqual(expectedAthlete)
+  })
+
+  it('should throw an error when email already used', async () => {
+    const alreadyRegisteredAthlete = new Athlete(athleteDataBuilder())
+    const athleteWithSameEmail = new Athlete(
+      athleteDataBuilder({ email: alreadyRegisteredAthlete.email }),
+    )
+
+    const expectedErrorCode = RepositoryErrors.DUPLICATED_ENTRY
+
+    await athleteRepository.save(alreadyRegisteredAthlete)
+
+    let thrownError, retrievedAthlete
+    try {
+      retrievedAthlete = await athleteRepository.save(athleteWithSameEmail)
+    } catch (e) {
+      thrownError = e
+    }
+
+    expect(retrievedAthlete).toBeUndefined()
+    expect(thrownError.code).toBe(expectedErrorCode)
   })
 })
