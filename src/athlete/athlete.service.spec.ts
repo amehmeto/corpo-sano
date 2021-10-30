@@ -9,6 +9,7 @@ import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
 import { AthleteRepository } from './repositories/athlete-repository.interface'
 import { ConflictException } from '@nestjs/common'
+import * as Bcrypt from 'bcrypt'
 
 describe('AthleteService', () => {
   let athleteService: AthleteService
@@ -41,56 +42,65 @@ describe('AthleteService', () => {
     expect(athleteService).toBeDefined()
   })
 
-  it('should register the athlete', async () => {
-    const registerAthleteInput = registerAthleteInputDataBuilder()
-    const expectedAthlete = new Athlete({
-      id: expect.any(String),
-      ...registerAthleteInput,
-    })
+  describe('register', () => {
+    it('should register the athlete with hashed and salted password', async () => {
+      const registerAthleteInput = registerAthleteInputDataBuilder()
+      const expectedAthlete = new Athlete({
+        ...registerAthleteInput,
+        id: expect.any(String),
+        password: expect.any(String),
+      })
 
-    const registeredAthlete = await athleteService.register(
-      registerAthleteInput,
-    )
-
-    expect(registeredAthlete).toStrictEqual(expectedAthlete)
-  })
-
-  it('should throw a Conflict Exception when email is already taken', async () => {
-    const expectedError = new ConflictException('Username already taken')
-    const [alreadyRegisteredAthlete] = await athleteRepository.find()
-    const athleteWithSameEmail = registerAthleteInputDataBuilder({
-      email: alreadyRegisteredAthlete.email,
-    })
-
-    let thrownError, retrievedAthlete
-    try {
-      retrievedAthlete = await athleteService.register(athleteWithSameEmail)
-    } catch (e) {
-      thrownError = e
-    }
-
-    expect(retrievedAthlete).toBeUndefined()
-    expect(thrownError).toStrictEqual(expectedError)
-  })
-
-  it('should throw Exception as is if not Conflict Exception', async () => {
-    const expectedError = new Error('random')
-
-    athleteRepository.save = jest.fn().mockImplementation(() => {
-      throw expectedError
-    })
-
-    let thrownError, retrievedAthlete
-    try {
-      retrievedAthlete = await athleteService.register(
-        registerAthleteInputDataBuilder(),
+      const registeredAthlete = await athleteService.register(
+        registerAthleteInput,
       )
-    } catch (e) {
-      thrownError = e
-    }
+      const comparedPasswords = Bcrypt.compare(
+        registeredAthlete.password,
+        registerAthleteInput.password,
+      )
 
-    expect(retrievedAthlete).toBeUndefined()
-    expect(thrownError).toStrictEqual(expectedError)
+      expect(registeredAthlete).toStrictEqual(expectedAthlete)
+      expect(registeredAthlete.password).not.toBe(registerAthleteInput.password)
+      expect(comparedPasswords).toBeTruthy()
+    })
+
+    it('should throw a Conflict Exception when email is already taken', async () => {
+      const expectedError = new ConflictException('Username already taken')
+      const [alreadyRegisteredAthlete] = await athleteRepository.find()
+      const athleteWithSameEmail = registerAthleteInputDataBuilder({
+        email: alreadyRegisteredAthlete.email,
+      })
+
+      let thrownError, retrievedAthlete
+      try {
+        retrievedAthlete = await athleteService.register(athleteWithSameEmail)
+      } catch (e) {
+        thrownError = e
+      }
+
+      expect(retrievedAthlete).toBeUndefined()
+      expect(thrownError).toStrictEqual(expectedError)
+    })
+
+    it('should throw Exception as is if not Conflict Exception', async () => {
+      const expectedError = new Error('random')
+
+      athleteRepository.save = jest.fn().mockImplementation(() => {
+        throw expectedError
+      })
+
+      let thrownError, retrievedAthlete
+      try {
+        retrievedAthlete = await athleteService.register(
+          registerAthleteInputDataBuilder(),
+        )
+      } catch (e) {
+        thrownError = e
+      }
+
+      expect(retrievedAthlete).toBeUndefined()
+      expect(thrownError).toStrictEqual(expectedError)
+    })
   })
 
   it('should send a confirmation email', async () => {
