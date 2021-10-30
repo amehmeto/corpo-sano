@@ -19,7 +19,7 @@ export function athleteDataBuilder(athlete = {}) {
     birthday: Faker.date.past(20),
     weightGoal: Faker.random.arrayElement(weightGoal),
     email: Faker.internet.email(),
-    password: Faker.random.alphaNumeric(),
+    password: Faker.random.alphaNumeric(16),
   }
   template.birthday.setMilliseconds(0)
   return { ...template, ...athlete }
