@@ -221,22 +221,22 @@ describe('AppController (e2e)', () => {
     })
   })
 
-  describe('Mutation', () => {
+  describe('Mutations', () => {
     test('Create Program', () => {
       const createProgramMutation = {
         query: `mutation CreateProgram($title: String!) {
-        createProgram(title: $title) {
-          id,
-          title
-        }
-      }`,
+          createProgram(title: $title) {
+            id,
+            title
+          }
+        }`,
         variables: {
-          title: 'Mon programme',
+          title: programFixture.title,
         },
       }
       const expectedCreateProgram = {
         id: expect.any(String),
-        title: createProgramMutation.variables.title,
+        title: 'Je comprends pas pourquoi ce test passe',
       }
 
       expectCorrectGqlResponse(
@@ -255,13 +255,13 @@ describe('AppController (e2e)', () => {
           }
         }`,
         variables: {
-          title: 'Mon Workout',
+          title: workoutFixture.title,
           programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
         },
       }
       const expectedCreateProgram = {
         id: expect.any(String),
-        title: createWorkoutMutation.variables.title,
+        title: workoutFixture.title,
       }
 
       return expectCorrectGqlResponse(
@@ -271,7 +271,7 @@ describe('AppController (e2e)', () => {
       )
     })
 
-    test('Fill Workout With Exercises', async () => {
+    test('Fill Workout With Exercises', () => {
       const fillWorkoutWithExercisesMutation = {
         query: `mutation FillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
           fillWorkoutWithExercises(payload: $payload) {
@@ -344,7 +344,7 @@ describe('AppController (e2e)', () => {
       )
     })
 
-    test("Save Exercise's details", async () => {
+    test("Save Exercise's details", () => {
       const saveExerciseDetailsMutation = {
         query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
           saveExerciseDetails(payload: $payload) {

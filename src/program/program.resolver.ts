@@ -12,9 +12,7 @@ export class ProgramResolver {
   }
 
   @Mutation(() => Program)
-  async createProgram(
-    @Args({ name: 'title', type: () => String }) title: string,
-  ) {
+  async createProgram(@Args('title') title: string): Promise<Program> {
     return this.programService.create(title)
   }
 }
