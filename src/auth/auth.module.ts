@@ -4,6 +4,8 @@ import { AuthService } from './auth.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
 import { JwtModule } from '@nestjs/jwt'
+import { EmailGatewayToken } from '../athlete/gateways/email.gateway'
+import { InMemoryEmailGateway } from '../athlete/gateways/in-memory-email.gateway'
 
 @Module({
   imports: [
@@ -14,6 +16,10 @@ import { JwtModule } from '@nestjs/jwt'
       signOptions: { expiresIn: 3600 },
     }),
   ],
-  providers: [AuthResolver, AuthService],
+  providers: [
+    { provide: EmailGatewayToken, useClass: InMemoryEmailGateway },
+    AuthResolver,
+    AuthService,
+  ],
 })
 export class AuthModule {}

@@ -5,14 +5,23 @@ import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlet
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { InMemoryAthleteRepository } from '../athlete/repositories/in-memory-athlete.repository'
 import { AthleteRepository } from '../athlete/repositories/athlete-repository.interface'
-import { UnauthorizedException } from '@nestjs/common'
+import { ConflictException, UnauthorizedException } from '@nestjs/common'
 import * as Faker from 'faker'
 import { JwtModule, JwtService } from '@nestjs/jwt'
+import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
+import { Athlete } from '../athlete/entities/athlete.entity'
+import * as Bcrypt from 'bcrypt'
+import {
+  EmailGateway,
+  EmailGatewayToken,
+} from '../athlete/gateways/email.gateway'
+import { InMemoryEmailGateway } from '../athlete/gateways/in-memory-email.gateway'
 
 describe('AuthService', () => {
   let authService: AuthService
   let athleteRepository: AthleteRepository
   let jwtService: JwtService
+  let emailGateway: EmailGateway
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,6 +36,10 @@ describe('AuthService', () => {
           provide: getRepositoryToken(TypeOrmAthleteRepository),
           useClass: InMemoryAthleteRepository,
         },
+        {
+          provide: EmailGatewayToken,
+          useClass: InMemoryEmailGateway,
+        },
         AuthService,
       ],
     }).compile()
@@ -36,6 +49,7 @@ describe('AuthService', () => {
       getRepositoryToken(TypeOrmAthleteRepository),
     )
     jwtService = module.get<JwtService>(JwtService)
+    emailGateway = module.get<EmailGateway>(EmailGatewayToken)
   })
 
   it('should be defined', () => {
@@ -93,5 +107,77 @@ describe('AuthService', () => {
       expect(retrieveAthlete).toBeUndefined()
       expect(thrownException).toStrictEqual(expectedException)
     })
+  })
+
+  describe('register', () => {
+    it('should register the athlete with hashed and salted password', async () => {
+      const registerAthleteInput = registerAthleteInputDataBuilder()
+      const expectedAthlete = new Athlete({
+        ...registerAthleteInput,
+        id: expect.any(String),
+        password: expect.any(String),
+      })
+
+      const registeredAthlete = await authService.register(registerAthleteInput)
+      const comparedPasswords = Bcrypt.compare(
+        registeredAthlete.password,
+        registerAthleteInput.password,
+      )
+
+      expect(registeredAthlete).toStrictEqual(expectedAthlete)
+      expect(registeredAthlete.password).not.toBe(registerAthleteInput.password)
+      expect(comparedPasswords).toBeTruthy()
+    })
+
+    it('should throw a Conflict Exception when email is already taken', async () => {
+      const expectedError = new ConflictException('Username already taken')
+      const [alreadyRegisteredAthlete] = await athleteRepository.find()
+      const athleteWithSameEmail = registerAthleteInputDataBuilder({
+        email: alreadyRegisteredAthlete.email,
+      })
+
+      let thrownError, retrievedAthlete
+      try {
+        retrievedAthlete = await authService.register(athleteWithSameEmail)
+      } catch (e) {
+        thrownError = e
+      }
+
+      expect(retrievedAthlete).toBeUndefined()
+      expect(thrownError).toStrictEqual(expectedError)
+    })
+
+    it('should throw Exception as is if not Conflict Exception', async () => {
+      const expectedError = new Error('random')
+
+      athleteRepository.save = jest.fn().mockImplementation(() => {
+        throw expectedError
+      })
+
+      let thrownError, retrievedAthlete
+      try {
+        retrievedAthlete = await authService.register(
+          registerAthleteInputDataBuilder(),
+        )
+      } catch (e) {
+        thrownError = e
+      }
+
+      expect(retrievedAthlete).toBeUndefined()
+      expect(thrownError).toStrictEqual(expectedError)
+    })
+  })
+
+  it('should send a confirmation email', async () => {
+    const [athlete] = await athleteRepository.find()
+
+    const sendConfirmationEmail = jest.spyOn(
+      emailGateway,
+      'sendConfirmationEmail',
+    )
+
+    await authService.sendConfirmationEmail(athlete.id)
+
+    expect(sendConfirmationEmail).toHaveBeenCalledWith(athlete)
   })
 })

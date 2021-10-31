@@ -5,6 +5,10 @@ import { authCredentialsInputDataBuilder } from '../../test/data-builders/auth-c
 import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
 import { JwtModule } from '@nestjs/jwt'
 import * as Faker from 'faker'
+import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
+import { Athlete } from '../athlete/entities/athlete.entity'
+import { EmailGatewayToken } from '../athlete/gateways/email.gateway'
+import { InMemoryEmailGateway } from '../athlete/gateways/in-memory-email.gateway'
 
 describe('AuthResolver', () => {
   let authResolver: AuthResolver
@@ -18,7 +22,12 @@ describe('AuthResolver', () => {
           signOptions: { expiresIn: 3600 },
         }),
       ],
-      providers: [AuthResolver, AuthService, TypeOrmAthleteRepository],
+      providers: [
+        { provide: EmailGatewayToken, useClass: InMemoryEmailGateway },
+        AuthResolver,
+        AuthService,
+        TypeOrmAthleteRepository,
+      ],
     }).compile()
 
     authResolver = module.get<AuthResolver>(AuthResolver)
@@ -38,5 +47,32 @@ describe('AuthResolver', () => {
     const retrievedToken = await authResolver.signIn(authCredentialsInput)
 
     expect(retrievedToken).toStrictEqual(fakeToken)
+  })
+
+  it('should register the athlete', async () => {
+    const registerAthleteInput = registerAthleteInputDataBuilder()
+    const expectedAthlete = new Athlete({
+      id: Faker.datatype.uuid(),
+      ...registerAthleteInput,
+    })
+
+    authService.register = jest.fn().mockResolvedValue(expectedAthlete)
+
+    const registeredAthlete = await authResolver.registerAthlete(
+      registerAthleteInput,
+    )
+
+    expect(authService.register).toHaveBeenCalledWith(registerAthleteInput)
+    expect(registeredAthlete).toStrictEqual(expectedAthlete)
+  })
+
+  it('should send a confirmation email', async () => {
+    const athleteId = Faker.datatype.uuid()
+
+    authService.sendConfirmationEmail = jest.fn()
+
+    await authService.sendConfirmationEmail(athleteId)
+
+    expect(authService.sendConfirmationEmail).toHaveBeenCalledWith(athleteId)
   })
 })
