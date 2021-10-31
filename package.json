@@ -28,9 +28,14 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/graphql": "^9.1.1",
+    "@nestjs/jwt": "^8.0.0",
+    "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/typeorm": "^8.0.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/passport-jwt": "^3.0.6",
     "apollo-server-express": "^2",
+    "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "faker": "^5.5.3",
@@ -38,6 +43,8 @@
     "graphql-tools": "^8.2.0",
     "knex": "^0.95.12",
     "mysql2": "^2.3.2",
+    "passport": "^0.5.0",
+    "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7",
@@ -70,7 +77,11 @@
     "typescript": "^4.4.4"
   },
   "jest": {
-    "moduleFileExtensions": ["js", "json", "ts"],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {

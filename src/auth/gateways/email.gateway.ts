@@ -1,4 +1,4 @@
-import { Athlete } from '../entities/athlete.entity'
+import { Athlete } from '../../athlete/entities/athlete.entity'
 
 export const EmailGatewayToken = 'EmailGateway'
 

@@ -1,7 +1,4 @@
 import { Connection } from 'typeorm'
-import { Program } from '../src/program/entities/program.entity'
-import { Workout } from '../src/workout/entities/workout.entity'
-import { Exercise } from '../src/exercise/entities/exercise.entity'
 import { Athlete } from '../src/athlete/entities/athlete.entity'
 import { athleteDataBuilder } from './data-builders/athlete.data-builder'
 import { workoutDataBuilder } from './data-builders/workout.data-builder'
@@ -14,6 +11,7 @@ import { TypeOrmProgramRepository } from '../src/program/repositories/type-orm-p
 import { TypeOrmAthleteRepository } from '../src/athlete/repositories/typeorm-athlete.repository'
 import { execSync } from 'child_process'
 import * as Faker from 'faker'
+import { INestApplication } from '@nestjs/common'
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
@@ -40,7 +38,8 @@ async function saveFixtures(
   await customRepository.save(fixture)
 }
 
-export async function generateFixtures(connection: Connection) {
+export async function generateFixtures(app: INestApplication) {
+  const connection = app.get(Connection)
   const workout = {
     ...workoutFixture,
     exercises: exercisesFixture,
@@ -60,10 +59,4 @@ export async function generateFixtures(connection: Connection) {
   execSync('yarn db:seed')
   for (const pair of entityRepositoryFixturePairs)
     await saveFixtures(connection, pair)
-}
-
-export async function deleteProgramAndWorkoutFixture(connection: Connection) {
-  const entities = [Exercise, Workout, Program, Athlete]
-  for (const entity of entities)
-    await connection.createQueryBuilder().delete().from(entity).execute()
 }

@@ -32,7 +32,7 @@ export class Athlete {
   @Column()
   weightGoal: WeightGoal
 
-  @Column()
+  @Column({ unique: true })
   email: string
 
   @Column()

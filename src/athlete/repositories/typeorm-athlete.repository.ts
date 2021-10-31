@@ -10,4 +10,8 @@ export class TypeOrmAthleteRepository
   findById(athleteId: string): Promise<Athlete> {
     return this.findOne(athleteId)
   }
+
+  findByEmail(athleteEmail: string): Promise<Athlete> {
+    return this.findOne({ email: athleteEmail })
+  }
 }
