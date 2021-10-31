@@ -49,11 +49,21 @@ type Athlete {
   password: String!
 }
 
+type AccessToken {
+  token: String!
+}
+
 type Query {
   getAllExerciseTemplates: [ExerciseTemplate!]!
   getExercise(exerciseId: ID!): Exercise!
   getAllPrograms: [Program!]!
   getWorkoutExercises(workoutId: ID!): [Exercise!]!
+  signIn(payload: AuthCredentialsInput!): AccessToken!
+}
+
+input AuthCredentialsInput {
+  email: String!
+  password: String!
 }
 
 type Mutation {

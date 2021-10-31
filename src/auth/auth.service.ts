@@ -11,14 +11,11 @@ import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlet
 import * as Bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt'
 import { AccessToken } from './types/access-token.type'
-import { RegisterAthleteInput } from '../athlete/types/register-athlete.input'
+import { RegisterAthleteInput } from './types/register-athlete.input'
 import { Athlete } from '../athlete/entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
 import { RepositoryErrors } from '../athlete/types/repository-errors.enum'
-import {
-  EmailGateway,
-  EmailGatewayToken,
-} from '../athlete/gateways/email.gateway'
+import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
 
 @Injectable()
 export class AuthService {

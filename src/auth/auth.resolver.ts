@@ -1,14 +1,29 @@
-import { Args, ID, Mutation, Resolver } from '@nestjs/graphql'
+import {
+  Args,
+  Field,
+  ID,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from '@nestjs/graphql'
 import { AuthService } from './auth.service'
 import { AuthCredentialsInput } from './types/auth-credentials.input'
 import { Athlete } from '../athlete/models/athlete.model'
-import { RegisterAthleteInput } from '../athlete/types/register-athlete.input'
+import { RegisterAthleteInput } from './types/register-athlete.input'
+
+@ObjectType()
+export class AccessToken {
+  @Field()
+  token: string
+}
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  async signIn(authCredentialsInput: AuthCredentialsInput) {
+  @Query(() => AccessToken)
+  async signIn(@Args('payload') authCredentialsInput: AuthCredentialsInput) {
     return this.authService.signIn(authCredentialsInput)
   }
 

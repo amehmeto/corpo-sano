@@ -4,8 +4,8 @@ import { AuthService } from './auth.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
 import { JwtModule } from '@nestjs/jwt'
-import { EmailGatewayToken } from '../athlete/gateways/email.gateway'
-import { InMemoryEmailGateway } from '../athlete/gateways/in-memory-email.gateway'
+import { EmailGatewayToken } from './gateways/email.gateway'
+import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 
 @Module({
   imports: [

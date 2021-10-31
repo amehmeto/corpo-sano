@@ -1,6 +1,6 @@
 import { EmailGateway } from './email.gateway'
 import * as Faker from 'faker'
-import { Athlete } from '../entities/athlete.entity'
+import { Athlete } from '../../athlete/entities/athlete.entity'
 
 export class InMemoryEmailGateway implements EmailGateway {
   sendConfirmationEmail(athlete: Athlete): Promise<void> {

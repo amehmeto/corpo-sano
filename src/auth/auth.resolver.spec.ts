@@ -7,8 +7,8 @@ import { JwtModule } from '@nestjs/jwt'
 import * as Faker from 'faker'
 import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
 import { Athlete } from '../athlete/entities/athlete.entity'
-import { EmailGatewayToken } from '../athlete/gateways/email.gateway'
-import { InMemoryEmailGateway } from '../athlete/gateways/in-memory-email.gateway'
+import { EmailGatewayToken } from './gateways/email.gateway'
+import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 
 describe('AuthResolver', () => {
   let authResolver: AuthResolver

@@ -1,5 +1,5 @@
 import { AthleteRepository } from './athlete-repository.interface'
-import { RegisterAthleteInput } from '../types/register-athlete.input'
+import { RegisterAthleteInput } from '../../auth/types/register-athlete.input'
 import { Athlete } from '../entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
 import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-builder'

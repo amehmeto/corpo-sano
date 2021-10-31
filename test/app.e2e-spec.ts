@@ -2,11 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
-import { Connection } from 'typeorm'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
   athleteFixture,
-  deleteProgramAndWorkoutFixture,
   exercisesFixture,
   generateFixtures,
   programFixture,
@@ -15,6 +13,8 @@ import {
 import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
 import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
+import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
+import { deleteFixtures } from './delete-fixtures'
 
 type Mutation = { variables: Record<string, unknown>; query: string }
 
@@ -31,7 +31,6 @@ function displayErrors(response: any) {
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
-  let connection: Connection
 
   function expectCorrectGqlResponse(
     mutation: Mutation,
@@ -57,12 +56,11 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
 
-    connection = app.get(Connection)
-    await generateFixtures(connection)
+    await generateFixtures(app)
   })
 
   afterAll(async () => {
-    await deleteProgramAndWorkoutFixture(connection)
+    await deleteFixtures(app)
   })
 
   describe('Queries', () => {
@@ -177,6 +175,25 @@ describe('AppController (e2e)', () => {
         'getExercise',
         expectedGetExerciseById,
       )
+    })
+
+    test('Sign In', () => {
+      const signInQuery = {
+        query: `query SignIn($payload: AuthCredentialsInput!) {
+          signIn(payload: $payload) {
+            token
+          }
+        }`,
+        variables: {
+          payload: authCredentialsInputDataBuilder({
+            email: athleteFixture.email,
+          }),
+        },
+      }
+      const expectedJwtToken = {
+        token: expect.any(String),
+      }
+      return expectCorrectGqlResponse(signInQuery, 'signIn', expectedJwtToken)
     })
   })
 

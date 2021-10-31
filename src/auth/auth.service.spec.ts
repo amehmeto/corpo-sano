@@ -11,11 +11,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt'
 import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
 import { Athlete } from '../athlete/entities/athlete.entity'
 import * as Bcrypt from 'bcrypt'
-import {
-  EmailGateway,
-  EmailGatewayToken,
-} from '../athlete/gateways/email.gateway'
-import { InMemoryEmailGateway } from '../athlete/gateways/in-memory-email.gateway'
+import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
+import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
 
 describe('AuthService', () => {
   let authService: AuthService
