@@ -8,6 +8,8 @@ const gender = Object.values(Gender)
 const weightGoal = Object.values(WeightGoal)
 
 export function athleteDataBuilder(athlete = {}) {
+  const hashedPassword =
+    '$2b$10$JsRFxroTkMbSUJYHNzZm..mJbqqaR0cAUefX4Fo1mdZzM34oy97CC' // generate with "qwerty"
   const template = {
     id: Faker.datatype.uuid(),
     name: Faker.name.firstName(),
@@ -19,7 +21,7 @@ export function athleteDataBuilder(athlete = {}) {
     birthday: Faker.date.past(20),
     weightGoal: Faker.random.arrayElement(weightGoal),
     email: Faker.internet.email(),
-    password: Faker.random.alphaNumeric(16),
+    password: hashedPassword,
   }
   template.birthday.setMilliseconds(0)
   return { ...template, ...athlete }

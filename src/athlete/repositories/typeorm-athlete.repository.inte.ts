@@ -42,6 +42,16 @@ describe('TypeOrmAthleteRepository', () => {
     expect(retrievedAthlete).toStrictEqual(expectedAthlete)
   })
 
+  it('should find an athlete by email', async () => {
+    const expectedAthlete = new Athlete({ ...athleteFixture })
+
+    const retrievedAthlete = await athleteRepository.findByEmail(
+      athleteFixture.email,
+    )
+
+    expect(retrievedAthlete).toStrictEqual(expectedAthlete)
+  })
+
   it('should throw an error when email already used', async () => {
     const alreadyRegisteredAthlete = new Athlete(athleteDataBuilder())
     const athleteWithSameEmail = new Athlete(

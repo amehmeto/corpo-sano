@@ -7,13 +7,21 @@ import { InMemoryAthleteRepository } from '../athlete/repositories/in-memory-ath
 import { AthleteRepository } from '../athlete/repositories/athlete-repository.interface'
 import { UnauthorizedException } from '@nestjs/common'
 import * as Faker from 'faker'
+import { JwtModule, JwtService } from '@nestjs/jwt'
 
 describe('AuthService', () => {
   let authService: AuthService
   let athleteRepository: AthleteRepository
+  let jwtService: JwtService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        JwtModule.register({
+          secret: 'should be an env var',
+          signOptions: { expiresIn: 3600 },
+        }),
+      ],
       providers: [
         {
           provide: getRepositoryToken(TypeOrmAthleteRepository),
@@ -27,6 +35,7 @@ describe('AuthService', () => {
     athleteRepository = module.get<AthleteRepository>(
       getRepositoryToken(TypeOrmAthleteRepository),
     )
+    jwtService = module.get<JwtService>(JwtService)
   })
 
   it('should be defined', () => {
@@ -34,17 +43,21 @@ describe('AuthService', () => {
   })
 
   describe('signIn', () => {
-    it('should retrieve the athlete by email', async () => {
+    it('should return the JWT access token', async () => {
       const [athlete] = await athleteRepository.find()
       const authCredentialsInput = authCredentialsInputDataBuilder({
         email: athlete.email,
-        password: athlete.password,
+        password: 'qwerty',
       })
-      const expectedAthlete = athlete
+      const expectedAccessToken = {
+        token: jwtService.sign({ athleteId: athlete.id }),
+      }
 
-      const retrievedAthlete = await authService.signIn(authCredentialsInput)
+      const retrievedAccessToken = await authService.signIn(
+        authCredentialsInput,
+      )
 
-      expect(retrievedAthlete).toStrictEqual(expectedAthlete)
+      expect(retrievedAccessToken).toStrictEqual(expectedAccessToken)
     })
 
     it("should throw an UnauthorizedException if the athlete doesn't exists", async () => {

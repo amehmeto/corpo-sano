@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service'
 import { authCredentialsInputDataBuilder } from '../../test/data-builders/auth-credentials-input.data-builder'
+import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
+import { JwtModule } from '@nestjs/jwt'
+import * as Faker from 'faker'
 
 describe('AuthResolver', () => {
   let authResolver: AuthResolver
@@ -9,7 +12,13 @@ describe('AuthResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthResolver, AuthService],
+      imports: [
+        JwtModule.register({
+          secret: 'should be an env var',
+          signOptions: { expiresIn: 3600 },
+        }),
+      ],
+      providers: [AuthResolver, AuthService, TypeOrmAthleteRepository],
     }).compile()
 
     authResolver = module.get<AuthResolver>(AuthResolver)
@@ -20,13 +29,14 @@ describe('AuthResolver', () => {
     expect(authResolver).toBeDefined()
   })
 
-  it('should sign in the athlete', async () => {
+  it('should sign in the athlete by returning a JWT token', async () => {
     const authCredentialsInput = authCredentialsInputDataBuilder()
+    const fakeToken = { token: Faker.random.alphaNumeric(32) }
 
-    authService.signIn = jest.fn()
+    authService.signIn = jest.fn().mockResolvedValue(fakeToken)
 
-    await authResolver.signIn(authCredentialsInput)
+    const retrievedToken = await authResolver.signIn(authCredentialsInput)
 
-    expect(authService.signIn).toHaveBeenCalledWith(authCredentialsInput)
+    expect(retrievedToken).toStrictEqual(fakeToken)
   })
 })
