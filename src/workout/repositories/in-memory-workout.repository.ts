@@ -2,6 +2,7 @@ import { WorkoutRepository } from './workout-repository.interface'
 import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
 import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
+import * as Faker from 'faker'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
   private workoutsData = [
@@ -30,7 +31,7 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
   save(workout: Workout): Promise<Workout> {
     return Promise.resolve(
       new Workout({
-        id: '4f58abaf-e026-47c8-be10-0eab9a017b07', // random
+        id: workout.id ?? Faker.datatype.uuid(),
         ...workout,
       }),
     )

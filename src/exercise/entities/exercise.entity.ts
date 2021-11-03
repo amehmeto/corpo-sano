@@ -34,6 +34,9 @@ export class Exercise {
   @Column({ default: 0 })
   finalRestTime: number
 
+  @Column()
+  rankInWorkout: number
+
   @ManyToOne(() => Workout, (workout) => workout.exercises)
   workout: Workout
 

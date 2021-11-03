@@ -11,6 +11,7 @@ export function exerciseDataBuilder(exercise = {}) {
     numberOfReps: 0,
     interSetsRestTime: 0,
     finalRestTime: 0,
+    rankInWorkout: Faker.datatype.number({ min: 0, max: 10 }),
   }
   return { ...template, ...exercise }
 }

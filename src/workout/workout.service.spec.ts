@@ -15,6 +15,7 @@ import { Exercise } from '../exercise/entities/exercise.entity'
 import { workoutInputDataBuilder } from '../../test/data-builders/workout-input.data-builder'
 import { WorkoutRepository } from './repositories/workout-repository.interface'
 import { workoutDataBuilder } from '../../test/data-builders/workout.data-builder'
+import { Rank } from './types/rank.enum'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
@@ -124,5 +125,33 @@ describe('Workout Service', () => {
     )
 
     expect(scheduledWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it("should reorder the workout's exercise rank", async () => {
+    const [
+      {
+        id: workoutId,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        exercises: [_, exerciseToBeSwapped, exercise],
+      },
+    ] = await workoutRepository.find()
+    const expectedExerciseRankInWorkout = exercise.rankInWorkout + Rank.MOVE_UP
+    const expectedSwappedExerciseRankInWorkout =
+      exerciseToBeSwapped.rankInWorkout + Rank.MOVE_DOWN
+
+    const reorderedWorkout = await workoutService.reorderExercise(
+      workoutId,
+      exercise.id,
+      Rank.MOVE_UP,
+    )
+
+    const reorderedExercise = reorderedWorkout.exercises[2]
+    const swappedExercise = reorderedWorkout.exercises[1]
+    expect(reorderedExercise.rankInWorkout).toStrictEqual(
+      expectedExerciseRankInWorkout,
+    )
+    expect(swappedExercise.rankInWorkout).toStrictEqual(
+      expectedSwappedExerciseRankInWorkout,
+    )
   })
 })

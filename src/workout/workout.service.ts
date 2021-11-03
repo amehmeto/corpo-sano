@@ -12,6 +12,7 @@ import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { Exercise } from '../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { ExerciseRepository } from '../exercise/repositories/exercise-repository.interface'
+import { Rank } from './types/rank.enum'
 
 @Injectable()
 export class WorkoutService {
@@ -59,5 +60,54 @@ export class WorkoutService {
   ): Promise<Workout> {
     const { daysOfTheWeek, workoutId } = scheduleWorkoutInput
     return this.workoutRepository.scheduleWorkout(workoutId, daysOfTheWeek)
+  }
+
+  async reorderExercise(
+    workoutId: string,
+    exerciseId: string,
+    newRank: Rank,
+  ): Promise<Workout> {
+    const workout = await this.workoutRepository.findById(workoutId)
+
+    const { exerciseIndex, swapExerciseIndex } = this.getExercisesIndex(
+      workout,
+      exerciseId,
+      newRank,
+    )
+    workout.exercises = this.swapExercisesRank(
+      workout.exercises,
+      newRank,
+      exerciseIndex,
+      swapExerciseIndex,
+    )
+
+    return this.workoutRepository.save(workout)
+  }
+
+  private swapExercisesRank(
+    exercises: Exercise[],
+    newRank: Rank,
+    exerciseIndex: number,
+    swapExerciseIndex: number,
+  ) {
+    exercises[exerciseIndex].rankInWorkout += newRank
+    exercises[swapExerciseIndex].rankInWorkout -= newRank
+    return exercises
+  }
+
+  private getExercisesIndex(
+    workout: Workout,
+    exerciseId: string,
+    newRank: Rank,
+  ) {
+    const exerciseIndex = workout.exercises.findIndex(
+      (_exercise) => _exercise.id === exerciseId,
+    )
+    const swapExerciseIndex = workout.exercises.findIndex((_exercise) => {
+      const targetedRank =
+        workout.exercises[exerciseIndex].rankInWorkout + newRank
+      return _exercise.rankInWorkout === targetedRank
+    })
+    return { exerciseIndex, swapExerciseIndex }
   }
 }
