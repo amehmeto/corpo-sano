@@ -129,16 +129,16 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
-    const expectedWorkout = {
+    const expectedWorkout = new Workout({
       id: workoutFixture.id,
       title: 'Mon Workout',
       exercises: exercisesDataBuilder(),
       scheduledDays: [] as WeekDays[],
-    }
+    })
 
     const foundExercise = await workoutRepository.findById(workoutFixture.id)
 
-    expect(foundExercise).toStrictEqual(new Workout(expectedWorkout))
+    expect(foundExercise).toStrictEqual(expectedWorkout)
   })
 
   it("should get workout's exercises", async () => {

@@ -60,4 +60,8 @@ export class WorkoutService {
     const { daysOfTheWeek, workoutId } = scheduleWorkoutInput
     return this.workoutRepository.scheduleWorkout(workoutId, daysOfTheWeek)
   }
+
+  async getById(workoutId: string): Promise<Workout> {
+    return this.workoutRepository.findById(workoutId)
+  }
 }
