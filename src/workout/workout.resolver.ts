@@ -16,6 +16,13 @@ export class WorkoutResolver {
     return this.workoutService.getExercises(workoutId)
   }
 
+  @Query(() => Workout)
+  async getWorkout(
+    @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
+  ): Promise<Workout> {
+    return this.workoutService.getById(workoutId)
+  }
+
   @Mutation(() => Workout)
   async createWorkout(
     @Args('title') title: string,

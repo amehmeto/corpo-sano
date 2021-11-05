@@ -91,6 +91,30 @@ describe('AppController (e2e)', () => {
       )
     })
 
+    test('Get Workout', () => {
+      const getWorkoutQuery = {
+        query: `query GetWorkout($workoutId: ID!) {
+          getWorkout(workoutId: $workoutId) {
+            id
+            title
+          }
+        }`,
+        variables: {
+          workoutId: workoutFixture.id,
+        },
+      }
+      const expectedWorkout = {
+        id: workoutFixture.id,
+        title: workoutFixture.title,
+      }
+
+      return expectCorrectGqlResponse(
+        getWorkoutQuery,
+        'getWorkout',
+        expectedWorkout,
+      )
+    })
+
     test('Get Workout Exercises', () => {
       const getWorkoutExercisesQuery = {
         query: `query GetWorkoutExercises($workoutId: ID!){

@@ -94,6 +94,14 @@ describe('Workout Service', () => {
     expect(filledWorkout).toStrictEqual(expectedWorkout)
   })
 
+  it('should get a workout by id', async () => {
+    const [expectedWorkout] = await workoutRepository.find()
+
+    const retrievedWorkout = await workoutService.getById(expectedWorkout.id)
+
+    expect(retrievedWorkout).toStrictEqual(expectedWorkout)
+  })
+
   it("should get all workout's exercises", async () => {
     const workoutId = Faker.datatype.uuid()
     const expectedExercises = [
