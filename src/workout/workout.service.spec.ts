@@ -132,7 +132,7 @@ describe('Workout Service', () => {
       {
         id: workoutId,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        exercises: [_, exerciseToBeSwapped, exercise],
+        exercises: [exerciseToBeSwapped, exercise],
       },
     ] = await workoutRepository.find()
     const expectedExerciseRankInWorkout = exercise.rankInWorkout + Rank.MOVE_UP
@@ -145,8 +145,8 @@ describe('Workout Service', () => {
       Rank.MOVE_UP,
     )
 
-    const reorderedExercise = reorderedWorkout.exercises[2]
-    const swappedExercise = reorderedWorkout.exercises[1]
+    const reorderedExercise = reorderedWorkout.exercises[1]
+    const swappedExercise = reorderedWorkout.exercises[0]
     expect(reorderedExercise.rankInWorkout).toStrictEqual(
       expectedExerciseRankInWorkout,
     )
