@@ -15,7 +15,6 @@ export class ProgramService {
     const program = new Program({
       title,
     })
-    console.log(program)
     return this.programRepository.save(program)
   }
 

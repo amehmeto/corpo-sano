@@ -15,6 +15,7 @@ import { registerAthleteInputDataBuilder } from './data-builders/register-athlet
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
+import { Exercise } from '../src/exercise/entities/exercise.entity'
 
 type Query = { variables: Record<string, unknown>; query: string }
 
@@ -443,12 +444,17 @@ describe('AppController (e2e)', () => {
         }`,
         variables: {
           payload: {
-            id: workoutFixture.id,
             ...workoutFixture,
+            id: workoutFixture.id,
+            title: 'nouveau titre',
           },
         },
       }
-      const expectedWorkout = {}
+      const expectedWorkout = {
+        exercises: [] as Exercise[],
+        id: workoutFixture.id,
+        title: 'nouveau titre',
+      }
       return expectCorrectGqlResponse(
         updateWorkoutQuery,
         'updateWorkout',

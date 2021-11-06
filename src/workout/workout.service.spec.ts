@@ -142,7 +142,8 @@ describe('Workout Service', () => {
     exercises[1] = tempSwap
     const newWorkout = new Workout(
       workoutDataBuilder({
-        ...exercises,
+        title: 'new title',
+        exercises,
       }),
     )
     const expectedWorkout = newWorkout

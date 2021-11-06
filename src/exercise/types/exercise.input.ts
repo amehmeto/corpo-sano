@@ -1,14 +1,26 @@
 import { Field, ID, InputType } from '@nestjs/graphql'
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator'
+import { ExerciseTemplateInput } from './exercise-template.input'
 
 @InputType()
 export class ExerciseInput {
-  @IsUUID()
   @Field(() => ID)
   id: string
 
-  @IsNotEmpty()
-  @IsString()
-  @Field(() => String)
-  title: string
+  @Field()
+  template: ExerciseTemplateInput
+
+  @Field()
+  numberOfSets: number
+
+  @Field()
+  numberOfReps: number
+
+  @Field()
+  finalRestTime: number
+
+  @Field()
+  interSetsRestTime: number
+
+  @Field()
+  createAt: Date
 }

@@ -11,9 +11,8 @@ import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { Exercise } from '../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { ExerciseRepository } from '../exercise/repositories/exercise-repository.interface'
-import { CreateWorkout } from './types/create-workout.type'
+import { WorkoutInput } from './types/workout-input.type'
 import { UpdateWorkoutInput } from './types/update-workout.input'
-import { WorkoutInput } from './types/workout.input'
 
 @Injectable()
 export class WorkoutService {
@@ -26,7 +25,7 @@ export class WorkoutService {
     private readonly exerciseRepository: ExerciseRepository,
   ) {}
 
-  async create(workoutInput: CreateWorkout): Promise<Workout> {
+  async create(workoutInput: WorkoutInput): Promise<Workout> {
     const workout = new Workout({
       id: uuid(),
       title: workoutInput.title,
@@ -67,7 +66,11 @@ export class WorkoutService {
     return this.workoutRepository.findById(workoutId)
   }
 
-  async update(newWorkout: WorkoutInput): Promise<Workout> {
-    return this.workoutRepository.save(newWorkout as unknown as Workout)
+  async update(newWorkout: UpdateWorkoutInput): Promise<Workout> {
+    const workout = await this.workoutRepository.save(
+      newWorkout as unknown as Workout,
+    )
+    if (!workout.exercises) workout.exercises = []
+    return workout
   }
 }
