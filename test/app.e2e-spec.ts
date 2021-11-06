@@ -410,7 +410,7 @@ describe('AppController (e2e)', () => {
 
     test('Send Confirmation Email', () => {
       const sendConfirmationEmailMutation = {
-        query: `mutation sendConfirmationEmail($athleteId: ID!) {
+        query: `mutation SendConfirmationEmail($athleteId: ID!) {
           sendConfirmationEmail(athleteId: $athleteId) {
             id
           }
@@ -424,6 +424,35 @@ describe('AppController (e2e)', () => {
         sendConfirmationEmailMutation,
         'sendConfirmationEmail',
         expectedResponse,
+      )
+    })
+
+    test('Update Workout', () => {
+      const updateWorkoutQuery = {
+        query: `mutation UpdateWorkout($payload: UpdateWorkoutInput!) {
+          updateWorkout(payload: $payload) {
+            id
+            title
+            exercises {
+              template {
+                id
+                title
+              }
+            }
+          }
+        }`,
+        variables: {
+          payload: {
+            id: workoutFixture.id,
+            ...workoutFixture,
+          },
+        },
+      }
+      const expectedWorkout = {}
+      return expectCorrectGqlResponse(
+        updateWorkoutQuery,
+        'updateWorkout',
+        expectedWorkout,
       )
     })
   })
