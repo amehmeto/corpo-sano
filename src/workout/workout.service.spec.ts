@@ -133,4 +133,22 @@ describe('Workout Service', () => {
 
     expect(scheduledWorkout).toStrictEqual(expectedWorkout)
   })
+
+  it('should update a workout', async () => {
+    const [workout] = await workoutRepository.find()
+    const exercises = workout.exercises
+    const tempSwap = exercises[0]
+    exercises[0] = exercises[1]
+    exercises[1] = tempSwap
+    const newWorkout = new Workout(
+      workoutDataBuilder({
+        ...exercises,
+      }),
+    )
+    const expectedWorkout = newWorkout
+
+    const updatedWorkout = await workoutService.update(newWorkout)
+
+    expect(updatedWorkout).toStrictEqual(expectedWorkout)
+  })
 })
