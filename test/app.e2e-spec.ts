@@ -16,7 +16,7 @@ import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-detail
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
 
-type Mutation = { variables: Record<string, unknown>; query: string }
+type Query = { variables: Record<string, unknown>; query: string }
 
 function hasErrors(response: any) {
   return response?.body?.errors || response.body === undefined
@@ -33,7 +33,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication
 
   function expectCorrectGqlResponse(
-    mutation: Mutation,
+    mutation: Query,
     retrievedDataKey: string,
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
   ) {
@@ -226,7 +226,7 @@ describe('AppController (e2e)', () => {
       const createProgramMutation = {
         query: `mutation CreateProgram($title: String!) {
           createProgram(title: $title) {
-            id,
+            id
             title
           }
         }`,
@@ -259,7 +259,7 @@ describe('AppController (e2e)', () => {
           programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
         },
       }
-      const expectedCreateProgram = {
+      const expectedCreateWorkout = {
         id: expect.any(String),
         title: workoutFixture.title,
       }
@@ -267,7 +267,7 @@ describe('AppController (e2e)', () => {
       return expectCorrectGqlResponse(
         createWorkoutMutation,
         'createWorkout',
-        expectedCreateProgram,
+        expectedCreateWorkout,
       )
     })
 
