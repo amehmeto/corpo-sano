@@ -24,8 +24,7 @@ export class TypeOrmWorkoutRepository
   }
 
   private static sortByCreateAt(a: Exercise, b: Exercise) {
-    if (a.createAt === b.createAt) return 0
-    return a.createAt > b.createAt ? 1 : -1
+    return a.createAt >= b.createAt ? 1 : -1
   }
 
   async scheduleWorkout(

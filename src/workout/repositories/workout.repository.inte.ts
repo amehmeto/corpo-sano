@@ -10,88 +10,70 @@ import { config } from '../../../config'
 import { execSync } from 'child_process'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
-import * as Faker from 'faker'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
-import { Connection } from 'typeorm'
+import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
+import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
 
-const workoutFixture = {
-  id: Faker.datatype.uuid(),
-  title: 'Mon Workout',
-  exercises: [] as Exercise[],
-}
+const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
+const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 
-const exercises = [
-  {
-    id: '00000000-0000-0000-0000-000000000000',
-    title: 'Jumping jacks',
-  },
-  {
-    id: '00000000-0000-0000-0000-000000000001',
-    title: 'Wall sit',
-  },
-  {
-    id: '00000000-0000-0000-0000-000000000002',
-    title: 'Push-up',
-  },
+const orderedExercisesFixture = [
+  new Exercise(
+    exerciseDataBuilder({
+      createAt: new Date('2018-09-22T15:00:00'),
+    }),
+  ),
+  new Exercise(
+    exerciseDataBuilder({
+      createAt: new Date('2018-09-22T15:02:00'),
+    }),
+  ),
+  new Exercise(
+    exerciseDataBuilder({
+      createAt: new Date('2018-09-22T15:04:00'),
+    }),
+  ),
 ]
 
-const exercisesFixture = exercises.map((exercise) => ({
-  id: Faker.datatype.uuid(),
-  template: new ExerciseTemplate({ ...exercise }),
-  numberOfSets: 0,
-  numberOfReps: 0,
-  interSetsRestTime: 0,
-  finalRestTime: 0,
-}))
+const unorderedExercisesFixture = [
+  new Exercise(
+    exerciseDataBuilder({
+      createAt: new Date('2018-09-22T15:02:00'),
+    }),
+  ),
+  new Exercise(
+    exerciseDataBuilder({
+      createAt: new Date('2018-09-22T15:00:00'),
+    }),
+  ),
 
-async function saveExercisesFixture(
-  workout: Workout,
-  exerciseRepository: TypeOrmExerciseRepository,
-) {
-  const savedExercises = []
-  for (const exercise of exercisesFixture) {
-    const hydratedExercise = { ...exercise, workout }
-    const savedExercise = await exerciseRepository.create(hydratedExercise)
-    await exerciseRepository.save(hydratedExercise)
-    savedExercises.push(savedExercise)
-  }
-  return savedExercises
-}
-
-async function createWorkoutFilledWithExercises(connection: Connection) {
-  const workoutRepository = await connection.getCustomRepository(
-    TypeOrmWorkoutRepository,
-  )
-  const exerciseRepository = await connection.getCustomRepository(
-    TypeOrmExerciseRepository,
-  )
-
-  workoutRepository.insert(workoutFixture)
-  const workout = await workoutRepository.findById(workoutFixture.id)
-  workout.exercises = await saveExercisesFixture(workout, exerciseRepository)
-  await workoutRepository.save(workout)
-}
-
-function exercisesDataBuilder() {
-  return exercisesFixture.map(
-    (fixtureExercise) =>
-      new Exercise({
-        id: fixtureExercise.id,
-        createAt: expect.any(Date),
-        template: new ExerciseTemplate({
-          ...fixtureExercise.template,
-        }),
-        numberOfSets: 0,
-        numberOfReps: 0,
-        interSetsRestTime: 0,
-        finalRestTime: 0,
-      }),
-  )
-}
+  new Exercise(
+    exerciseDataBuilder({
+      createAt: new Date('2018-09-22T15:04:00'),
+    }),
+  ),
+]
 
 describe('TypeOrm Workout Repository', () => {
-  let connection: Connection
   let workoutRepository: TypeOrmWorkoutRepository
+  let exerciseRepository: TypeOrmExerciseRepository
+
+  async function generateFixtures() {
+    const orderedExercises = await exerciseRepository.save(
+      orderedExercisesFixture,
+    )
+    const unorderedExercises = await exerciseRepository.save(
+      unorderedExercisesFixture,
+    )
+
+    orderedExercisesWorkoutFixture.exercises = orderedExercises
+    unorderedExercisesWorkoutFixture.exercises = unorderedExercises
+
+    await workoutRepository.save([
+      orderedExercisesWorkoutFixture,
+      unorderedExercisesWorkoutFixture,
+    ])
+  }
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -111,12 +93,12 @@ describe('TypeOrm Workout Repository', () => {
     workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
+    exerciseRepository = module.get<TypeOrmExerciseRepository>(
+      TypeOrmExerciseRepository,
+    )
 
-    await workoutRepository.query('DELETE FROM exercise')
-    await workoutRepository.query('DELETE FROM workout')
     await execSync('yarn db:seed')
-    connection = module.get(Connection)
-    await createWorkoutFilledWithExercises(connection)
+    await generateFixtures()
   })
 
   afterAll(async () => {
@@ -129,33 +111,46 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
-    const expectedWorkout = new Workout({
-      id: workoutFixture.id,
-      title: 'Mon Workout',
-      exercises: exercisesDataBuilder(),
+    const expectedWorkout = {
+      id: orderedExercisesWorkoutFixture.id,
+      title: orderedExercisesWorkoutFixture.title,
+      exercises: orderedExercisesFixture,
       scheduledDays: [] as WeekDays[],
-    })
+    }
 
-    const foundExercise = await workoutRepository.findById(workoutFixture.id)
-
-    expect(foundExercise).toStrictEqual(expectedWorkout)
-  })
-
-  it("should get workout's exercises", async () => {
-    const expectedExercises = exercisesDataBuilder()
-
-    const retrievedExercises = await workoutRepository.getExercises(
-      workoutFixture.id,
+    const foundExercise = await workoutRepository.findById(
+      orderedExercisesWorkoutFixture.id,
     )
 
-    expect(retrievedExercises).toStrictEqual(expectedExercises)
+    expect(foundExercise).toStrictEqual(new Workout(expectedWorkout))
   })
+
+  it.each([
+    [orderedExercisesWorkoutFixture, orderedExercisesFixture],
+    [
+      unorderedExercisesWorkoutFixture,
+      [
+        unorderedExercisesFixture[1],
+        unorderedExercisesFixture[0],
+        unorderedExercisesFixture[2],
+      ],
+    ],
+  ])(
+    "should get workout's exercises by createAt date",
+    async (workoutFixture, expectedExercises) => {
+      const retrievedExercises = await workoutRepository.getExercises(
+        workoutFixture.id,
+      )
+
+      expect(retrievedExercises).toStrictEqual(expectedExercises)
+    },
+  )
 
   it('should schedule workout', async () => {
     const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]
 
     const scheduledWorkout = await workoutRepository.scheduleWorkout(
-      workoutFixture.id,
+      orderedExercisesWorkoutFixture.id,
       daysOfTheWeek,
     )
 
