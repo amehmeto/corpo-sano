@@ -15,6 +15,7 @@ import { registerAthleteInputDataBuilder } from './data-builders/register-athlet
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
+import { Exercise } from '../src/exercise/entities/exercise.entity'
 
 type Query = { variables: Record<string, unknown>; query: string }
 
@@ -410,7 +411,7 @@ describe('AppController (e2e)', () => {
 
     test('Send Confirmation Email', () => {
       const sendConfirmationEmailMutation = {
-        query: `mutation sendConfirmationEmail($athleteId: ID!) {
+        query: `mutation SendConfirmationEmail($athleteId: ID!) {
           sendConfirmationEmail(athleteId: $athleteId) {
             id
           }
@@ -424,6 +425,40 @@ describe('AppController (e2e)', () => {
         sendConfirmationEmailMutation,
         'sendConfirmationEmail',
         expectedResponse,
+      )
+    })
+
+    test('Update Workout', () => {
+      const updateWorkoutQuery = {
+        query: `mutation UpdateWorkout($payload: UpdateWorkoutInput!) {
+          updateWorkout(payload: $payload) {
+            id
+            title
+            exercises {
+              template {
+                id
+                title
+              }
+            }
+          }
+        }`,
+        variables: {
+          payload: {
+            ...workoutFixture,
+            id: workoutFixture.id,
+            title: 'nouveau titre',
+          },
+        },
+      }
+      const expectedWorkout = {
+        exercises: [] as Exercise[],
+        id: workoutFixture.id,
+        title: 'nouveau titre',
+      }
+      return expectCorrectGqlResponse(
+        updateWorkoutQuery,
+        'updateWorkout',
+        expectedWorkout,
       )
     })
   })

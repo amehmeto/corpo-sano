@@ -13,6 +13,7 @@ import { Exercise } from '../../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
 import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
+import { workoutFixture } from '../../../test/generate.fixtures'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -155,5 +156,22 @@ describe('TypeOrm Workout Repository', () => {
     )
 
     expect(scheduledWorkout.scheduledDays).toStrictEqual(daysOfTheWeek)
+  })
+
+  it('should update a workout', async () => {
+    const newWorkout = workoutDataBuilder({
+      id: workoutFixture.id,
+      title: 'Abs session',
+      exercises: [
+        new Exercise(exerciseDataBuilder()),
+        new Exercise(exerciseDataBuilder()),
+      ],
+    })
+
+    const updatedWorkout = await workoutRepository.save(newWorkout)
+
+    expect(updatedWorkout).toStrictEqual(newWorkout)
+    expect(updatedWorkout).not.toStrictEqual(workoutFixture)
+    expect(updatedWorkout.id).toStrictEqual(workoutFixture.id)
   })
 })
