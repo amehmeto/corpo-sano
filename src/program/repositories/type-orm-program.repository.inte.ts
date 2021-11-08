@@ -6,25 +6,15 @@ import { ExerciseTemplate } from '../../exercise/entities/exercise-template.enti
 import { Program } from '../entities/program.entity'
 import { execSync } from 'child_process'
 import { Workout } from '../../workout/entities/workout.entity'
-import * as Faker from 'faker'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { programDataBuilder } from '../../../test/data-builders/program.data-builder'
 
-const PROGRAM_FIXTURE_UUID = Faker.datatype.uuid()
-const PROGRAM_FIXTURE_UUID_2 = Faker.datatype.uuid()
+const programFixtures = [programDataBuilder(), programDataBuilder()]
 
 async function createProgramFixture(
   programRepository: TypeOrmProgramRepository,
 ) {
-  await programRepository.insert({
-    id: PROGRAM_FIXTURE_UUID,
-    title: 'Programme Hercule en 6 semaines',
-    workouts: [],
-  })
-  await programRepository.insert({
-    id: PROGRAM_FIXTURE_UUID_2,
-    title: 'Programme Aphrodite 2 semaines',
-    workouts: [],
-  })
+  await programRepository.save(programFixtures)
 }
 
 describe('TypeOrm Program Repository', () => {
@@ -47,14 +37,7 @@ describe('TypeOrm Program Repository', () => {
     programRepository = module.get<TypeOrmProgramRepository>(
       TypeOrmProgramRepository,
     )
-  })
 
-  beforeAll(async () => {
-    await programRepository
-      .createQueryBuilder()
-      .delete()
-      .from(Program)
-      .execute()
     await execSync('yarn db:seed')
     await createProgramFixture(programRepository)
   })
@@ -69,16 +52,8 @@ describe('TypeOrm Program Repository', () => {
 
   it('should get all programs', async () => {
     const expectedPrograms = [
-      new Program({
-        id: PROGRAM_FIXTURE_UUID_2,
-        title: 'Programme Aphrodite 2 semaines',
-        workouts: [],
-      }),
-      new Program({
-        id: PROGRAM_FIXTURE_UUID,
-        title: 'Programme Hercule en 6 semaines',
-        workouts: [],
-      }),
+      new Program(programFixtures[0]),
+      new Program(programFixtures[1]),
     ]
 
     const retrievedPrograms = await programRepository.getAllPrograms()

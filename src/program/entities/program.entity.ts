@@ -1,11 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import { Workout } from '../../workout/entities/workout.entity'
+import { Base } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Program {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Program extends Base {
   @Column()
   title: string
 
@@ -13,6 +11,7 @@ export class Program {
   workouts: Workout[]
 
   constructor(partial: Partial<Program> = {}) {
+    super()
     Object.assign(this, partial)
   }
 }
