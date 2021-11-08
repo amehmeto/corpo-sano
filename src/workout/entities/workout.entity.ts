@@ -1,19 +1,11 @@
 import { Program } from '../../program/entities/program.entity'
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
+import { Base } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Workout {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Workout extends Base {
   @Column()
   title: string
 
@@ -31,6 +23,7 @@ export class Workout {
   scheduledDays?: WeekDays[]
 
   constructor(partial: Partial<Workout> = {}) {
+    super()
     Object.assign(this, partial)
   }
 }

@@ -18,42 +18,31 @@ import { workoutFixture } from '../../../test/generate.fixtures'
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 
-const orderedExercisesFixture = [
-  new Exercise(
-    exerciseDataBuilder({
-      createAt: new Date('2018-09-22T15:00:00'),
-    }),
-  ),
-  new Exercise(
-    exerciseDataBuilder({
-      createAt: new Date('2018-09-22T15:02:00'),
-    }),
-  ),
-  new Exercise(
-    exerciseDataBuilder({
-      createAt: new Date('2018-09-22T15:04:00'),
-    }),
-  ),
+const orderedExercisesDates = [
+  '2018-09-22T15:00:00',
+  '2018-09-22T15:02:00',
+  '2018-09-22T15:04:00',
+]
+const unorderedExercisesDates = [
+  '2018-09-22T15:02:00',
+  '2018-09-22T15:00:00',
+  '2018-09-22T15:04:00',
 ]
 
-const unorderedExercisesFixture = [
-  new Exercise(
+function generateExerciseWithDate(date: string): Exercise {
+  return new Exercise(
     exerciseDataBuilder({
-      createAt: new Date('2018-09-22T15:02:00'),
+      createAt: new Date(date),
     }),
-  ),
-  new Exercise(
-    exerciseDataBuilder({
-      createAt: new Date('2018-09-22T15:00:00'),
-    }),
-  ),
+  )
+}
 
-  new Exercise(
-    exerciseDataBuilder({
-      createAt: new Date('2018-09-22T15:04:00'),
-    }),
-  ),
-]
+const orderedExercisesFixture = orderedExercisesDates.map((date) =>
+  generateExerciseWithDate(date),
+)
+const unorderedExercisesFixture = unorderedExercisesDates.map((date) =>
+  generateExerciseWithDate(date),
+)
 
 describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
@@ -112,18 +101,15 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
-    const expectedWorkout = {
-      id: orderedExercisesWorkoutFixture.id,
-      title: orderedExercisesWorkoutFixture.title,
-      exercises: orderedExercisesFixture,
-      scheduledDays: [] as WeekDays[],
-    }
+    const expectedWorkout = new Workout({
+      ...orderedExercisesWorkoutFixture,
+    })
 
     const foundExercise = await workoutRepository.findById(
       orderedExercisesWorkoutFixture.id,
     )
 
-    expect(foundExercise).toStrictEqual(new Workout(expectedWorkout))
+    expect(foundExercise).toStrictEqual(expectedWorkout)
   })
 
   it.each([
