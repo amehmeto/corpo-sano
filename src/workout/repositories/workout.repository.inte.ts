@@ -101,8 +101,17 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by id', async () => {
+    const expectedWorkoutExercises =
+      orderedExercisesWorkoutFixture.exercises.map((exercise) => {
+        return new Exercise({
+          ...exercise,
+          version: 2,
+          updatedAt: expect.any(Date),
+        })
+      })
     const expectedWorkout = new Workout({
       ...orderedExercisesWorkoutFixture,
+      exercises: expectedWorkoutExercises,
     })
 
     const foundExercise = await workoutRepository.findById(
@@ -124,7 +133,15 @@ describe('TypeOrm Workout Repository', () => {
     ],
   ])(
     "should get workout's exercises by createAt date",
-    async (workoutFixture, expectedExercises) => {
+    async (workoutFixture, exercises) => {
+      const expectedExercises = exercises.map((exercise) => {
+        return new Exercise({
+          ...exercise,
+          version: 2,
+          updatedAt: expect.any(Date),
+        })
+      })
+
       const retrievedExercises = await workoutRepository.getExercises(
         workoutFixture.id,
       )
