@@ -7,9 +7,10 @@ import {
 } from 'typeorm'
 import { ExerciseTemplate } from './exercise-template.entity'
 import { Workout } from '../../workout/entities/workout.entity'
+import { Base } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Exercise {
+export class Exercise extends Base {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -41,6 +42,7 @@ export class Exercise {
   createAt: Date
 
   constructor(partial: Partial<Exercise> = {}) {
+    super()
     Object.assign(this, partial)
   }
 }

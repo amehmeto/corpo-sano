@@ -54,11 +54,23 @@ describe('TypeOrm Exercise Repository', () => {
   })
 
   it('should find exercise by id', async () => {
+    const expectedWorkout = {
+      ...workoutFixture,
+      exercises: [
+        new Exercise({
+          ...workoutFixture.exercises[0],
+          updatedAt: expect.any(Date),
+          version: 2,
+        }),
+      ],
+      updatedAt: expect.any(Date),
+      version: 1,
+    }
     const expectedExercise = new Exercise({
       ...exerciseFixture,
-      workout: new Workout({
-        ...workoutFixture,
-      }),
+      updatedAt: expect.any(Date),
+      version: 2,
+      workout: new Workout(expectedWorkout),
     })
     const retrievedExercise = await exerciseRepository.findById(
       exerciseFixture.id,
