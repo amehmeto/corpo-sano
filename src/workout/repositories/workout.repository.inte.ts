@@ -7,13 +7,15 @@ import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { config } from '../../../config'
-import { execSync } from 'child_process'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
 import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
-import { workoutFixture } from '../../../test/generate.fixtures'
+import {
+  exercisesTemplatesFixture,
+  workoutFixture,
+} from '../../../test/generate.fixtures'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -32,7 +34,7 @@ const unorderedExercisesDates = [
 function generateExerciseWithDate(date: string): Exercise {
   return new Exercise(
     exerciseDataBuilder({
-      createAt: new Date(date),
+      createdAt: new Date(date),
     }),
   )
 }
@@ -47,6 +49,7 @@ const unorderedExercisesFixture = unorderedExercisesDates.map((date) =>
 describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
   let exerciseRepository: TypeOrmExerciseRepository
+  let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
 
   async function generateFixtures() {
     const orderedExercises = await exerciseRepository.save(
@@ -86,8 +89,11 @@ describe('TypeOrm Workout Repository', () => {
     exerciseRepository = module.get<TypeOrmExerciseRepository>(
       TypeOrmExerciseRepository,
     )
+    exerciseTemplateRepository = module.get<TypeOrmExerciseTemplateRepository>(
+      TypeOrmExerciseTemplateRepository,
+    )
 
-    await execSync('yarn db:seed')
+    await exerciseTemplateRepository.save(exercisesTemplatesFixture)
     await generateFixtures()
   })
 
@@ -105,7 +111,7 @@ describe('TypeOrm Workout Repository', () => {
       orderedExercisesWorkoutFixture.exercises.map((exercise) => {
         return new Exercise({
           ...exercise,
-          version: 2,
+          version: expect.any(Number),
           updatedAt: expect.any(Date),
         })
       })
@@ -132,12 +138,12 @@ describe('TypeOrm Workout Repository', () => {
       ],
     ],
   ])(
-    "should get workout's exercises by createAt date",
+    "should get workout's exercises by creation date",
     async (workoutFixture, exercises) => {
       const expectedExercises = exercises.map((exercise) => {
         return new Exercise({
           ...exercise,
-          version: 2,
+          version: expect.any(Number),
           updatedAt: expect.any(Date),
         })
       })

@@ -10,13 +10,14 @@ import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-b
 import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
 import { Workout } from '../../workout/entities/workout.entity'
 import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
-import { execSync } from 'child_process'
+import { exercisesTemplatesFixture } from '../../../test/generate.fixtures'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())
 const workoutFixture = new Workout(workoutDataBuilder())
 
 describe('TypeOrm Exercise Repository', () => {
   let exerciseRepository: TypeOrmExerciseRepository
+  let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
   let workoutRepository: WorkoutRepository
 
   beforeAll(async () => {
@@ -38,8 +39,11 @@ describe('TypeOrm Exercise Repository', () => {
     workoutRepository = module.get<TypeOrmWorkoutRepository>(
       TypeOrmWorkoutRepository,
     )
+    exerciseTemplateRepository = module.get<TypeOrmExerciseTemplateRepository>(
+      TypeOrmExerciseTemplateRepository,
+    )
 
-    execSync('yarn db:seed')
+    await exerciseTemplateRepository.save(exercisesTemplatesFixture)
     const exercise = await exerciseRepository.save(exerciseFixture)
     workoutFixture.exercises = [exercise]
     await workoutRepository.save(workoutFixture)
@@ -60,16 +64,16 @@ describe('TypeOrm Exercise Repository', () => {
         new Exercise({
           ...workoutFixture.exercises[0],
           updatedAt: expect.any(Date),
-          version: 2,
+          version: expect.any(Number),
         }),
       ],
       updatedAt: expect.any(Date),
-      version: 1,
+      version: expect.any(Number),
     }
     const expectedExercise = new Exercise({
       ...exerciseFixture,
       updatedAt: expect.any(Date),
-      version: 2,
+      version: expect.any(Number),
       workout: new Workout(expectedWorkout),
     })
     const retrievedExercise = await exerciseRepository.findById(

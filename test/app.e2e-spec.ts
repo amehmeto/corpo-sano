@@ -121,7 +121,10 @@ describe('AppController (e2e)', () => {
         query: `query GetWorkoutExercises($workoutId: ID!){
           getWorkoutExercises(workoutId: $workoutId) {
             id 
-            createAt
+            createdAt
+            updatedAt
+            deletedAt
+            version
             finalRestTime
             interSetsRestTime
             numberOfReps 
@@ -136,14 +139,16 @@ describe('AppController (e2e)', () => {
           workoutId: workoutFixture.id,
         },
       }
-      const expected = exercisesFixture.map((exercise) => ({
+      const expectedExercises = exercisesFixture.map((exercise) => ({
         ...exercise,
-        createAt: exercise.createAt.toISOString(),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        version: expect.any(Number),
       }))
       return expectCorrectGqlResponse(
         getWorkoutExercisesQuery,
         'getWorkoutExercises',
-        expected,
+        expectedExercises,
       )
     })
 
@@ -284,11 +289,14 @@ describe('AppController (e2e)', () => {
                 id
                 title
               }
-              createAt
               finalRestTime
               interSetsRestTime
               numberOfReps
               numberOfSets
+              createdAt
+              updatedAt
+              deletedAt
+              version
             }
           }
         }`,
@@ -301,14 +309,16 @@ describe('AppController (e2e)', () => {
           },
         },
       }
-
       const expectedWorkout = {
         id: workoutFixture.id,
         title: workoutFixture.title,
         exercises: exercisesFixture.map((exercise) => ({
           ...exercise,
           id: expect.any(String),
-          createAt: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          deletedAt: null,
+          version: expect.any(Number),
         })),
       }
 

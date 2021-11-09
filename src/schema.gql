@@ -14,12 +14,15 @@ type ExerciseTemplate {
 
 type Exercise {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
   template: ExerciseTemplate!
   numberOfSets: Float!
   numberOfReps: Float!
   finalRestTime: Float!
   interSetsRestTime: Float!
-  createAt: DateTime!
   workout: Workout!
 }
 

@@ -4,7 +4,6 @@ import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
 import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
 import { Program } from '../entities/program.entity'
-import { execSync } from 'child_process'
 import { Workout } from '../../workout/entities/workout.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { programDataBuilder } from '../../../test/data-builders/program.data-builder'
@@ -38,7 +37,6 @@ describe('TypeOrm Program Repository', () => {
       TypeOrmProgramRepository,
     )
 
-    await execSync('yarn db:seed')
     await createProgramFixture(programRepository)
   })
 
