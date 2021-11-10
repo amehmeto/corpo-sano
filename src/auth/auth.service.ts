@@ -33,8 +33,9 @@ export class AuthService {
     const { email, password } = authCredentialsInput
     const athlete = await this.athleteRepository.findByEmail(email)
 
-    if (!athlete || (await this.isWrongPassword(password, athlete.password)))
-      throw new UnauthorizedException()
+    if (!athlete) throw new UnauthorizedException('no user')
+    if (await this.isWrongPassword(password, athlete.password))
+      throw new UnauthorizedException('wrong password')
     const payload = { athleteId: athlete.id }
     const token = this.jwtService.sign(payload)
     return { token }

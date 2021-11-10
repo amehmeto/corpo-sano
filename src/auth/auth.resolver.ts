@@ -1,22 +1,9 @@
-import {
-  Args,
-  Field,
-  ID,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver,
-} from '@nestjs/graphql'
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { AuthService } from './auth.service'
 import { AuthCredentialsInput } from './types/auth-credentials.input'
 import { Athlete } from '../athlete/models/athlete.model'
 import { RegisterAthleteInput } from './types/register-athlete.input'
-
-@ObjectType()
-export class AccessToken {
-  @Field()
-  token: string
-}
+import { AccessToken } from './types/access-token.type-2'
 
 @Resolver()
 export class AuthResolver {

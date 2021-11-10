@@ -32,6 +32,7 @@ function displayErrors(response: any) {
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
+  let token: string
 
   function expectCorrectGqlResponse(
     mutation: Query,
@@ -39,8 +40,10 @@ describe('AppController (e2e)', () => {
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
   ) {
     const GRAPHQL_URL = '/graphql'
+    console.warn(token)
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
+      .set('Authorization', 'Bearer ' + token)
       .send(mutation)
       .expect((response: any) => {
         displayErrors(response)
@@ -58,6 +61,25 @@ describe('AppController (e2e)', () => {
     await app.init()
 
     await generateFixtures(app)
+
+    const signInQuery = {
+      query: `query SignIn($payload: AuthCredentialsInput!) {
+          signIn(payload: $payload) {
+            token
+          }
+        }`,
+      variables: {
+        payload: authCredentialsInputDataBuilder({
+          email: athleteFixture.email,
+        }),
+      },
+    }
+    await request(app.getHttpServer())
+      .post('/graphql')
+      .send(signInQuery)
+      .expect((res) => {
+        token = res.body.data.signIn
+      })
   })
 
   afterAll(async () => {
@@ -153,6 +175,7 @@ describe('AppController (e2e)', () => {
     })
 
     test('Get All Programs', () => {
+      console.log(token)
       const getAllProgramsQuery = {
         query: `query GetAllPrograms {
           getAllPrograms {

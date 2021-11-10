@@ -6,18 +6,21 @@ import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlet
 import { JwtModule } from '@nestjs/jwt'
 import { EmailGatewayToken } from './gateways/email.gateway'
 import { InMemoryEmailGateway } from './gateways/in-memory-email.gateway'
+import { PassportModule } from '@nestjs/passport'
+import { JwtStrategy } from './jwt.strategy'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TypeOrmAthleteRepository]),
-    //PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'should be an env var',
       signOptions: { expiresIn: 3600 },
     }),
+    PassportModule,
   ],
   providers: [
     { provide: EmailGatewayToken, useClass: InMemoryEmailGateway },
+    JwtStrategy,
     AuthResolver,
     AuthService,
   ],
