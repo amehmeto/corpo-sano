@@ -16,6 +16,7 @@ import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-detail
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
 import { Exercise } from '../src/exercise/entities/exercise.entity'
+import { AccessToken } from '../src/auth/types/access-token.type'
 
 type Query = { variables: Record<string, unknown>; query: string }
 
@@ -32,7 +33,7 @@ function displayErrors(response: any) {
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
-  let token: string
+  let token: AccessToken
 
   function expectCorrectGqlResponse(
     mutation: Query,
@@ -40,10 +41,9 @@ describe('AppController (e2e)', () => {
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
   ) {
     const GRAPHQL_URL = '/graphql'
-    console.warn(token)
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
-      .set('Authorization', 'Bearer ' + token)
+      .set('Authorization', 'Bearer ' + token.token)
       .send(mutation)
       .expect((response: any) => {
         displayErrors(response)
@@ -175,7 +175,6 @@ describe('AppController (e2e)', () => {
     })
 
     test('Get All Programs', () => {
-      console.log(token)
       const getAllProgramsQuery = {
         query: `query GetAllPrograms {
           getAllPrograms {
