@@ -17,31 +17,7 @@ import { authCredentialsInputDataBuilder } from './data-builders/auth-credential
 import { deleteFixtures } from './delete-fixtures'
 import { Exercise } from '../src/exercise/entities/exercise.entity'
 import { AccessToken } from '../src/auth/types/access-token.type'
-
-type Query = { variables: Record<string, unknown>; query: string }
-
-function hasErrors(response: any) {
-  return response?.body?.errors || response.body === undefined
-}
-
-function displayErrors(response: any) {
-  if (hasErrors(response)) {
-    const formattedError = JSON.stringify(response.body, null, 2)
-    console.error(formattedError)
-  }
-}
-
-function getDataKey(query: Query) {
-  const keyBeforeFirstParenthesis = /.+?{[\r\n\t\f\v ]+(.+)\(/
-  const keyBeforeFirstBracket = /.+?{[\r\n\t\f\v ]+(.+) {/
-
-  let regExpMatchArray
-  regExpMatchArray = query.query.match(keyBeforeFirstParenthesis)
-  if (!regExpMatchArray)
-    regExpMatchArray = query.query.match(keyBeforeFirstBracket)
-
-  return regExpMatchArray[1]
-}
+import { displayErrors, getDataKey, Query } from './expect-gql-endpoint'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
