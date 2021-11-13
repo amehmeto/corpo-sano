@@ -5,7 +5,10 @@ import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
 export function exerciseDataBuilder(exercise = {}) {
   const template = {
     id: Faker.datatype.uuid(),
-    createAt: Faker.date.past(),
+    createdAt: Faker.date.past(),
+    updatedAt: Faker.date.recent(),
+    deletedAt: null as Date,
+    version: Faker.datatype.number(10),
     template: new ExerciseTemplate(exerciseTemplateDataBuilder()),
     numberOfSets: 0,
     numberOfReps: 0,

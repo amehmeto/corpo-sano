@@ -1,23 +1,11 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { ExerciseTemplate } from './exercise-template.model'
 import { Workout } from '../../workout/models/workout.model'
+import { ExerciseTemplate } from '../../exercise/models/exercise-template.model'
 
 @ObjectType()
 export class Exercise {
   @Field(() => ID)
   id: string
-
-  @Field()
-  createdAt: Date
-
-  @Field()
-  updatedAt: Date
-
-  @Field({ nullable: true })
-  deletedAt: Date | null
-
-  @Field()
-  version: number
 
   @Field()
   template: ExerciseTemplate
@@ -33,6 +21,15 @@ export class Exercise {
 
   @Field()
   interSetsRestTime: number
+
+  @Field()
+  createdAt: Date
+
+  @Field()
+  updatedAt: Date
+
+  @Field()
+  deletedAt: Date | null
 
   @Field(() => Workout)
   workout: Workout

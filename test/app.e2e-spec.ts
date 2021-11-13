@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { HttpStatus, INestApplication } from '@nestjs/common'
+import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
 import { WeekDays } from '../src/workout/types/week-days.enum'
@@ -16,35 +16,29 @@ import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-detail
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
 import { Exercise } from '../src/exercise/entities/exercise.entity'
-
-type Query = { variables: Record<string, unknown>; query: string }
-
-function hasErrors(response: any) {
-  return response?.body?.errors || response.body === undefined
-}
-
-function displayErrors(response: any) {
-  if (hasErrors(response)) {
-    const formattedError = JSON.stringify(response.body, null, 2)
-    console.error(formattedError)
-  }
-}
+import { AccessToken } from '../src/auth/types/access-token.type'
+import { displayErrors, getDataKey, Query } from './expect-gql-endpoint'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
+  let token: AccessToken
 
-  function expectCorrectGqlResponse(
-    mutation: Query,
-    retrievedDataKey: string,
+  function expectGqlEndpoint(
+    query: Query,
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
+    isAuthenticated: boolean = true,
   ) {
+    const tokenJwt = isAuthenticated ? token.token : undefined
     const GRAPHQL_URL = '/graphql'
+    const dataKey = getDataKey(query)
+
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
-      .send(mutation)
+      .set('Authorization', 'Bearer ' + tokenJwt)
+      .send(query)
       .expect((response: any) => {
         displayErrors(response)
-        const retrievedData = response.body.data[retrievedDataKey]
+        const retrievedData = response.body.data[dataKey]
         expect(retrievedData).toStrictEqual(expectedData)
       })
   }
@@ -58,150 +52,32 @@ describe('AppController (e2e)', () => {
     await app.init()
 
     await generateFixtures(app)
+
+    const signInQuery = {
+      query: `query SignIn($payload: AuthCredentialsInput!) {
+          signIn(payload: $payload) {
+            token
+          }
+        }`,
+      variables: {
+        payload: authCredentialsInputDataBuilder({
+          email: athleteFixture.email,
+        }),
+      },
+    }
+    await request(app.getHttpServer())
+      .post('/graphql')
+      .send(signInQuery)
+      .expect((res) => {
+        token = res.body.data.signIn
+      })
   })
 
   afterAll(async () => {
     await deleteFixtures(app)
   })
 
-  describe('Queries', () => {
-    test('/ (GET) Hello World', () => {
-      return request(app.getHttpServer())
-        .get('/')
-        .expect(HttpStatus.OK)
-        .expect('Hello World!')
-    })
-
-    test('Get All Exercise Templates', () => {
-      const getAllExerciseTemplatesQuery = {
-        query: `query GetAllExerciseTemplates {
-          getAllExerciseTemplates {
-            id
-            title
-          }
-        }`,
-        variables: {},
-      }
-
-      const expectedExercises = defaultExerciseTemplatesDataBuilder()
-
-      return expectCorrectGqlResponse(
-        getAllExerciseTemplatesQuery,
-        'getAllExerciseTemplates',
-        expectedExercises,
-      )
-    })
-
-    test('Get Workout', () => {
-      const getWorkoutQuery = {
-        query: `query GetWorkout($workoutId: ID!) {
-          getWorkout(workoutId: $workoutId) {
-            id
-            title
-          }
-        }`,
-        variables: {
-          workoutId: workoutFixture.id,
-        },
-      }
-      const expectedWorkout = {
-        id: workoutFixture.id,
-        title: workoutFixture.title,
-      }
-
-      return expectCorrectGqlResponse(
-        getWorkoutQuery,
-        'getWorkout',
-        expectedWorkout,
-      )
-    })
-
-    test('Get Workout Exercises', () => {
-      const getWorkoutExercisesQuery = {
-        query: `query GetWorkoutExercises($workoutId: ID!){
-          getWorkoutExercises(workoutId: $workoutId) {
-            id 
-            createAt
-            finalRestTime
-            interSetsRestTime
-            numberOfReps 
-            numberOfSets
-            template {
-              id
-              title
-            }
-          }
-        }`,
-        variables: {
-          workoutId: workoutFixture.id,
-        },
-      }
-      const expected = exercisesFixture.map((exercise) => ({
-        ...exercise,
-        createAt: exercise.createAt.toISOString(),
-      }))
-      return expectCorrectGqlResponse(
-        getWorkoutExercisesQuery,
-        'getWorkoutExercises',
-        expected,
-      )
-    })
-
-    test('Get All Programs', () => {
-      const getAllProgramsQuery = {
-        query: `query GetAllPrograms {
-          getAllPrograms {
-            id
-            title
-          }
-        }`,
-        variables: {},
-      }
-      const expectedGetAllPrograms = [
-        { id: programFixture.id, title: 'Mon programme' },
-      ]
-
-      return expectCorrectGqlResponse(
-        getAllProgramsQuery,
-        'getAllPrograms',
-        expectedGetAllPrograms,
-      )
-    })
-
-    test('Get Exercise By Id', () => {
-      const getExercise = {
-        query: `query GetExercise($exerciseId: ID!) {
-          getExercise(exerciseId: $exerciseId) {
-            id
-            template {
-              id
-              title
-            }
-            numberOfSets
-            workout {
-              id
-              title
-            }
-          }
-        }`,
-        variables: {
-          exerciseId: exercisesFixture[0].id,
-        },
-      }
-      const expectedGetExerciseById = {
-        id: exercisesFixture[0].id,
-        numberOfSets: 0,
-        template: exercisesFixture[0].template,
-        workout: workoutFixture,
-      }
-
-      return expectCorrectGqlResponse(
-        getExercise,
-        'getExercise',
-        expectedGetExerciseById,
-      )
-    })
-
+  describe('Public Endpoints', () => {
     test('Sign In', () => {
       const signInQuery = {
         query: `query SignIn($payload: AuthCredentialsInput!) {
@@ -218,160 +94,7 @@ describe('AppController (e2e)', () => {
       const expectedJwtToken = {
         token: expect.any(String),
       }
-      return expectCorrectGqlResponse(signInQuery, 'signIn', expectedJwtToken)
-    })
-  })
-
-  describe('Mutations', () => {
-    test('Create Program', () => {
-      const createProgramMutation = {
-        query: `mutation CreateProgram($title: String!) {
-          createProgram(title: $title) {
-            id
-            title
-          }
-        }`,
-        variables: {
-          title: programFixture.title,
-        },
-      }
-      const expectedCreateProgram = {
-        id: expect.any(String),
-        title: 'Je comprends pas pourquoi ce test passe',
-      }
-
-      expectCorrectGqlResponse(
-        createProgramMutation,
-        'createProgram',
-        expectedCreateProgram,
-      )
-    })
-
-    test('Create Workout', () => {
-      const createWorkoutMutation = {
-        query: `mutation CreateWorkout($title: String!, $programId: ID!) {
-          createWorkout(title: $title, programId: $programId) {
-            id
-            title
-          }
-        }`,
-        variables: {
-          title: workoutFixture.title,
-          programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
-        },
-      }
-      const expectedCreateWorkout = {
-        id: expect.any(String),
-        title: workoutFixture.title,
-      }
-
-      return expectCorrectGqlResponse(
-        createWorkoutMutation,
-        'createWorkout',
-        expectedCreateWorkout,
-      )
-    })
-
-    test('Fill Workout With Exercises', () => {
-      const fillWorkoutWithExercisesMutation = {
-        query: `mutation FillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
-          fillWorkoutWithExercises(payload: $payload) {
-            id
-            title
-            exercises {
-              id
-              template {
-                id
-                title
-              }
-              createAt
-              finalRestTime
-              interSetsRestTime
-              numberOfReps
-              numberOfSets
-            }
-          }
-        }`,
-        variables: {
-          payload: {
-            workoutId: workoutFixture.id,
-            exerciseTemplateIds: exercisesFixture.map(
-              (exercise) => exercise.template.id,
-            ),
-          },
-        },
-      }
-
-      const expectedWorkout = {
-        id: workoutFixture.id,
-        title: workoutFixture.title,
-        exercises: exercisesFixture.map((exercise) => ({
-          ...exercise,
-          id: expect.any(String),
-          createAt: expect.any(String),
-        })),
-      }
-
-      return expectCorrectGqlResponse(
-        fillWorkoutWithExercisesMutation,
-        'fillWorkoutWithExercises',
-        expectedWorkout,
-      )
-    })
-
-    test('Schedule Workout', () => {
-      const scheduleWorkoutMutation = {
-        query: `mutation scheduleWorkout($payload: ScheduleWorkoutInput!) {
-          scheduleWorkout(payload: $payload) {
-            scheduledDays
-          }
-        }`,
-        variables: {
-          payload: {
-            workoutId: workoutFixture.id,
-            daysOfTheWeek: [WeekDays.FRIDAY],
-          },
-        },
-      }
-
-      const expectedWorkout = {
-        scheduledDays: ['FRIDAY'],
-      }
-
-      return expectCorrectGqlResponse(
-        scheduleWorkoutMutation,
-        'scheduleWorkout',
-        expectedWorkout,
-      )
-    })
-
-    test("Save Exercise's details", () => {
-      const saveExerciseDetailsMutation = {
-        query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
-          saveExerciseDetails(payload: $payload) {
-            id
-            numberOfSets
-            numberOfReps
-            finalRestTime
-            interSetsRestTime
-          }
-        }`,
-        variables: {
-          payload: exerciseDetailsInputDataBuilder({
-            exerciseId: exercisesFixture[0].id,
-          }),
-        },
-      }
-      const expectedExercise = {
-        ...saveExerciseDetailsMutation.variables.payload,
-        id: exercisesFixture[0].id,
-      }
-      delete expectedExercise.exerciseId
-      return expectCorrectGqlResponse(
-        saveExerciseDetailsMutation,
-        'saveExerciseDetails',
-        expectedExercise,
-      )
+      return expectGqlEndpoint(signInQuery, expectedJwtToken, false)
     })
 
     test('Register Athlete', () => {
@@ -402,13 +125,8 @@ describe('AppController (e2e)', () => {
         birthday:
           registerAthleteMutation.variables.payload.birthday.toISOString(),
       }
-      return expectCorrectGqlResponse(
-        registerAthleteMutation,
-        'registerAthlete',
-        expectedAthlete,
-      )
+      return expectGqlEndpoint(registerAthleteMutation, expectedAthlete, false)
     })
-
     test('Send Confirmation Email', () => {
       const sendConfirmationEmailMutation = {
         query: `mutation SendConfirmationEmail($athleteId: ID!) {
@@ -421,11 +139,269 @@ describe('AppController (e2e)', () => {
         },
       }
       const expectedResponse = { id: athleteFixture.id }
-      return expectCorrectGqlResponse(
+      return expectGqlEndpoint(
         sendConfirmationEmailMutation,
-        'sendConfirmationEmail',
         expectedResponse,
+        false,
       )
+    })
+  })
+
+  describe('Queries', () => {
+    test('Get All Exercise Templates', () => {
+      const getAllExerciseTemplatesQuery = {
+        query: `query GetAllExerciseTemplates {
+          getAllExerciseTemplates {
+            id
+            title
+          }
+        }`,
+        variables: {},
+      }
+
+      const expectedExercises = defaultExerciseTemplatesDataBuilder()
+
+      return expectGqlEndpoint(getAllExerciseTemplatesQuery, expectedExercises)
+    })
+
+    test('Get Workout', () => {
+      const getWorkoutQuery = {
+        query: `query GetWorkout($workoutId: ID!) {
+          getWorkout(workoutId: $workoutId) {
+            id
+            title
+          }
+        }`,
+        variables: {
+          workoutId: workoutFixture.id,
+        },
+      }
+      const expectedWorkout = {
+        id: workoutFixture.id,
+        title: workoutFixture.title,
+      }
+
+      return expectGqlEndpoint(getWorkoutQuery, expectedWorkout)
+    })
+
+    test('Get Workout Exercises', () => {
+      const getWorkoutExercisesQuery = {
+        query: `query GetWorkoutExercises($workoutId: ID!){
+          getWorkoutExercises(workoutId: $workoutId) {
+            id 
+            createdAt
+            updatedAt
+            deletedAt
+            version
+            finalRestTime
+            interSetsRestTime
+            numberOfReps 
+            numberOfSets
+            template {
+              id
+              title
+            }
+          }
+        }`,
+        variables: {
+          workoutId: workoutFixture.id,
+        },
+      }
+      const expectedExercises = exercisesFixture.map((exercise) => ({
+        ...exercise,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        version: expect.any(Number),
+      }))
+      return expectGqlEndpoint(getWorkoutExercisesQuery, expectedExercises)
+    })
+
+    test('Get All Programs', () => {
+      const getAllProgramsQuery = {
+        query: `query GetAllPrograms {
+          getAllPrograms {
+            id
+            title
+          }
+        }`,
+        variables: {},
+      }
+      const expectedGetAllPrograms = [
+        { id: programFixture.id, title: 'Mon programme' },
+      ]
+
+      return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
+    })
+
+    test('Get Exercise By Id', () => {
+      const getExercise = {
+        query: `query GetExercise($exerciseId: ID!) {
+          getExercise(exerciseId: $exerciseId) {
+            id
+            template {
+              id
+              title
+            }
+            numberOfSets
+            workout {
+              id
+              title
+            }
+          }
+        }`,
+        variables: {
+          exerciseId: exercisesFixture[0].id,
+        },
+      }
+      const expectedGetExerciseById = {
+        id: exercisesFixture[0].id,
+        numberOfSets: 0,
+        template: exercisesFixture[0].template,
+        workout: workoutFixture,
+      }
+
+      return expectGqlEndpoint(getExercise, expectedGetExerciseById)
+    })
+  })
+
+  describe('Mutations', () => {
+    test('Create Program', () => {
+      const createProgramMutation = {
+        query: `mutation CreateProgram($title: String!) {
+          createProgram(title: $title) {
+            id
+            title
+          }
+        }`,
+        variables: {
+          title: programFixture.title,
+        },
+      }
+      const expectedCreateProgram = {
+        id: expect.any(String),
+        title: 'Je comprends pas pourquoi ce test passe',
+      }
+
+      expectGqlEndpoint(createProgramMutation, expectedCreateProgram)
+    })
+
+    test('Create Workout', () => {
+      const createWorkoutMutation = {
+        query: `mutation CreateWorkout($title: String!, $programId: ID!) {
+          createWorkout(title: $title, programId: $programId) {
+            id
+            title
+          }
+        }`,
+        variables: {
+          title: workoutFixture.title,
+          programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
+        },
+      }
+      const expectedCreateWorkout = {
+        id: expect.any(String),
+        title: workoutFixture.title,
+      }
+
+      return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)
+    })
+
+    test('Fill Workout With Exercises', () => {
+      const fillWorkoutWithExercisesMutation = {
+        query: `mutation FillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
+          fillWorkoutWithExercises(payload: $payload) {
+            id
+            title
+            exercises {
+              id
+              template {
+                id
+                title
+              }
+              finalRestTime
+              interSetsRestTime
+              numberOfReps
+              numberOfSets
+              createdAt
+              updatedAt
+              deletedAt
+              version
+            }
+          }
+        }`,
+        variables: {
+          payload: {
+            workoutId: workoutFixture.id,
+            exerciseTemplateIds: exercisesFixture.map(
+              (exercise) => exercise.template.id,
+            ),
+          },
+        },
+      }
+      const expectedWorkout = {
+        id: workoutFixture.id,
+        title: workoutFixture.title,
+        exercises: exercisesFixture.map((exercise) => ({
+          ...exercise,
+          id: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          deletedAt: null,
+          version: expect.any(Number),
+        })),
+      }
+
+      return expectGqlEndpoint(
+        fillWorkoutWithExercisesMutation,
+        expectedWorkout,
+      )
+    })
+
+    test('Schedule Workout', () => {
+      const scheduleWorkoutMutation = {
+        query: `mutation scheduleWorkout($payload: ScheduleWorkoutInput!) {
+          scheduleWorkout(payload: $payload) {
+            scheduledDays
+          }
+        }`,
+        variables: {
+          payload: {
+            workoutId: workoutFixture.id,
+            daysOfTheWeek: [WeekDays.FRIDAY],
+          },
+        },
+      }
+
+      const expectedWorkout = {
+        scheduledDays: ['FRIDAY'],
+      }
+
+      return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
+    })
+
+    test("Save Exercise's details", () => {
+      const saveExerciseDetailsMutation = {
+        query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
+          saveExerciseDetails(payload: $payload) {
+            id
+            numberOfSets
+            numberOfReps
+            finalRestTime
+            interSetsRestTime
+          }
+        }`,
+        variables: {
+          payload: exerciseDetailsInputDataBuilder({
+            exerciseId: exercisesFixture[0].id,
+          }),
+        },
+      }
+      const expectedExercise = {
+        ...saveExerciseDetailsMutation.variables.payload,
+        id: exercisesFixture[0].id,
+      }
+      delete expectedExercise.exerciseId
+      return expectGqlEndpoint(saveExerciseDetailsMutation, expectedExercise)
     })
 
     test('Update Workout', () => {
@@ -455,11 +431,7 @@ describe('AppController (e2e)', () => {
         id: workoutFixture.id,
         title: 'nouveau titre',
       }
-      return expectCorrectGqlResponse(
-        updateWorkoutQuery,
-        'updateWorkout',
-        expectedWorkout,
-      )
+      return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
     })
   })
 })

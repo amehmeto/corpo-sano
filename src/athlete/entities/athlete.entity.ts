@@ -1,13 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity } from 'typeorm'
 import { Gender } from '../types/gender.enum'
 import { UnitSystem } from '../types/metric-system.enum'
 import { WeightGoal } from '../types/weight-goal.enum'
+import { Base } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Athlete {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Athlete extends Base {
   @Column()
   name: string
 
@@ -39,6 +37,7 @@ export class Athlete {
   password: string
 
   constructor(partial: Partial<Athlete> = {}) {
+    super()
     Object.assign(this, partial)
   }
 }

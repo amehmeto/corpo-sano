@@ -7,34 +7,6 @@ type Program {
   title: String!
 }
 
-type ExerciseTemplate {
-  id: ID!
-  title: String!
-}
-
-type Exercise {
-  id: ID!
-  template: ExerciseTemplate!
-  numberOfSets: Float!
-  numberOfReps: Float!
-  finalRestTime: Float!
-  interSetsRestTime: Float!
-  createAt: DateTime!
-  workout: Workout!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Workout {
-  id: ID!
-  title: String!
-  exercises: [Exercise!]!
-  scheduledDays: [String!]!
-}
-
 type Athlete {
   id: ID!
   name: String!
@@ -49,17 +21,48 @@ type Athlete {
   password: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type AccessToken {
   token: String!
+}
+
+type ExerciseTemplate {
+  id: ID!
+  title: String!
+}
+
+type Exercise {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
+  template: ExerciseTemplate!
+  numberOfSets: Float!
+  numberOfReps: Float!
+  finalRestTime: Float!
+  interSetsRestTime: Float!
+  workout: Workout!
+}
+
+type Workout {
+  id: ID!
+  title: String!
+  exercises: [Exercise!]!
+  scheduledDays: [String!]!
 }
 
 type Query {
   getAllExerciseTemplates: [ExerciseTemplate!]!
   getExercise(exerciseId: ID!): Exercise!
   getAllPrograms: [Program!]!
+  signIn(payload: AuthCredentialsInput!): AccessToken!
   getWorkoutExercises(workoutId: ID!): [Exercise!]!
   getWorkout(workoutId: ID!): Workout!
-  signIn(payload: AuthCredentialsInput!): AccessToken!
 }
 
 input AuthCredentialsInput {
@@ -70,12 +73,12 @@ input AuthCredentialsInput {
 type Mutation {
   saveExerciseDetails(payload: ExerciseDetailsInput!): Exercise!
   createProgram(title: String!): Program!
+  registerAthlete(payload: RegisterAthleteInput!): Athlete!
+  sendConfirmationEmail(athleteId: ID!): Athlete!
   createWorkout(programId: ID!, title: String!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
   updateWorkout(payload: UpdateWorkoutInput!): Workout!
-  registerAthlete(payload: RegisterAthleteInput!): Athlete!
-  sendConfirmationEmail(athleteId: ID!): Athlete!
 }
 
 input ExerciseDetailsInput {
@@ -84,6 +87,19 @@ input ExerciseDetailsInput {
   numberOfReps: Int!
   finalRestTime: Int!
   interSetsRestTime: Int!
+}
+
+input RegisterAthleteInput {
+  name: String!
+  height: Int!
+  lengthUnit: String!
+  weight: Int!
+  weightUnit: String!
+  gender: String!
+  birthday: DateTime!
+  weightGoal: String!
+  email: String!
+  password: String!
 }
 
 input FillWorkoutWithExercisesInput {
@@ -126,17 +142,4 @@ input ExerciseInput {
 input ExerciseTemplateInput {
   id: ID!
   title: String!
-}
-
-input RegisterAthleteInput {
-  name: String!
-  height: Int!
-  lengthUnit: String!
-  weight: Int!
-  weightUnit: String!
-  gender: String!
-  birthday: DateTime!
-  weightGoal: String!
-  email: String!
-  password: String!
 }

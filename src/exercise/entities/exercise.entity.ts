@@ -1,18 +1,10 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
+import { Column, Entity, ManyToOne } from 'typeorm'
 import { ExerciseTemplate } from './exercise-template.entity'
 import { Workout } from '../../workout/entities/workout.entity'
+import { Base } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Exercise {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Exercise extends Base {
   @ManyToOne(
     () => ExerciseTemplate,
     (exerciseTemplate) => exerciseTemplate.exercises,
@@ -37,10 +29,8 @@ export class Exercise {
   @ManyToOne(() => Workout, (workout) => workout.exercises)
   workout: Workout
 
-  @CreateDateColumn()
-  createAt: Date
-
   constructor(partial: Partial<Exercise> = {}) {
+    super()
     Object.assign(this, partial)
   }
 }

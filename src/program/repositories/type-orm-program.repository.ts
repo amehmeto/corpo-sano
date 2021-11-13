@@ -7,11 +7,12 @@ export class TypeOrmProgramRepository
   extends Repository<Program>
   implements ProgramRepository
 {
-  getAllPrograms(): Promise<Program[]> {
-    return this.find({
-      order: {
-        title: 'ASC',
-      },
-    })
+  async getAllPrograms(): Promise<Program[]> {
+    const programs = await this.find()
+    return programs.sort((a, b) => this.sortByCreatedAt(a, b))
+  }
+
+  private sortByCreatedAt(a: Program, b: Program) {
+    return a.createdAt >= b.createdAt ? 1 : -1
   }
 }
