@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { HttpStatus, INestApplication } from '@nestjs/common'
+import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
 import { WeekDays } from '../src/workout/types/week-days.enum'
@@ -31,23 +31,38 @@ function displayErrors(response: any) {
   }
 }
 
+function getDataKey(query: Query) {
+  const keyBeforeFirstParenthesis = /.+?{[\r\n\t\f\v ]+(.+)\(/
+  const keyBeforeFirstBracket = /.+?{[\r\n\t\f\v ]+(.+) {/
+
+  let regExpMatchArray
+  regExpMatchArray = query.query.match(keyBeforeFirstParenthesis)
+  if (!regExpMatchArray)
+    regExpMatchArray = query.query.match(keyBeforeFirstBracket)
+
+  return regExpMatchArray[1]
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
   let token: AccessToken
 
-  function expectCorrectGqlResponse(
-    mutation: Query,
-    retrievedDataKey: string,
+  function expectGqlEndpoint(
+    query: Query,
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
+    isAuthenticated: boolean = true,
   ) {
+    const tokenJwt = isAuthenticated ? token.token : undefined
     const GRAPHQL_URL = '/graphql'
+    const dataKey = getDataKey(query)
+
     return request(app.getHttpServer())
       .post(GRAPHQL_URL)
-      .set('Authorization', 'Bearer ' + token.token)
-      .send(mutation)
+      .set('Authorization', 'Bearer ' + tokenJwt)
+      .send(query)
       .expect((response: any) => {
         displayErrors(response)
-        const retrievedData = response.body.data[retrievedDataKey]
+        const retrievedData = response.body.data[dataKey]
         expect(retrievedData).toStrictEqual(expectedData)
       })
   }
@@ -86,14 +101,77 @@ describe('AppController (e2e)', () => {
     await deleteFixtures(app)
   })
 
-  describe('Queries', () => {
-    test('/ (GET) Hello World', () => {
-      return request(app.getHttpServer())
-        .get('/')
-        .expect(HttpStatus.OK)
-        .expect('Hello World!')
+  describe('Public Endpoints', () => {
+    test('Sign In', () => {
+      const signInQuery = {
+        query: `query SignIn($payload: AuthCredentialsInput!) {
+          signIn(payload: $payload) {
+            token
+          }
+        }`,
+        variables: {
+          payload: authCredentialsInputDataBuilder({
+            email: athleteFixture.email,
+          }),
+        },
+      }
+      const expectedJwtToken = {
+        token: expect.any(String),
+      }
+      return expectGqlEndpoint(signInQuery, expectedJwtToken, false)
     })
 
+    test('Register Athlete', () => {
+      const registerAthleteMutation = {
+        query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
+          registerAthlete(payload: $payload) {
+            id
+            height
+            lengthUnit
+            name
+            weight
+            weightUnit
+            gender
+            birthday
+            weightGoal
+            email
+            password 
+          }
+         }`,
+        variables: {
+          payload: registerAthleteInputDataBuilder(),
+        },
+      }
+      const expectedAthlete = {
+        ...registerAthleteMutation.variables.payload,
+        id: expect.any(String),
+        password: expect.any(String),
+        birthday:
+          registerAthleteMutation.variables.payload.birthday.toISOString(),
+      }
+      return expectGqlEndpoint(registerAthleteMutation, expectedAthlete, false)
+    })
+    test('Send Confirmation Email', () => {
+      const sendConfirmationEmailMutation = {
+        query: `mutation SendConfirmationEmail($athleteId: ID!) {
+          sendConfirmationEmail(athleteId: $athleteId) {
+            id
+          }
+        }`,
+        variables: {
+          athleteId: athleteFixture.id,
+        },
+      }
+      const expectedResponse = { id: athleteFixture.id }
+      return expectGqlEndpoint(
+        sendConfirmationEmailMutation,
+        expectedResponse,
+        false,
+      )
+    })
+  })
+
+  describe('Queries', () => {
     test('Get All Exercise Templates', () => {
       const getAllExerciseTemplatesQuery = {
         query: `query GetAllExerciseTemplates {
@@ -107,11 +185,7 @@ describe('AppController (e2e)', () => {
 
       const expectedExercises = defaultExerciseTemplatesDataBuilder()
 
-      return expectCorrectGqlResponse(
-        getAllExerciseTemplatesQuery,
-        'getAllExerciseTemplates',
-        expectedExercises,
-      )
+      return expectGqlEndpoint(getAllExerciseTemplatesQuery, expectedExercises)
     })
 
     test('Get Workout', () => {
@@ -131,11 +205,7 @@ describe('AppController (e2e)', () => {
         title: workoutFixture.title,
       }
 
-      return expectCorrectGqlResponse(
-        getWorkoutQuery,
-        'getWorkout',
-        expectedWorkout,
-      )
+      return expectGqlEndpoint(getWorkoutQuery, expectedWorkout)
     })
 
     test('Get Workout Exercises', () => {
@@ -167,11 +237,7 @@ describe('AppController (e2e)', () => {
         updatedAt: expect.any(String),
         version: expect.any(Number),
       }))
-      return expectCorrectGqlResponse(
-        getWorkoutExercisesQuery,
-        'getWorkoutExercises',
-        expectedExercises,
-      )
+      return expectGqlEndpoint(getWorkoutExercisesQuery, expectedExercises)
     })
 
     test('Get All Programs', () => {
@@ -188,11 +254,7 @@ describe('AppController (e2e)', () => {
         { id: programFixture.id, title: 'Mon programme' },
       ]
 
-      return expectCorrectGqlResponse(
-        getAllProgramsQuery,
-        'getAllPrograms',
-        expectedGetAllPrograms,
-      )
+      return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
     })
 
     test('Get Exercise By Id', () => {
@@ -222,30 +284,7 @@ describe('AppController (e2e)', () => {
         workout: workoutFixture,
       }
 
-      return expectCorrectGqlResponse(
-        getExercise,
-        'getExercise',
-        expectedGetExerciseById,
-      )
-    })
-
-    test('Sign In', () => {
-      const signInQuery = {
-        query: `query SignIn($payload: AuthCredentialsInput!) {
-          signIn(payload: $payload) {
-            token
-          }
-        }`,
-        variables: {
-          payload: authCredentialsInputDataBuilder({
-            email: athleteFixture.email,
-          }),
-        },
-      }
-      const expectedJwtToken = {
-        token: expect.any(String),
-      }
-      return expectCorrectGqlResponse(signInQuery, 'signIn', expectedJwtToken)
+      return expectGqlEndpoint(getExercise, expectedGetExerciseById)
     })
   })
 
@@ -267,11 +306,7 @@ describe('AppController (e2e)', () => {
         title: 'Je comprends pas pourquoi ce test passe',
       }
 
-      expectCorrectGqlResponse(
-        createProgramMutation,
-        'createProgram',
-        expectedCreateProgram,
-      )
+      expectGqlEndpoint(createProgramMutation, expectedCreateProgram)
     })
 
     test('Create Workout', () => {
@@ -292,11 +327,7 @@ describe('AppController (e2e)', () => {
         title: workoutFixture.title,
       }
 
-      return expectCorrectGqlResponse(
-        createWorkoutMutation,
-        'createWorkout',
-        expectedCreateWorkout,
-      )
+      return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)
     })
 
     test('Fill Workout With Exercises', () => {
@@ -344,9 +375,8 @@ describe('AppController (e2e)', () => {
         })),
       }
 
-      return expectCorrectGqlResponse(
+      return expectGqlEndpoint(
         fillWorkoutWithExercisesMutation,
-        'fillWorkoutWithExercises',
         expectedWorkout,
       )
     })
@@ -370,11 +400,7 @@ describe('AppController (e2e)', () => {
         scheduledDays: ['FRIDAY'],
       }
 
-      return expectCorrectGqlResponse(
-        scheduleWorkoutMutation,
-        'scheduleWorkout',
-        expectedWorkout,
-      )
+      return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
     })
 
     test("Save Exercise's details", () => {
@@ -399,65 +425,7 @@ describe('AppController (e2e)', () => {
         id: exercisesFixture[0].id,
       }
       delete expectedExercise.exerciseId
-      return expectCorrectGqlResponse(
-        saveExerciseDetailsMutation,
-        'saveExerciseDetails',
-        expectedExercise,
-      )
-    })
-
-    test('Register Athlete', () => {
-      const registerAthleteMutation = {
-        query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
-          registerAthlete(payload: $payload) {
-            id
-            height
-            lengthUnit
-            name
-            weight
-            weightUnit
-            gender
-            birthday
-            weightGoal
-            email
-            password 
-          }
-         }`,
-        variables: {
-          payload: registerAthleteInputDataBuilder(),
-        },
-      }
-      const expectedAthlete = {
-        ...registerAthleteMutation.variables.payload,
-        id: expect.any(String),
-        password: expect.any(String),
-        birthday:
-          registerAthleteMutation.variables.payload.birthday.toISOString(),
-      }
-      return expectCorrectGqlResponse(
-        registerAthleteMutation,
-        'registerAthlete',
-        expectedAthlete,
-      )
-    })
-
-    test('Send Confirmation Email', () => {
-      const sendConfirmationEmailMutation = {
-        query: `mutation SendConfirmationEmail($athleteId: ID!) {
-          sendConfirmationEmail(athleteId: $athleteId) {
-            id
-          }
-        }`,
-        variables: {
-          athleteId: athleteFixture.id,
-        },
-      }
-      const expectedResponse = { id: athleteFixture.id }
-      return expectCorrectGqlResponse(
-        sendConfirmationEmailMutation,
-        'sendConfirmationEmail',
-        expectedResponse,
-      )
+      return expectGqlEndpoint(saveExerciseDetailsMutation, expectedExercise)
     })
 
     test('Update Workout', () => {
@@ -487,11 +455,7 @@ describe('AppController (e2e)', () => {
         id: workoutFixture.id,
         title: 'nouveau titre',
       }
-      return expectCorrectGqlResponse(
-        updateWorkoutQuery,
-        'updateWorkout',
-        expectedWorkout,
-      )
+      return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
     })
   })
 })
