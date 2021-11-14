@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AppService } from './app.service'
 import { ProgramModule } from './program/program.module'
 import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
@@ -22,6 +21,5 @@ import { AuthModule } from './auth/auth.module'
     AthleteModule,
     AuthModule,
   ],
-  providers: [AppService],
 })
 export class AppModule {}

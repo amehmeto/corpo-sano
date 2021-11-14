@@ -2,6 +2,8 @@ import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 
+export const WORKOUT_REPOSITORY = 'WORKOUT_REPOSITORY'
+
 export interface WorkoutRepository {
   find(): Promise<Workout[]>
   save(workout: Workout): Promise<Workout>

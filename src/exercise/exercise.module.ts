@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
 import { ExerciseTemplateResolver } from './exercise-template.resolver'
 import { ExerciseTemplateService } from './exercise-template.service'
 import { TypeOrmExerciseTemplateRepository } from './repositories/type-orm-exercise-template.repository'
 import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repository'
 import { ExerciseResolver } from './exercise.resolver'
 import { ExerciseService } from './exercise.service'
+import { EXERCISE_REPOSITORY } from './repositories/exercise-repository.interface'
+import { TypeOrmWorkoutRepository } from '../workout/repositories/typeorm-workout.repository'
+import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template-repository.interface'
 
 @Module({
   imports: [
@@ -15,6 +18,14 @@ import { ExerciseService } from './exercise.service'
     ]),
   ],
   providers: [
+    {
+      provide: EXERCISE_REPOSITORY,
+      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
+    },
+    {
+      provide: EXERCISE_TEMPLATE_REPOSITORY,
+      useExisting: getRepositoryToken(TypeOrmExerciseTemplateRepository),
+    },
     ExerciseTemplateResolver,
     ExerciseTemplateService,
     ExerciseResolver,

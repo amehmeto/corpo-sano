@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { Program } from './entities/program.entity'
-import { ProgramRepository } from './repositories/program-repository.interface'
-import { InjectRepository } from '@nestjs/typeorm'
-import { TypeOrmProgramRepository } from './repositories/type-orm-program.repository'
+import {
+  PROGRAM_REPOSITORY,
+  ProgramRepository,
+} from './repositories/program-repository.interface'
 
 @Injectable()
 export class ProgramService {
   constructor(
-    @InjectRepository(TypeOrmProgramRepository)
+    @Inject(PROGRAM_REPOSITORY)
     private readonly programRepository: ProgramRepository,
   ) {}
 

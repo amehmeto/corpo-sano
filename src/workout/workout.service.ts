@@ -1,27 +1,32 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { Workout } from './entities/workout.entity'
 import { v4 as uuid } from 'uuid'
-import { WorkoutRepository } from './repositories/workout-repository.interface'
+import {
+  WORKOUT_REPOSITORY,
+  WorkoutRepository,
+} from './repositories/workout-repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
-import { ExerciseTemplateRepository } from '../exercise/repositories/exercise-template-repository.interface'
-import { InjectRepository } from '@nestjs/typeorm'
-import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
+import {
+  EXERCISE_TEMPLATE_REPOSITORY,
+  ExerciseTemplateRepository,
+} from '../exercise/repositories/exercise-template-repository.interface'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { Exercise } from '../exercise/entities/exercise.entity'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
-import { ExerciseRepository } from '../exercise/repositories/exercise-repository.interface'
+import {
+  EXERCISE_REPOSITORY,
+  ExerciseRepository,
+} from '../exercise/repositories/exercise-repository.interface'
 import { WorkoutInput } from './types/workout-input.type'
 import { UpdateWorkoutInput } from './types/update-workout.input'
 
 @Injectable()
 export class WorkoutService {
   constructor(
-    @InjectRepository(TypeOrmWorkoutRepository)
+    @Inject(WORKOUT_REPOSITORY)
     private readonly workoutRepository: WorkoutRepository,
-    @InjectRepository(TypeOrmExerciseTemplateRepository)
+    @Inject(EXERCISE_TEMPLATE_REPOSITORY)
     private readonly exerciseTemplateRepository: ExerciseTemplateRepository,
-    @InjectRepository(TypeOrmExerciseRepository)
+    @Inject(EXERCISE_REPOSITORY)
     private readonly exerciseRepository: ExerciseRepository,
   ) {}
 
