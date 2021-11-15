@@ -6,7 +6,7 @@ export const WORKOUT_REPOSITORY = 'WORKOUT_REPOSITORY'
 
 export interface WorkoutRepository {
   find(): Promise<Workout[]>
-  save(workout: Workout): Promise<Workout>
+  save(workout: Partial<Workout>): Promise<Workout>
   findById(id: string): Promise<Workout>
   getExercises(workoutId: string): Promise<Exercise[]>
   scheduleWorkout(

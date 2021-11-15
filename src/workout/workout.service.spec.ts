@@ -153,4 +153,22 @@ describe('Workout Service', () => {
 
     expect(updatedWorkout).toStrictEqual(expectedWorkout)
   })
+
+  it('should patch a workout', async () => {
+    const [workout] = await workoutRepository.find()
+    const newPartialWorkout = {
+      title: 'Training legs instead arms now',
+    }
+    const expectedWorkout = new Workout({
+      ...workout,
+      ...newPartialWorkout,
+    })
+
+    const patchedWorkout = await workoutService.patch(
+      workout.id,
+      newPartialWorkout,
+    )
+
+    expect(patchedWorkout).toStrictEqual(expectedWorkout)
+  })
 })

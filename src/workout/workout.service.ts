@@ -72,10 +72,19 @@ export class WorkoutService {
   }
 
   async update(newWorkout: UpdateWorkoutInput): Promise<Workout> {
-    const workout = await this.workoutRepository.save(
-      newWorkout as unknown as Workout,
-    )
+    const workout = await this.workoutRepository.save(newWorkout as Workout)
     if (!workout.exercises) workout.exercises = []
     return workout
+  }
+
+  async patch(
+    workoutId: string,
+    workoutModifications: Partial<Workout>,
+  ): Promise<Workout> {
+    const retrievedWorkout = await this.workoutRepository.findById(workoutId)
+    return this.workoutRepository.save({
+      ...retrievedWorkout,
+      ...workoutModifications,
+    })
   }
 }
