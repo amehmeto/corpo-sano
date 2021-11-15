@@ -433,5 +433,39 @@ describe('AppController (e2e)', () => {
       }
       return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
     })
+
+    test('Patch Workout', () => {
+      const updateWorkoutQuery = {
+        query: `mutation PatchWorkout(
+          $workoutId: ID!,
+          $payload: PatchWorkoutInput!
+        ) {
+          patchWorkout(workoutId: $workoutId, payload: $payload) {
+            id
+            title
+            exercises {
+              template {
+                id
+                title
+              }
+            }
+          }
+        }`,
+        variables: {
+          workoutId: workoutFixture.id,
+          payload: {
+            title: 'nouveau titre',
+          },
+        },
+      }
+      const expectedWorkout = {
+        ...workoutFixture,
+        exercises: exercisesFixture.map((exercise) => ({
+          template: exercise.template,
+        })),
+        title: 'nouveau titre',
+      }
+      return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
+    })
   })
 })

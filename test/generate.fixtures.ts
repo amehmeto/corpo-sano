@@ -92,19 +92,21 @@ async function saveFixtures(
 
 export async function generateFixtures(app: INestApplication) {
   const connection = app.get(Connection)
-  const workout = {
-    ...workoutFixture,
-    exercises: exercisesFixture,
-  }
+  const workouts = [
+    {
+      ...workoutFixture,
+      exercises: exercisesFixture,
+    },
+  ]
   const program = {
     ...programFixture,
-    workout: workout,
+    workouts,
   }
 
   const entityRepositoryFixturePairs = [
     [TypeOrmExerciseTemplateRepository, exercisesTemplatesFixture],
     [TypeOrmExerciseRepository, exercisesFixture],
-    [TypeOrmWorkoutRepository, workout],
+    [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
     [TypeOrmAthleteRepository, athleteFixture],
   ]

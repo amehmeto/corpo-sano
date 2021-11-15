@@ -18,6 +18,7 @@ import {
 } from '../exercise/repositories/exercise-repository.interface'
 import { WorkoutInput } from './types/workout-input.type'
 import { UpdateWorkoutInput } from './types/update-workout.input'
+import { PatchWorkoutInput } from './types/patch-workout.input'
 
 @Injectable()
 export class WorkoutService {
@@ -79,12 +80,13 @@ export class WorkoutService {
 
   async patch(
     workoutId: string,
-    workoutModifications: Partial<Workout>,
+    workoutModifications: PatchWorkoutInput,
   ): Promise<Workout> {
     const retrievedWorkout = await this.workoutRepository.findById(workoutId)
+
     return this.workoutRepository.save({
       ...retrievedWorkout,
-      ...workoutModifications,
+      ...(workoutModifications as Partial<Workout>),
     })
   }
 }
