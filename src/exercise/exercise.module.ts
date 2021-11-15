@@ -7,7 +7,6 @@ import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repo
 import { ExerciseResolver } from './exercise.resolver'
 import { ExerciseService } from './exercise.service'
 import { EXERCISE_REPOSITORY } from './repositories/exercise-repository.interface'
-import { TypeOrmWorkoutRepository } from '../workout/repositories/typeorm-workout.repository'
 import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template-repository.interface'
 
 @Module({
@@ -20,7 +19,7 @@ import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template-r
   providers: [
     {
       provide: EXERCISE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
+      useExisting: getRepositoryToken(TypeOrmExerciseRepository),
     },
     {
       provide: EXERCISE_TEMPLATE_REPOSITORY,

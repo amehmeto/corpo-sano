@@ -20,11 +20,11 @@ import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repositor
   providers: [
     {
       provide: WORKOUT_REPOSITORY,
-      useExisting: TypeOrmWorkoutRepository,
+      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
     },
     {
       provide: EXERCISE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
+      useExisting: getRepositoryToken(TypeOrmExerciseRepository),
     },
     {
       provide: EXERCISE_TEMPLATE_REPOSITORY,
