@@ -1,4 +1,8 @@
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
+import {
+  getRepositoryToken,
+  TypeOrmModule,
+  TypeOrmModuleOptions,
+} from '@nestjs/typeorm'
 import { Test } from '@nestjs/testing'
 import { config } from '../../../config'
 import { TypeOrmAthleteRepository } from './typeorm-athlete.repository'
@@ -20,7 +24,7 @@ describe('TypeOrmAthleteRepository', () => {
     }).compile()
 
     athleteRepository = module.get<TypeOrmAthleteRepository>(
-      TypeOrmAthleteRepository,
+      getRepositoryToken(TypeOrmAthleteRepository),
     )
 
     await athleteRepository.save(athleteFixture)

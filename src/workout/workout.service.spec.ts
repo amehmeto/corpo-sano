@@ -3,18 +3,21 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
 import { InMemoryExerciseTemplateRepository } from '../exercise/repositories/in-memory-exercise-template.repository'
 import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
-import { getRepositoryToken } from '@nestjs/typeorm'
-import { TypeOrmWorkoutRepository } from './repositories/typeorm-workout.repository'
-import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type-orm-exercise-template.repository'
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
-import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
-import { ExerciseTemplateRepository } from '../exercise/repositories/exercise-template-repository.interface'
+import {
+  EXERCISE_TEMPLATE_REPOSITORY,
+  ExerciseTemplateRepository,
+} from '../exercise/repositories/exercise-template-repository.interface'
 import { Exercise } from '../exercise/entities/exercise.entity'
 import { workoutInputDataBuilder } from '../../test/data-builders/workout-input.data-builder'
-import { WorkoutRepository } from './repositories/workout-repository.interface'
+import {
+  WORKOUT_REPOSITORY,
+  WorkoutRepository,
+} from './repositories/workout-repository.interface'
 import { workoutDataBuilder } from '../../test/data-builders/workout.data-builder'
+import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
@@ -25,15 +28,15 @@ describe('Workout Service', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(TypeOrmWorkoutRepository),
+          provide: WORKOUT_REPOSITORY,
           useClass: InMemoryWorkoutRepository,
         },
         {
-          provide: getRepositoryToken(TypeOrmExerciseTemplateRepository),
+          provide: EXERCISE_TEMPLATE_REPOSITORY,
           useClass: InMemoryExerciseTemplateRepository,
         },
         {
-          provide: getRepositoryToken(TypeOrmExerciseRepository),
+          provide: EXERCISE_REPOSITORY,
           useClass: InMemoryExerciseRepository,
         },
         WorkoutService,
@@ -41,11 +44,9 @@ describe('Workout Service', () => {
     }).compile()
 
     workoutService = module.get<WorkoutService>(WorkoutService)
-    workoutRepository = module.get<WorkoutRepository>(
-      getRepositoryToken(TypeOrmWorkoutRepository),
-    )
+    workoutRepository = module.get<WorkoutRepository>(WORKOUT_REPOSITORY)
     exerciseTemplateRepository = module.get<ExerciseTemplateRepository>(
-      getRepositoryToken(TypeOrmExerciseTemplateRepository),
+      EXERCISE_TEMPLATE_REPOSITORY,
     )
   })
 

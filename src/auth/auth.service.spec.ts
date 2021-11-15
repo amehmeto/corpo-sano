@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { AuthService } from './auth.service'
 import { authCredentialsInputDataBuilder } from '../../test/data-builders/auth-credentials-input.data-builder'
-import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
-import { getRepositoryToken } from '@nestjs/typeorm'
 import { InMemoryAthleteRepository } from '../athlete/repositories/in-memory-athlete.repository'
-import { AthleteRepository } from '../athlete/repositories/athlete-repository.interface'
+import {
+  ATHLETE_REPOSITORY,
+  AthleteRepository,
+} from '../athlete/repositories/athlete-repository.interface'
 import { ConflictException, UnauthorizedException } from '@nestjs/common'
 import * as Faker from 'faker'
 import { JwtModule, JwtService } from '@nestjs/jwt'
@@ -30,7 +31,7 @@ describe('AuthService', () => {
       ],
       providers: [
         {
-          provide: getRepositoryToken(TypeOrmAthleteRepository),
+          provide: ATHLETE_REPOSITORY,
           useClass: InMemoryAthleteRepository,
         },
         {
@@ -42,9 +43,7 @@ describe('AuthService', () => {
     }).compile()
 
     authService = module.get<AuthService>(AuthService)
-    athleteRepository = module.get<AthleteRepository>(
-      getRepositoryToken(TypeOrmAthleteRepository),
-    )
+    athleteRepository = module.get<AthleteRepository>(ATHLETE_REPOSITORY)
     jwtService = module.get<JwtService>(JwtService)
     emailGateway = module.get<EmailGateway>(EmailGatewayToken)
   })

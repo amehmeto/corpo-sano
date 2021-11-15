@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ExerciseTemplateService } from './exercise-template.service'
-import { TypeOrmExerciseTemplateRepository } from './repositories/type-orm-exercise-template.repository'
-import { ExerciseTemplateRepository } from './repositories/exercise-template-repository.interface'
-import { getRepositoryToken } from '@nestjs/typeorm'
+import {
+  EXERCISE_TEMPLATE_REPOSITORY,
+  ExerciseTemplateRepository,
+} from './repositories/exercise-template-repository.interface'
 import { InMemoryExerciseTemplateRepository } from './repositories/in-memory-exercise-template.repository'
 
 describe('ExerciseTemplateService', () => {
@@ -13,7 +14,7 @@ describe('ExerciseTemplateService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(TypeOrmExerciseTemplateRepository),
+          provide: EXERCISE_TEMPLATE_REPOSITORY,
           useClass: InMemoryExerciseTemplateRepository,
         },
         ExerciseTemplateService,
@@ -21,7 +22,7 @@ describe('ExerciseTemplateService', () => {
     }).compile()
 
     exerciseTemplateRepository = module.get<ExerciseTemplateRepository>(
-      getRepositoryToken(TypeOrmExerciseTemplateRepository),
+      EXERCISE_TEMPLATE_REPOSITORY,
     )
     exerciseTemplateService = module.get<ExerciseTemplateService>(
       ExerciseTemplateService,

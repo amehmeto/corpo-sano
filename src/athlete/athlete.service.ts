@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { AthleteRepository } from './repositories/athlete-repository.interface'
-import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
+import { Inject, Injectable } from '@nestjs/common'
+import {
+  ATHLETE_REPOSITORY,
+  AthleteRepository,
+} from './repositories/athlete-repository.interface'
 
 @Injectable()
 export class AthleteService {
   constructor(
-    @InjectRepository(TypeOrmAthleteRepository)
+    @Inject(ATHLETE_REPOSITORY)
     private readonly athleteRepository: AthleteRepository,
   ) {}
 }

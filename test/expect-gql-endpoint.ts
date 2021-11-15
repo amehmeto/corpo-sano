@@ -14,8 +14,7 @@ export function displayErrors(response: any) {
 export function getDataKey(query: Query) {
   const graphqlDataKeyPattern = /.+?{\s*(.+?)\s*[({]/
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, dataKey] = query.query.match(graphqlDataKeyPattern)
+  const [, dataKey] = query.query.match(graphqlDataKeyPattern)
 
   return dataKey
 }
