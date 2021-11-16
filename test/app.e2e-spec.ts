@@ -18,6 +18,7 @@ import { deleteFixtures } from './delete-fixtures'
 import { Exercise } from '../src/exercise/entities/exercise.entity'
 import { AccessToken } from '../src/auth/types/access-token.type'
 import { displayErrors, getDataKey, Query } from './expect-gql-endpoint'
+import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -435,7 +436,7 @@ describe('AppController (e2e)', () => {
     })
 
     test('Patch Workout', () => {
-      const updateWorkoutQuery = {
+      const patchWorkoutQuery = {
         query: `mutation PatchWorkout(
           $workoutId: ID!,
           $payload: PatchWorkoutInput!
@@ -455,17 +456,21 @@ describe('AppController (e2e)', () => {
           workoutId: workoutFixture.id,
           payload: {
             title: 'nouveau titre',
+            exercises: [exerciseInputDataBuilder()],
+            scheduledDays: [WeekDays.MONDAY, WeekDays.FRIDAY],
           },
         },
       }
       const expectedWorkout = {
         ...workoutFixture,
-        exercises: exercisesFixture.map((exercise) => ({
-          template: exercise.template,
-        })),
+        exercises: patchWorkoutQuery.variables.payload.exercises.map(
+          (exercise) => ({
+            template: new Object({ ...exercise.template }),
+          }),
+        ),
         title: 'nouveau titre',
       }
-      return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
+      return expectGqlEndpoint(patchWorkoutQuery, expectedWorkout)
     })
   })
 })

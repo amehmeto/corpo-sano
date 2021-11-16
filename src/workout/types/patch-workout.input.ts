@@ -5,7 +5,7 @@ import { ExerciseInput } from '../../exercise/types/exercise.input'
 
 @InputType()
 export class PatchWorkoutInput {
-  @Field()
+  @Field({ nullable: true })
   title?: string
 
   @Field(() => [ExerciseInput], { nullable: true })

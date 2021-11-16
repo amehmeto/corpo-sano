@@ -137,7 +137,6 @@ input ExerciseInput {
   numberOfReps: Float!
   finalRestTime: Float!
   interSetsRestTime: Float!
-  createAt: DateTime!
 }
 
 input ExerciseTemplateInput {
@@ -146,7 +145,7 @@ input ExerciseTemplateInput {
 }
 
 input PatchWorkoutInput {
-  title: String!
+  title: String
   exercises: [ExerciseInput!]
   scheduledDays: [String!]
 }

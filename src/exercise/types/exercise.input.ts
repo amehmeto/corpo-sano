@@ -20,7 +20,4 @@ export class ExerciseInput {
 
   @Field()
   interSetsRestTime: number
-
-  @Field()
-  createAt: Date
 }
