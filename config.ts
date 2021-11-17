@@ -1,3 +1,5 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+
 export const config = {
   db: {
     type: 'mysql',
@@ -6,9 +8,9 @@ export const config = {
     username: 'root',
     password: '',
     database: 'corposano',
-    entities: ['dist/**/*.entity{ .ts,.js}'],
+    entities: ['dist/**/*.entity{.ts,.js}'],
     synchronize: true,
     autoLoadEntities: true,
     keepConnectionAlive: true,
-  },
+  } as TypeOrmModuleOptions,
 }

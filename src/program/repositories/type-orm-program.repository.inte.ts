@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing'
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
 import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
@@ -22,7 +22,7 @@ describe('TypeOrm Program Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
+        TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
           TypeOrmProgramRepository,
           TypeOrmExerciseRepository,
