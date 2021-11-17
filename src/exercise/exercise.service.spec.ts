@@ -53,7 +53,6 @@ describe('ExerciseService', () => {
 
     const retrievedExercise = await exerciseService.getExercise(exercise.id)
 
-    console.log(retrievedExercise)
     expect(retrievedExercise).toStrictEqual(exercise)
   })
 })

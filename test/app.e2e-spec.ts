@@ -16,7 +16,11 @@ import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-detail
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
 import { AccessToken } from '../src/auth/types/access-token.type'
-import { getDataKey, handleGraphQLResponse, Query } from './expect-gql-endpoint'
+import {
+  getDataKey,
+  handleGraphQLResponse,
+  Query,
+} from './handle-graphql-response'
 import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
 
 describe('AppController (e2e)', () => {
@@ -321,6 +325,7 @@ describe('AppController (e2e)', () => {
               interSetsRestTime
               numberOfReps
               numberOfSets
+              position
               createdAt
               updatedAt
               deletedAt
@@ -342,6 +347,7 @@ describe('AppController (e2e)', () => {
         title: workoutFixture.title,
         exercises: exercisesFixture.map((exercise) => ({
           ...exercise,
+          position: expect.any(Number),
           id: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
