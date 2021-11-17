@@ -16,7 +16,7 @@ import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-detail
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
 import { AccessToken } from '../src/auth/types/access-token.type'
-import { displayErrors, getDataKey, Query } from './expect-gql-endpoint'
+import { getDataKey, handleGraphQLResponse, Query } from './expect-gql-endpoint'
 import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
 
 describe('AppController (e2e)', () => {
@@ -36,11 +36,9 @@ describe('AppController (e2e)', () => {
       .post(GRAPHQL_URL)
       .set('Authorization', 'Bearer ' + tokenJwt)
       .send(query)
-      .expect((response: any) => {
-        displayErrors(response)
-        const retrievedData = response.body.data[dataKey]
-        expect(retrievedData).toStrictEqual(expectedData)
-      })
+      .expect((response: any) =>
+        handleGraphQLResponse(response, dataKey, expectedData),
+      )
   }
 
   beforeAll(async () => {
@@ -197,6 +195,7 @@ describe('AppController (e2e)', () => {
             interSetsRestTime
             numberOfReps 
             numberOfSets
+            position
             template {
               id
               title

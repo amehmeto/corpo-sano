@@ -46,6 +46,7 @@ type Exercise {
   numberOfReps: Float!
   finalRestTime: Float!
   interSetsRestTime: Float!
+  position: Float!
   workout: Workout!
 }
 

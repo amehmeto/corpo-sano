@@ -10,6 +10,7 @@ export function exerciseDataBuilder(exercise = {}) {
     deletedAt: null as Date,
     version: Faker.datatype.number(10),
     template: new ExerciseTemplate(exerciseTemplateDataBuilder()),
+    position: Faker.datatype.number({ min: 0, max: 10 }),
     numberOfSets: 0,
     numberOfReps: 0,
     interSetsRestTime: 0,

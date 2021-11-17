@@ -4,7 +4,6 @@ import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercis
 import { Exercise } from '../exercise/models/exercise.model'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { WorkoutService } from './workout.service'
-import { UpdateWorkoutInput } from './types/update-workout.input'
 import { PatchWorkoutInput } from './types/patch-workout.input'
 
 @Resolver()

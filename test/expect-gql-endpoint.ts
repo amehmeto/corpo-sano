@@ -18,3 +18,19 @@ export function getDataKey(query: Query) {
 
   return dataKey
 }
+
+function getResponseData(response: any, dataKey: string) {
+  return response.body && response.body.data
+    ? response.body.data[dataKey]
+    : 'error somewhere 😱'
+}
+
+export function handleGraphQLResponse(
+  response: any,
+  dataKey: string,
+  expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
+) {
+  displayErrors(response)
+  const retrievedData = getResponseData(response, dataKey)
+  expect(retrievedData).toStrictEqual(expectedData)
+}

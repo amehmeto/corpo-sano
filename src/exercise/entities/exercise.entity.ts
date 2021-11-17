@@ -26,6 +26,9 @@ export class Exercise extends Base {
   @Column({ default: 0 })
   finalRestTime: number
 
+  @Column()
+  position: number
+
   @ManyToOne(() => Workout, (workout) => workout.exercises)
   workout: Workout
 
