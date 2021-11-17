@@ -5,6 +5,7 @@ import { Exercise } from '../exercise/models/exercise.model'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { WorkoutService } from './workout.service'
 import { UpdateWorkoutInput } from './types/update-workout.input'
+import { PatchWorkoutInput } from './types/patch-workout.input'
 
 @Resolver()
 export class WorkoutResolver {
@@ -55,5 +56,13 @@ export class WorkoutResolver {
     @Args('payload') payload: UpdateWorkoutInput,
   ): Promise<Workout> {
     return this.workoutService.update(payload)
+  }
+
+  @Mutation(() => Workout)
+  async patchWorkout(
+    @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
+    @Args('payload') payload: PatchWorkoutInput,
+  ): Promise<Workout> {
+    return this.workoutService.patch(workoutId, payload)
   }
 }

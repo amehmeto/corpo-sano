@@ -79,6 +79,7 @@ type Mutation {
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
   updateWorkout(payload: UpdateWorkoutInput!): Workout!
+  patchWorkout(payload: PatchWorkoutInput!, workoutId: ID!): Workout!
 }
 
 input ExerciseDetailsInput {
@@ -136,10 +137,15 @@ input ExerciseInput {
   numberOfReps: Float!
   finalRestTime: Float!
   interSetsRestTime: Float!
-  createAt: DateTime!
 }
 
 input ExerciseTemplateInput {
   id: ID!
   title: String!
+}
+
+input PatchWorkoutInput {
+  title: String
+  exercises: [ExerciseInput!]
+  scheduledDays: [String!]
 }
