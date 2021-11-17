@@ -9,7 +9,7 @@ import {
   generateFixtures,
   programFixture,
   workoutFixture,
-} from './generate.fixtures'
+} from './fixtures/generate.fixtures'
 import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
 import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
@@ -21,7 +21,8 @@ import {
   Query,
 } from './handle-graphql-response'
 import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
-import { deleteFixtures } from './delete-fixtures'
+import { Connection } from 'typeorm'
+import { deleteFixtures } from './fixtures/delete-fixtures'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -53,7 +54,8 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
 
-    await generateFixtures(app)
+    const connection = app.get(Connection)
+    await generateFixtures(connection)
 
     const signInQuery = {
       query: `query SignIn($payload: AuthCredentialsInput!) {
@@ -248,7 +250,6 @@ describe('AppController (e2e)', () => {
 
   describe('Mutations', () => {
     test('Create Program', () => {
-      // TODO: Isn't triggered by supertest
       const createProgramMutation = {
         query: `mutation CreateProgram($title: String!) {
           createProgram(title: $title) {

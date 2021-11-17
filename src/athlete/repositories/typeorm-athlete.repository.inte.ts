@@ -1,8 +1,4 @@
-import {
-  getRepositoryToken,
-  TypeOrmModule,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm'
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
 import { Test } from '@nestjs/testing'
 import { config } from '../../../config'
 import { TypeOrmAthleteRepository } from './typeorm-athlete.repository'
@@ -18,7 +14,7 @@ describe('TypeOrmAthleteRepository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
+        TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([TypeOrmAthleteRepository]),
       ],
     }).compile()
