@@ -15,7 +15,6 @@ import { registerAthleteInputDataBuilder } from './data-builders/register-athlet
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { deleteFixtures } from './delete-fixtures'
-import { Exercise } from '../src/exercise/entities/exercise.entity'
 import { AccessToken } from '../src/auth/types/access-token.type'
 import { displayErrors, getDataKey, Query } from './expect-gql-endpoint'
 import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
@@ -407,41 +406,11 @@ describe('AppController (e2e)', () => {
 
     test('Update Workout', () => {
       const updateWorkoutQuery = {
-        query: `mutation UpdateWorkout($payload: UpdateWorkoutInput!) {
-          updateWorkout(payload: $payload) {
-            id
-            title
-            exercises {
-              template {
-                id
-                title
-              }
-            }
-          }
-        }`,
-        variables: {
-          payload: {
-            ...workoutFixture,
-            id: workoutFixture.id,
-            title: 'nouveau titre',
-          },
-        },
-      }
-      const expectedWorkout = {
-        exercises: [] as Exercise[],
-        id: workoutFixture.id,
-        title: 'nouveau titre',
-      }
-      return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
-    })
-
-    test('Patch Workout', () => {
-      const patchWorkoutQuery = {
-        query: `mutation PatchWorkout(
+        query: `mutation UpdateWorkout(
           $workoutId: ID!,
           $payload: PatchWorkoutInput!
         ) {
-          patchWorkout(workoutId: $workoutId, payload: $payload) {
+          updateWorkout(workoutId: $workoutId, payload: $payload) {
             id
             title
             exercises {
@@ -455,7 +424,6 @@ describe('AppController (e2e)', () => {
         variables: {
           workoutId: workoutFixture.id,
           payload: {
-            title: 'nouveau titre',
             exercises: [exerciseInputDataBuilder()],
             scheduledDays: [WeekDays.MONDAY, WeekDays.FRIDAY],
           },
@@ -463,14 +431,13 @@ describe('AppController (e2e)', () => {
       }
       const expectedWorkout = {
         ...workoutFixture,
-        exercises: patchWorkoutQuery.variables.payload.exercises.map(
+        exercises: updateWorkoutQuery.variables.payload.exercises.map(
           (exercise) => ({
             template: new Object({ ...exercise.template }),
           }),
         ),
-        title: 'nouveau titre',
       }
-      return expectGqlEndpoint(patchWorkoutQuery, expectedWorkout)
+      return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
     })
   })
 })

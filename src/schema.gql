@@ -78,8 +78,7 @@ type Mutation {
   createWorkout(programId: ID!, title: String!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
-  updateWorkout(payload: UpdateWorkoutInput!): Workout!
-  patchWorkout(payload: PatchWorkoutInput!, workoutId: ID!): Workout!
+  updateWorkout(payload: PatchWorkoutInput!, workoutId: ID!): Workout!
 }
 
 input ExerciseDetailsInput {
@@ -123,9 +122,8 @@ enum WeekDays {
   SUNDAY
 }
 
-input UpdateWorkoutInput {
-  id: ID!
-  title: String!
+input PatchWorkoutInput {
+  title: String
   exercises: [ExerciseInput!]
   scheduledDays: [String!]
 }
@@ -142,10 +140,4 @@ input ExerciseInput {
 input ExerciseTemplateInput {
   id: ID!
   title: String!
-}
-
-input PatchWorkoutInput {
-  title: String
-  exercises: [ExerciseInput!]
-  scheduledDays: [String!]
 }
