@@ -62,7 +62,6 @@ type Query {
   getExercise(exerciseId: ID!): Exercise!
   getAllPrograms: [Program!]!
   signIn(payload: AuthCredentialsInput!): AccessToken!
-  getWorkoutExercises(workoutId: ID!): [Exercise!]!
   getWorkout(workoutId: ID!): Workout!
 }
 

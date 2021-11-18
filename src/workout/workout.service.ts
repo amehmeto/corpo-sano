@@ -57,10 +57,6 @@ export class WorkoutService {
     return this.workoutRepository.save(workout)
   }
 
-  getExercises(workoutId: string): Promise<Exercise[]> {
-    return this.workoutRepository.getExercises(workoutId)
-  }
-
   async scheduleWorkout(
     scheduleWorkoutInput: ScheduleWorkoutInput,
   ): Promise<Workout> {

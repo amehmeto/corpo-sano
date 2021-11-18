@@ -14,11 +14,6 @@ export class TypeOrmWorkoutRepository
     return workout
   }
 
-  async getExercises(workoutId: string): Promise<Exercise[]> {
-    const workout = await this.findOne(workoutId)
-    return workout.exercises.sort((a, b) => this.sortByCreatedAt(a, b))
-  }
-
   private sortByCreatedAt(a: Exercise, b: Exercise) {
     return a.createdAt >= b.createdAt ? 1 : -1
   }
