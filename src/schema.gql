@@ -73,6 +73,7 @@ input AuthCredentialsInput {
 
 type Mutation {
   saveExerciseDetails(payload: ExerciseDetailsInput!): Exercise!
+  deleteExercise(exerciseId: ID!): Boolean!
   createProgram(title: String!): Program!
   registerAthlete(payload: RegisterAthleteInput!): Athlete!
   sendConfirmationEmail(athleteId: ID!): Athlete!

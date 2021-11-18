@@ -14,7 +14,6 @@ import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exe
 import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
 import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
-import { deleteFixtures } from './delete-fixtures'
 import { AccessToken } from '../src/auth/types/access-token.type'
 import {
   getDataKey,
@@ -22,6 +21,7 @@ import {
   Query,
 } from './handle-graphql-response'
 import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
+import { deleteFixtures } from './delete-fixtures'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -269,6 +269,7 @@ describe('AppController (e2e)', () => {
 
   describe('Mutations', () => {
     test('Create Program', () => {
+      // TODO: Isn't triggered by supertest
       const createProgramMutation = {
         query: `mutation CreateProgram($title: String!) {
           createProgram(title: $title) {
@@ -443,6 +444,23 @@ describe('AppController (e2e)', () => {
         ),
       }
       return expectGqlEndpoint(updateWorkoutQuery, expectedWorkout)
+    })
+
+    test('Delete Exercise', () => {
+      // TODO: Isn't triggered by supertest
+      const deleteExercise = {
+        query: `mutation DeleteExercise($exerciseId: ID!) {
+          deleteExercise(exerciseId: $exerciseId)
+        }`,
+        variables: {
+          exerciseId: exercisesFixture[0].id,
+        },
+      }
+      const expectedDeleteExercise = {
+        deleteExercise: true,
+      }
+
+      expectGqlEndpoint(deleteExercise, expectedDeleteExercise)
     })
   })
 })

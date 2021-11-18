@@ -11,6 +11,7 @@ import { workoutDataBuilder } from '../../../test/data-builders/workout.data-bui
 import { Workout } from '../../workout/entities/workout.entity'
 import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
 import { exercisesTemplatesFixture } from '../../../test/generate.fixtures'
+import { UpdateResult } from 'typeorm'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())
 const workoutFixture = new Workout(workoutDataBuilder())
@@ -76,10 +77,21 @@ describe('TypeOrm Exercise Repository', () => {
       version: expect.any(Number),
       workout: new Workout(expectedWorkout),
     })
+
     const retrievedExercise = await exerciseRepository.findById(
       exerciseFixture.id,
     )
 
     expect(retrievedExercise).toStrictEqual(expectedExercise)
+  })
+
+  it('should soft-delete exercise', async () => {
+    const expectedResponse = new UpdateResult()
+    expectedResponse.affected = 1
+    expectedResponse.raw = []
+
+    const response = await exerciseRepository.softDelete(exerciseFixture.id)
+
+    expect(response).toStrictEqual(expectedResponse)
   })
 })
