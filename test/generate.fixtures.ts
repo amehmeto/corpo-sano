@@ -25,7 +25,7 @@ export const exercisesFixture = [
   }),
   exerciseDataBuilder({
     position: 1,
-    createdAt: Faker.date.past(3),
+    createdAt: Faker.date.past(0),
     template: exerciseTemplateDataBuilder(),
   }),
 ]
