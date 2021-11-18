@@ -10,7 +10,7 @@ import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-b
 import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
 import { Workout } from '../../workout/entities/workout.entity'
 import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
-import { exercisesTemplatesFixture } from '../../../test/fixtures/generate.fixtures'
+import { exercisesTemplatesFixture } from '../../../test/fixtures/generate-fixtures'
 import { UpdateResult } from 'typeorm'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())

@@ -15,7 +15,7 @@ import { workoutDataBuilder } from '../../../test/data-builders/workout.data-bui
 import {
   exercisesTemplatesFixture,
   workoutFixture,
-} from '../../../test/fixtures/generate.fixtures'
+} from '../../../test/fixtures/generate-fixtures'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())

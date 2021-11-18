@@ -1,4 +1,4 @@
-import { Connection } from 'typeorm'
+import { Connection, ConnectionOptions, createConnection } from 'typeorm'
 import { Athlete } from '../../src/athlete/entities/athlete.entity'
 import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
 import { workoutDataBuilder } from '../data-builders/workout.data-builder'
@@ -10,9 +10,11 @@ import { TypeOrmWorkoutRepository } from '../../src/workout/repositories/typeorm
 import { TypeOrmProgramRepository } from '../../src/program/repositories/type-orm-program.repository'
 import { TypeOrmAthleteRepository } from '../../src/athlete/repositories/typeorm-athlete.repository'
 import * as Faker from 'faker'
-import { INestApplication } from '@nestjs/common'
-import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
 import { TypeOrmExerciseTemplateRepository } from '../../src/exercise/repositories/type-orm-exercise-template.repository'
+import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
+import { Exercise } from '../../src/exercise/entities/exercise.entity'
+import { Program } from '../../src/program/entities/program.entity'
+import { Workout } from '../../src/workout/entities/workout.entity'
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
@@ -115,3 +117,21 @@ export async function generateFixtures(connection: Connection) {
   for (const pair of entityRepositoryFixturePairs)
     await saveFixtures(connection, pair)
 }
+
+;(async function () {
+  console.log('Generating fixtures 💽')
+  const connection = await createConnection({
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: '',
+    database: 'corposano',
+    entities: [ExerciseTemplate, Exercise, Athlete, Program, Workout],
+    synchronize: true,
+    autoLoadEntities: false,
+    keepConnectionAlive: true,
+  } as ConnectionOptions)
+  await generateFixtures(connection)
+  await connection.close()
+})()

@@ -8,7 +8,7 @@ import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-pr
 import { Program } from '../../program/entities/program.entity'
 import { config } from '../../../config'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
-import { exercisesTemplatesFixture } from '../../../test/fixtures/generate.fixtures'
+import { exercisesTemplatesFixture } from '../../../test/fixtures/generate-fixtures'
 
 describe('TypeOrm Exercise Template Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository

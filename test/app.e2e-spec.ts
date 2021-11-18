@@ -9,7 +9,7 @@ import {
   generateFixtures,
   programFixture,
   workoutFixture,
-} from './fixtures/generate.fixtures'
+} from './fixtures/generate-fixtures'
 import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
 import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
 import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
@@ -26,6 +26,7 @@ import { deleteFixtures } from './fixtures/delete-fixtures'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
+  let connection: Connection
   let token: AccessToken
 
   function expectGqlEndpoint(
@@ -54,7 +55,7 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
 
-    const connection = app.get(Connection)
+    connection = app.get(Connection)
     await generateFixtures(connection)
 
     const signInQuery = {
@@ -78,7 +79,7 @@ describe('AppController (e2e)', () => {
   })
 
   afterAll(async () => {
-    await deleteFixtures(app)
+    await deleteFixtures(connection)
   })
 
   describe('Public Endpoints', () => {
