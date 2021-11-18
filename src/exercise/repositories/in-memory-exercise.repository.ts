@@ -1,6 +1,7 @@
 import { ExerciseRepository } from './exercise-repository.interface'
 import { Exercise } from '../entities/exercise.entity'
 import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
+import { UpdateResult } from 'typeorm'
 
 export class InMemoryExerciseRepository implements ExerciseRepository {
   private exercisesData = [
@@ -26,9 +27,9 @@ export class InMemoryExerciseRepository implements ExerciseRepository {
     return Promise.resolve(new Exercise(exercise))
   }
 
-  softDelete(id: string): Promise<Exercise> {
-    return Promise.resolve(
-      this.exercises.find((exercise) => exercise.id === id),
-    )
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  softDelete(id: string): Promise<UpdateResult> {
+    const softDeletedExercise = new UpdateResult()
+    return Promise.resolve(softDeletedExercise)
   }
 }

@@ -5,6 +5,7 @@ import {
 } from './repositories/exercise-repository.interface'
 import { ExerciseDetailsInput } from './types/exercise-details.input'
 import { Exercise } from './entities/exercise.entity'
+import { UpdateResult } from 'typeorm'
 
 @Injectable()
 export class ExerciseService {
@@ -28,7 +29,7 @@ export class ExerciseService {
     return this.exerciseRepository.findById(exerciseId)
   }
 
-  async softDelete(exerciseId: string): Promise<Exercise> {
+  async softDelete(exerciseId: string): Promise<UpdateResult> {
     return this.exerciseRepository.softDelete(exerciseId)
   }
 }

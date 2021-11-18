@@ -7,6 +7,7 @@ import {
   ExerciseRepository,
 } from './repositories/exercise-repository.interface'
 import { exerciseDetailsInputDataBuilder } from '../../test/data-builders/exercise-details-input.data-builder'
+import { UpdateResult } from 'typeorm'
 
 describe('ExerciseService', () => {
   let exerciseService: ExerciseService
@@ -58,9 +59,10 @@ describe('ExerciseService', () => {
 
   it('should soft-delete an exercise', async () => {
     const [exercise] = await exerciseRepository.find()
+    const expectedResponse = new UpdateResult()
 
     const softDeletedExercise = await exerciseService.softDelete(exercise.id)
 
-    expect(softDeletedExercise).toStrictEqual(exercise)
+    expect(softDeletedExercise).toStrictEqual(expectedResponse)
   })
 })
