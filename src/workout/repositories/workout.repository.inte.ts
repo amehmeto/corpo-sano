@@ -148,11 +148,11 @@ describe('TypeOrm Workout Repository', () => {
         })
       })
 
-      const retrievedExercises = await workoutRepository.getExercises(
+      const retrievedWorkout = await workoutRepository.findById(
         workoutFixture.id,
       )
 
-      expect(retrievedExercises).toStrictEqual(expectedExercises)
+      expect(retrievedWorkout.exercises).toStrictEqual(expectedExercises)
     },
   )
 

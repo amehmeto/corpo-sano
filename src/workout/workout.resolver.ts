@@ -1,7 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Workout } from './models/workout.model'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
-import { Exercise } from '../exercise/models/exercise.model'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { WorkoutService } from './workout.service'
 import { PatchWorkoutInput } from './types/patch-workout.input'
@@ -9,13 +8,6 @@ import { PatchWorkoutInput } from './types/patch-workout.input'
 @Resolver()
 export class WorkoutResolver {
   constructor(private readonly workoutService: WorkoutService) {}
-
-  @Query(() => [Exercise])
-  async getWorkoutExercises(
-    @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
-  ): Promise<Exercise[]> {
-    return this.workoutService.getExercises(workoutId)
-  }
 
   @Query(() => Workout)
   async getWorkout(

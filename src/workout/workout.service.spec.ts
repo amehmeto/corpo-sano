@@ -104,19 +104,6 @@ describe('Workout Service', () => {
     expect(retrievedWorkout).toStrictEqual(expectedWorkout)
   })
 
-  it("should get all workout's exercises", async () => {
-    const workoutId = Faker.datatype.uuid()
-    const expectedExercises = [
-      {
-        workoutId,
-      },
-    ]
-
-    const retrievedExercises = await workoutService.getExercises(workoutId)
-
-    expect(retrievedExercises).toStrictEqual(expectedExercises)
-  })
-
   it('should schedule workout', async () => {
     const workoutId = Faker.datatype.uuid()
     const daysOfTheWeek = [WeekDays.MONDAY, WeekDays.FRIDAY]

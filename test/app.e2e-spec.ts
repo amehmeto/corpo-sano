@@ -172,6 +172,12 @@ describe('AppController (e2e)', () => {
           getWorkout(workoutId: $workoutId) {
             id
             title
+            exercises {
+              id
+              template {
+                title
+              }
+            }
           }
         }`,
         variables: {
@@ -181,42 +187,15 @@ describe('AppController (e2e)', () => {
       const expectedWorkout = {
         id: workoutFixture.id,
         title: workoutFixture.title,
+        exercises: exercisesFixture.map((exercise) => ({
+          id: exercise.id,
+          template: {
+            title: exercise.template.title,
+          },
+        })),
       }
 
       return expectGqlEndpoint(getWorkoutQuery, expectedWorkout)
-    })
-
-    test('Get Workout Exercises', () => {
-      const getWorkoutExercisesQuery = {
-        query: `query GetWorkoutExercises($workoutId: ID!){
-          getWorkoutExercises(workoutId: $workoutId) {
-            id 
-            createdAt
-            updatedAt
-            deletedAt
-            version
-            finalRestTime
-            interSetsRestTime
-            numberOfReps 
-            numberOfSets
-            position
-            template {
-              id
-              title
-            }
-          }
-        }`,
-        variables: {
-          workoutId: workoutFixture.id,
-        },
-      }
-      const expectedExercises = exercisesFixture.map((exercise) => ({
-        ...exercise,
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        version: expect.any(Number),
-      }))
-      return expectGqlEndpoint(getWorkoutExercisesQuery, expectedExercises)
     })
 
     test('Get All Programs', () => {

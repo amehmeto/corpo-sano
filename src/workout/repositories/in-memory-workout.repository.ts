@@ -26,14 +26,6 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
     return Promise.resolve(this.workouts.find((workout) => workout.id === id))
   }
 
-  getExercises(workoutId: string): Promise<any[]> {
-    return Promise.resolve([
-      {
-        workoutId,
-      },
-    ])
-  }
-
   save(workout: Workout): Promise<Workout> {
     return Promise.resolve(
       new Workout({
