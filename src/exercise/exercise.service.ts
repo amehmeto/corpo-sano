@@ -27,4 +27,8 @@ export class ExerciseService {
   async getExercise(exerciseId: string): Promise<Exercise> {
     return this.exerciseRepository.findById(exerciseId)
   }
+
+  async softDelete(exerciseId: string): Promise<Exercise> {
+    return this.exerciseRepository.softDelete(exerciseId)
+  }
 }

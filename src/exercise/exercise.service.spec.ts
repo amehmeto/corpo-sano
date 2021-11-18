@@ -55,4 +55,12 @@ describe('ExerciseService', () => {
 
     expect(retrievedExercise).toStrictEqual(exercise)
   })
+
+  it('should soft-delete an exercise', async () => {
+    const [exercise] = await exerciseRepository.find()
+
+    const softDeletedExercise = await exerciseService.softDelete(exercise.id)
+
+    expect(softDeletedExercise).toStrictEqual(exercise)
+  })
 })

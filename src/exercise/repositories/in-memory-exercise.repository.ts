@@ -25,4 +25,10 @@ export class InMemoryExerciseRepository implements ExerciseRepository {
   save(exercise: Partial<Exercise>): Promise<Exercise> {
     return Promise.resolve(new Exercise(exercise))
   }
+
+  softDelete(id: string): Promise<Exercise> {
+    return Promise.resolve(
+      this.exercises.find((exercise) => exercise.id === id),
+    )
+  }
 }
