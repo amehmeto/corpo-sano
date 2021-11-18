@@ -34,6 +34,9 @@ export class Exercise {
   @Field()
   interSetsRestTime: number
 
+  @Field()
+  position: number
+
   @Field(() => Workout)
   workout: Workout
 }

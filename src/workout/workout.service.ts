@@ -46,11 +46,11 @@ export class WorkoutService {
 
     const workout = await this.workoutRepository.findById(workoutId)
     workout.exercises = await Promise.all(
-      exerciseTemplateIds.map(async (exerciseId) => {
+      exerciseTemplateIds.map(async (exerciseId, index) => {
         const template = await this.exerciseTemplateRepository.findById(
           exerciseId,
         )
-        const exercise = new Exercise({ id: uuid(), template })
+        const exercise = new Exercise({ id: uuid(), position: index, template })
         return this.exerciseRepository.save(exercise)
       }),
     )

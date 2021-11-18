@@ -18,11 +18,13 @@ export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
 export const exercisesFixture = [
   exerciseDataBuilder({
+    position: 0,
     createdAt: Faker.date.past(30),
     deletedAt: null as Date,
     template: exerciseTemplateDataBuilder(),
   }),
   exerciseDataBuilder({
+    position: 1,
     createdAt: Faker.date.past(3),
     template: exerciseTemplateDataBuilder(),
   }),

@@ -74,9 +74,10 @@ describe('Workout Service', () => {
       exerciseTemplateIds: exerciseTemplates.map((exercise) => exercise.id),
     }
     const expectedExercises = await Promise.all(
-      exerciseTemplates.map(async (template) => {
+      exerciseTemplates.map(async (template, index) => {
         return new Exercise({
           id: expect.any(String),
+          position: index,
           template: await exerciseTemplateRepository.findById(template.id),
         })
       }),
