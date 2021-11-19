@@ -11,6 +11,7 @@ type Athlete {
   id: ID!
   name: String!
   height: Int!
+  bodyFat: Int!
   lengthUnit: String!
   weight: Int!
   weightUnit: String!

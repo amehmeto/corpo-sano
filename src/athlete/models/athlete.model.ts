@@ -14,6 +14,9 @@ export class Athlete {
   @Field(() => Int)
   height: number
 
+  @Field(() => Int)
+  bodyFat: number
+
   @Field(() => String)
   lengthUnit: UnitSystem
 

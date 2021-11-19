@@ -13,6 +13,7 @@ export function athleteDataBuilder(athlete = {}) {
   const template = {
     id: Faker.datatype.uuid(),
     name: Faker.name.firstName(),
+    bodyFat: Faker.datatype.number({ min: 0, max: 10000 }),
     height: Faker.datatype.number(),
     lengthUnit: Faker.random.arrayElement(unitSystem),
     weight: Faker.datatype.number(),

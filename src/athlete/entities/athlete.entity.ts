@@ -21,6 +21,9 @@ export class Athlete extends Base {
   @Column()
   weightUnit: UnitSystem
 
+  @Column({ nullable: true })
+  bodyFat: number
+
   @Column()
   gender: Gender
 

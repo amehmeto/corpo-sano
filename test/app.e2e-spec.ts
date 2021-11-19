@@ -132,6 +132,7 @@ describe('AppController (e2e)', () => {
       }
       return expectGqlEndpoint(registerAthleteMutation, expectedAthlete, false)
     })
+
     test('Send Confirmation Email', () => {
       const sendConfirmationEmailMutation = {
         query: `mutation SendConfirmationEmail($athleteId: ID!) {
@@ -256,6 +257,7 @@ describe('AppController (e2e)', () => {
             name
             height
             weight
+            bodyFat
           }
         }`,
         variables: {
@@ -267,6 +269,7 @@ describe('AppController (e2e)', () => {
         id: athleteFixture.id,
         name: athleteFixture.name,
         weight: athleteFixture.weight,
+        bodyFat: athleteFixture.bodyFat,
       }
 
       return expectGqlEndpoint(getAthleteQuery, expectedAthlete)
