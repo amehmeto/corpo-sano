@@ -63,6 +63,7 @@ type Query {
   getAllPrograms: [Program!]!
   signIn(payload: AuthCredentialsInput!): AccessToken!
   getWorkout(workoutId: ID!): Workout!
+  getAthlete(athleteId: ID!): Athlete!
 }
 
 input AuthCredentialsInput {

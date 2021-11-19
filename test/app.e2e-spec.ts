@@ -218,7 +218,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
     })
 
-    test('Get Exercise By Id', () => {
+    test('Get Exercise', () => {
       const getExercise = {
         query: `query GetExercise($exerciseId: ID!) {
           getExercise(exerciseId: $exerciseId) {
@@ -246,6 +246,30 @@ describe('AppController (e2e)', () => {
       }
 
       return expectGqlEndpoint(getExercise, expectedGetExerciseById)
+    })
+
+    test('Get Athlete', () => {
+      const getAthleteQuery = {
+        query: `query GetAthlete($athleteId: ID!) {
+          getAthlete(athleteId: $athleteId) {
+            id
+            name
+            height
+            weight
+          }
+        }`,
+        variables: {
+          athleteId: athleteFixture.id,
+        },
+      }
+      const expectedAthlete = {
+        height: athleteFixture.height,
+        id: athleteFixture.id,
+        name: athleteFixture.name,
+        weight: athleteFixture.weight,
+      }
+
+      return expectGqlEndpoint(getAthleteQuery, expectedAthlete)
     })
   })
 

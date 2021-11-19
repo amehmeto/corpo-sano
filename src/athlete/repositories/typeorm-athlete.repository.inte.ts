@@ -35,7 +35,7 @@ describe('TypeOrmAthleteRepository', () => {
   })
 
   it('should find an athlete by id', async () => {
-    const expectedAthlete = new Athlete({ ...athleteFixture })
+    const expectedAthlete = new Athlete(athleteFixture)
 
     const retrievedAthlete = await athleteRepository.findById(athleteFixture.id)
 
