@@ -34,7 +34,7 @@ export class InMemoryAthleteRepository implements AthleteRepository {
 
   findById(athleteId: string): Promise<Athlete> {
     return Promise.resolve(
-      this.athletes.find((athlete: any) => athlete.id === athleteId),
+      this.athletes.find((athlete) => athlete.id === athleteId),
     )
   }
 
