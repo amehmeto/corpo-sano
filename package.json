@@ -20,6 +20,8 @@
     "test:inte": "jest -c jest-inte.json --runInBand --forceExit",
     "test:e2e": "jest -c ./test/jest-e2e.json --runInBand --forceExit",
     "test:cov": "jest -c jest-all.json --coverage --runInBand --forceExit",
+    "fixt:gen": "ts-node test/fixtures/generate-fixtures.ts",
+    "fixt:del": "ts-node test/fixtures/delete-fixtures.ts",
     "ci": "./tmtc-ci.sh",
     "db:seed": "node seed.js"
   },
@@ -31,7 +33,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^7.6.15",
-    "@nestjs/typeorm": "^8.0.1",
+    "@nestjs/typeorm": "^8.0.2",
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
     "apollo-server-express": "^2",

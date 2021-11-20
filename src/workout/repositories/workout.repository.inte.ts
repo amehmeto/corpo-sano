@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing'
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
 import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
@@ -15,7 +15,7 @@ import { workoutDataBuilder } from '../../../test/data-builders/workout.data-bui
 import {
   exercisesTemplatesFixture,
   workoutFixture,
-} from '../../../test/generate.fixtures'
+} from '../../../test/fixtures/generate-fixtures'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -71,7 +71,7 @@ describe('TypeOrm Workout Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db as TypeOrmModuleOptions),
+        TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
           TypeOrmWorkoutRepository,
           TypeOrmExerciseTemplateRepository,

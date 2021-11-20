@@ -1,18 +1,17 @@
 import { Connection } from 'typeorm'
-import { Athlete } from '../src/athlete/entities/athlete.entity'
-import { athleteDataBuilder } from './data-builders/athlete.data-builder'
-import { workoutDataBuilder } from './data-builders/workout.data-builder'
-import { exerciseDataBuilder } from './data-builders/exercise.data-builder'
-import { exerciseTemplateDataBuilder } from './data-builders/exercise-template.data-builder'
-import { programDataBuilder } from './data-builders/program.data-builder'
-import { TypeOrmExerciseRepository } from '../src/exercise/repositories/type-orm-exercise.repository'
-import { TypeOrmWorkoutRepository } from '../src/workout/repositories/typeorm-workout.repository'
-import { TypeOrmProgramRepository } from '../src/program/repositories/type-orm-program.repository'
-import { TypeOrmAthleteRepository } from '../src/athlete/repositories/typeorm-athlete.repository'
+import { Athlete } from '../../src/athlete/entities/athlete.entity'
+import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
+import { workoutDataBuilder } from '../data-builders/workout.data-builder'
+import { exerciseDataBuilder } from '../data-builders/exercise.data-builder'
+import { exerciseTemplateDataBuilder } from '../data-builders/exercise-template.data-builder'
+import { programDataBuilder } from '../data-builders/program.data-builder'
+import { TypeOrmExerciseRepository } from '../../src/exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmWorkoutRepository } from '../../src/workout/repositories/typeorm-workout.repository'
+import { TypeOrmProgramRepository } from '../../src/program/repositories/type-orm-program.repository'
+import { TypeOrmAthleteRepository } from '../../src/athlete/repositories/typeorm-athlete.repository'
 import * as Faker from 'faker'
-import { INestApplication } from '@nestjs/common'
-import { ExerciseTemplate } from '../src/exercise/entities/exercise-template.entity'
-import { TypeOrmExerciseTemplateRepository } from '../src/exercise/repositories/type-orm-exercise-template.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../src/exercise/repositories/type-orm-exercise-template.repository'
+import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
@@ -92,8 +91,7 @@ async function saveFixtures(
   await customRepository.save(fixture)
 }
 
-export async function generateFixtures(app: INestApplication) {
-  const connection = app.get(Connection)
+export async function generateFixtures(connection: Connection) {
   const workouts = [
     {
       ...workoutFixture,
