@@ -12,9 +12,12 @@ import { TypeOrmAthleteRepository } from '../../src/athlete/repositories/typeorm
 import * as Faker from 'faker'
 import { TypeOrmExerciseTemplateRepository } from '../../src/exercise/repositories/type-orm-exercise-template.repository'
 import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
+import { biometricsDataBuilder } from '../data-builders/biometrics.data-builder'
+import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/typeorm-biometrics.repository'
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
+export const biometricsFixture = biometricsDataBuilder()
 export const exercisesFixture = [
   exerciseDataBuilder({
     position: 0,
@@ -28,7 +31,11 @@ export const exercisesFixture = [
     template: exerciseTemplateDataBuilder(),
   }),
 ]
-export const athleteFixture = new Athlete(athleteDataBuilder())
+export const athleteFixture = new Athlete(
+  athleteDataBuilder({
+    biometrics: biometricsDataBuilder(),
+  }),
+)
 export const exercisesTemplatesFixture = [
   {
     id: '00000000-0000-0000-0000-000000000000',
@@ -102,13 +109,18 @@ export async function generateFixtures(connection: Connection) {
     ...programFixture,
     workouts,
   }
+  const athlete = {
+    ...athleteFixture,
+    biometrics: biometricsFixture,
+  }
 
   const entityRepositoryFixturePairs = [
     [TypeOrmExerciseTemplateRepository, exercisesTemplatesFixture],
     [TypeOrmExerciseRepository, exercisesFixture],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
-    [TypeOrmAthleteRepository, athleteFixture],
+    [TypeOrmBiometricsRepository, biometricsFixture],
+    [TypeOrmAthleteRepository, athlete],
   ]
 
   for (const pair of entityRepositoryFixturePairs)

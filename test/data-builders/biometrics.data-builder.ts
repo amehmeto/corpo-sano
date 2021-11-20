@@ -1,17 +1,15 @@
-import * as Faker from 'faker'
 import { UnitSystem } from '../../src/biometrics/types/metric-system.enum'
 import { Gender } from '../../src/biometrics/types/gender.enum'
 import { WeightGoal } from '../../src/biometrics/types/weight-goal.enum'
+import * as Faker from 'faker'
 
 const unitSystem = Object.values(UnitSystem)
 const gender = Object.values(Gender)
 const weightGoal = Object.values(WeightGoal)
 
-export function registerAthleteInputDataBuilder(registerAthleteInput = {}) {
-  const hashedPassword =
-    '$2b$10$JsRFxroTkMbSUJYHNzZm..mJbqqaR0cAUefX4Fo1mdZzM34oy97CC' // generate with "qwerty"
+export function biometricsDataBuilder(biometrics = {}) {
   const template = {
-    name: Faker.name.firstName(),
+    bodyFat: Faker.datatype.number({ min: 0, max: 10000 }),
     height: Faker.datatype.number(),
     lengthUnit: Faker.random.arrayElement(unitSystem),
     weight: Faker.datatype.number(),
@@ -19,9 +17,7 @@ export function registerAthleteInputDataBuilder(registerAthleteInput = {}) {
     gender: Faker.random.arrayElement(gender),
     birthday: Faker.date.past(20),
     weightGoal: Faker.random.arrayElement(weightGoal),
-    email: Faker.internet.email(),
-    password: hashedPassword,
   }
   template.birthday.setMilliseconds(0)
-  return { ...template, ...registerAthleteInput }
+  return { ...template, ...biometrics }
 }

@@ -8,10 +8,17 @@ export class TypeOrmAthleteRepository
   implements AthleteRepository
 {
   findById(athleteId: string): Promise<Athlete> {
-    return this.findOne(athleteId)
+    return this.findOne(athleteId, {
+      relations: ['biometrics'],
+    })
   }
 
   findByEmail(athleteEmail: string): Promise<Athlete> {
-    return this.findOne({ email: athleteEmail })
+    return this.findOne(
+      { email: athleteEmail },
+      {
+        relations: ['biometrics'],
+      },
+    )
   }
 }

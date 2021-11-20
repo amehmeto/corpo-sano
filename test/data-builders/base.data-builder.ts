@@ -1,0 +1,11 @@
+import * as Faker from 'faker'
+
+export function baseEntityDataBuilder(base = {}) {
+  const template = {
+    createdAt: Faker.date.past(),
+    updatedAt: Faker.date.recent(),
+    deletedAt: null as Date,
+    version: Faker.datatype.number(5),
+  }
+  return { ...template, ...base }
+}

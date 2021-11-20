@@ -1,7 +1,7 @@
 import { Field, GraphQLISODateTime, InputType, Int } from '@nestjs/graphql'
-import { Gender } from '../../athlete/types/gender.enum'
-import { UnitSystem } from '../../athlete/types/metric-system.enum'
-import { WeightGoal } from '../../athlete/types/weight-goal.enum'
+import { Gender } from '../../biometrics/types/gender.enum'
+import { UnitSystem } from '../../biometrics/types/metric-system.enum'
+import { WeightGoal } from '../../biometrics/types/weight-goal.enum'
 
 @InputType()
 export class RegisterAthleteInput {

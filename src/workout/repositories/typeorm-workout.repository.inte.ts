@@ -52,6 +52,8 @@ describe('TypeOrm Workout Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
 
   async function generateFixtures() {
+    await exerciseTemplateRepository.save(exercisesTemplatesFixture)
+
     const orderedExercises = await exerciseRepository.save(
       orderedExercisesFixture,
     )
@@ -93,7 +95,6 @@ describe('TypeOrm Workout Repository', () => {
       TypeOrmExerciseTemplateRepository,
     )
 
-    await exerciseTemplateRepository.save(exercisesTemplatesFixture)
     await generateFixtures()
   })
 

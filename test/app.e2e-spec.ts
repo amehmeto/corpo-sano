@@ -107,14 +107,7 @@ describe('AppController (e2e)', () => {
         query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
           registerAthlete(payload: $payload) {
             id
-            height
-            lengthUnit
-            name
-            weight
-            weightUnit
-            gender
-            birthday
-            weightGoal
+            biometrics
             email
             password 
           }
@@ -255,9 +248,11 @@ describe('AppController (e2e)', () => {
           getAthlete(athleteId: $athleteId) {
             id
             name
-            height
-            weight
-            bodyFat
+            biometrics {
+              height
+              weight
+              bodyFat
+            }
           }
         }`,
         variables: {
@@ -265,11 +260,8 @@ describe('AppController (e2e)', () => {
         },
       }
       const expectedAthlete = {
-        height: athleteFixture.height,
         id: athleteFixture.id,
         name: athleteFixture.name,
-        weight: athleteFixture.weight,
-        bodyFat: athleteFixture.bodyFat,
       }
 
       return expectGqlEndpoint(getAthleteQuery, expectedAthlete)

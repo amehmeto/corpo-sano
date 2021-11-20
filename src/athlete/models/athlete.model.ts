@@ -1,7 +1,5 @@
-import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql'
-import { Gender } from '../types/gender.enum'
-import { UnitSystem } from '../types/metric-system.enum'
-import { WeightGoal } from '../types/weight-goal.enum'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Biometrics } from '../../biometrics/models/biometrics.model'
 
 @ObjectType()
 export class Athlete {
@@ -11,33 +9,12 @@ export class Athlete {
   @Field(() => String)
   name: string
 
-  @Field(() => Int)
-  height: number
-
-  @Field(() => Int)
-  bodyFat: number
-
-  @Field(() => String)
-  lengthUnit: UnitSystem
-
-  @Field(() => Int)
-  weight: number
-
-  @Field(() => String)
-  weightUnit: UnitSystem
-
-  @Field(() => String)
-  gender: Gender
-
-  @Field(() => GraphQLISODateTime)
-  birthday: Date
-
-  @Field(() => String)
-  weightGoal: WeightGoal
-
   @Field()
   email: string
 
   @Field()
   password: string
+
+  @Field(() => Biometrics)
+  biometrics: Biometrics
 }
