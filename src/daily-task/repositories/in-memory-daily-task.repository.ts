@@ -1,14 +1,13 @@
 import { DailyTaskRepository } from './daily-task-repository.interface'
 import { DailyTask } from '../entities/daily-task.entity'
-import * as Faker from 'faker'
+import { dailyTaskDataBuilder } from '../../../test/data-builders/daily-task.data-builder'
 
 export class InMemoryDailyTaskRepository implements DailyTaskRepository {
   private dailyTasks = [
-    { description: Faker.lorem.lines() } as DailyTask,
-    { description: Faker.lorem.lines() } as DailyTask,
-    { description: Faker.lorem.lines() } as DailyTask,
-    { description: Faker.lorem.lines() } as DailyTask,
-    { description: Faker.lorem.lines() } as DailyTask,
+    new DailyTask(dailyTaskDataBuilder()),
+    new DailyTask(dailyTaskDataBuilder()),
+    new DailyTask(dailyTaskDataBuilder()),
+    new DailyTask(dailyTaskDataBuilder()),
   ]
 
   find(): Promise<DailyTask[]> {
