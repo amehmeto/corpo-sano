@@ -2,7 +2,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { config } from '../../../config'
 import { Test } from '@nestjs/testing'
 import { TypeOrmDailyTaskRepository } from './daily-task.typeorm.repository'
-import { dailyTaskDataBuilder } from '../../../test/data-builders/daily-task.data-builder'
+import { dailyTaskDataBuilder } from '../data-builders/daily-task.data-builder'
 import { DailyTask } from '../entities/daily-task.entity'
 
 const dailyTasksFixtures = [dailyTaskDataBuilder(), dailyTaskDataBuilder()]
@@ -15,6 +15,7 @@ async function generateDailyTasksFixtures(
 
 describe('TypeOrm DailyTask Repository', () => {
   let dailyTaskRepository: TypeOrmDailyTaskRepository
+
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [

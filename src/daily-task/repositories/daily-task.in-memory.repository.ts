@@ -1,6 +1,6 @@
 import { DailyTaskRepository } from './daily-task-repository.interface'
 import { DailyTask } from '../entities/daily-task.entity'
-import { dailyTaskDataBuilder } from '../../../test/data-builders/daily-task.data-builder'
+import { dailyTaskDataBuilder } from '../data-builders/daily-task.data-builder'
 
 export class DailyTaskInMemoryRepository implements DailyTaskRepository {
   private dailyTasks = [
