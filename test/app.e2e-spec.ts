@@ -383,7 +383,9 @@ describe('AppController (e2e)', () => {
           updateWorkout(workoutId: $workoutId, payload: $payload) {
             id
             title
+           
             exercises {
+              position
               template {
                 id
                 title
@@ -394,7 +396,14 @@ describe('AppController (e2e)', () => {
         variables: {
           workoutId: workoutFixture.id,
           payload: {
-            exercises: [exerciseInputDataBuilder()],
+            exercises: [
+              exerciseInputDataBuilder({
+                position: 1,
+              }),
+              exerciseInputDataBuilder({
+                position: 0,
+              }),
+            ],
             scheduledDays: [WeekDays.MONDAY, WeekDays.FRIDAY],
           },
         },
@@ -403,6 +412,7 @@ describe('AppController (e2e)', () => {
         ...workoutFixture,
         exercises: updateWorkoutQuery.variables.payload.exercises.map(
           (exercise) => ({
+            position: exercise.position,
             template: new Object({ ...exercise.template }),
           }),
         ),

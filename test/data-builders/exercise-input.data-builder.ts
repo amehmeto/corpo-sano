@@ -10,6 +10,7 @@ export function exerciseInputDataBuilder(exerciseInput = {}) {
     numberOfReps: 0,
     interSetsRestTime: 0,
     finalRestTime: 0,
+    position: 2,
   }
   return { ...template, ...exerciseInput }
 }

@@ -136,6 +136,7 @@ input ExerciseInput {
   numberOfReps: Float!
   finalRestTime: Float!
   interSetsRestTime: Float!
+  position: Float!
 }
 
 input ExerciseTemplateInput {
