@@ -4,7 +4,7 @@ import {
   DAILY_TASK_REPOSITORY,
   DailyTaskRepository,
 } from './repositories/daily-task-repository.interface'
-import { InMemoryDailyTaskRepository } from './repositories/in-memory-daily-task.repository'
+import { DailyTaskInMemoryRepository } from './repositories/daily-task.in-memory.repository'
 
 describe('DailyTaskService', () => {
   let dailyTaskService: DailyTaskService
@@ -15,7 +15,7 @@ describe('DailyTaskService', () => {
       providers: [
         {
           provide: DAILY_TASK_REPOSITORY,
-          useClass: InMemoryDailyTaskRepository,
+          useClass: DailyTaskInMemoryRepository,
         },
         DailyTaskService,
       ],
