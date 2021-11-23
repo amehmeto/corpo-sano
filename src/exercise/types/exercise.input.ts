@@ -20,4 +20,7 @@ export class ExerciseInput {
 
   @Field()
   interSetsRestTime: number
+
+  @Field()
+  position: number
 }
