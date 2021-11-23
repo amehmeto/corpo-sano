@@ -1,5 +1,4 @@
 import { Connection } from 'typeorm'
-import { Athlete } from '../../src/athlete/entities/athlete.entity'
 import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
 import { workoutDataBuilder } from '../data-builders/workout.data-builder'
 import { exerciseDataBuilder } from '../data-builders/exercise.data-builder'
@@ -31,11 +30,9 @@ export const exercisesFixture = [
     template: exerciseTemplateDataBuilder(),
   }),
 ]
-export const athleteFixture = new Athlete(
-  athleteDataBuilder({
-    biometrics: biometricsDataBuilder(),
-  }),
-)
+export const athleteFixture = athleteDataBuilder({
+  biometrics: biometricsDataBuilder(),
+})
 export const exercisesTemplatesFixture = [
   {
     id: '00000000-0000-0000-0000-000000000000',

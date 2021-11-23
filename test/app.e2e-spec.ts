@@ -120,8 +120,6 @@ describe('AppController (e2e)', () => {
         ...registerAthleteMutation.variables.payload,
         id: expect.any(String),
         password: expect.any(String),
-        birthday:
-          registerAthleteMutation.variables.payload.birthday.toISOString(),
       }
       return expectGqlEndpoint(registerAthleteMutation, expectedAthlete, false)
     })
