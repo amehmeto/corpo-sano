@@ -24,29 +24,7 @@ import {
 import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
 import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
-
-async function generateJwtToken(app: INestApplication) {
-  let token: AccessToken
-  const signInQuery = {
-    query: `query SignIn($payload: AuthCredentialsInput!) {
-          signIn(payload: $payload) {
-            token
-          }
-        }`,
-    variables: {
-      payload: authCredentialsInputDataBuilder({
-        email: athleteFixture.email,
-      }),
-    },
-  }
-  await request(app.getHttpServer())
-    .post('/graphql')
-    .send(signInQuery)
-    .expect((res) => {
-      token = res.body.data.signIn
-    })
-  return token
-}
+import { generateJwtToken } from './generate-jwt-token'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
