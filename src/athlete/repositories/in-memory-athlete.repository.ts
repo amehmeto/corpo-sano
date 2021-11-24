@@ -1,5 +1,4 @@
 import { AthleteRepository } from './athlete-repository.interface'
-import { RegisterAthleteInput } from '../../auth/types/register-athlete.input'
 import { Athlete } from '../entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
 import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-builder'
@@ -15,8 +14,8 @@ export class InMemoryAthleteRepository implements AthleteRepository {
     (athleteData) => new Athlete(athleteData),
   )
 
-  save(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
-    const { email } = registerAthleteInput
+  save(athlete: Athlete): Promise<Athlete> {
+    const { email } = athlete
     const registeredAthleteEmails = this.athletesData.map(
       (athlete) => athlete.email,
     )
@@ -27,7 +26,7 @@ export class InMemoryAthleteRepository implements AthleteRepository {
     return Promise.resolve(
       new Athlete({
         id: uuid(),
-        ...registerAthleteInput,
+        ...athlete,
       }),
     )
   }

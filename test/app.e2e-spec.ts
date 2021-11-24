@@ -24,6 +24,28 @@ import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-bu
 import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 
+async function generateJwtToken(app: INestApplication, token: AccessToken) {
+  const signInQuery = {
+    query: `query SignIn($payload: AuthCredentialsInput!) {
+          signIn(payload: $payload) {
+            token
+          }
+        }`,
+    variables: {
+      payload: authCredentialsInputDataBuilder({
+        email: athleteFixture.email,
+      }),
+    },
+  }
+  await request(app.getHttpServer())
+    .post('/graphql')
+    .send(signInQuery)
+    .expect((res) => {
+      token = res.body.data.signIn
+    })
+  return token
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
   let connection: Connection
@@ -57,25 +79,7 @@ describe('AppController (e2e)', () => {
 
     connection = app.get(Connection)
     await generateFixtures(connection)
-
-    const signInQuery = {
-      query: `query SignIn($payload: AuthCredentialsInput!) {
-          signIn(payload: $payload) {
-            token
-          }
-        }`,
-      variables: {
-        payload: authCredentialsInputDataBuilder({
-          email: athleteFixture.email,
-        }),
-      },
-    }
-    await request(app.getHttpServer())
-      .post('/graphql')
-      .send(signInQuery)
-      .expect((res) => {
-        token = res.body.data.signIn
-      })
+    token = await generateJwtToken(app, token)
   })
 
   afterAll(async () => {

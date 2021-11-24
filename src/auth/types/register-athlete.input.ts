@@ -2,36 +2,19 @@ import { Field, GraphQLISODateTime, InputType, Int } from '@nestjs/graphql'
 import { Gender } from '../../biometrics/types/gender.enum'
 import { UnitSystem } from '../../biometrics/types/metric-system.enum'
 import { WeightGoal } from '../../biometrics/types/weight-goal.enum'
+import { Biometrics } from '../../biometrics/models/biometrics.model'
 
 @InputType()
 export class RegisterAthleteInput {
   @Field(() => String)
   name: string
 
-  @Field(() => Int)
-  height: number
-
-  @Field(() => String)
-  lengthUnit: UnitSystem
-
-  @Field(() => Int)
-  weight: number
-
-  @Field(() => String)
-  weightUnit: UnitSystem
-
-  @Field(() => String)
-  gender: Gender
-
-  @Field(() => GraphQLISODateTime)
-  birthday: Date
-
-  @Field(() => String)
-  weightGoal: WeightGoal
-
   @Field()
   email: string
 
   @Field()
   password: string
+
+  @Field()
+  biometrics: Biometrics
 }

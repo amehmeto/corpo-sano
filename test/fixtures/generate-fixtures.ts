@@ -16,7 +16,6 @@ import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/t
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
-export const biometricsFixture = biometricsDataBuilder()
 export const exercisesFixture = [
   exerciseDataBuilder({
     position: 0,
@@ -30,6 +29,7 @@ export const exercisesFixture = [
     template: exerciseTemplateDataBuilder(),
   }),
 ]
+export const biometricsFixture = biometricsDataBuilder()
 export const athleteFixture = athleteDataBuilder({
   biometrics: biometricsDataBuilder(),
 })
