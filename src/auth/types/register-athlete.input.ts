@@ -1,8 +1,5 @@
-import { Field, GraphQLISODateTime, InputType, Int } from '@nestjs/graphql'
-import { Gender } from '../../biometrics/types/gender.enum'
-import { UnitSystem } from '../../biometrics/types/metric-system.enum'
-import { WeightGoal } from '../../biometrics/types/weight-goal.enum'
-import { Biometrics } from '../../biometrics/models/biometrics.model'
+import { Field, InputType } from '@nestjs/graphql'
+import { BiometricsInput } from '../../biometrics/types/biometrics.input'
 
 @InputType()
 export class RegisterAthleteInput {
@@ -16,5 +13,5 @@ export class RegisterAthleteInput {
   password: string
 
   @Field()
-  biometrics: Biometrics
+  biometrics: BiometricsInput
 }

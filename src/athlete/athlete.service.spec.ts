@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { AthleteService } from './athlete.service'
-import { TypeOrmAthleteRepository } from './repositories/typeorm-athlete.repository'
 import {
   ATHLETE_REPOSITORY,
   AthleteRepository,
@@ -19,7 +18,6 @@ describe('AthleteService', () => {
           useClass: InMemoryAthleteRepository,
         },
         AthleteService,
-        TypeOrmAthleteRepository,
       ],
     }).compile()
 

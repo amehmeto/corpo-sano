@@ -8,12 +8,12 @@ import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 
 export async function deleteFixtures(connection: Connection) {
   const entities = [
-    Athlete,
-    Biometrics,
-    Exercise,
     ExerciseTemplate,
-    Program,
+    Exercise,
     Workout,
+    Program,
+    Biometrics,
+    Athlete,
   ]
   for (const entity of entities)
     await connection.createQueryBuilder().delete().from(entity).execute()

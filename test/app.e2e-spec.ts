@@ -54,17 +54,16 @@ describe('AppController (e2e)', () => {
   function expectGqlEndpoint(
     query: Query,
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
-    isAuthenticated: boolean = true,
+    isAuthenticated = true,
   ) {
     const tokenJwt = isAuthenticated ? token.token : undefined
-    const GRAPHQL_URL = '/graphql'
     const dataKey = getDataKey(query)
 
     return request(app.getHttpServer())
-      .post(GRAPHQL_URL)
+      .post('/graphql')
       .set('Authorization', 'Bearer ' + tokenJwt)
       .send(query)
-      .expect((response: any) =>
+      .expect((response) =>
         handleGraphQLResponse(response, dataKey, expectedData),
       )
   }

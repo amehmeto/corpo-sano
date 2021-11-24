@@ -17,7 +17,7 @@ export class InMemoryAthleteRepository implements AthleteRepository {
   save(athlete: Athlete): Promise<Athlete> {
     const { email } = athlete
     const registeredAthleteEmails = this.athletesData.map(
-      (athlete) => athlete.email,
+      (_athlete) => _athlete.email,
     )
 
     if (registeredAthleteEmails.includes(email))
@@ -43,7 +43,7 @@ export class InMemoryAthleteRepository implements AthleteRepository {
 
   findByEmail(athleteEmail: string): Promise<Athlete> {
     return Promise.resolve(
-      this.athletes.find((athlete: any) => athlete.email === athleteEmail),
+      this.athletes.find((athlete) => athlete.email === athleteEmail),
     )
   }
 }

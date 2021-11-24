@@ -5,8 +5,9 @@ import { Athlete } from '../../src/athlete/entities/athlete.entity'
 import { Program } from '../../src/program/entities/program.entity'
 import { Workout } from '../../src/workout/entities/workout.entity'
 import { deleteFixtures } from './delete-fixtures'
+import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 ;(async function () {
-  console.log('Generating fixtures 💽')
+  console.log('Connection to DB')
   const connection = await createConnection({
     type: 'mysql',
     host: 'localhost',
@@ -14,11 +15,20 @@ import { deleteFixtures } from './delete-fixtures'
     username: 'root',
     password: '',
     database: 'corposano',
-    entities: [ExerciseTemplate, Exercise, Athlete, Program, Workout],
+    entities: [
+      Athlete,
+      Biometrics,
+      Exercise,
+      ExerciseTemplate,
+      Program,
+      Workout,
+    ],
     synchronize: true,
     autoLoadEntities: false,
     keepConnectionAlive: true,
   } as ConnectionOptions)
+  console.log('Deleting fixtures 🔥')
   await deleteFixtures(connection)
+  console.log('Closing connection')
   await connection.close()
 })()

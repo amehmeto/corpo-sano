@@ -99,15 +99,21 @@ input ExerciseDetailsInput {
 
 input RegisterAthleteInput {
   name: String!
+  email: String!
+  password: String!
+  biometrics: BiometricsInput!
+}
+
+input BiometricsInput {
+  id: ID!
   height: Int!
+  bodyFat: Int!
   lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!
   birthday: DateTime!
   weightGoal: String!
-  email: String!
-  password: String!
 }
 
 input FillWorkoutWithExercisesInput {
