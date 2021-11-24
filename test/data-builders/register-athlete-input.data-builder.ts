@@ -1,6 +1,6 @@
 import * as Faker from 'faker'
-import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { biometricsDataBuilder } from './biometrics.data-builder'
+import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 
 export function registerAthleteInputDataBuilder(registerAthleteInput = {}) {
   const hashedPassword =

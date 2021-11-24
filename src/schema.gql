@@ -105,7 +105,6 @@ input RegisterAthleteInput {
 }
 
 input BiometricsInput {
-  id: ID!
   height: Int!
   bodyFat: Int!
   lengthUnit: String!

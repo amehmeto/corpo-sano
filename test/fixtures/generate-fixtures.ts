@@ -36,12 +36,7 @@ export const athleteFixture = new Athlete(
     biometrics: biometricsDataBuilder(),
   }),
 )
-export const mauricetteFixture = new Athlete(
-  athleteDataBuilder({
-    email: 'mauricette@yahoo.fr',
-    biometrics: biometricsDataBuilder(),
-  }),
-)
+
 export const exercisesTemplatesFixture = [
   {
     id: '00000000-0000-0000-0000-000000000000',
@@ -125,11 +120,8 @@ export async function generateFixtures(connection: Connection) {
     [TypeOrmExerciseRepository, exercisesFixture],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
-    [
-      TypeOrmBiometricsRepository,
-      [biometricsFixture, mauricetteFixture.biometrics],
-    ],
-    [TypeOrmAthleteRepository, [athlete, mauricetteFixture]],
+    [TypeOrmBiometricsRepository, biometricsFixture],
+    [TypeOrmAthleteRepository, athlete],
   ]
 
   for (const pair of entityRepositoryFixturePairs)

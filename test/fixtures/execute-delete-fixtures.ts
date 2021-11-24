@@ -24,7 +24,7 @@ import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
       Workout,
     ],
     synchronize: true,
-    autoLoadEntities: false,
+    autoLoadEntities: true,
     keepConnectionAlive: true,
   } as ConnectionOptions)
   console.log('Deleting fixtures 🔥')

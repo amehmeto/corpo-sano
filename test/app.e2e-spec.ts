@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
   athleteFixture,
+  biometricsFixture,
   exercisesFixture,
   generateFixtures,
   programFixture,
@@ -24,7 +25,8 @@ import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-bu
 import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 
-async function generateJwtToken(app: INestApplication, token: AccessToken) {
+async function generateJwtToken(app: INestApplication) {
+  let token: AccessToken
   const signInQuery = {
     query: `query SignIn($payload: AuthCredentialsInput!) {
           signIn(payload: $payload) {
@@ -78,7 +80,7 @@ describe('AppController (e2e)', () => {
 
     connection = app.get(Connection)
     await generateFixtures(connection)
-    token = await generateJwtToken(app, token)
+    token = await generateJwtToken(app)
   })
 
   afterAll(async () => {
@@ -110,9 +112,12 @@ describe('AppController (e2e)', () => {
         query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
           registerAthlete(payload: $payload) {
             id
-            biometrics
             email
+            name
             password 
+            biometrics {
+              bodyFat
+            }
           }
          }`,
         variables: {
@@ -123,6 +128,9 @@ describe('AppController (e2e)', () => {
         ...registerAthleteMutation.variables.payload,
         id: expect.any(String),
         password: expect.any(String),
+        biometrics: {
+          bodyFat: registerAthleteMutation.variables.payload.biometrics.bodyFat,
+        },
       }
       return expectGqlEndpoint(registerAthleteMutation, expectedAthlete, false)
     })
@@ -250,8 +258,6 @@ describe('AppController (e2e)', () => {
             id
             name
             biometrics {
-              height
-              weight
               bodyFat
             }
           }
@@ -263,6 +269,9 @@ describe('AppController (e2e)', () => {
       const expectedAthlete = {
         id: athleteFixture.id,
         name: athleteFixture.name,
+        biometrics: {
+          bodyFat: biometricsFixture.bodyFat,
+        },
       }
 
       return expectGqlEndpoint(getAthleteQuery, expectedAthlete)
