@@ -2,11 +2,14 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
-import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
 import { Program } from '../entities/program.entity'
-import { Workout } from '../../workout/entities/workout.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { programDataBuilder } from '../../../test/data-builders/program.data-builder'
+import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
+import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 
 const programFixtures = [programDataBuilder(), programDataBuilder()]
 
@@ -24,11 +27,13 @@ describe('TypeOrm Program Repository', () => {
       imports: [
         TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
-          TypeOrmProgramRepository,
+          TypeOrmAthleteRepository,
+          TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
           TypeOrmExerciseRepository,
-          ExerciseTemplate,
-          Workout,
-          Program,
+          TypeOrmExerciseTemplateRepository,
+          TypeOrmProgramRepository,
+          TypeOrmWorkoutRepository,
         ]),
       ],
     }).compile()

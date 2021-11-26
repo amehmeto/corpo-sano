@@ -12,6 +12,9 @@ import { Workout } from '../../workout/entities/workout.entity'
 import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
 import { exercisesTemplatesFixture } from '../../../test/fixtures/generate-fixtures'
 import { UpdateResult } from 'typeorm'
+import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
+import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())
 const workoutFixture = new Workout(workoutDataBuilder())
@@ -26,10 +29,13 @@ describe('TypeOrm Exercise Repository', () => {
       imports: [
         TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
+          TypeOrmAthleteRepository,
+          TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
           TypeOrmExerciseRepository,
           TypeOrmExerciseTemplateRepository,
-          TypeOrmWorkoutRepository,
           TypeOrmProgramRepository,
+          TypeOrmWorkoutRepository,
         ]),
       ],
     }).compile()

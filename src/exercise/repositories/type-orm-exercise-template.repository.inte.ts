@@ -2,13 +2,14 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
-import { Workout } from '../../workout/entities/workout.entity'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
-import { Program } from '../../program/entities/program.entity'
 import { config } from '../../../config'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
 import { exercisesTemplatesFixture } from '../../../test/fixtures/generate-fixtures'
+import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
+import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 
 describe('TypeOrm Exercise Template Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
@@ -18,12 +19,13 @@ describe('TypeOrm Exercise Template Repository', () => {
       imports: [
         TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
-          TypeOrmExerciseTemplateRepository,
+          TypeOrmAthleteRepository,
+          TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
           TypeOrmExerciseRepository,
-          TypeOrmWorkoutRepository,
+          TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
-          Program,
-          Workout,
+          TypeOrmWorkoutRepository,
         ]),
       ],
     }).compile()

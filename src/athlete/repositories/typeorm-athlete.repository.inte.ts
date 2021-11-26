@@ -8,6 +8,11 @@ import { RepositoryErrors } from '../types/repository-errors.enum'
 import { Biometrics } from '../../biometrics/entities/biometrics.entity'
 import { biometricsDataBuilder } from '../../../test/data-builders/biometrics.data-builder'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 
 const biometricsFixture = new Biometrics(biometricsDataBuilder())
 const athleteFixture = new Athlete(athleteDataBuilder())
@@ -23,6 +28,11 @@ describe('TypeOrmAthleteRepository', () => {
         TypeOrmModule.forFeature([
           TypeOrmAthleteRepository,
           TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
+          TypeOrmExerciseRepository,
+          TypeOrmExerciseTemplateRepository,
+          TypeOrmProgramRepository,
+          TypeOrmWorkoutRepository,
         ]),
       ],
     }).compile()
