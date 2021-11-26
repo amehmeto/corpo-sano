@@ -25,6 +25,7 @@ import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-bu
 import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
+import { DailyTask } from '../src/daily-task/entities/daily-task.entity'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -238,6 +239,9 @@ describe('AppController (e2e)', () => {
             biometrics {
               bodyFat
             }
+            dailyTasks {
+              description
+            }
           }
         }`,
         variables: {
@@ -250,6 +254,7 @@ describe('AppController (e2e)', () => {
         biometrics: {
           bodyFat: biometricsFixture.bodyFat,
         },
+        dailyTasks: null as DailyTask[],
       }
 
       return expectGqlEndpoint(getAthleteQuery, expectedAthlete)

@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Biometrics } from '../../biometrics/models/biometrics.model'
+import { DailyTask } from '../../daily-task/models/daily-task.model'
 
 @ObjectType()
 export class Athlete {
@@ -17,4 +18,7 @@ export class Athlete {
 
   @Field(() => Biometrics)
   biometrics: Biometrics
+
+  @Field(() => DailyTask, { nullable: true })
+  dailyTasks?: DailyTask[]
 }
