@@ -9,7 +9,7 @@ import { config } from '../config'
 import { AthleteModule } from './athlete/athlete.module'
 import { AuthModule } from './auth/auth.module'
 import { BiometricsModule } from './biometrics/biometrics.module'
-import { DailyTaskModule } from './daily-task/daily-task.module';
+import { DailyTaskModule } from './daily-task/daily-task.module'
 
 @Module({
   imports: [

@@ -31,6 +31,10 @@ describe('TypeOrm DailyTask Repository', () => {
     await generateDailyTasksFixtures(dailyTaskRepository)
   })
 
+  afterAll(async () => {
+    await dailyTaskRepository.query(`DELETE FROM daily_task;`)
+  })
+
   it('should be defined', () => {
     expect(dailyTaskRepository).toBeDefined()
   })
