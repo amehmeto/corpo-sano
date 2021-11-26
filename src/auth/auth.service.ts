@@ -17,6 +17,7 @@ import { Athlete } from '../athlete/entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
 import { RepositoryErrors } from '../athlete/types/repository-errors.enum'
 import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'
+import { Biometrics } from '../biometrics/entities/biometrics.entity'
 
 @Injectable()
 export class AuthService {
@@ -50,18 +51,24 @@ export class AuthService {
 
   async register(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
     try {
-      const { password } = registerAthleteInput
-      const salt = await Bcrypt.genSalt()
-      const hashedPassword = await Bcrypt.hash(password, salt)
+      const { name, email, password, biometrics } = registerAthleteInput
+      const hashedPassword = await this.hash(password)
       const athlete = new Athlete({
-        ...registerAthleteInput,
         id: uuid(),
+        biometrics: new Biometrics(biometrics),
+        name,
+        email,
         password: hashedPassword,
       })
       return this.athleteRepository.save(athlete)
     } catch (e) {
       this.handleRegisterErrors(e)
     }
+  }
+
+  private async hash(password: string) {
+    const salt = await Bcrypt.genSalt()
+    return Bcrypt.hash(password, salt)
   }
 
   private handleRegisterErrors(e: any): never {

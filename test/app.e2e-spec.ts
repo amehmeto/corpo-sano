@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module'
 import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
   athleteFixture,
+  biometricsFixture,
   exercisesFixture,
   generateFixtures,
   programFixture,
@@ -33,17 +34,16 @@ describe('AppController (e2e)', () => {
   function expectGqlEndpoint(
     query: Query,
     expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
-    isAuthenticated: boolean = true,
+    isAuthenticated = true,
   ) {
     const tokenJwt = isAuthenticated ? token.token : undefined
-    const GRAPHQL_URL = '/graphql'
     const dataKey = getDataKey(query)
 
     return request(app.getHttpServer())
-      .post(GRAPHQL_URL)
+      .post('/graphql')
       .set('Authorization', 'Bearer ' + tokenJwt)
       .send(query)
-      .expect((response: any) =>
+      .expect((response) =>
         handleGraphQLResponse(response, dataKey, expectedData),
       )
   }
@@ -90,16 +90,12 @@ describe('AppController (e2e)', () => {
         query: `mutation registerAthlete($payload: RegisterAthleteInput!) {
           registerAthlete(payload: $payload) {
             id
-            height
-            lengthUnit
-            name
-            weight
-            weightUnit
-            gender
-            birthday
-            weightGoal
             email
+            name
             password 
+            biometrics {
+              bodyFat
+            }
           }
          }`,
         variables: {
@@ -110,11 +106,13 @@ describe('AppController (e2e)', () => {
         ...registerAthleteMutation.variables.payload,
         id: expect.any(String),
         password: expect.any(String),
-        birthday:
-          registerAthleteMutation.variables.payload.birthday.toISOString(),
+        biometrics: {
+          bodyFat: registerAthleteMutation.variables.payload.biometrics.bodyFat,
+        },
       }
       return expectGqlEndpoint(registerAthleteMutation, expectedAthlete, false)
     })
+
     test('Send Confirmation Email', () => {
       const sendConfirmationEmailMutation = {
         query: `mutation SendConfirmationEmail($athleteId: ID!) {
@@ -201,7 +199,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
     })
 
-    test('Get Exercise By Id', () => {
+    test('Get Exercise', () => {
       const getExercise = {
         query: `query GetExercise($exerciseId: ID!) {
           getExercise(exerciseId: $exerciseId) {
@@ -229,6 +227,32 @@ describe('AppController (e2e)', () => {
       }
 
       return expectGqlEndpoint(getExercise, expectedGetExerciseById)
+    })
+
+    test('Get Athlete', () => {
+      const getAthleteQuery = {
+        query: `query GetAthlete($athleteId: ID!) {
+          getAthlete(athleteId: $athleteId) {
+            id
+            name
+            biometrics {
+              bodyFat
+            }
+          }
+        }`,
+        variables: {
+          athleteId: athleteFixture.id,
+        },
+      }
+      const expectedAthlete = {
+        id: athleteFixture.id,
+        name: athleteFixture.name,
+        biometrics: {
+          bodyFat: biometricsFixture.bodyFat,
+        },
+      }
+
+      return expectGqlEndpoint(getAthleteQuery, expectedAthlete)
     })
   })
 

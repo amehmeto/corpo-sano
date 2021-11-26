@@ -1,5 +1,4 @@
 import { Connection } from 'typeorm'
-import { Athlete } from '../../src/athlete/entities/athlete.entity'
 import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
 import { workoutDataBuilder } from '../data-builders/workout.data-builder'
 import { exerciseDataBuilder } from '../data-builders/exercise.data-builder'
@@ -12,6 +11,9 @@ import { TypeOrmAthleteRepository } from '../../src/athlete/repositories/typeorm
 import * as Faker from 'faker'
 import { TypeOrmExerciseTemplateRepository } from '../../src/exercise/repositories/type-orm-exercise-template.repository'
 import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
+import { biometricsDataBuilder } from '../data-builders/biometrics.data-builder'
+import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/typeorm-biometrics.repository'
+import { Athlete } from '../../src/athlete/entities/athlete.entity'
 
 export const programFixture = programDataBuilder()
 export const workoutFixture = workoutDataBuilder()
@@ -28,7 +30,13 @@ export const exercisesFixture = [
     template: exerciseTemplateDataBuilder(),
   }),
 ]
-export const athleteFixture = new Athlete(athleteDataBuilder())
+export const biometricsFixture = biometricsDataBuilder()
+export const athleteFixture = new Athlete(
+  athleteDataBuilder({
+    biometrics: biometricsDataBuilder(),
+  }),
+)
+
 export const exercisesTemplatesFixture = [
   {
     id: '00000000-0000-0000-0000-000000000000',
@@ -102,13 +110,18 @@ export async function generateFixtures(connection: Connection) {
     ...programFixture,
     workouts,
   }
+  const athlete = {
+    ...athleteFixture,
+    biometrics: biometricsFixture,
+  }
 
   const entityRepositoryFixturePairs = [
     [TypeOrmExerciseTemplateRepository, exercisesTemplatesFixture],
     [TypeOrmExerciseRepository, exercisesFixture],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
-    [TypeOrmAthleteRepository, athleteFixture],
+    [TypeOrmBiometricsRepository, biometricsFixture],
+    [TypeOrmAthleteRepository, athlete],
   ]
 
   for (const pair of entityRepositoryFixturePairs)

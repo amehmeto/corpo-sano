@@ -1,5 +1,4 @@
 import { AthleteRepository } from './athlete-repository.interface'
-import { RegisterAthleteInput } from '../../auth/types/register-athlete.input'
 import { Athlete } from '../entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
 import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-builder'
@@ -15,10 +14,10 @@ export class InMemoryAthleteRepository implements AthleteRepository {
     (athleteData) => new Athlete(athleteData),
   )
 
-  save(registerAthleteInput: RegisterAthleteInput): Promise<Athlete> {
-    const { email } = registerAthleteInput
+  save(athlete: Athlete): Promise<Athlete> {
+    const { email } = athlete
     const registeredAthleteEmails = this.athletesData.map(
-      (athlete) => athlete.email,
+      (_athlete) => _athlete.email,
     )
 
     if (registeredAthleteEmails.includes(email))
@@ -27,14 +26,14 @@ export class InMemoryAthleteRepository implements AthleteRepository {
     return Promise.resolve(
       new Athlete({
         id: uuid(),
-        ...registerAthleteInput,
+        ...athlete,
       }),
     )
   }
 
   findById(athleteId: string): Promise<Athlete> {
     return Promise.resolve(
-      this.athletes.find((athlete: any) => athlete.id === athleteId),
+      this.athletes.find((athlete) => athlete.id === athleteId),
     )
   }
 
@@ -44,7 +43,7 @@ export class InMemoryAthleteRepository implements AthleteRepository {
 
   findByEmail(athleteEmail: string): Promise<Athlete> {
     return Promise.resolve(
-      this.athletes.find((athlete: any) => athlete.email === athleteEmail),
+      this.athletes.find((athlete) => athlete.email === athleteEmail),
     )
   }
 }

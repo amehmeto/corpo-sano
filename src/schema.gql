@@ -7,24 +7,30 @@ type Program {
   title: String!
 }
 
-type Athlete {
+type Biometrics {
   id: ID!
-  name: String!
   height: Int!
+  bodyFat: Int!
   lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!
   birthday: DateTime!
   weightGoal: String!
-  email: String!
-  password: String!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Athlete {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  biometrics: Biometrics!
+}
 
 type AccessToken {
   token: String!
@@ -63,6 +69,7 @@ type Query {
   getAllPrograms: [Program!]!
   signIn(payload: AuthCredentialsInput!): AccessToken!
   getWorkout(workoutId: ID!): Workout!
+  getAthlete(athleteId: ID!): Athlete!
 }
 
 input AuthCredentialsInput {
@@ -92,15 +99,20 @@ input ExerciseDetailsInput {
 
 input RegisterAthleteInput {
   name: String!
+  email: String!
+  password: String!
+  biometrics: BiometricsInput!
+}
+
+input BiometricsInput {
   height: Int!
+  bodyFat: Int!
   lengthUnit: String!
   weight: Int!
   weightUnit: String!
   gender: String!
   birthday: DateTime!
   weightGoal: String!
-  email: String!
-  password: String!
 }
 
 input FillWorkoutWithExercisesInput {
