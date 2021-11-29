@@ -36,6 +36,7 @@ type Athlete {
   password: String!
   biometrics: Biometrics!
   dailyTasks: DailyTask
+  programs: Program
 }
 
 type AccessToken {

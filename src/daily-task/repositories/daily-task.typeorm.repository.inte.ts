@@ -4,6 +4,12 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmDailyTaskRepository } from './daily-task.typeorm.repository'
 import { dailyTaskDataBuilder } from '../data-builders/daily-task.data-builder'
 import { DailyTask } from '../entities/daily-task.entity'
+import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
+import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
+import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 
 const dailyTasksFixtures = [dailyTaskDataBuilder(), dailyTaskDataBuilder()]
 
@@ -20,7 +26,15 @@ describe('TypeOrm DailyTask Repository', () => {
     const module = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(config.db),
-        TypeOrmModule.forFeature([TypeOrmDailyTaskRepository]),
+        TypeOrmModule.forFeature([
+          TypeOrmAthleteRepository,
+          TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
+          TypeOrmExerciseRepository,
+          TypeOrmExerciseTemplateRepository,
+          TypeOrmProgramRepository,
+          TypeOrmWorkoutRepository,
+        ]),
       ],
     }).compile()
 
@@ -40,13 +54,13 @@ describe('TypeOrm DailyTask Repository', () => {
   })
 
   it('should get all daily tasks', async () => {
-    const expectedPrograms = [
+    const expectedDailyTasks = [
       new DailyTask(dailyTasksFixtures[0]),
       new DailyTask(dailyTasksFixtures[1]),
     ]
 
-    const retrievedPrograms = await dailyTaskRepository.getAll()
+    const retrievedDailyTasks = await dailyTaskRepository.getAll()
 
-    expect(retrievedPrograms).toStrictEqual(expectedPrograms)
+    expect(retrievedDailyTasks).toStrictEqual(expectedDailyTasks)
   })
 })

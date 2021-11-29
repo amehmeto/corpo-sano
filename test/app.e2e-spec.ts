@@ -242,6 +242,9 @@ describe('AppController (e2e)', () => {
             dailyTasks {
               description
             }
+            programs {
+              title
+            }
           }
         }`,
         variables: {
@@ -254,7 +257,8 @@ describe('AppController (e2e)', () => {
         biometrics: {
           bodyFat: biometricsFixture.bodyFat,
         },
-        dailyTasks: null as DailyTask[],
+        dailyTasks: athleteFixture.dailyTasks,
+        programs: athleteFixture.programs,
       }
 
       return expectGqlEndpoint(getAthleteQuery, expectedAthlete)

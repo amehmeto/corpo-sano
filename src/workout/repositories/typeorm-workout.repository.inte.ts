@@ -1,7 +1,5 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
-import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'

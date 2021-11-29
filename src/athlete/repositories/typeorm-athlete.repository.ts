@@ -9,7 +9,7 @@ export class TypeOrmAthleteRepository
 {
   findById(athleteId: string): Promise<Athlete> {
     return this.findOne(athleteId, {
-      relations: ['biometrics'],
+      relations: ['biometrics', 'dailyTasks', 'programs'],
     })
   }
 
@@ -17,8 +17,12 @@ export class TypeOrmAthleteRepository
     return this.findOne(
       { email: athleteEmail },
       {
-        relations: ['biometrics'],
+        relations: ['biometrics', 'dailyTasks', 'programs'],
       },
     )
+  }
+
+  private sortByCreatedAt(a: any, b: any) {
+    return a.createdAt >= b.createdAt ? 1 : -1
   }
 }

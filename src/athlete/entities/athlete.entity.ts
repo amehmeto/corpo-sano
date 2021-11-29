@@ -19,13 +19,11 @@ export class Athlete extends Base {
   @JoinColumn()
   biometrics: Biometrics
 
-  @OneToOne(() => DailyTask, { nullable: true })
-  @JoinColumn()
+  @OneToMany(() => DailyTask, (dailyTask) => dailyTask.athlete)
   dailyTasks: DailyTask[]
 
   @OneToMany(() => Program, (program) => program.athlete, { nullable: true })
-  @JoinColumn()
-  programs?: Program[]
+  programs: Program[]
 
   constructor(partial: Partial<Athlete> = {}) {
     super()

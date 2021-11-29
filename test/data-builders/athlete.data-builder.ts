@@ -1,6 +1,10 @@
 import * as Faker from 'faker'
 import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { biometricsDataBuilder } from './biometrics.data-builder'
+import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
+import { dailyTaskDataBuilder } from '../../src/daily-task/data-builders/daily-task.data-builder'
+import { programDataBuilder } from './program.data-builder'
+import { Program } from '../../src/program/entities/program.entity'
 
 export function athleteDataBuilder(athlete = {}) {
   const hashedPassword =
@@ -11,6 +15,11 @@ export function athleteDataBuilder(athlete = {}) {
     email: Faker.internet.email(),
     password: hashedPassword,
     biometrics: new Biometrics(biometricsDataBuilder()),
+    dailyTasks: [
+      new DailyTask(dailyTaskDataBuilder()),
+      new DailyTask(dailyTaskDataBuilder()),
+    ],
+    programs: [new Program(programDataBuilder())],
   }
 
   return { ...template, ...athlete }
