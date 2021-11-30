@@ -7,19 +7,33 @@ export class TypeOrmAthleteRepository
   extends Repository<Athlete>
   implements AthleteRepository
 {
-  findById(athleteId: string): Promise<Athlete> {
-    return this.findOne(athleteId, {
+  async findById(athleteId: string): Promise<Athlete> {
+    const athlete = await this.findOne(athleteId, {
       relations: ['biometrics', 'dailyTasks', 'programs'],
     })
+    athlete.programs = [...athlete.programs].sort((a, b) =>
+      this.sortByCreatedAt(a, b),
+    )
+    athlete.dailyTasks = [...athlete.dailyTasks].sort((a, b) =>
+      this.sortByCreatedAt(a, b),
+    )
+    return athlete
   }
 
-  findByEmail(athleteEmail: string): Promise<Athlete> {
-    return this.findOne(
+  async findByEmail(athleteEmail: string): Promise<Athlete> {
+    const athlete = await this.findOne(
       { email: athleteEmail },
       {
         relations: ['biometrics', 'dailyTasks', 'programs'],
       },
     )
+    athlete.programs = [...athlete.programs].sort((a, b) =>
+      this.sortByCreatedAt(a, b),
+    )
+    athlete.dailyTasks = [...athlete.dailyTasks].sort((a, b) =>
+      this.sortByCreatedAt(a, b),
+    )
+    return athlete
   }
 
   private sortByCreatedAt(a: any, b: any) {

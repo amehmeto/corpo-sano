@@ -20,9 +20,9 @@ export class Athlete {
   @Field(() => Biometrics)
   biometrics: Biometrics
 
-  @Field(() => DailyTask, { nullable: true })
+  @Field(() => [DailyTask], { nullable: true })
   dailyTasks?: DailyTask[]
 
-  @Field(() => Program, { nullable: true })
+  @Field(() => [Program], { nullable: true })
   programs?: Program[]
 }

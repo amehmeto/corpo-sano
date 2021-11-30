@@ -22,8 +22,6 @@ export const programFixture = programDataBuilder()
 export const programFixtures = [
   new Program(programDataBuilder()),
   new Program(programDataBuilder()),
-  new Program(programDataBuilder()),
-  new Program(programDataBuilder()),
 ]
 export const workoutFixture = workoutDataBuilder()
 export const exercisesFixture = [
@@ -40,7 +38,7 @@ export const exercisesFixture = [
   }),
 ]
 export const biometricsFixture = biometricsDataBuilder()
-export const dailyTasksFixture = [
+export const dailyTasksFixtures = [
   dailyTaskDataBuilder(),
   dailyTaskDataBuilder(),
   dailyTaskDataBuilder(),
@@ -127,8 +125,8 @@ export async function generateFixtures(connection: Connection) {
   const athlete = {
     ...athleteFixture,
     biometrics: biometricsFixture,
-    programs: [programFixture],
-    dailyTasks: dailyTasksFixture,
+    programs: programFixtures,
+    dailyTasks: dailyTasksFixtures,
   }
 
   const entityRepositoryFixturePairs = [
@@ -136,8 +134,9 @@ export async function generateFixtures(connection: Connection) {
     [TypeOrmExerciseRepository, exercisesFixture],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
+    [TypeOrmProgramRepository, programFixtures],
     [TypeOrmBiometricsRepository, biometricsFixture],
-    [TypeOrmDailyTaskRepository, dailyTasksFixture],
+    [TypeOrmDailyTaskRepository, dailyTasksFixtures],
     [TypeOrmAthleteRepository, athlete],
   ]
 
