@@ -1,6 +1,6 @@
 import { ExerciseRepository } from './exercise-repository.interface'
 import { Exercise } from '../entities/exercise.entity'
-import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
+import { exerciseDataBuilder } from '../data-builders/exercise.data-builder'
 import { UpdateResult } from 'typeorm'
 
 export class InMemoryExerciseRepository implements ExerciseRepository {

@@ -1,7 +1,7 @@
 import { AthleteRepository } from './athlete-repository.interface'
 import { Athlete } from '../entities/athlete.entity'
 import { v4 as uuid } from 'uuid'
-import { athleteDataBuilder } from '../../../test/data-builders/athlete.data-builder'
+import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
 import { RepositoryErrors } from '../types/repository-errors.enum'
 
 export class InMemoryAthleteRepository implements AthleteRepository {

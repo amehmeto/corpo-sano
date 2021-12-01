@@ -8,11 +8,10 @@ export class TypeOrmDailyTaskRepository
   implements DailyTaskRepository
 {
   async getAll(): Promise<DailyTask[]> {
-    const dailyTasks = await this.find()
-    return dailyTasks.sort((a, b) => this.sortByCreatedAt(a, b))
-  }
-
-  private sortByCreatedAt(a: DailyTask, b: DailyTask) {
-    return a.createdAt >= b.createdAt ? 1 : -1
+    return this.find({
+      order: {
+        createdAt: 'ASC',
+      },
+    })
   }
 }

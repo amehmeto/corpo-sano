@@ -3,30 +3,30 @@ import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from '../src/app.module'
 import { WeekDays } from '../src/workout/types/week-days.enum'
-import {
-  athleteFixture,
-  biometricsFixture,
-  dailyTasksFixtures,
-  exercisesFixture,
-  generateFixtures,
-  programFixture,
-  programFixtures,
-  workoutFixture,
-} from './fixtures/generate-fixtures'
-import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
-import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
-import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
-import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
+import { generateFixtures } from './fixtures/generate-fixtures'
+import { defaultExerciseTemplatesDataBuilder } from '../src/exercise/data-builders/default-exercise-templates.data-builder'
+import { registerAthleteInputDataBuilder } from '../src/auth/data-builders/register-athlete-input.data-builder'
+import { exerciseDetailsInputDataBuilder } from '../src/exercise/data-builders/exercise-details-input.data-builder'
+import { authCredentialsInputDataBuilder } from '../src/auth/data-builders/auth-credentials-input.data-builder'
 import { AccessToken } from '../src/auth/types/access-token.type'
 import {
   getDataKey,
   handleGraphQLResponse,
   Query,
 } from './handle-graphql-response'
-import { exerciseInputDataBuilder } from './data-builders/exercise-input.data-builder'
+import { exerciseInputDataBuilder } from '../src/exercise/data-builders/exercise-input.data-builder'
 import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
+import {
+  programFixture,
+  programFixtures,
+} from '../src/program/data-builders/program.data-builder'
+import { workoutFixture } from '../src/workout/data-builders/workout.data-builder'
+import { exercisesFixture } from '../src/exercise/data-builders/exercise.data-builder'
+import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.data-builder'
+import { dailyTasksFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
+import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication

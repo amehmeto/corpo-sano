@@ -6,10 +6,10 @@ import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-wor
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { config } from '../../../config'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
-import { exercisesTemplatesFixture } from '../../../test/fixtures/generate-fixtures'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { exercisesTemplatesFixture } from '../data-builders/exercise-template.data-builder'
 
 describe('TypeOrm Exercise Template Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository

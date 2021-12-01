@@ -7,3 +7,5 @@ export function workoutDataBuilder(workout = {}) {
   }
   return { ...template, ...workout }
 }
+
+export const workoutFixture = workoutDataBuilder()

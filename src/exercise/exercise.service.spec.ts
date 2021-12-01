@@ -6,7 +6,7 @@ import {
   EXERCISE_REPOSITORY,
   ExerciseRepository,
 } from './repositories/exercise-repository.interface'
-import { exerciseDetailsInputDataBuilder } from '../../test/data-builders/exercise-details-input.data-builder'
+import { exerciseDetailsInputDataBuilder } from './data-builders/exercise-details-input.data-builder'
 import { UpdateResult } from 'typeorm'
 
 describe('ExerciseService', () => {

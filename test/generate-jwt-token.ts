@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common'
 import { AccessToken } from '../src/auth/types/access-token.type'
-import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
-import { athleteFixture } from './fixtures/generate-fixtures'
+import { authCredentialsInputDataBuilder } from '../src/auth/data-builders/auth-credentials-input.data-builder'
 import * as request from 'supertest'
+import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
 
 export async function generateJwtToken(app: INestApplication) {
   let token: AccessToken

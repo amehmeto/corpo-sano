@@ -11,12 +11,12 @@ import {
   ExerciseTemplateRepository,
 } from '../exercise/repositories/exercise-template-repository.interface'
 import { Exercise } from '../exercise/entities/exercise.entity'
-import { workoutInputDataBuilder } from '../../test/data-builders/workout-input.data-builder'
+import { workoutInputDataBuilder } from './data-builders/workout-input.data-builder'
 import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
 } from './repositories/workout-repository.interface'
-import { workoutDataBuilder } from '../../test/data-builders/workout.data-builder'
+import { workoutDataBuilder } from './data-builders/workout.data-builder'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 
 describe('Workout Service', () => {

@@ -1,6 +1,6 @@
-import { UnitSystem } from '../../src/biometrics/types/metric-system.enum'
-import { Gender } from '../../src/biometrics/types/gender.enum'
-import { WeightGoal } from '../../src/biometrics/types/weight-goal.enum'
+import { UnitSystem } from '../types/metric-system.enum'
+import { Gender } from '../types/gender.enum'
+import { WeightGoal } from '../types/weight-goal.enum'
 import * as Faker from 'faker'
 
 const unitSystem = Object.values(UnitSystem)
@@ -21,3 +21,5 @@ export function biometricsDataBuilder(biometrics = {}) {
   template.birthday.setMilliseconds(0)
   return { ...template, ...biometrics }
 }
+
+export const biometricsFixture = biometricsDataBuilder()
