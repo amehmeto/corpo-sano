@@ -1,5 +1,5 @@
 import * as Faker from 'faker'
-import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
+import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
 
 export function exerciseDataBuilder(exercise = {}) {
@@ -18,3 +18,17 @@ export function exerciseDataBuilder(exercise = {}) {
   }
   return { ...template, ...exercise }
 }
+
+export const exercisesFixture = [
+  exerciseDataBuilder({
+    position: 0,
+    createdAt: Faker.date.past(30),
+    deletedAt: null as Date,
+    template: exerciseTemplateDataBuilder(),
+  }),
+  exerciseDataBuilder({
+    position: 1,
+    createdAt: Faker.date.past(0),
+    template: exerciseTemplateDataBuilder(),
+  }),
+]

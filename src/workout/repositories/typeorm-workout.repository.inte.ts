@@ -8,15 +8,15 @@ import { config } from '../../../config'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
-import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
-import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
+import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-builder'
 import {
-  exercisesTemplatesFixture,
+  workoutDataBuilder,
   workoutFixture,
-} from '../../../test/fixtures/generate-fixtures'
+} from '../data-builders/workout.data-builder'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { exercisesTemplatesFixture } from '../../exercise/data-builders/exercise-template.data-builder'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())

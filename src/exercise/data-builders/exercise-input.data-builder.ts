@@ -1,5 +1,5 @@
 import * as Faker from 'faker'
-import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
+import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
 
 export function exerciseInputDataBuilder(exerciseInput = {}) {

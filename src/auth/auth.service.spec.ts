@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { AuthService } from './auth.service'
-import { authCredentialsInputDataBuilder } from '../../test/data-builders/auth-credentials-input.data-builder'
+import { authCredentialsInputDataBuilder } from './data-builders/auth-credentials-input.data-builder'
 import { InMemoryAthleteRepository } from '../athlete/repositories/in-memory-athlete.repository'
 import {
   ATHLETE_REPOSITORY,
@@ -9,7 +9,7 @@ import {
 import { ConflictException, UnauthorizedException } from '@nestjs/common'
 import * as Faker from 'faker'
 import { JwtModule, JwtService } from '@nestjs/jwt'
-import { registerAthleteInputDataBuilder } from '../../test/data-builders/register-athlete-input.data-builder'
+import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
 import { Athlete } from '../athlete/entities/athlete.entity'
 import * as Bcrypt from 'bcrypt'
 import { EmailGateway, EmailGatewayToken } from './gateways/email.gateway'

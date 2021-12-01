@@ -6,15 +6,15 @@ import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { Exercise } from '../entities/exercise.entity'
-import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
-import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
+import { exerciseDataBuilder } from '../data-builders/exercise.data-builder'
+import { workoutDataBuilder } from '../../workout/data-builders/workout.data-builder'
 import { Workout } from '../../workout/entities/workout.entity'
 import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
-import { exercisesTemplatesFixture } from '../../../test/fixtures/generate-fixtures'
 import { UpdateResult } from 'typeorm'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { exercisesTemplatesFixture } from '../data-builders/exercise-template.data-builder'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())
 const workoutFixture = new Workout(workoutDataBuilder())

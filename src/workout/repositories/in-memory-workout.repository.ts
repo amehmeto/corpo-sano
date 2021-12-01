@@ -1,8 +1,8 @@
 import { WorkoutRepository } from './workout-repository.interface'
 import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
-import { workoutDataBuilder } from '../../../test/data-builders/workout.data-builder'
-import { exerciseDataBuilder } from '../../../test/data-builders/exercise.data-builder'
+import { workoutDataBuilder } from '../data-builders/workout.data-builder'
+import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-builder'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
   private workoutsData = [

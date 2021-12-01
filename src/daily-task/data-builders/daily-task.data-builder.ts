@@ -7,3 +7,9 @@ export function dailyTaskDataBuilder(dailTask = {}) {
   }
   return { ...template, ...dailTask }
 }
+
+export const dailyTasksFixtures = [
+  dailyTaskDataBuilder(),
+  dailyTaskDataBuilder(),
+  dailyTaskDataBuilder(),
+]
