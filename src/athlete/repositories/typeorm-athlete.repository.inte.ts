@@ -8,13 +8,33 @@ import { RepositoryErrors } from '../types/repository-errors.enum'
 import { Biometrics } from '../../biometrics/entities/biometrics.entity'
 import { biometricsDataBuilder } from '../../../test/data-builders/biometrics.data-builder'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
+import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
+import { DailyTask } from '../../daily-task/entities/daily-task.entity'
+import { dailyTaskDataBuilder } from '../../daily-task/data-builders/daily-task.data-builder'
+import { Program } from '../../program/entities/program.entity'
+import { programDataBuilder } from '../../../test/data-builders/program.data-builder'
+import { expectedBaseEntity } from '../../__infrastructure__/typeorm/expected-base-entity.data-builder'
 
+const programFixtures = [
+  new Program(programDataBuilder()),
+  new Program(programDataBuilder()),
+]
+const dailyTaskFixtures = [
+  new DailyTask(dailyTaskDataBuilder()),
+  new DailyTask(dailyTaskDataBuilder()),
+]
 const biometricsFixture = new Biometrics(biometricsDataBuilder())
 const athleteFixture = new Athlete(athleteDataBuilder())
 
 describe('TypeOrmAthleteRepository', () => {
   let athleteRepository: TypeOrmAthleteRepository
   let biometricsRepository: TypeOrmBiometricsRepository
+  let dailyTaskRepository: TypeOrmDailyTaskRepository
+  let programRepository: TypeOrmProgramRepository
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -23,6 +43,11 @@ describe('TypeOrmAthleteRepository', () => {
         TypeOrmModule.forFeature([
           TypeOrmAthleteRepository,
           TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
+          TypeOrmExerciseRepository,
+          TypeOrmExerciseTemplateRepository,
+          TypeOrmProgramRepository,
+          TypeOrmWorkoutRepository,
         ]),
       ],
     }).compile()
@@ -33,16 +58,28 @@ describe('TypeOrmAthleteRepository', () => {
     biometricsRepository = module.get<TypeOrmBiometricsRepository>(
       getRepositoryToken(TypeOrmBiometricsRepository),
     )
+    dailyTaskRepository = module.get<TypeOrmDailyTaskRepository>(
+      getRepositoryToken(TypeOrmDailyTaskRepository),
+    )
+    programRepository = module.get<TypeOrmProgramRepository>(
+      getRepositoryToken(TypeOrmProgramRepository),
+    )
 
+    const dailyTasks = await dailyTaskRepository.save(dailyTaskFixtures)
+    const programs = await programRepository.save(programFixtures)
     const biometrics = await biometricsRepository.save(biometricsFixture)
     const athlete = {
       ...athleteFixture,
       biometrics,
+      dailyTasks,
+      programs,
     }
     await athleteRepository.save(athlete)
   })
 
   afterAll(async () => {
+    await dailyTaskRepository.query(`DELETE FROM daily_task;`)
+    await programRepository.query(`DELETE FROM program;`)
     await athleteRepository.query(`DELETE FROM athlete;`)
     await biometricsRepository.query(`DELETE FROM biometrics;`)
   })
@@ -54,12 +91,24 @@ describe('TypeOrmAthleteRepository', () => {
   it('should find an athlete by id', async () => {
     const expectedAthlete = new Athlete({
       ...athleteFixture,
-      createdAt: expect.any(Date),
-      updatedAt: expect.any(Date),
-      deletedAt: null,
-      version: 1,
+      ...expectedBaseEntity,
       biometrics: new Biometrics(biometricsFixture),
+      dailyTasks: dailyTaskFixtures.map(
+        (fixture) =>
+          new DailyTask({
+            ...fixture,
+            ...expectedBaseEntity,
+          }),
+      ),
+      programs: programFixtures.map(
+        (fixture) =>
+          new Program({
+            ...fixture,
+            ...expectedBaseEntity,
+          }),
+      ),
     })
+
     const retrievedAthlete = await athleteRepository.findById(athleteFixture.id)
 
     expect(retrievedAthlete).toStrictEqual(expectedAthlete)
@@ -68,11 +117,22 @@ describe('TypeOrmAthleteRepository', () => {
   it('should find an athlete by email', async () => {
     const expectedAthlete = new Athlete({
       ...athleteFixture,
-      createdAt: expect.any(Date),
-      updatedAt: expect.any(Date),
-      deletedAt: null,
-      version: 1,
+      ...expectedBaseEntity,
       biometrics: new Biometrics(biometricsFixture),
+      dailyTasks: dailyTaskFixtures.map(
+        (fixture) =>
+          new DailyTask({
+            ...fixture,
+            ...expectedBaseEntity,
+          }),
+      ),
+      programs: programFixtures.map(
+        (fixture) =>
+          new Program({
+            ...fixture,
+            ...expectedBaseEntity,
+          }),
+      ),
     })
 
     const retrievedAthlete = await athleteRepository.findByEmail(

@@ -14,8 +14,15 @@ import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.
 import { biometricsDataBuilder } from '../data-builders/biometrics.data-builder'
 import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/typeorm-biometrics.repository'
 import { Athlete } from '../../src/athlete/entities/athlete.entity'
+import { dailyTaskDataBuilder } from '../../src/daily-task/data-builders/daily-task.data-builder'
+import { TypeOrmDailyTaskRepository } from '../../src/daily-task/repositories/daily-task.typeorm.repository'
+import { Program } from '../../src/program/entities/program.entity'
 
 export const programFixture = programDataBuilder()
+export const programFixtures = [
+  new Program(programDataBuilder()),
+  new Program(programDataBuilder()),
+]
 export const workoutFixture = workoutDataBuilder()
 export const exercisesFixture = [
   exerciseDataBuilder({
@@ -31,6 +38,11 @@ export const exercisesFixture = [
   }),
 ]
 export const biometricsFixture = biometricsDataBuilder()
+export const dailyTasksFixtures = [
+  dailyTaskDataBuilder(),
+  dailyTaskDataBuilder(),
+  dailyTaskDataBuilder(),
+]
 export const athleteFixture = new Athlete(
   athleteDataBuilder({
     biometrics: biometricsDataBuilder(),
@@ -113,6 +125,8 @@ export async function generateFixtures(connection: Connection) {
   const athlete = {
     ...athleteFixture,
     biometrics: biometricsFixture,
+    programs: programFixtures,
+    dailyTasks: dailyTasksFixtures,
   }
 
   const entityRepositoryFixturePairs = [
@@ -120,7 +134,9 @@ export async function generateFixtures(connection: Connection) {
     [TypeOrmExerciseRepository, exercisesFixture],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
+    [TypeOrmProgramRepository, programFixtures],
     [TypeOrmBiometricsRepository, biometricsFixture],
+    [TypeOrmDailyTaskRepository, dailyTasksFixtures],
     [TypeOrmAthleteRepository, athlete],
   ]
 

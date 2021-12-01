@@ -6,9 +6,11 @@ import { WeekDays } from '../src/workout/types/week-days.enum'
 import {
   athleteFixture,
   biometricsFixture,
+  dailyTasksFixtures,
   exercisesFixture,
   generateFixtures,
   programFixture,
+  programFixtures,
   workoutFixture,
 } from './fixtures/generate-fixtures'
 import { defaultExerciseTemplatesDataBuilder } from './data-builders/default-exercise-templates.data-builder'
@@ -193,7 +195,14 @@ describe('AppController (e2e)', () => {
         variables: {},
       }
       const expectedGetAllPrograms = [
-        { id: programFixture.id, title: 'Mon programme' },
+        ...programFixtures.map((program) => ({
+          id: expect.any(String),
+          title: program.title,
+        })),
+        {
+          id: expect.any(String),
+          title: programFixture.title,
+        },
       ]
 
       return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
@@ -238,6 +247,12 @@ describe('AppController (e2e)', () => {
             biometrics {
               bodyFat
             }
+            dailyTasks {
+              description
+            }
+            programs {
+              title
+            }
           }
         }`,
         variables: {
@@ -250,6 +265,12 @@ describe('AppController (e2e)', () => {
         biometrics: {
           bodyFat: biometricsFixture.bodyFat,
         },
+        dailyTasks: dailyTasksFixtures.map((task) => ({
+          description: task.description,
+        })),
+        programs: programFixtures.map((program) => ({
+          title: program.title,
+        })),
       }
 
       return expectGqlEndpoint(getAthleteQuery, expectedAthlete)

@@ -6,10 +6,14 @@ import { TypeOrmProgramRepository } from './repositories/type-orm-program.reposi
 import { AuthModule } from '../auth/auth.module'
 import { PassportModule } from '@nestjs/passport'
 import { PROGRAM_REPOSITORY } from './repositories/program-repository.interface'
+import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TypeOrmProgramRepository]),
+    TypeOrmModule.forFeature([
+      TypeOrmProgramRepository,
+      TypeOrmAthleteRepository,
+    ]),
     AuthModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],

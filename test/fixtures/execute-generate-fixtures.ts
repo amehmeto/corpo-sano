@@ -6,6 +6,7 @@ import { Program } from '../../src/program/entities/program.entity'
 import { Workout } from '../../src/workout/entities/workout.entity'
 import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { generateFixtures } from './generate-fixtures'
+import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
 ;(async function () {
   console.log('Connection to DB')
   const connection = await createConnection({
@@ -18,6 +19,7 @@ import { generateFixtures } from './generate-fixtures'
     entities: [
       Athlete,
       Biometrics,
+      DailyTask,
       Exercise,
       ExerciseTemplate,
       Program,

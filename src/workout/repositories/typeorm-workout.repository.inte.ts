@@ -1,7 +1,5 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
-import { Program } from '../../program/entities/program.entity'
 import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
@@ -16,6 +14,9 @@ import {
   exercisesTemplatesFixture,
   workoutFixture,
 } from '../../../test/fixtures/generate-fixtures'
+import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
+import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -75,12 +76,13 @@ describe('TypeOrm Workout Repository', () => {
       imports: [
         TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
-          TypeOrmWorkoutRepository,
-          TypeOrmExerciseTemplateRepository,
+          TypeOrmAthleteRepository,
+          TypeOrmBiometricsRepository,
+          TypeOrmDailyTaskRepository,
           TypeOrmExerciseRepository,
+          TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
-          ExerciseTemplate,
-          Program,
+          TypeOrmWorkoutRepository,
         ]),
       ],
     }).compile()
