@@ -9,7 +9,8 @@ import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-ath
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
-import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
+import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 
 const dailyTasksFixtures = [dailyTaskDataBuilder(), dailyTaskDataBuilder()]
 
@@ -34,6 +35,7 @@ describe('TypeOrm DailyTask Repository', () => {
           TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
+          TypeOrmSessionRepository,
         ]),
       ],
     }).compile()
@@ -42,10 +44,13 @@ describe('TypeOrm DailyTask Repository', () => {
       TypeOrmDailyTaskRepository,
     )
 
+    await dailyTaskRepository.query('SET FOREIGN_KEY_CHECKS=0')
+    await dailyTaskRepository.query(`DELETE FROM daily_task;`)
     await generateDailyTasksFixtures(dailyTaskRepository)
   })
 
   afterAll(async () => {
+    await dailyTaskRepository.query('SET FOREIGN_KEY_CHECKS=0')
     await dailyTaskRepository.query(`DELETE FROM daily_task;`)
   })
 

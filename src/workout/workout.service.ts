@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid'
 import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
-} from './repositories/workout-repository.interface'
+} from './repositories/workout.repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import {
   EXERCISE_TEMPLATE_REPOSITORY,

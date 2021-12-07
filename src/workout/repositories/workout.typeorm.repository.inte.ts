@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Workout } from '../entities/workout.entity'
-import { TypeOrmWorkoutRepository } from './typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from './workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { config } from '../../../config'
@@ -15,8 +15,9 @@ import {
 } from '../data-builders/workout.data-builder'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
-import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../../exercise/data-builders/exercise-template.data-builder'
+import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
+import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -83,6 +84,7 @@ describe('TypeOrm Workout Repository', () => {
           TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
+          TypeOrmSessionRepository,
         ]),
       ],
     }).compile()
@@ -121,6 +123,7 @@ describe('TypeOrm Workout Repository', () => {
     const expectedWorkout = new Workout({
       ...orderedExercisesWorkoutFixture,
       exercises: expectedWorkoutExercises,
+      sessions: [],
     })
 
     const foundExercise = await workoutRepository.findById(

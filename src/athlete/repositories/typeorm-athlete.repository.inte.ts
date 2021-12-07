@@ -10,7 +10,7 @@ import { biometricsDataBuilder } from '../../biometrics/data-builders/biometrics
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
-import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { DailyTask } from '../../daily-task/entities/daily-task.entity'
@@ -18,6 +18,7 @@ import { dailyTaskDataBuilder } from '../../daily-task/data-builders/daily-task.
 import { Program } from '../../program/entities/program.entity'
 import { programDataBuilder } from '../../program/data-builders/program.data-builder'
 import { expectedBaseEntity } from '../../__infrastructure__/typeorm/expected-base-entity.data-builder'
+import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 
 const programFixtures = [
   new Program(programDataBuilder()),
@@ -48,6 +49,7 @@ describe('TypeOrmAthleteRepository', () => {
           TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
+          TypeOrmSessionRepository,
         ]),
       ],
     }).compile()
@@ -78,9 +80,11 @@ describe('TypeOrmAthleteRepository', () => {
   })
 
   afterAll(async () => {
+    await programRepository.query('SET FOREIGN_KEY_CHECKS=0')
+    await dailyTaskRepository.query('SET FOREIGN_KEY_CHECKS=0')
     await dailyTaskRepository.query(`DELETE FROM daily_task;`)
-    await programRepository.query(`DELETE FROM program;`)
     await athleteRepository.query(`DELETE FROM athlete;`)
+    await programRepository.query(`DELETE FROM program;`)
     await biometricsRepository.query(`DELETE FROM biometrics;`)
   })
 

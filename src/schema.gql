@@ -63,10 +63,15 @@ type Exercise {
   workout: Workout!
 }
 
+type Session {
+  id: ID!
+}
+
 type Workout {
   id: ID!
   title: String!
   exercises: [Exercise!]!
+  sessions: [Session!]!
   scheduledDays: [String!]!
 }
 

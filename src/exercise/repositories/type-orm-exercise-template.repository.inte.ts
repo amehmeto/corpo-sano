@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
-import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { config } from '../../../config'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
@@ -10,6 +10,7 @@ import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-ath
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../data-builders/exercise-template.data-builder'
+import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 
 describe('TypeOrm Exercise Template Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
@@ -26,6 +27,7 @@ describe('TypeOrm Exercise Template Repository', () => {
           TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
+          TypeOrmSessionRepository,
         ]),
       ],
     }).compile()

@@ -1,13 +1,13 @@
 import { Connection } from 'typeorm'
 import { athleteFixture } from '../../src/athlete/data-builders/athlete.data-builder'
 import { workoutFixture } from '../../src/workout/data-builders/workout.data-builder'
-import { exercisesFixture } from '../../src/exercise/data-builders/exercise.data-builder'
+import { exerciseFixtures } from '../../src/exercise/data-builders/exercise.data-builder'
 import {
   programFixture,
   programFixtures,
 } from '../../src/program/data-builders/program.data-builder'
 import { TypeOrmExerciseRepository } from '../../src/exercise/repositories/type-orm-exercise.repository'
-import { TypeOrmWorkoutRepository } from '../../src/workout/repositories/typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from '../../src/workout/repositories/workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../src/program/repositories/type-orm-program.repository'
 import { TypeOrmAthleteRepository } from '../../src/athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../src/exercise/repositories/type-orm-exercise-template.repository'
@@ -16,6 +16,8 @@ import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/t
 import { dailyTasksFixtures } from '../../src/daily-task/data-builders/daily-task.data-builder'
 import { TypeOrmDailyTaskRepository } from '../../src/daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../../src/exercise/data-builders/exercise-template.data-builder'
+import { sessionFixtures } from '../../src/session/data-builders/session.data-builder'
+import { TypeOrmSessionRepository } from '../../src/session/repositories/session.typeorm.repository'
 
 async function saveFixtures(
   connection: Connection,
@@ -32,7 +34,8 @@ export async function generateFixtures(connection: Connection) {
   const workouts = [
     {
       ...workoutFixture,
-      exercises: exercisesFixture,
+      exercises: exerciseFixtures,
+      sessions: sessionFixtures,
     },
   ]
   const program = {
@@ -48,7 +51,8 @@ export async function generateFixtures(connection: Connection) {
 
   const entityRepositoryFixturePairs = [
     [TypeOrmExerciseTemplateRepository, exercisesTemplatesFixture],
-    [TypeOrmExerciseRepository, exercisesFixture],
+    [TypeOrmExerciseRepository, exerciseFixtures],
+    [TypeOrmSessionRepository, sessionFixtures],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
     [TypeOrmProgramRepository, programFixtures],

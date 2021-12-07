@@ -19,7 +19,7 @@ export function exerciseDataBuilder(exercise = {}) {
   return { ...template, ...exercise }
 }
 
-export const exercisesFixture = [
+export const exerciseFixtures = [
   exerciseDataBuilder({
     position: 0,
     createdAt: Faker.date.past(30),

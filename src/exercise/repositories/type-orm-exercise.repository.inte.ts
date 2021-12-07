@@ -3,18 +3,19 @@ import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { config } from '../../../config'
 import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.repository'
-import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { Exercise } from '../entities/exercise.entity'
 import { exerciseDataBuilder } from '../data-builders/exercise.data-builder'
 import { workoutDataBuilder } from '../../workout/data-builders/workout.data-builder'
 import { Workout } from '../../workout/entities/workout.entity'
-import { WorkoutRepository } from '../../workout/repositories/workout-repository.interface'
+import { WorkoutRepository } from '../../workout/repositories/workout.repository.interface'
 import { UpdateResult } from 'typeorm'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../data-builders/exercise-template.data-builder'
+import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 
 const exerciseFixture = new Exercise(exerciseDataBuilder())
 const workoutFixture = new Workout(workoutDataBuilder())
@@ -36,6 +37,7 @@ describe('TypeOrm Exercise Repository', () => {
           TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
+          TypeOrmSessionRepository,
         ]),
       ],
     }).compile()

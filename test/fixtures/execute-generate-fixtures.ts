@@ -7,6 +7,7 @@ import { Workout } from '../../src/workout/entities/workout.entity'
 import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { generateFixtures } from './generate-fixtures'
 import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
+import { Session } from '../../src/session/entities/session.entity'
 ;(async function () {
   console.log('Connection to DB')
   const connection = await createConnection({
@@ -24,6 +25,7 @@ import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
       ExerciseTemplate,
       Program,
       Workout,
+      Session,
     ],
     synchronize: true,
     autoLoadEntities: false,
