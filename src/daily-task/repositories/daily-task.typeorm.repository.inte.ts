@@ -11,6 +11,7 @@ import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeo
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
+import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 
 const dailyTasksFixtures = [dailyTaskDataBuilder(), dailyTaskDataBuilder()]
 
@@ -36,6 +37,7 @@ describe('TypeOrm DailyTask Repository', () => {
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
           TypeOrmSessionRepository,
+          TypeOrmPerformanceRepository,
         ]),
       ],
     }).compile()

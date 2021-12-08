@@ -16,7 +16,7 @@ export class Workout extends Base {
   @OneToMany(() => Exercise, (exercise) => exercise.workout, { eager: true })
   exercises?: Exercise[]
 
-  @OneToMany(() => Session, (session) => session.workout)
+  @OneToMany(() => Session, (session) => session.workout, { nullable: true })
   sessions?: Session[]
 
   @Column({

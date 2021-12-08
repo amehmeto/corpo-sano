@@ -18,6 +18,7 @@ import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeo
 import { exercisesTemplatesFixture } from '../../exercise/data-builders/exercise-template.data-builder'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
+import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -85,6 +86,7 @@ describe('TypeOrm Workout Repository', () => {
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
           TypeOrmSessionRepository,
+          TypeOrmPerformanceRepository,
         ]),
       ],
     }).compile()

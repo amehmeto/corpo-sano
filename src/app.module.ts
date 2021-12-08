@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module'
 import { BiometricsModule } from './biometrics/biometrics.module'
 import { DailyTaskModule } from './daily-task/daily-task.module'
 import { SessionModule } from './session/session.module'
+import { PerformanceModule } from './performance/performance.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SessionModule } from './session/session.module'
     BiometricsModule,
     DailyTaskModule,
     SessionModule,
+    PerformanceModule,
   ],
 })
 export class AppModule {}

@@ -11,6 +11,7 @@ import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
+import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 
 const programFixtures = [programDataBuilder(), programDataBuilder()]
 
@@ -36,6 +37,7 @@ describe('TypeOrm Program Repository', () => {
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
           TypeOrmSessionRepository,
+          TypeOrmPerformanceRepository,
         ]),
       ],
     }).compile()

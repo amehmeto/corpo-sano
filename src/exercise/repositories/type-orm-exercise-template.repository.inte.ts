@@ -11,6 +11,7 @@ import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeo
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../data-builders/exercise-template.data-builder'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
+import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 
 describe('TypeOrm Exercise Template Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
@@ -28,6 +29,7 @@ describe('TypeOrm Exercise Template Repository', () => {
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
           TypeOrmSessionRepository,
+          TypeOrmPerformanceRepository,
         ]),
       ],
     }).compile()

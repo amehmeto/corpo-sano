@@ -19,6 +19,7 @@ import { Program } from '../../program/entities/program.entity'
 import { programDataBuilder } from '../../program/data-builders/program.data-builder'
 import { expectedBaseEntity } from '../../__infrastructure__/typeorm/expected-base-entity.data-builder'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
+import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 
 const programFixtures = [
   new Program(programDataBuilder()),
@@ -50,6 +51,7 @@ describe('TypeOrmAthleteRepository', () => {
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
           TypeOrmSessionRepository,
+          TypeOrmPerformanceRepository,
         ]),
       ],
     }).compile()
