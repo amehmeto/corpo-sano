@@ -26,8 +26,8 @@ import { PerformanceModule } from './performance/performance.module'
     AuthModule,
     BiometricsModule,
     DailyTaskModule,
-    SessionModule,
     PerformanceModule,
+    SessionModule,
   ],
 })
 export class AppModule {}
