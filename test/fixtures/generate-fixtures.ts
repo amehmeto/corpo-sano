@@ -19,7 +19,6 @@ import { exercisesTemplatesFixture } from '../../src/exercise/data-builders/exer
 import {
   performanceFixture,
   sessionFixture,
-  sessionFixtures,
 } from '../../src/session/data-builders/session.data-builder'
 import { TypeOrmSessionRepository } from '../../src/session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../src/performance/repositories/performance.typeorm.repository'
@@ -64,7 +63,7 @@ export async function generateFixtures(connection: Connection) {
     [TypeOrmExerciseTemplateRepository, exercisesTemplatesFixture],
     [TypeOrmExerciseRepository, exerciseFixtures],
     [TypeOrmPerformanceRepository, performance],
-    [TypeOrmSessionRepository, sessionFixtures],
+    [TypeOrmSessionRepository, sessionFixture],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
     [TypeOrmProgramRepository, programFixtures],

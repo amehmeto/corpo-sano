@@ -27,7 +27,7 @@ import { exerciseFixtures } from '../src/exercise/data-builders/exercise.data-bu
 import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.data-builder'
 import { dailyTasksFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
 import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
-import { sessionFixtures } from '../src/session/data-builders/session.data-builder'
+import { sessionFixture } from '../src/session/data-builders/session.data-builder'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -184,9 +184,11 @@ describe('AppController (e2e)', () => {
             title: exercise.template.title,
           },
         })),
-        sessions: sessionFixtures.map((session) => ({
-          id: session.id,
-        })),
+        sessions: [
+          {
+            id: sessionFixture.id,
+          },
+        ],
       }
 
       return expectGqlEndpoint(getWorkoutQuery, expectedWorkout)

@@ -18,7 +18,7 @@ export function sessionDataBuilder(program = {}) {
   return { ...template, ...program }
 }
 
-export const sessionFixture = sessionDataBuilder()
+export const sessionFixture = new Session(sessionDataBuilder())
 export const sessionFixtures = [
   new Session(sessionDataBuilder()),
   new Session(sessionDataBuilder()),
