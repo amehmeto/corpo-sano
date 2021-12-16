@@ -8,7 +8,9 @@ export class Session extends Base {
   @ManyToOne(() => Workout, (workout) => workout.sessions)
   workout?: Workout
 
-  @OneToMany(() => Performance, (performance) => performance.session)
+  @OneToMany(() => Performance, (performance) => performance.session, {
+    eager: true,
+  })
   performances: Performance[]
 
   constructor(partial: Partial<Session> = {}) {

@@ -35,17 +35,15 @@ async function saveFixtures(
 }
 
 export async function generateFixtures(connection: Connection) {
-  const performance = performanceFixture
+  const session = {
+    ...sessionFixture,
+    performances: [performanceFixture],
+  }
   const workouts = [
     {
       ...workoutFixture,
       exercises: exerciseFixtures,
-      sessions: [
-        {
-          ...sessionFixture,
-          performance: [performanceFixture],
-        },
-      ],
+      sessions: [session],
     },
   ]
   const program = {
@@ -62,8 +60,8 @@ export async function generateFixtures(connection: Connection) {
   const entityRepositoryFixturePairs = [
     [TypeOrmExerciseTemplateRepository, exercisesTemplatesFixture],
     [TypeOrmExerciseRepository, exerciseFixtures],
-    [TypeOrmPerformanceRepository, performance],
-    [TypeOrmSessionRepository, sessionFixture],
+    [TypeOrmPerformanceRepository, performanceFixture],
+    [TypeOrmSessionRepository, session],
     [TypeOrmWorkoutRepository, workouts],
     [TypeOrmProgramRepository, program],
     [TypeOrmProgramRepository, programFixtures],

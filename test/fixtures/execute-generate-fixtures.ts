@@ -4,6 +4,7 @@ import { Exercise } from '../../src/exercise/entities/exercise.entity'
 import { Athlete } from '../../src/athlete/entities/athlete.entity'
 import { Program } from '../../src/program/entities/program.entity'
 import { Workout } from '../../src/workout/entities/workout.entity'
+import { Performance } from '../../src/performance/entities/performance.entity'
 import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { generateFixtures } from './generate-fixtures'
 import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
@@ -26,6 +27,7 @@ import { Session } from '../../src/session/entities/session.entity'
       Program,
       Workout,
       Session,
+      Performance,
     ],
     synchronize: true,
     autoLoadEntities: false,

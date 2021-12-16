@@ -14,7 +14,7 @@ export class Workout {
   @Field(() => [Exercise])
   exercises?: Exercise[]
 
-  @Field(() => [Session])
+  @Field(() => [Session], { nullable: true })
   sessions?: Session[]
 
   @Field(() => [String])

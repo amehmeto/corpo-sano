@@ -66,7 +66,7 @@ describe('AppController (e2e)', () => {
   })
 
   afterAll(async () => {
-    await deleteFixtures(connection)
+    //await deleteFixtures(connection)
   })
 
   describe('Public Endpoints', () => {
@@ -168,6 +168,9 @@ describe('AppController (e2e)', () => {
             }
             sessions {
               id
+              performances {
+                id
+              }
             }
           }
         }`,
