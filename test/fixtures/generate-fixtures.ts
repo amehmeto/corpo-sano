@@ -16,12 +16,10 @@ import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/t
 import { dailyTasksFixtures } from '../../src/daily-task/data-builders/daily-task.data-builder'
 import { TypeOrmDailyTaskRepository } from '../../src/daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../../src/exercise/data-builders/exercise-template.data-builder'
-import {
-  performanceFixture,
-  sessionFixture,
-} from '../../src/session/data-builders/session.data-builder'
+import { sessionFixture } from '../../src/session/data-builders/session.data-builder'
 import { TypeOrmSessionRepository } from '../../src/session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../src/performance/repositories/performance.typeorm.repository'
+import { performanceFixture } from '../../src/performance/data-builders/performance.data-builder'
 
 async function saveFixtures(
   connection: Connection,

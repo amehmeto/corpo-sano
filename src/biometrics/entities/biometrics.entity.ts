@@ -2,10 +2,10 @@ import { Column, Entity } from 'typeorm'
 import { Gender } from '../types/gender.enum'
 import { UnitSystem } from '../types/metric-system.enum'
 import { WeightGoal } from '../types/weight-goal.enum'
-import { Base } from '../../__infrastructure__/typeorm/base.entity'
+import { BaseEntity } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Biometrics extends Base {
+export class Biometrics extends BaseEntity {
   @Column()
   height: number
 

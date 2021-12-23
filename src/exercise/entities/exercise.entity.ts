@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
 import { ExerciseTemplate } from './exercise-template.entity'
 import { Workout } from '../../workout/entities/workout.entity'
-import { Base } from '../../__infrastructure__/typeorm/base.entity'
+import { BaseEntity } from '../../__infrastructure__/typeorm/base.entity'
 
 @Entity()
-export class Exercise extends Base {
+export class Exercise extends BaseEntity {
   @ManyToOne(
     () => ExerciseTemplate,
     (exerciseTemplate) => exerciseTemplate.exercises,

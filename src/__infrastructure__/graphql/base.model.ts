@@ -1,26 +1,9 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { Workout } from '../../workout/models/workout.model'
-import { ExerciseTemplate } from '../../exercise/models/exercise-template.model'
 
 @ObjectType()
-export class Exercise {
+export class BaseModel {
   @Field(() => ID)
   id: string
-
-  @Field()
-  template: ExerciseTemplate
-
-  @Field()
-  numberOfSets: number
-
-  @Field()
-  numberOfReps: number
-
-  @Field()
-  finalRestTime: number
-
-  @Field()
-  interSetsRestTime: number
 
   @Field()
   createdAt: Date
@@ -28,9 +11,9 @@ export class Exercise {
   @Field()
   updatedAt: Date
 
-  @Field()
-  deletedAt: Date | null
+  @Field({ nullable: true })
+  deletedAt: Date
 
-  @Field(() => Workout)
-  workout: Workout
+  @Field()
+  version: number
 }

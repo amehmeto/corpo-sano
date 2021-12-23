@@ -1,12 +1,12 @@
 import { Entity, ManyToOne, OneToMany } from 'typeorm'
-import { Base } from '../../__infrastructure__/typeorm/base.entity'
+import { BaseEntity } from '../../__infrastructure__/typeorm/base.entity'
 import { Workout } from '../../workout/entities/workout.entity'
 import { Performance } from '../../performance/entities/performance.entity'
 
 @Entity()
-export class Session extends Base {
+export class Session extends BaseEntity {
   @ManyToOne(() => Workout, (workout) => workout.sessions)
-  workout?: Workout
+  workout: Workout
 
   @OneToMany(() => Performance, (performance) => performance.session, {
     eager: true,

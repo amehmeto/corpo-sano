@@ -2,47 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Program {
-  id: ID!
-  title: String!
-}
-
-type Biometrics {
-  id: ID!
-  height: Int!
-  bodyFat: Int!
-  lengthUnit: String!
-  weight: Int!
-  weightUnit: String!
-  gender: String!
-  birthday: DateTime!
-  weightGoal: String!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type DailyTask {
-  id: ID!
-  description: String!
-}
-
-type Athlete {
-  id: ID!
-  name: String!
-  email: String!
-  password: String!
-  biometrics: Biometrics!
-  dailyTasks: [DailyTask!]
-  programs: [Program!]
-}
-
-type AccessToken {
-  token: String!
-}
-
 type ExerciseTemplate {
   id: ID!
   title: String!
@@ -63,22 +22,97 @@ type Exercise {
   workout: Workout!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Performance {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
   sets: [Float!]!
+  session: Session!
 }
 
 type Session {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
   performances: [Performance!]!
+  workout: Workout!
 }
 
 type Workout {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
   title: String!
+  program: Program!
   exercises: [Exercise!]!
-  sessions: [Session!]
+  sessions: [Session!]!
   scheduledDays: [String!]!
+}
+
+type Biometrics {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
+  height: Int!
+  bodyFat: Int!
+  lengthUnit: String!
+  weight: Int!
+  weightUnit: String!
+  gender: String!
+  birthday: DateTime!
+  weightGoal: String!
+}
+
+type DailyTask {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
+  description: String!
+  athlete: Athlete!
+}
+
+type Athlete {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
+  name: String!
+  email: String!
+  password: String!
+  biometrics: Biometrics!
+  dailyTasks: [DailyTask!]
+  programs: [Program!]
+}
+
+type Program {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  version: Float!
+  title: String!
+  workouts: [Workout!]!
+  athlete: Athlete!
+}
+
+type AccessToken {
+  token: String!
 }
 
 type Query {

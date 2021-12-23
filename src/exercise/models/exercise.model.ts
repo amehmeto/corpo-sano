@@ -1,24 +1,10 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { ExerciseTemplate } from './exercise-template.model'
 import { Workout } from '../../workout/models/workout.model'
+import { BaseModel } from '../../__infrastructure__/graphql/base.model'
 
 @ObjectType()
-export class Exercise {
-  @Field(() => ID)
-  id: string
-
-  @Field()
-  createdAt: Date
-
-  @Field()
-  updatedAt: Date
-
-  @Field({ nullable: true })
-  deletedAt: Date | null
-
-  @Field()
-  version: number
-
+export class Exercise extends BaseModel {
   @Field()
   template: ExerciseTemplate
 

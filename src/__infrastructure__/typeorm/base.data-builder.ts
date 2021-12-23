@@ -2,6 +2,7 @@ import * as Faker from 'faker'
 
 export function baseEntityDataBuilder(base = {}) {
   const template = {
+    id: Faker.datatype.uuid(),
     createdAt: Faker.date.past(),
     updatedAt: Faker.date.recent(),
     deletedAt: null as Date,

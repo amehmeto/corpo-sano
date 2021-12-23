@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm'
-import { Base } from '../../__infrastructure__/typeorm/base.entity'
+import { BaseEntity } from '../../__infrastructure__/typeorm/base.entity'
 import { Biometrics } from '../../biometrics/entities/biometrics.entity'
 import { DailyTask } from '../../daily-task/entities/daily-task.entity'
 import { Program } from '../../program/entities/program.entity'
 
 @Entity()
-export class Athlete extends Base {
+export class Athlete extends BaseEntity {
   @Column()
   name: string
 
@@ -19,11 +19,13 @@ export class Athlete extends Base {
   @JoinColumn()
   biometrics: Biometrics
 
-  @OneToMany(() => DailyTask, (dailyTask) => dailyTask.athlete)
-  dailyTasks: DailyTask[]
+  @OneToMany(() => DailyTask, (dailyTask) => dailyTask.athlete, {
+    nullable: true,
+  })
+  dailyTasks?: DailyTask[]
 
   @OneToMany(() => Program, (program) => program.athlete, { nullable: true })
-  programs: Program[]
+  programs?: Program[]
 
   constructor(partial: Partial<Athlete> = {}) {
     super()

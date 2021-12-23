@@ -28,6 +28,7 @@ import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.da
 import { dailyTasksFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
 import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
 import { sessionFixture } from '../src/session/data-builders/session.data-builder'
+import { performanceFixture } from '../src/performance/data-builders/performance.data-builder'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -170,6 +171,7 @@ describe('AppController (e2e)', () => {
               id
               performances {
                 id
+                sets
               }
             }
           }
@@ -190,6 +192,12 @@ describe('AppController (e2e)', () => {
         sessions: [
           {
             id: sessionFixture.id,
+            performances: [
+              {
+                id: performanceFixture.id,
+                sets: performanceFixture.sets,
+              },
+            ],
           },
         ],
       }

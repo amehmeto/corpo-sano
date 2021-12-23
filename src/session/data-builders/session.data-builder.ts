@@ -1,14 +1,7 @@
 import * as Faker from 'faker'
 import { Session } from '../entities/session.entity'
 import { Performance } from '../../performance/entities/performance.entity'
-
-export const performanceFixture = performanceDataBuilder()
-function performanceDataBuilder(performance = {}) {
-  const template = {
-    id: Faker.datatype.uuid(),
-  }
-  return { ...template, ...performance }
-}
+import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
 
 export function sessionDataBuilder(program = {}) {
   const template = {
