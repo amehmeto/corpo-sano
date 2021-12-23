@@ -25,7 +25,7 @@ import {
 import { workoutFixture } from '../src/workout/data-builders/workout.data-builder'
 import { exerciseFixtures } from '../src/exercise/data-builders/exercise.data-builder'
 import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.data-builder'
-import { dailyTasksFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
+import { dailyTaskFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
 import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
 import { sessionFixture } from '../src/session/data-builders/session.data-builder'
 import { performanceFixture } from '../src/performance/data-builders/performance.data-builder'
@@ -292,7 +292,7 @@ describe('AppController (e2e)', () => {
         biometrics: {
           bodyFat: biometricsFixture.bodyFat,
         },
-        dailyTasks: dailyTasksFixtures.map((task) => ({
+        dailyTasks: dailyTaskFixtures.map((task) => ({
           description: task.description,
         })),
         programs: programFixtures.map((program) => ({

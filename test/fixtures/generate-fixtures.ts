@@ -13,7 +13,7 @@ import { TypeOrmAthleteRepository } from '../../src/athlete/repositories/typeorm
 import { TypeOrmExerciseTemplateRepository } from '../../src/exercise/repositories/type-orm-exercise-template.repository'
 import { biometricsFixture } from '../../src/biometrics/data-builders/biometrics.data-builder'
 import { TypeOrmBiometricsRepository } from '../../src/biometrics/repositories/typeorm-biometrics.repository'
-import { dailyTasksFixtures } from '../../src/daily-task/data-builders/daily-task.data-builder'
+import { dailyTaskFixtures } from '../../src/daily-task/data-builders/daily-task.data-builder'
 import { TypeOrmDailyTaskRepository } from '../../src/daily-task/repositories/daily-task.typeorm.repository'
 import { exercisesTemplatesFixture } from '../../src/exercise/data-builders/exercise-template.data-builder'
 import { sessionFixture } from '../../src/session/data-builders/session.data-builder'
@@ -52,7 +52,7 @@ export async function generateFixtures(connection: Connection) {
     ...athleteFixture,
     biometrics: biometricsFixture,
     programs: programFixtures,
-    dailyTasks: dailyTasksFixtures,
+    dailyTasks: dailyTaskFixtures,
   }
 
   const entityRepositoryFixturePairs = [
@@ -64,7 +64,7 @@ export async function generateFixtures(connection: Connection) {
     [TypeOrmProgramRepository, program],
     [TypeOrmProgramRepository, programFixtures],
     [TypeOrmBiometricsRepository, biometricsFixture],
-    [TypeOrmDailyTaskRepository, dailyTasksFixtures],
+    [TypeOrmDailyTaskRepository, dailyTaskFixtures],
     [TypeOrmAthleteRepository, athlete],
   ]
 
