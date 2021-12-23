@@ -199,6 +199,9 @@ describe('AppController (e2e)', () => {
               {
                 id: performanceFixture.id,
                 sets: performanceFixture.sets,
+                exercise: {
+                  id: exerciseFixtures[0].id,
+                },
               },
             ],
           },

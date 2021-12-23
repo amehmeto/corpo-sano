@@ -7,18 +7,13 @@ type ExerciseTemplate {
   title: String!
 }
 
-type Exercise {
+type Session {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   version: Float!
-  template: ExerciseTemplate!
-  numberOfSets: Float!
-  numberOfReps: Float!
-  finalRestTime: Float!
-  interSetsRestTime: Float!
-  position: Float!
+  performances: [Performance!]!
   workout: Workout!
 }
 
@@ -35,16 +30,23 @@ type Performance {
   version: Float!
   sets: [Float!]!
   session: Session!
+  exercise: Exercise!
 }
 
-type Session {
+type Exercise {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   version: Float!
-  performances: [Performance!]!
+  template: ExerciseTemplate!
+  numberOfSets: Float!
+  numberOfReps: Float!
+  finalRestTime: Float!
+  interSetsRestTime: Float!
+  position: Float!
   workout: Workout!
+  performances: Performance!
 }
 
 type Workout {

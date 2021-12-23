@@ -1,12 +1,13 @@
 import * as Faker from 'faker'
-import { baseEntityDataBuilder } from '../../__infrastructure__/typeorm/base.data-builder'
+import { exerciseFixtures } from '../../exercise/data-builders/exercise.data-builder'
 
-export const performanceFixture = performanceDataBuilder()
+export const performanceFixture = performanceDataBuilder({
+  exercise: exerciseFixtures[0],
+})
 
 export function performanceDataBuilder(performance = {}) {
-  const baseEntity = baseEntityDataBuilder()
   const template = {
-    id: baseEntity.id,
+    id: Faker.datatype.uuid(),
     sets: [
       Faker.datatype.number(10),
       Faker.datatype.number(10),

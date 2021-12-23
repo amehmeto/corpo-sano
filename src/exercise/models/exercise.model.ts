@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { ExerciseTemplate } from './exercise-template.model'
 import { Workout } from '../../workout/models/workout.model'
 import { BaseModel } from '../../__infrastructure__/graphql/base.model'
+import { Performance } from '../../performance/models/performance.model'
 
 @ObjectType()
 export class Exercise extends BaseModel {
@@ -25,4 +26,7 @@ export class Exercise extends BaseModel {
 
   @Field(() => Workout)
   workout: Workout
+
+  @Field(() => Performance)
+  performances: Performance[]
 }
