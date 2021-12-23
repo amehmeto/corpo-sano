@@ -86,6 +86,7 @@ describe('Workout Service', () => {
       workoutDataBuilder({
         id: fillWorkoutWithExercisesInput.workoutId,
         exercises: expectedExercises,
+        sessions: workout.sessions,
       }),
     )
 

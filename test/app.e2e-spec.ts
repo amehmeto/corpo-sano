@@ -172,6 +172,9 @@ describe('AppController (e2e)', () => {
               performances {
                 id
                 sets
+                exercise {
+                  id
+                }
               }
             }
           }

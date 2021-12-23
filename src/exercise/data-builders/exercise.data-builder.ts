@@ -1,14 +1,12 @@
 import * as Faker from 'faker'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
+import { baseEntityDataBuilder } from '../../__infrastructure__/typeorm/base.data-builder'
 
 export function exerciseDataBuilder(exercise = {}) {
+  const baseEntity = baseEntityDataBuilder()
   const template = {
-    id: Faker.datatype.uuid(),
-    createdAt: Faker.date.past(),
-    updatedAt: Faker.date.recent(),
-    deletedAt: null as Date,
-    version: Faker.datatype.number(10),
+    ...baseEntity,
     template: new ExerciseTemplate(exerciseTemplateDataBuilder()),
     position: Faker.datatype.number({ min: 0, max: 10 }),
     numberOfSets: 0,

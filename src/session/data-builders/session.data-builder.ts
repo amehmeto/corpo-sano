@@ -3,12 +3,12 @@ import { Session } from '../entities/session.entity'
 import { Performance } from '../../performance/entities/performance.entity'
 import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
 
-export function sessionDataBuilder(program = {}) {
+export function sessionDataBuilder(session = {}) {
   const template = {
     id: Faker.datatype.uuid(),
-    performance: new Performance(performanceDataBuilder()),
+    performances: [new Performance(performanceDataBuilder())],
   }
-  return { ...template, ...program }
+  return { ...template, ...session }
 }
 
 export const sessionFixture = new Session(sessionDataBuilder())

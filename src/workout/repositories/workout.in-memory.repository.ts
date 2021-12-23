@@ -3,6 +3,8 @@ import { Workout } from '../entities/workout.entity'
 import { WeekDays } from '../types/week-days.enum'
 import { workoutDataBuilder } from '../data-builders/workout.data-builder'
 import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-builder'
+import { sessionDataBuilder } from '../../session/data-builders/session.data-builder'
+import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
 
 export class WorkoutInMemoryRepository implements WorkoutRepository {
   private workoutsData = [
@@ -11,6 +13,11 @@ export class WorkoutInMemoryRepository implements WorkoutRepository {
         exerciseDataBuilder(),
         exerciseDataBuilder(),
         exerciseDataBuilder(),
+      ],
+      sessions: [
+        sessionDataBuilder({
+          performances: [performanceDataBuilder()],
+        }),
       ],
     }),
     workoutDataBuilder(),
