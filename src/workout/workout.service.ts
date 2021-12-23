@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid'
 import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
-} from './repositories/workout-repository.interface'
+} from './repositories/workout.repository.interface'
 import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
@@ -69,7 +69,7 @@ export class WorkoutService {
   }
 
   async update(newWorkout: UpdateWorkoutInput): Promise<Workout> {
-    const workout = await this.workoutRepository.save(newWorkout as Workout)
+    const workout = await this.workoutRepository.save(new Workout(newWorkout))
     if (!workout.exercises) workout.exercises = []
     return workout
   }

@@ -9,7 +9,9 @@ import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-ath
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
-import { TypeOrmWorkoutRepository } from '../../workout/repositories/typeorm-workout.repository'
+import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
+import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
+import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 
 const programFixtures = [programDataBuilder(), programDataBuilder()]
 
@@ -34,6 +36,8 @@ describe('TypeOrm Program Repository', () => {
           TypeOrmExerciseTemplateRepository,
           TypeOrmProgramRepository,
           TypeOrmWorkoutRepository,
+          TypeOrmSessionRepository,
+          TypeOrmPerformanceRepository,
         ]),
       ],
     }).compile()
@@ -42,10 +46,13 @@ describe('TypeOrm Program Repository', () => {
       TypeOrmProgramRepository,
     )
 
+    await programRepository.query('SET FOREIGN_KEY_CHECKS=0')
+    await programRepository.query('DELETE FROM program')
     await createProgramFixture(programRepository)
   })
 
   afterAll(async () => {
+    await programRepository.query('SET FOREIGN_KEY_CHECKS=0')
     await programRepository.query('DELETE FROM program')
   })
 

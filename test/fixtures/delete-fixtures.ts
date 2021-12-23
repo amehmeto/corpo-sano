@@ -6,17 +6,24 @@ import { Athlete } from '../../src/athlete/entities/athlete.entity'
 import { ExerciseTemplate } from '../../src/exercise/entities/exercise-template.entity'
 import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
+import { Session } from '../../src/session/entities/session.entity'
+import { Performance } from '../../src/performance/entities/performance.entity'
 
 export async function deleteFixtures(connection: Connection) {
+  // The order of deletion is sensitive /!\
+
   const entities = [
     Exercise,
     ExerciseTemplate,
-    Workout,
-    Program,
-    Athlete,
     Biometrics,
+    Athlete,
+    Program,
+    Workout,
     DailyTask,
+    Session,
+    Performance,
   ]
+  await connection.query('SET FOREIGN_KEY_CHECKS=0')
   for (const entity of entities)
     await connection.createQueryBuilder().delete().from(entity).execute()
 }

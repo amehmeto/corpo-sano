@@ -2,10 +2,11 @@ import { Program } from '../../program/entities/program.entity'
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
-import { Base } from '../../__infrastructure__/typeorm/base.entity'
+import { BaseEntity } from '../../__infrastructure__/typeorm/base.entity'
+import { Session } from '../../session/entities/session.entity'
 
 @Entity()
-export class Workout extends Base {
+export class Workout extends BaseEntity {
   @Column()
   title: string
 
@@ -14,6 +15,9 @@ export class Workout extends Base {
 
   @OneToMany(() => Exercise, (exercise) => exercise.workout, { eager: true })
   exercises?: Exercise[]
+
+  @OneToMany(() => Session, (session) => session.workout)
+  sessions?: Session[]
 
   @Column({
     type: 'set',

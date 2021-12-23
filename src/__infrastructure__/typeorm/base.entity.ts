@@ -8,7 +8,7 @@ import {
 } from 'typeorm'
 
 @Entity()
-export class Base {
+export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -19,12 +19,12 @@ export class Base {
   updatedAt: Date
 
   @DeleteDateColumn()
-  deletedAt: Date
+  deletedAt: Date | null
 
   @VersionColumn()
   version: number
 
-  constructor(partial: Partial<Base> = {}) {
+  constructor(partial: Partial<BaseEntity> = {}) {
     Object.assign(this, partial)
   }
 }

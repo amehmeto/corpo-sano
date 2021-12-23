@@ -23,10 +23,12 @@ import {
   programFixtures,
 } from '../src/program/data-builders/program.data-builder'
 import { workoutFixture } from '../src/workout/data-builders/workout.data-builder'
-import { exercisesFixture } from '../src/exercise/data-builders/exercise.data-builder'
+import { exerciseFixtures } from '../src/exercise/data-builders/exercise.data-builder'
 import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.data-builder'
-import { dailyTasksFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
+import { dailyTaskFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
 import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
+import { sessionFixture } from '../src/session/data-builders/session.data-builder'
+import { performanceFixture } from '../src/performance/data-builders/performance.data-builder'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -59,12 +61,13 @@ describe('AppController (e2e)', () => {
     await app.init()
 
     connection = app.get(Connection)
+    await deleteFixtures(connection)
     await generateFixtures(connection)
     token = await generateJwtToken(app)
   })
 
   afterAll(async () => {
-    await deleteFixtures(connection)
+    //await deleteFixtures(connection)
   })
 
   describe('Public Endpoints', () => {
@@ -164,6 +167,16 @@ describe('AppController (e2e)', () => {
                 title
               }
             }
+            sessions {
+              id
+              performances {
+                id
+                sets
+                exercise {
+                  id
+                }
+              }
+            }
           }
         }`,
         variables: {
@@ -173,12 +186,26 @@ describe('AppController (e2e)', () => {
       const expectedWorkout = {
         id: workoutFixture.id,
         title: workoutFixture.title,
-        exercises: exercisesFixture.map((exercise) => ({
+        exercises: exerciseFixtures.map((exercise) => ({
           id: exercise.id,
           template: {
             title: exercise.template.title,
           },
         })),
+        sessions: [
+          {
+            id: sessionFixture.id,
+            performances: [
+              {
+                id: performanceFixture.id,
+                sets: performanceFixture.sets,
+                exercise: {
+                  id: exerciseFixtures[0].id,
+                },
+              },
+            ],
+          },
+        ],
       }
 
       return expectGqlEndpoint(getWorkoutQuery, expectedWorkout)
@@ -225,13 +252,13 @@ describe('AppController (e2e)', () => {
           }
         }`,
         variables: {
-          exerciseId: exercisesFixture[0].id,
+          exerciseId: exerciseFixtures[0].id,
         },
       }
       const expectedGetExerciseById = {
-        id: exercisesFixture[0].id,
+        id: exerciseFixtures[0].id,
         numberOfSets: 0,
-        template: exercisesFixture[0].template,
+        template: exerciseFixtures[0].template,
         workout: workoutFixture,
       }
 
@@ -265,7 +292,7 @@ describe('AppController (e2e)', () => {
         biometrics: {
           bodyFat: biometricsFixture.bodyFat,
         },
-        dailyTasks: dailyTasksFixtures.map((task) => ({
+        dailyTasks: dailyTaskFixtures.map((task) => ({
           description: task.description,
         })),
         programs: programFixtures.map((program) => ({
@@ -346,7 +373,7 @@ describe('AppController (e2e)', () => {
         variables: {
           payload: {
             workoutId: workoutFixture.id,
-            exerciseTemplateIds: exercisesFixture.map(
+            exerciseTemplateIds: exerciseFixtures.map(
               (exercise) => exercise.template.id,
             ),
           },
@@ -355,7 +382,7 @@ describe('AppController (e2e)', () => {
       const expectedWorkout = {
         id: workoutFixture.id,
         title: workoutFixture.title,
-        exercises: exercisesFixture.map((exercise) => ({
+        exercises: exerciseFixtures.map((exercise) => ({
           ...exercise,
           position: expect.any(Number),
           id: expect.any(String),
@@ -407,13 +434,13 @@ describe('AppController (e2e)', () => {
         }`,
         variables: {
           payload: exerciseDetailsInputDataBuilder({
-            exerciseId: exercisesFixture[0].id,
+            exerciseId: exerciseFixtures[0].id,
           }),
         },
       }
       const expectedExercise = {
         ...saveExerciseDetailsMutation.variables.payload,
-        id: exercisesFixture[0].id,
+        id: exerciseFixtures[0].id,
       }
       delete expectedExercise.exerciseId
       return expectGqlEndpoint(saveExerciseDetailsMutation, expectedExercise)
@@ -472,7 +499,7 @@ describe('AppController (e2e)', () => {
           deleteExercise(exerciseId: $exerciseId)
         }`,
         variables: {
-          exerciseId: exercisesFixture[0].id,
+          exerciseId: exerciseFixtures[0].id,
         },
       }
       const expectedDeleteExercise = {

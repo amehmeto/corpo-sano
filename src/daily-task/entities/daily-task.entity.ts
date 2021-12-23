@@ -1,14 +1,14 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { Base } from '../../__infrastructure__/typeorm/base.entity'
+import { BaseEntity } from '../../__infrastructure__/typeorm/base.entity'
 import { Athlete } from '../../athlete/entities/athlete.entity'
 
 @Entity()
-export class DailyTask extends Base {
+export class DailyTask extends BaseEntity {
   @Column()
   description: string
 
   @ManyToOne(() => Athlete, (athlete) => athlete.dailyTasks, { nullable: true })
-  athlete: Athlete
+  athlete?: Athlete
 
   constructor(partial: Partial<DailyTask> = {}) {
     super()

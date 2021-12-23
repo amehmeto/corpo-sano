@@ -1,13 +1,11 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { Biometrics } from '../../biometrics/models/biometrics.model'
 import { DailyTask } from '../../daily-task/models/daily-task.model'
 import { Program } from '../../program/models/program.model'
+import { BaseModel } from '../../__infrastructure__/graphql/base.model'
 
 @ObjectType()
-export class Athlete {
-  @Field(() => ID)
-  id: string
-
+export class Athlete extends BaseModel {
   @Field(() => String)
   name: string
 
