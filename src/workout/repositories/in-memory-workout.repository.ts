@@ -6,7 +6,7 @@ import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-
 import { sessionDataBuilder } from '../../session/data-builders/session.data-builder'
 import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
 
-export class WorkoutInMemoryRepository implements WorkoutRepository {
+export class InMemoryWorkoutRepository implements WorkoutRepository {
   private workoutsData = [
     workoutDataBuilder({
       exercises: [

@@ -2,7 +2,7 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
 import { InMemoryExerciseTemplateRepository } from '../exercise/repositories/in-memory-exercise-template.repository'
-import { WorkoutInMemoryRepository } from './repositories/workout.in-memory.repository'
+import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
@@ -29,7 +29,7 @@ describe('Workout Service', () => {
       providers: [
         {
           provide: WORKOUT_REPOSITORY,
-          useClass: WorkoutInMemoryRepository,
+          useClass: InMemoryWorkoutRepository,
         },
         {
           provide: EXERCISE_TEMPLATE_REPOSITORY,

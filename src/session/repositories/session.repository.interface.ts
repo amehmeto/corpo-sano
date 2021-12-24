@@ -1,5 +1,7 @@
 import { Session } from '../entities/session.entity'
 
+export const SESSION_REPOSITORY = 'SESSION_REPOSITORY'
+
 export interface SessionRepository {
-  save(session: Session): Promise<Session>
+  save(session: Partial<Session>): Promise<Session>
 }
