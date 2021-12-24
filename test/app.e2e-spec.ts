@@ -346,6 +346,33 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)
     })
 
+    test('Create Session', () => {
+      const createWorkoutMutation = {
+        query: `mutation CreateSession($createSessionInput: CreateSessionInput!) {
+          createSession(createSessionInput: $createSessionInput) {
+            performances {
+              id
+              sets
+            }
+          }
+        }`,
+        variables: {
+          createSessionInput: {
+            workoutId: workoutFixture.id,
+            performances: [performanceFixture],
+          },
+        },
+      }
+      const expectedCreateWorkout = {
+        performances: {
+          id: expect.any(String),
+          sets: performanceFixture.sets,
+        },
+      }
+
+      return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)
+    })
+
     test('Fill Workout With Exercises', () => {
       const fillWorkoutWithExercisesMutation = {
         query: `mutation FillWorkoutWithExercises($payload: FillWorkoutWithExercisesInput!) {
