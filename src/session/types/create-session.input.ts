@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql'
 import { IsUUID } from 'class-validator'
-import { Performance } from '../../performance/models/performance.model'
+import { PerformanceInput } from '../../performance/types/performance.input'
 
 @InputType()
 export class CreateSessionInput {
@@ -9,5 +9,5 @@ export class CreateSessionInput {
   workoutId: string
 
   @Field()
-  performances: Performance[]
+  performances: PerformanceInput[]
 }

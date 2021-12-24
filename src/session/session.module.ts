@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmPerformanceRepository } from '../performance/repositories/performance.typeorm.repository'
-import { SessionService } from './session.service'
+import { CreateSessionUseCase } from './use-cases/create-session.use-case'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Module({
   imports: [TypeOrmModule.forFeature([TypeOrmPerformanceRepository])],
-  providers: [SessionService],
+  providers: [CreateSessionUseCase],
 })
 export class SessionModule {}
