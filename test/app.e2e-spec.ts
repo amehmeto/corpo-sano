@@ -348,8 +348,8 @@ describe('AppController (e2e)', () => {
 
     test('Create Session', () => {
       const createWorkoutMutation = {
-        query: `mutation CreateSession($createSessionInput: CreateSessionInput!) {
-          createSession(createSessionInput: $createSessionInput) {
+        query: `mutation CreateSession($payload: CreateSessionInput!) {
+          createSession(payload: $payload) {
             performances {
               id
               sets
@@ -357,17 +357,24 @@ describe('AppController (e2e)', () => {
           }
         }`,
         variables: {
-          createSessionInput: {
+          payload: {
             workoutId: workoutFixture.id,
-            performances: [performanceFixture],
+            performances: [
+              {
+                sets: performanceFixture.sets,
+                exerciseId: exerciseFixtures[0].id,
+              },
+            ],
           },
         },
       }
       const expectedCreateWorkout = {
-        performances: {
-          id: expect.any(String),
-          sets: performanceFixture.sets,
-        },
+        performances: [
+          {
+            id: expect.any(String),
+            sets: performanceFixture.sets,
+          },
+        ],
       }
 
       return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)

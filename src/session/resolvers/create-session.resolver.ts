@@ -9,8 +9,8 @@ export class CreateSessionResolver {
 
   @Mutation(() => Session)
   async createSession(
-    @Args('createSessionInput') createSessionInput: CreateSessionInput,
+    @Args('payload') payload: CreateSessionInput,
   ): Promise<Session> {
-    return this.createSessionUseCase.execute(createSessionInput)
+    return this.createSessionUseCase.execute(payload)
   }
 }

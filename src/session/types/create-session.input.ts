@@ -8,6 +8,6 @@ export class CreateSessionInput {
   @Field(() => ID)
   workoutId: string
 
-  @Field()
+  @Field(() => [PerformanceInput])
   performances: PerformanceInput[]
 }

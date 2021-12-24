@@ -7,6 +7,7 @@ import { SESSION_REPOSITORY } from './repositories/session.repository.interface'
 import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
 import { TypeOrmSessionRepository } from './repositories/session.typeorm.repository'
 import { TypeOrmWorkoutRepository } from '../workout/repositories/workout.typeorm.repository'
+import { CreateSessionResolver } from './resolvers/create-session.resolver'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TypeOrmWorkoutRepository } from '../workout/repositories/workout.typeor
       useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
     },
     CreateSessionUseCase,
+    CreateSessionResolver,
   ],
 })
 export class SessionModule {}

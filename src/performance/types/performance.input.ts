@@ -2,7 +2,7 @@ import { Field, ID, InputType, Int } from '@nestjs/graphql'
 
 @InputType()
 export class PerformanceInput {
-  @Field(() => Int)
+  @Field(() => [Int])
   sets: number[]
 
   @Field(() => ID)
