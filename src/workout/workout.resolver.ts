@@ -4,10 +4,14 @@ import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercis
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { WorkoutService } from './workout.service'
 import { PatchWorkoutInput } from './types/patch-workout.input'
+import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-exercises.use-case'
 
 @Resolver()
 export class WorkoutResolver {
-  constructor(private readonly workoutService: WorkoutService) {}
+  constructor(
+    private readonly workoutService: WorkoutService,
+    private readonly fillWorkoutWithExercisesUseCase: FillWorkoutWithExercisesUseCase,
+  ) {}
 
   @Query(() => Workout)
   async getWorkout(
@@ -32,7 +36,7 @@ export class WorkoutResolver {
   async fillWorkoutWithExercises(
     @Args('payload') payload: FillWorkoutWithExercisesInput,
   ): Promise<Workout> {
-    return this.workoutService.fillWorkoutWithExercises(payload)
+    return this.fillWorkoutWithExercisesUseCase.execute(payload)
   }
 
   @Mutation(() => Workout)

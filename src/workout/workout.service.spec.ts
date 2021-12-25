@@ -2,15 +2,11 @@ import * as Faker from 'faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
 import { InMemoryExerciseTemplateRepository } from '../exercise/repositories/in-memory-exercise-template.repository'
-import { WorkoutInMemoryRepository } from './repositories/workout.in-memory.repository'
+import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repository'
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
-import {
-  EXERCISE_TEMPLATE_REPOSITORY,
-  ExerciseTemplateRepository,
-} from '../exercise/repositories/exercise-template-repository.interface'
-import { Exercise } from '../exercise/entities/exercise.entity'
+import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template-repository.interface'
 import { workoutInputDataBuilder } from './data-builders/workout-input.data-builder'
 import {
   WORKOUT_REPOSITORY,
@@ -22,14 +18,13 @@ import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repositor
 describe('Workout Service', () => {
   let workoutService: WorkoutService
   let workoutRepository: WorkoutRepository
-  let exerciseTemplateRepository: ExerciseTemplateRepository
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
           provide: WORKOUT_REPOSITORY,
-          useClass: WorkoutInMemoryRepository,
+          useClass: InMemoryWorkoutRepository,
         },
         {
           provide: EXERCISE_TEMPLATE_REPOSITORY,
@@ -45,9 +40,6 @@ describe('Workout Service', () => {
 
     workoutService = module.get<WorkoutService>(WorkoutService)
     workoutRepository = module.get<WorkoutRepository>(WORKOUT_REPOSITORY)
-    exerciseTemplateRepository = module.get<ExerciseTemplateRepository>(
-      EXERCISE_TEMPLATE_REPOSITORY,
-    )
   })
 
   it('should be defined', () => {
@@ -64,37 +56,6 @@ describe('Workout Service', () => {
     const createdWorkout = await workoutService.create(workoutInput)
 
     expect(createdWorkout).toStrictEqual(expectedWorkout)
-  })
-
-  it('should fill a workout with exercises', async () => {
-    const exerciseTemplates = await exerciseTemplateRepository.find()
-    const [workout] = await workoutRepository.find()
-    const fillWorkoutWithExercisesInput = {
-      workoutId: workout.id,
-      exerciseTemplateIds: exerciseTemplates.map((exercise) => exercise.id),
-    }
-    const expectedExercises = await Promise.all(
-      exerciseTemplates.map(async (template, index) => {
-        return new Exercise({
-          id: expect.any(String),
-          position: index,
-          template: await exerciseTemplateRepository.findById(template.id),
-        })
-      }),
-    )
-    const expectedWorkout = new Workout(
-      workoutDataBuilder({
-        id: fillWorkoutWithExercisesInput.workoutId,
-        exercises: expectedExercises,
-        sessions: workout.sessions,
-      }),
-    )
-
-    const filledWorkout = await workoutService.fillWorkoutWithExercises(
-      fillWorkoutWithExercisesInput,
-    )
-
-    expect(filledWorkout).toStrictEqual(expectedWorkout)
   })
 
   it('should get a workout by id', async () => {

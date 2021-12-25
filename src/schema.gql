@@ -141,6 +141,7 @@ type Mutation {
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
   updateWorkout(payload: PatchWorkoutInput!, workoutId: ID!): Workout!
+  createSession(payload: CreateSessionInput!): Session!
 }
 
 input ExerciseDetailsInput {
@@ -208,4 +209,14 @@ input ExerciseInput {
 input ExerciseTemplateInput {
   id: ID!
   title: String!
+}
+
+input CreateSessionInput {
+  workoutId: ID!
+  performances: [PerformanceInput!]!
+}
+
+input PerformanceInput {
+  sets: [Int!]!
+  exerciseId: ID!
 }

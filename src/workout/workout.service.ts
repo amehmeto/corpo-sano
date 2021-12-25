@@ -5,13 +5,11 @@ import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
 } from './repositories/workout.repository.interface'
-import { FillWorkoutWithExercisesInput } from './types/fill-workout-with-exercises.input'
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
   ExerciseTemplateRepository,
 } from '../exercise/repositories/exercise-template-repository.interface'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
-import { Exercise } from '../exercise/entities/exercise.entity'
 import {
   EXERCISE_REPOSITORY,
   ExerciseRepository,
@@ -36,24 +34,6 @@ export class WorkoutService {
       id: uuid(),
       title: workoutInput.title,
     })
-    return this.workoutRepository.save(workout)
-  }
-
-  async fillWorkoutWithExercises(
-    fillWorkoutWithExercisesInput: FillWorkoutWithExercisesInput,
-  ): Promise<Workout> {
-    const { workoutId, exerciseTemplateIds } = fillWorkoutWithExercisesInput
-
-    const workout = await this.workoutRepository.findById(workoutId)
-    workout.exercises = await Promise.all(
-      exerciseTemplateIds.map(async (exerciseId, index) => {
-        const template = await this.exerciseTemplateRepository.findById(
-          exerciseId,
-        )
-        const exercise = new Exercise({ id: uuid(), position: index, template })
-        return this.exerciseRepository.save(exercise)
-      }),
-    )
     return this.workoutRepository.save(workout)
   }
 

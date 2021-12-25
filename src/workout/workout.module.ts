@@ -9,6 +9,7 @@ import { WORKOUT_REPOSITORY } from './repositories/workout.repository.interface'
 import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template-repository.interface'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { TypeOrmSessionRepository } from '../session/repositories/session.typeorm.repository'
+import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-exercises.use-case'
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TypeOrmSessionRepository } from '../session/repositories/session.typeor
     },
     WorkoutResolver,
     WorkoutService,
+    FillWorkoutWithExercisesUseCase,
   ],
 })
 export class WorkoutModule {}
