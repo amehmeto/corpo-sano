@@ -12,7 +12,7 @@ import {
   ExerciseTemplateRepository,
 } from '../../exercise/repositories/exercise-template-repository.interface'
 import { workoutDataBuilder } from '../data-builders/workout.data-builder'
-import { InMemoryWorkoutRepository } from '../repositories/in-memory-workout.repository'
+import { WorkoutInMemoryRepository } from '../repositories/workout.in-memory.repository'
 import { Workout } from '../entities/workout.entity'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 
@@ -26,7 +26,7 @@ describe('FillWorkoutWithExercises UseCase', () => {
       providers: [
         {
           provide: WORKOUT_REPOSITORY,
-          useClass: InMemoryWorkoutRepository,
+          useClass: WorkoutInMemoryRepository,
         },
         {
           provide: EXERCISE_TEMPLATE_REPOSITORY,

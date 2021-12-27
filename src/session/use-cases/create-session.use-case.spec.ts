@@ -10,7 +10,7 @@ import {
   WORKOUT_REPOSITORY,
   WorkoutRepository,
 } from '../../workout/repositories/workout.repository.interface'
-import { InMemoryWorkoutRepository } from '../../workout/repositories/in-memory-workout.repository'
+import { WorkoutInMemoryRepository } from '../../workout/repositories/workout.in-memory.repository'
 import * as Faker from 'faker'
 import { PERFORMANCE_REPOSITORY } from '../../performance/repositories/performance.repository.interface'
 import { InMemoryPerformanceRepository } from '../../performance/repositories/performance.in-memory.repository'
@@ -28,7 +28,7 @@ describe('CreateSessionUseCase', () => {
         },
         {
           provide: WORKOUT_REPOSITORY,
-          useClass: InMemoryWorkoutRepository,
+          useClass: WorkoutInMemoryRepository,
         },
         {
           provide: PERFORMANCE_REPOSITORY,
@@ -59,7 +59,11 @@ describe('CreateSessionUseCase', () => {
       ],
     }
     const expectedPerformances = createSessionInput.performances.map(
-      (performance) => new Performance(performance),
+      (performance) =>
+        new Performance({
+          id: expect.any(String),
+          ...performance,
+        }),
     )
     const expectedSession = new Session(
       sessionDataBuilder({

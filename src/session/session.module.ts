@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmPerformanceRepository } from '../performance/repositories/performance.typeorm.repository'
-import { CreateSessionUseCase } from './use-cases/create-session.use-case'
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
 import { PERFORMANCE_REPOSITORY } from '../performance/repositories/performance.repository.interface'
 import { SESSION_REPOSITORY } from './repositories/session.repository.interface'
 import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
 import { TypeOrmSessionRepository } from './repositories/session.typeorm.repository'
 import { TypeOrmWorkoutRepository } from '../workout/repositories/workout.typeorm.repository'
+import { CreateSessionUseCase } from './use-cases/create-session.use-case'
 import { CreateSessionResolver } from './resolvers/create-session.resolver'
 
 @Module({
