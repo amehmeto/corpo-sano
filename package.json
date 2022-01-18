@@ -33,7 +33,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.1.0",
     "@nestjs/platform-express": "^7.6.15",
-    "@nestjs/typeorm": "^8.0.2",
+    "@nestjs/typeorm": "^8.0.3",
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
     "apollo-server-express": "^2",
