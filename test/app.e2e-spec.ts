@@ -68,6 +68,7 @@ describe('AppController (e2e)', () => {
 
   afterAll(async () => {
     //await deleteFixtures(connection)
+    await app.close()
   })
 
   describe('Public Endpoints', () => {
