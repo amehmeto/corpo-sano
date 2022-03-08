@@ -1,4 +1,5 @@
 import * as Faker from 'faker'
+import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 export function workoutDataBuilder(workout = {}) {
   const template = {
@@ -8,4 +9,6 @@ export function workoutDataBuilder(workout = {}) {
   return { ...template, ...workout }
 }
 
-export const workoutFixture = workoutDataBuilder()
+export const workoutFixture = workoutDataBuilder({
+  id: HardCodedValuesEnum.workoutId,
+})
