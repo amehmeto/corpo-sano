@@ -6,6 +6,7 @@ import { dailyTaskDataBuilder } from '../../daily-task/data-builders/daily-task.
 import { programDataBuilder } from '../../program/data-builders/program.data-builder'
 import { Program } from '../../program/entities/program.entity'
 import { Athlete } from '../entities/athlete.entity'
+import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 export function athleteDataBuilder(athlete = {}) {
   const hashedPassword =
@@ -28,6 +29,8 @@ export function athleteDataBuilder(athlete = {}) {
 
 export const athleteFixture = new Athlete(
   athleteDataBuilder({
+    id: HardCodedValuesEnum.athleteId,
+    email: HardCodedValuesEnum.athleteEmail,
     biometrics: biometricsDataBuilder(),
   }),
 )
