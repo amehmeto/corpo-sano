@@ -2,6 +2,7 @@ import * as Faker from 'faker'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
 import { baseEntityDataBuilder } from '../../__infrastructure__/typeorm/base.data-builder'
+import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 export function exerciseDataBuilder(exercise = {}) {
   const baseEntity = baseEntityDataBuilder()
@@ -19,6 +20,7 @@ export function exerciseDataBuilder(exercise = {}) {
 
 export const exerciseFixtures = [
   exerciseDataBuilder({
+    id: HardCodedValuesEnum.exerciseId,
     position: 0,
     createdAt: Faker.date.past(30),
     deletedAt: null as Date,
