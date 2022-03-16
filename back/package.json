@@ -1,5 +1,5 @@
 {
-  "name": "corpo-sano-back",
+  "name": "back",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -26,7 +26,7 @@
     "db:seed": "node seed.js"
   },
   "dependencies": {
-    "@apollo/gateway": "~0.48.3",
+    "@apollo/gateway": "~0.46.0",
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/graphql": "^9.1.2",
