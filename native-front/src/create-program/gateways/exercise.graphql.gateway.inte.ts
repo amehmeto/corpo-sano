@@ -10,7 +10,7 @@ describe('Exercise Gateway', () => {
   jest.setTimeout(10000)
   let exerciseGateway: GraphQLExerciseGateway
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     await startServer()
     exerciseGateway = new GraphQLExerciseGateway()
   })
