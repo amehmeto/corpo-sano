@@ -4,6 +4,6 @@
     "strict": true
   },
   "include": [
-    ".eslintrc.js",
+    ".eslintrc.js"
   ]
 }
