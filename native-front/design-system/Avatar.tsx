@@ -1,5 +1,4 @@
 import { Image, StyleSheet } from 'react-native'
-import DefaultAvatar from '../assets/default-picture.png'
 import * as React from 'react'
 
 type AvatarProps = {
@@ -7,7 +6,7 @@ type AvatarProps = {
 }
 
 export function Avatar({ source }: AvatarProps) {
-  if (source === 'default') source = DefaultAvatar
+  if (source === 'default') source = require('../assets/default-picture.png')
   return (
     <Image
       style={styles.avatar}

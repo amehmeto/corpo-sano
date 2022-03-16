@@ -5,6 +5,5 @@
   },
   "include": [
     ".eslintrc.js",
-    "./src/declaration.d.ts"
   ]
 }
