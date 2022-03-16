@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: ../../back/yarn-lock.json
+        cache-dependency-path: '../../back/yarn-lock.json'
     - run: sudo /etc/init.d/mysql start
     - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
     - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
