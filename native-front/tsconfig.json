@@ -4,6 +4,7 @@
     "strict": true
   },
   "include": [
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "./src/declaration.d.ts"
   ]
 }
