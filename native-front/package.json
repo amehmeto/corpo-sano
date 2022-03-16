@@ -8,6 +8,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "ci": "./tmtc-ci.sh",
     "eject": "expo eject",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
