@@ -22,10 +22,11 @@ jobs:
     - run: sudo /etc/init.d/mysql start
     - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
     - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
-
-    - run: |
-    - cd back
-    - yarn
-    - run: yarn jest
-    - run: yarn test:inte
-    - run: yarn test:e2e
+    - working-directory: ./back
+      run: yarn
+    - working-directory: ./back
+      run: yarn jest
+    - working-directory: ./back
+      run: yarn test:inte
+    - working-directory: ./back
+      run: yarn test:e2e
