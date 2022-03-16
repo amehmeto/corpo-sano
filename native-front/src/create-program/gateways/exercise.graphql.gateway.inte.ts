@@ -1,26 +1,17 @@
-import { GraphQLExerciseGateway } from './exercise.graphql.gateway'
+import { ExerciseGraphqlGateway } from './exercise.graphql.gateway'
 import { Exercise } from '../entities/exercise.entity'
-import {
-  deletePipe,
-  initializeIntegrationTestEnvironment,
-  startServer,
-} from '../../tests/initializeIntegrationTestEnvironment'
+import { initializeIntegrationTestEnvironment } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Exercise Gateway', () => {
   jest.setTimeout(10000)
-  let exerciseGateway: GraphQLExerciseGateway
+  let exerciseGateway: ExerciseGraphqlGateway
 
-  beforeAll( async () => {
-    await startServer()
-    exerciseGateway = new GraphQLExerciseGateway()
+  beforeAll( () => {
+    exerciseGateway = new ExerciseGraphqlGateway()
   })
 
   beforeEach(async () => {
     await initializeIntegrationTestEnvironment()
-  })
-
-  afterAll(() => {
-    deletePipe()
   })
 
   it('should delete exercise', async () => {

@@ -5,19 +5,19 @@ import { GraphQLGateway } from '../../_infrastructure/gateway/base.graphql.gatew
 class ExerciseMapper {
   static mapToDomain(rawExercise: any) {
     return new Exercise(
-        rawExercise.id,
-        rawExercise.template,
-        rawExercise.numberOfSets,
-        rawExercise.numberOfReps,
-        rawExercise.interSetsRestTime,
-        rawExercise.finalRestTime,
+      rawExercise.id,
+      rawExercise.template,
+      rawExercise.numberOfSets,
+      rawExercise.numberOfReps,
+      rawExercise.interSetsRestTime,
+      rawExercise.finalRestTime,
     )
   }
 }
 
-export class GraphQLExerciseGateway
-    extends GraphQLGateway
-    implements ExerciseGateway
+export class ExerciseGraphqlGateway
+  extends GraphQLGateway
+  implements ExerciseGateway
 {
   async deleteExercise(exerciseId: string): Promise<boolean> {
     try {
