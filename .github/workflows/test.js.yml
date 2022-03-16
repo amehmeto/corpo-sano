@@ -7,10 +7,12 @@ on:
     branches: [ master ]
 
 jobs:
+
   build:
-
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: back
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -18,11 +20,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: 'back/yarn-lock.json'
+        cache-dependency-path: ./back/yarn.lock
     - run: sudo /etc/init.d/mysql start
     - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
     - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
-
     - run: yarn
     - run: yarn jest
     - run: yarn test:inte

@@ -1,1 +1,0 @@
-{"version":3,"file":"biometrics.module.js","sourceRoot":"","sources":["../../../src/biometrics/biometrics.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAuC;AACvC,6CAA+C;AAC/C,gGAA0F;AAK1F,IAAa,gBAAgB,GAA7B,MAAa,gBAAgB;CAAG,CAAA;AAAnB,gBAAgB;IAH5B,IAAA,eAAM,EAAC;QACN,OAAO,EAAE,CAAC,uBAAa,CAAC,UAAU,CAAC,CAAC,2DAA2B,CAAC,CAAC,CAAC;KACnE,CAAC;GACW,gBAAgB,CAAG;AAAnB,4CAAgB"}
