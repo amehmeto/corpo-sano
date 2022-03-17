@@ -19,8 +19,7 @@ class WorkoutMapper {
 
 export class GraphQLWorkoutGateway
   extends GraphQLGateway
-  implements WorkoutGateway
-{
+  implements WorkoutGateway {
   async update(workoutId: string, workout: Workout): Promise<boolean> {
     try {
       const UPDATE_WORKOUT_MUTATION = `mutation UpdateWorkout(
@@ -55,7 +54,7 @@ export class GraphQLWorkoutGateway
       const { updateWorkout } = await this.request(updateWorkoutMutationPayload)
 
       //TODO According to the architect's thought, this place can be turned into an object.
-      return updateWorkout ? true : false
+      return !!updateWorkout
     } catch (error) {
       throw this.handleError(error)
     }

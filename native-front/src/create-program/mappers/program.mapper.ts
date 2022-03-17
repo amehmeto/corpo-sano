@@ -1,4 +1,5 @@
 import { Program } from '../entities/program.entity'
+import { WorkoutMapper } from './workout.mapper'
 
 export class ProgramMapper {
   static mapToDomain(rawProgram: any) {
@@ -6,7 +7,9 @@ export class ProgramMapper {
       rawProgram.id,
       rawProgram.title,
       rawProgram.description,
-      rawProgram.workouts,
+      rawProgram.workouts.map((workout: any) =>
+        WorkoutMapper.mapToDomain(workout),
+      ),
     )
   }
 }

@@ -46,7 +46,7 @@ function deleteWorkout(
   ) => void,
 ) {
   return async () => {
-    await deleteWorkoutUseCase.execute(programId, deleteModalWorkoutId!)
+    await deleteWorkoutUseCase.execute(programId, deleteModalWorkoutId)
     setIsDeleteWorkoutModalVisible(false)
   }
 }

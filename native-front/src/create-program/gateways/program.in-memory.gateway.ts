@@ -7,19 +7,15 @@ import { Workout } from '../entities/workout.entity'
 import { ProgramInput } from '../usecases/create-program-use.case'
 import { WorkoutMapper } from '../mappers/workout.mapper'
 import { scheduledDaysDataBuilder } from '../../_data-builders/scheduled-days.data-builder'
+import { ProgramMapper } from '../mappers/program.mapper'
 
 export class InMemoryProgramGateway implements ProgramGateway {
   private rawPrograms = [programDataBuilder()]
+
   private programs = this.rawPrograms.map(
-    (rawProgram) =>
-      new Program(
-        rawProgram.id,
-        rawProgram.title,
-        rawProgram.description,
-        rawProgram.workouts.map((workout) =>
-          WorkoutMapper.mapToDomain(workout),
-        ),
-      ),
+    (rawProgram) => {
+      return ProgramMapper.mapToDomain(rawProgram)
+    },
   )
 
   create(programInput: ProgramInput): Promise<Program> {
