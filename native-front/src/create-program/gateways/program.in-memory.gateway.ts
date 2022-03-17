@@ -12,11 +12,9 @@ import { ProgramMapper } from '../mappers/program.mapper'
 export class InMemoryProgramGateway implements ProgramGateway {
   private rawPrograms = [programDataBuilder()]
 
-  private programs = this.rawPrograms.map(
-    (rawProgram) => {
-      return ProgramMapper.mapToDomain(rawProgram)
-    },
-  )
+  private programs = this.rawPrograms.map((rawProgram) => {
+    return ProgramMapper.mapToDomain(rawProgram)
+  })
 
   create(programInput: ProgramInput): Promise<Program> {
     const newId = uuid()

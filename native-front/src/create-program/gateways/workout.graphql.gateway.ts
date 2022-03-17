@@ -19,7 +19,8 @@ class WorkoutMapper {
 
 export class GraphQLWorkoutGateway
   extends GraphQLGateway
-  implements WorkoutGateway {
+  implements WorkoutGateway
+{
   async update(workoutId: string, workout: Workout): Promise<boolean> {
     try {
       const UPDATE_WORKOUT_MUTATION = `mutation UpdateWorkout(

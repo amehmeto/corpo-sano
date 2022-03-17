@@ -12,7 +12,9 @@ import { InMemoryExerciseGateway } from '../create-program/gateways/exercise.in-
 
 export const athleteGateway: AthleteGateway = new InMemoryAthleteGateway()
 export const programGateway: ProgramGateway = new InMemoryProgramGateway()
-export const workoutGateway: WorkoutGateway = new InMemoryWorkoutGateway(programGateway)
+export const workoutGateway: WorkoutGateway = new InMemoryWorkoutGateway(
+  programGateway,
+)
 export const exerciseGateway: ExerciseGateway = new InMemoryExerciseGateway()
 export const loginGateway: LoginGateway = new GraphqlLoginGateway()
 

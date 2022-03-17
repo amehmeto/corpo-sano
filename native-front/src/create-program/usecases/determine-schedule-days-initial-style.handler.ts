@@ -5,7 +5,7 @@ import { Padding } from '../../../design-system/enums/padding.enum'
 import { StyleSheet } from 'react-native'
 
 export function determineDayInitialStyle(workout: Workout) {
-  const dayInitialStyle : Record<string, unknown>[] = [styles.dayInitial]
+  const dayInitialStyle: Record<string, unknown>[] = [styles.dayInitial]
 
   workout.scheduledDays.forEach((day) => {
     if (day.isScheduled) dayInitialStyle.push(styles.scheduledDayInitial)

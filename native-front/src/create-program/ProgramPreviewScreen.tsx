@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { Button } from '../../design-system/Button'
@@ -21,6 +21,7 @@ import { DeleteWorkoutUseCase } from './usecases/delete-workout.usecase'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { DeleteWorkoutModal } from './components/program-preview-screen/DeleteWorkoutModalButton'
 import { EmptyProgramInfo } from './components/program-preview-screen/EmptyProgramInfo'
+import * as React from 'react'
 
 const getProgramUseCase = new GetProgramUsecase(programGateway)
 const deleteWorkoutUseCase = new DeleteWorkoutUseCase(programGateway)

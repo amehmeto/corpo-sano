@@ -34,12 +34,4 @@ describe('Workout Gateway', () => {
 
     expect(retrievedWorkout).toStrictEqual(expectedWorkout)
   })
-
-  it('delete workout with id', async () => {
-    const workoutId = '06f7445d-ec29-4e81-bbdd-ce11897fb65d'
-
-    const retrievedWorkout = await workoutGateway.deleteWorkout(workoutId)
-
-    expect(retrievedWorkout).toBeTruthy()
-  })
 })
