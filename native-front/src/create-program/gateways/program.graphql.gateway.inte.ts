@@ -43,4 +43,12 @@ describe('Program Gateway', () => {
 
     expect(addedWorkout).toStrictEqual(expectedWorkout)
   })
+
+  it('should get all programs', async () => {
+    const expectedPrograms = expect.arrayContaining([])
+
+    const retrievedPrograms = await programGateway.find()
+
+    expect(retrievedPrograms).toStrictEqual(expectedPrograms)
+  })
 })

@@ -68,8 +68,24 @@ export class GraphQLProgramGateway
   }
 
   //TODO should to create in backend
-  find(): Promise<Program[]> {
-    return Promise.resolve([])
+  async find(): Promise<Program[]> {
+    try {
+      const FIND_PROGRAMS_QUERIES = `query GetAllPrograms {
+          getAllPrograms {
+            id
+            title
+          }
+        }`
+
+      const findProgramQueriesPayload = {
+        query: FIND_PROGRAMS_QUERIES,
+        variables: {},
+      }
+
+      return await this.request(findProgramQueriesPayload)
+    } catch (e) {
+      throw this.handleError(e)
+    }
   }
 
   //TODO should to create in backend
