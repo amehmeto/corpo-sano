@@ -9,7 +9,6 @@ import {
 import { DailyTask } from '../entities/daily-task.entity'
 
 describe('Athlete Gateway', () => {
-  jest.setTimeout(30000)
   let athleteGateway: AthleteGateway
 
   beforeAll(async () => {
@@ -22,11 +21,11 @@ describe('Athlete Gateway', () => {
   })
 
   afterAll(async () => {
-    await deletePipeLine();
+    await deletePipeLine()
   })
 
   it('should find an athlete by id', async () => {
-    const athleteId = '06f7445d-ec29-4e81-bbdd-ce11897fb65d'
+    const athleteId = '93c87b16-9c92-4440-9ce3-658050ba8dd8'
     const expectedDailyTask = expect.any(DailyTask)
     const expectedMappedAthlete = expect.any(Athlete)
 

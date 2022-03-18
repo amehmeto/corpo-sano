@@ -7,7 +7,6 @@ import {
 } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Login Gateway', () => {
-  jest.setTimeout(10000)
   let loginGateway: LoginGateway
 
   beforeAll(async () => {

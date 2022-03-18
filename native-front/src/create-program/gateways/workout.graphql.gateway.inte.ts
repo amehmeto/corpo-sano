@@ -7,7 +7,6 @@ import {
 } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Workout Gateway', () => {
-  jest.setTimeout(10000)
   let workoutGateway: GraphQLWorkoutGateway
 
   beforeAll(async () => {

@@ -12,7 +12,7 @@
     "eject": "expo eject",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "test:inte": "jest -c jest-inte.json --runInBand --forceExit",
+    "test:inte": "jest --testTimeout=10000 -c jest-inte.json --runInBand --forceExit",
     "test:contract": "jest -c jest-pact.json --runInBand --forceExit",
     "build:tailwind": "tailwindcss --input input.css --output tailwind.css --no-autoprefixer && tailwind-rn",
     "dev:tailwind": "concurrently \"tailwindcss --input input.css --output tailwind.css --no-autoprefixer --watch\" \"tailwind-rn --watch\""

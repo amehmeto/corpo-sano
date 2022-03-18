@@ -9,7 +9,6 @@ import {
 } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Program Gateway', () => {
-  jest.setTimeout(10000)
   let programGateway: ProgramGateway
 
   beforeAll(async () => {
