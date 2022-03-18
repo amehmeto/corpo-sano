@@ -3,11 +3,10 @@ module.exports = {
     parserOptions: {
         sourceType: 'module',
     },
-    plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
+    plugins: ['@typescript-eslint/eslint-plugin'],
     extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
-        'prettier',
     ],
     root: true,
     env: {
