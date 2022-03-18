@@ -1,9 +1,16 @@
 import { Biometrics } from '../entities/biometrics.entity'
 import { Athlete } from '../entities/athlete.entity'
+import { DailyTask } from '../entities/daily-task.entity'
 
 export class AthleteMapper {
   static mapToDomain(rawAthlete: any) {
     const rawBiometrics = rawAthlete.biometrics
+    const mappedDailyTasks = rawAthlete.dailyTasks.map(
+      (dailyTask: DailyTask) => {
+        new DailyTask(dailyTask.id, dailyTask.description, dailyTask.route)
+      },
+    )
+
     const mappedBiometrics = new Biometrics(
       rawBiometrics.bodyFat,
       rawBiometrics.height,
@@ -21,7 +28,7 @@ export class AthleteMapper {
       rawAthlete.password,
       rawAthlete.avatar,
       mappedBiometrics,
-      rawAthlete.dailyTasks,
+      mappedDailyTasks,
       rawAthlete.programs,
     )
   }

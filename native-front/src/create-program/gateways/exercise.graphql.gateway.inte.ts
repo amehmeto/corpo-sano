@@ -1,9 +1,9 @@
 import { GraphQLExerciseGateway } from './exercise.graphql.gateway'
 import { Exercise } from '../entities/exercise.entity'
 import {
-  deletePipe,
+  createPipeLine,
+  deletePipeLine,
   initializeIntegrationTestEnvironment,
-  startServer,
 } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Exercise Gateway', () => {
@@ -11,7 +11,7 @@ describe('Exercise Gateway', () => {
   let exerciseGateway: GraphQLExerciseGateway
 
   beforeAll(async () => {
-    await startServer()
+    await createPipeLine()
     exerciseGateway = new GraphQLExerciseGateway()
   })
 
@@ -20,7 +20,7 @@ describe('Exercise Gateway', () => {
   })
 
   afterAll(() => {
-    deletePipe()
+    deletePipeLine()
   })
 
   it('should delete exercise', async () => {

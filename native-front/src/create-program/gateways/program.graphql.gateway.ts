@@ -13,14 +13,12 @@ export class GraphQLProgramGateway
 {
   async create(programInput: ProgramInput): Promise<Program> {
     try {
-      const CREATE_PROGRAM_MUTATION = `mutation
-        createProgram($title: String!) {
+      const CREATE_PROGRAM_MUTATION = `mutation CreateProgram($title: String!) {
           createProgram(title: $title) {
-            id,
+            id
             title
           }
-        }
-      `
+        }`
       const createProgramMutationPayload = {
         query: CREATE_PROGRAM_MUTATION,
         variables: {
@@ -51,7 +49,7 @@ export class GraphQLProgramGateway
         query: ADD_WORKOUT_MUTATION,
         variables: {
           title: workoutInput.title,
-          programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
+          programId: programId,
         },
       }
 
