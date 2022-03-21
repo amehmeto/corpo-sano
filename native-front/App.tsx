@@ -9,5 +9,3 @@ export default function App() {
     </NativeBaseProvider>
   )
 }
-
-// Stupid comment to test git
