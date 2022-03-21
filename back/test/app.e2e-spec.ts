@@ -236,6 +236,8 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
     })
 
+    test.todo('Get Program By Id')
+
     test('Get Exercise', () => {
       const getExercise = {
         query: `query GetExercise($exerciseId: ID!) {
@@ -326,6 +328,8 @@ describe('AppController (e2e)', () => {
       expectGqlEndpoint(createProgramMutation, expectedCreateProgram)
     })
 
+    test.todo('Delete Program')
+
     test('Create Workout', () => {
       const createWorkoutMutation = {
         query: `mutation CreateWorkout($title: String!, $programId: ID!) {
@@ -346,6 +350,8 @@ describe('AppController (e2e)', () => {
 
       return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)
     })
+
+    test.todo('Delete Workout')
 
     test('Create Session', () => {
       const createWorkoutMutation = {

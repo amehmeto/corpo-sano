@@ -1,21 +1,27 @@
 import { AthleteGateway } from './athlete.gateway.interface'
 import { GraphQLAthleteGateway } from './athlete.graphql.gateway'
-import { initializeTokenCheatCode } from '../../_infrastructure/dependency-injection.container'
 import { Athlete } from '../entities/athlete.entity'
-import { initializeIntegrationTestEnvironment } from '../../tests/initializeIntegrationTestEnvironment'
+import {
+  createPipeLine,
+  deletePipeLine,
+  initializeIntegrationTestEnvironment,
+} from '../../tests/initializeIntegrationTestEnvironment'
 import { DailyTask } from '../entities/daily-task.entity'
 
 describe('Athlete Gateway', () => {
-  jest.setTimeout(30000)
   let athleteGateway: AthleteGateway
 
   beforeAll(async () => {
-    await initializeTokenCheatCode()
+    await createPipeLine()
     athleteGateway = new GraphQLAthleteGateway()
   })
 
   beforeEach(async () => {
     await initializeIntegrationTestEnvironment()
+  })
+
+  afterAll(async () => {
+    await deletePipeLine()
   })
 
   it('should find an athlete by id', async () => {
@@ -26,7 +32,7 @@ describe('Athlete Gateway', () => {
     const retrievedAthlete = await athleteGateway.findById(athleteId)
 
     expect(retrievedAthlete).toStrictEqual(expectedMappedAthlete)
-    if (!retrievedAthlete.dailyTasks) throw Error("Array doesn't exit")
+    if (!retrievedAthlete.dailyTasks) throw Error('Array doesnt exit')
     retrievedAthlete.dailyTasks.forEach((task) => {
       expect(task).toStrictEqual(expectedDailyTask)
     })
