@@ -26,8 +26,8 @@ describe('Athlete Gateway', () => {
     const retrievedAthlete = await athleteGateway.findById(athleteId)
 
     expect(retrievedAthlete).toStrictEqual(expectedMappedAthlete)
-    if(!retrievedAthlete.dailyTasks) throw Error("Array doesn't exit")
-    retrievedAthlete.dailyTasks.forEach(task => {
+    if (!retrievedAthlete.dailyTasks) throw Error("Array doesn't exit")
+    retrievedAthlete.dailyTasks.forEach((task) => {
       expect(task).toStrictEqual(expectedDailyTask)
     })
   })
