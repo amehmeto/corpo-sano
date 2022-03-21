@@ -1,27 +1,21 @@
 import { ProgramGateway } from './program.gateway.interface'
 import { Program } from '../entities/program.entity'
 import { GraphQLProgramGateway } from './program.graphql.gateway'
+import { initializeTokenCheatCode } from '../../_infrastructure/dependency-injection.container'
 import { Workout } from '../entities/workout.entity'
-import {
-  createPipeLine,
-  deletePipeLine,
-  initializeIntegrationTestEnvironment,
-} from '../../tests/initializeIntegrationTestEnvironment'
+import { initializeIntegrationTestEnvironment } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Program Gateway', () => {
+  jest.setTimeout(10000)
   let programGateway: ProgramGateway
 
   beforeAll(async () => {
-    await createPipeLine()
+    await initializeTokenCheatCode()
     programGateway = new GraphQLProgramGateway()
   })
 
   beforeEach(async () => {
     await initializeIntegrationTestEnvironment()
-  })
-
-  afterAll(async () => {
-    await deletePipeLine()
   })
 
   it('should create a program', async () => {
@@ -48,13 +42,5 @@ describe('Program Gateway', () => {
     )
 
     expect(addedWorkout).toStrictEqual(expectedWorkout)
-  })
-
-  it('should get all programs', async () => {
-    const expectedPrograms = expect.arrayContaining([])
-
-    const retrievedPrograms = await programGateway.find()
-
-    expect(retrievedPrograms).toStrictEqual(expectedPrograms)
   })
 })

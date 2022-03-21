@@ -1,5 +1,5 @@
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import * as React from 'react'
+import React from 'react'
 import { exerciseDataBuilder } from '../_data-builders/exercise.data-builder'
 
 export default function WorkoutPreview({ navigation }: any) {

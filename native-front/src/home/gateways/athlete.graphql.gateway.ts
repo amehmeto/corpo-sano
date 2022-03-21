@@ -5,7 +5,8 @@ import { AthleteMapper } from '../mappers/athlete.mapper'
 
 export class GraphQLAthleteGateway
   extends GraphQLGateway
-  implements AthleteGateway {
+  implements AthleteGateway
+{
   findAll(): Promise<any[]> {
     return Promise.resolve([])
   }
@@ -28,9 +29,6 @@ export class GraphQLAthleteGateway
             gender
             birthday
             weightGoal
-          }
-          dailyTasks {
-            description
           }
         }
       }`

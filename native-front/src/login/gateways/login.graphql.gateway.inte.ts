@@ -1,25 +1,17 @@
 import { LoginGateway } from './login.gateway.interface'
 import { GraphqlLoginGateway } from './login.graphql.gateway'
-import {
-  createPipeLine,
-  deletePipeLine,
-  initializeIntegrationTestEnvironment,
-} from '../../tests/initializeIntegrationTestEnvironment'
+import { initializeIntegrationTestEnvironment } from '../../tests/initializeIntegrationTestEnvironment'
 
 describe('Login Gateway', () => {
+  jest.setTimeout(10000)
   let loginGateway: LoginGateway
 
-  beforeAll(async () => {
-    await createPipeLine()
+  beforeAll(() => {
     loginGateway = new GraphqlLoginGateway()
   })
 
-  beforeEach(async () => {await createPipeLine()
+  beforeEach(async () => {
     await initializeIntegrationTestEnvironment()
-  })
-
-  afterAll(async () => {
-    await deletePipeLine()
   })
 
   it('should return token', async () => {
