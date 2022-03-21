@@ -55,7 +55,7 @@ export class GraphQLWorkoutGateway
       const { updateWorkout } = await this.request(updateWorkoutMutationPayload)
 
       //TODO According to the architect's thought, this place can be turned into an object.
-      return updateWorkout ? true : false
+      return !!updateWorkout
     } catch (error) {
       throw this.handleError(error)
     }

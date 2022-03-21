@@ -16,8 +16,8 @@ export async function startServer() {
   exec(initializePipeCommand)
 }
 
-export function deletePipe() {
-  const deletePipeCommand = `cd ../back && rm ${pipeName}`
+export async function deletePipe() {
+  const deletePipeCommand = `cd ../back && rm -rf ${pipeName}`
   exec(deletePipeCommand)
 }
 
