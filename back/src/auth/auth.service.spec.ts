@@ -7,7 +7,7 @@ import {
   AthleteRepository,
 } from '../athlete/repositories/athlete-repository.interface'
 import { ConflictException, UnauthorizedException } from '@nestjs/common'
-import * as Faker from 'faker'
+import Faker from 'faker'
 import { JwtModule, JwtService } from '@nestjs/jwt'
 import { registerAthleteInputDataBuilder } from './data-builders/register-athlete-input.data-builder'
 import { Athlete } from '../athlete/entities/athlete.entity'
