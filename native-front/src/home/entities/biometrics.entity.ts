@@ -14,27 +14,3 @@ export class Biometrics {
     public readonly weightGoal: WeightGoal,
   ) {}
 }
-
-const getAthleteQuery = `query GetAthlete($athleteId: ID!){
-        getAthlete(athleteId: $athleteId) {
-          id
-          name
-          email
-          password
-          dailyTasks {
-            name
-          }
-          programs
-          biometrics {
-            id
-            height
-            bodyFat
-            lengthUnit
-            weight
-            weightUnit
-            gender
-            birthday
-            weightGoal
-          }
-        }
-      }`
