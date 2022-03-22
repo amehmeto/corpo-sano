@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ProgramModule } from './program/program.module'
 import { GraphQLModule } from '@nestjs/graphql'
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
@@ -15,7 +16,8 @@ import { PerformanceModule } from './performance/performance.module'
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     TypeOrmModule.forRoot(config.db),

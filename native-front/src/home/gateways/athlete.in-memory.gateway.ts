@@ -1,6 +1,7 @@
 import { AthleteGateway } from './athlete.gateway.interface'
 import { athleteDataBuilder } from '../../_data-builders/athlete-data.builder'
 import { Athlete } from '../entities/athlete.entity'
+import { AthleteMapper } from '../mappers/athlete.mapper'
 
 export class InMemoryAthleteGateway implements AthleteGateway {
   private rawAthletes = [
@@ -10,15 +11,7 @@ export class InMemoryAthleteGateway implements AthleteGateway {
   ]
 
   private athletes = this.rawAthletes.map((rawAthlete) => {
-    return new Athlete(
-      rawAthlete.id,
-      rawAthlete.name,
-      rawAthlete.email,
-      rawAthlete.password,
-      rawAthlete.avatar,
-      rawAthlete.biometrics,
-      rawAthlete.dailyTasks,
-    )
+    return AthleteMapper.mapToDomain(rawAthlete)
   })
 
   findAll(): Promise<any[]> {
