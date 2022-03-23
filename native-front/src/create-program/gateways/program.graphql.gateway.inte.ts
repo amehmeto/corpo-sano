@@ -3,8 +3,8 @@ import { Program } from '../entities/program.entity'
 import { GraphQLProgramGateway } from './program.graphql.gateway'
 import { Workout } from '../entities/workout.entity'
 import {
-  createPipeLine,
-  deletePipeLine,
+  createPipe,
+  deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
 
@@ -12,7 +12,7 @@ describe('Program Gateway', () => {
   let programGateway: ProgramGateway
 
   beforeAll(async () => {
-    await createPipeLine()
+    await createPipe()
     programGateway = new GraphQLProgramGateway()
   })
 
@@ -21,7 +21,7 @@ describe('Program Gateway', () => {
   })
 
   afterAll(async () => {
-    await deletePipeLine()
+    await deletePipe()
   })
 
   it('should create a program', async () => {

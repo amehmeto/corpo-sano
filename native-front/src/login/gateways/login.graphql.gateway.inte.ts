@@ -1,8 +1,8 @@
 import { LoginGateway } from './login.gateway.interface'
 import { GraphqlLoginGateway } from './login.graphql.gateway'
 import {
-  createPipeLine,
-  deletePipeLine,
+  createPipe,
+  deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
 
@@ -10,16 +10,16 @@ describe('Login Gateway', () => {
   let loginGateway: LoginGateway
 
   beforeAll(async () => {
-    await createPipeLine()
+    await createPipe()
     loginGateway = new GraphqlLoginGateway()
   })
 
-  beforeEach(async () => {await createPipeLine()
+  beforeEach(async () => {await createPipe()
     await initializeIntegrationTestEnvironment()
   })
 
   afterAll(async () => {
-    await deletePipeLine()
+    await deletePipe()
   })
 
   it('should return token', async () => {

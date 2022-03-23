@@ -1,8 +1,8 @@
 import { Workout } from '../entities/workout.entity'
 import { GraphQLWorkoutGateway } from './workout.graphql.gateway'
 import {
-  createPipeLine,
-  deletePipeLine,
+  createPipe,
+  deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
 
@@ -10,7 +10,7 @@ describe('Workout Gateway', () => {
   let workoutGateway: GraphQLWorkoutGateway
 
   beforeAll(async () => {
-    await createPipeLine()
+    await createPipe()
     workoutGateway = new GraphQLWorkoutGateway()
   })
 
@@ -19,7 +19,7 @@ describe('Workout Gateway', () => {
   })
 
   afterAll(async () => {
-    await deletePipeLine()
+    await deletePipe()
   })
 
   it('should get workout with id', async () => {

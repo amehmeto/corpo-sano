@@ -2,8 +2,8 @@ import { AthleteGateway } from './athlete.gateway.interface'
 import { GraphQLAthleteGateway } from './athlete.graphql.gateway'
 import { Athlete } from '../entities/athlete.entity'
 import {
-  createPipeLine,
-  deletePipeLine,
+  createPipe,
+  deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
 import { DailyTask } from '../entities/daily-task.entity'
@@ -12,7 +12,7 @@ describe('Athlete Gateway', () => {
   let athleteGateway: AthleteGateway
 
   beforeAll(async () => {
-    await createPipeLine()
+    await createPipe()
     athleteGateway = new GraphQLAthleteGateway()
   })
 
@@ -21,7 +21,7 @@ describe('Athlete Gateway', () => {
   })
 
   afterAll(async () => {
-    await deletePipeLine()
+    await deletePipe()
   })
 
   it('should find an athlete by id', async () => {
@@ -32,7 +32,7 @@ describe('Athlete Gateway', () => {
     const retrievedAthlete = await athleteGateway.findById(athleteId)
 
     expect(retrievedAthlete).toStrictEqual(expectedMappedAthlete)
-    if (!retrievedAthlete.dailyTasks) throw Error('Array doesnt exit')
+    if (!retrievedAthlete.dailyTasks) throw Error("Array doesn't exit")
     retrievedAthlete.dailyTasks.forEach((task) => {
       expect(task).toStrictEqual(expectedDailyTask)
     })

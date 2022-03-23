@@ -5,15 +5,13 @@ import { DailyTask } from '../entities/daily-task.entity'
 export class AthleteMapper {
   static mapToDomain(rawAthlete: any) {
     const rawBiometrics = rawAthlete.biometrics
-    const mappedDailyTasks: DailyTask[] = rawAthlete.dailyTasks.map(
-      (dailyTask: DailyTask) => {
-        return new DailyTask(
-          dailyTask.id,
-          dailyTask.description,
-          dailyTask.route,
-        )
-      },
-    )
+    const mappedDailyTasks = rawAthlete.dailyTasks.map((rawDailyTask: any) => {
+      return new DailyTask(
+        rawDailyTask.id,
+        rawDailyTask.description,
+        rawDailyTask.route,
+      )
+    })
 
     const mappedBiometrics = new Biometrics(
       rawBiometrics.bodyFat,

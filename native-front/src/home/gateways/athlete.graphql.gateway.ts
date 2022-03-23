@@ -5,14 +5,16 @@ import { AthleteMapper } from '../mappers/athlete.mapper'
 
 export class GraphQLAthleteGateway
   extends GraphQLGateway
-  implements AthleteGateway {
+  implements AthleteGateway
+{
   findAll(): Promise<any[]> {
-    return Promise.resolve([])
+    throw new Error('Method not implemented.')
   }
 
   async findById(athleteId: string): Promise<Athlete> {
     try {
-      const getAthleteQuery = `query GetAthlete($athleteId: ID!){
+      const getAthleteQueryPayload = {
+        query: `query GetAthlete($athleteId: ID!){
         getAthlete(athleteId: $athleteId) {
           id
           name
@@ -33,9 +35,7 @@ export class GraphQLAthleteGateway
             description
           }
         }
-      }`
-      const getAthleteQueryPayload = {
-        query: getAthleteQuery,
+      }`,
         variables: {
           athleteId,
         },
