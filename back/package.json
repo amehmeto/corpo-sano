@@ -44,7 +44,7 @@
     "eslint": "7",
     "faker": "^5.5.3",
     "graphql": "^15.8.0",
-    "graphql-tools": "^8.2.1",
+    "graphql-tools": "^8.2.3",
     "knex": "^1.0.4",
     "mysql2": "^2.3.3",
     "passport": "^0.5.2",
