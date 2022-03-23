@@ -49,7 +49,7 @@ export class GraphQLProgramGateway
         query: ADD_WORKOUT_MUTATION,
         variables: {
           title: workoutInput.title,
-          programId: programId,
+          programId,
         },
       }
 
@@ -68,19 +68,19 @@ export class GraphQLProgramGateway
   //TODO should to create in backend
   async find(): Promise<Program[]> {
     try {
-      const FIND_PROGRAMS_QUERIES = `query GetAllPrograms {
+      const FIND_PROGRAMS_QUERY = `query GetAllPrograms {
           getAllPrograms {
             id
             title
           }
         }`
 
-      const findProgramQueriesPayload = {
-        query: FIND_PROGRAMS_QUERIES,
+      const findProgramQueryPayload = {
+        query: FIND_PROGRAMS_QUERY,
         variables: {},
       }
 
-      return await this.request(findProgramQueriesPayload)
+      return await this.request(findProgramQueryPayload)
     } catch (e) {
       throw this.handleError(e)
     }

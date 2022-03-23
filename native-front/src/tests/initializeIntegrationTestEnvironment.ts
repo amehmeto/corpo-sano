@@ -9,7 +9,7 @@ export async function initializeIntegrationTestEnvironment() {
   await initializeTokenCheatCode()
 }
 
-export async function createPipeLine() {
+export async function createPipe() {
   const createPipeCommand = `mkfifo ${pipeName} && cat <${pipeName} &`
   spawnSync(createPipeCommand)
 }
@@ -19,7 +19,7 @@ export async function startServer() {
   exec(initializePipeCommand)
 }
 
-export async function deletePipeLine() {
+export async function deletePipe() {
   const deletePipeCommand = `cd ../back && rm -rf ${pipeName}`
   exec(deletePipeCommand)
 }
