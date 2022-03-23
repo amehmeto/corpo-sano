@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ProgramModule } from './program/program.module'
 import { GraphQLModule } from '@nestjs/graphql'
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { join } from 'path'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
