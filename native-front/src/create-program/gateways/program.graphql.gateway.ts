@@ -60,12 +60,11 @@ export class GraphQLProgramGateway
     }
   }
 
-  //TODO should to create in backend
   deleteWorkout(programId: string, workoutId: string): Promise<boolean> {
-    return Promise.resolve(false)
+    throw new Error('Method not implemented.')
   }
 
-  //TODO should to create in backend
+  //TODO to be created in backend
   async find(): Promise<Program[]> {
     try {
       const FIND_PROGRAMS_QUERY = `query GetAllPrograms {
