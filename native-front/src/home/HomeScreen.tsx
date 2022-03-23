@@ -13,7 +13,10 @@ import { GetAthleteUseCase } from './usecases/get-athlete.use-case'
 import { Athlete } from './entities/athlete.entity'
 import { Margin } from '../../design-system/enums/margin.enum'
 import { DailyTask } from './entities/daily-task.entity'
-import { athleteGateway, initializeTokenCheatCode } from '../_infrastructure/dependency-injection.container'
+import {
+  athleteGateway,
+  initializeTokenCheatCode,
+} from '../_infrastructure/dependency-injection.container'
 import { Routes } from '../routers/HomeRouter'
 
 const getAthleteUseCase = new GetAthleteUseCase(athleteGateway)
@@ -23,14 +26,20 @@ export function HomeScreen({ navigation }: any) {
 
   const [athlete, setAthlete] = useState<Athlete | undefined>(undefined)
 
-  const defaultDailyTask: DailyTask = {id: '', description: 'Create your first program', route: Routes.CREATE_PROGRAM}
+  //TODO: when user registered to be remove default daily task
+  const defaultDailyTask: DailyTask = {
+    id: '',
+    description: 'Create your first program',
+    route: Routes.CREATE_PROGRAM,
+  }
 
   useEffect(() => {
-    initializeTokenCheatCode().then(() =>
-      getAthleteUseCase.execute(athleteId)).then((_athlete) => {
-      _athlete.dailyTasks.unshift(defaultDailyTask)
-      setAthlete(_athlete)
-    })
+    initializeTokenCheatCode()
+      .then(() => getAthleteUseCase.execute(athleteId))
+      .then((_athlete) => {
+        _athlete.dailyTasks.unshift(defaultDailyTask)
+        setAthlete(_athlete)
+      })
   }, [])
 
   const renderDailyTask = ({
