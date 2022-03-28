@@ -72,7 +72,7 @@
     "eslint": "^8.11.0",
     "jest": "^26.6.3",
     "leaked-handles": "^5.2.0",
-    "prettier": "^2.6.0",
+    "prettier": "^2.6.1",
     "supertest": "^6.2.2",
     "ts-jest": "^26.5.4",
     "ts-loader": "^9.2.8",
