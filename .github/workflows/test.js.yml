@@ -25,6 +25,7 @@ jobs:
     - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
     - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
     - run: yarn
+    - run: yarn build
     - run: yarn jest
     - run: yarn test:inte
     - run: yarn test:e2e
