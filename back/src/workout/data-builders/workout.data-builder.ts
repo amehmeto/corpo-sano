@@ -11,4 +11,5 @@ export function workoutDataBuilder(workout = {}) {
 
 export const workoutFixture = workoutDataBuilder({
   id: HardCodedValuesEnum.workoutId,
+  title: '...',
 })

@@ -236,7 +236,46 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(getAllProgramsQuery, expectedGetAllPrograms)
     })
 
-    test.todo('Get Program By Id')
+    test('Get Program By Id', () => {
+      const getProgram = {
+        query: `query GetProgram($programId: ID!) {
+          getProgram(programId: $programId) {
+            id
+            title
+            workouts: {
+              id
+              title
+            }
+            athlete: {
+              id
+              name
+              email
+            }
+          }
+        }`,
+        variables: {
+          programId: programFixtures[0].id,
+        },
+      }
+
+      const expectedProgramInstance = programFixtures[0]
+
+      const expectedProgram = {
+        id: expectedProgramInstance.id,
+        title: expectedProgramInstance.title,
+        workouts: {
+          id: expectedProgramInstance.workouts[0].id,
+          name: expectedProgramInstance.workouts[0].title,
+        },
+        athlete: {
+          id: expectedProgramInstance.athlete.id,
+          name: expectedProgramInstance.athlete.name,
+          email: expectedProgramInstance.athlete.email,
+        },
+      }
+
+      return expectGqlEndpoint(getProgram, expectedProgram)
+    })
 
     test('Get Exercise', () => {
       const getExercise = {
@@ -462,7 +501,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
     })
 
-    test("Save Exercise's details", () => {
+    test('Save Exercise\'s details', () => {
       const saveExerciseDetailsMutation = {
         query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
           saveExerciseDetails(payload: $payload) {

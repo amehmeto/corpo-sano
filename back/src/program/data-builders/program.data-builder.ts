@@ -1,7 +1,8 @@
 import { Workout } from '../../workout/entities/workout.entity'
 import * as Faker from 'faker'
-import { Program } from '../entities/program.entity'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
+import { workoutFixture } from '../../workout/data-builders/workout.data-builder'
+import { Program } from '../entities/program.entity'
 
 export function programDataBuilder(program = {}) {
   const template = {
@@ -9,14 +10,11 @@ export function programDataBuilder(program = {}) {
     title: 'Mon programme',
     workouts: [] as Workout[],
   }
-  return { ...template, ...program }
+  return { ...template, ...program } as Program
 }
 
 export const programFixture = programDataBuilder({
   id: HardCodedValuesEnum.programId,
 })
 
-export const programFixtures = [
-  new Program(programDataBuilder()),
-  new Program(programDataBuilder()),
-]
+export const programFixtures = [programDataBuilder({ workouts: [workoutFixture] })]
