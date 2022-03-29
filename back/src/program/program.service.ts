@@ -19,6 +19,10 @@ export class ProgramService {
     return this.programRepository.save(program)
   }
 
+  async getProgram(programId: string): Promise<Program> {
+    return this.programRepository.getProgram(programId)
+  }
+
   async getAllPrograms(): Promise<Program[]> {
     return this.programRepository.getAllPrograms()
   }
