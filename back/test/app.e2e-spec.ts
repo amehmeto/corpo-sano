@@ -520,7 +520,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
     })
 
-    test("Save Exercise's details", () => {
+    test('Save Exercise\'s details', () => {
       const saveExerciseDetailsMutation = {
         query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
           saveExerciseDetails(payload: $payload) {

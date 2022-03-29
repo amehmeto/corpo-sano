@@ -5,8 +5,7 @@ import { WorkoutRepository } from './workout.repository.interface'
 @EntityRepository(Workout)
 export class TypeOrmWorkoutRepository
   extends Repository<Workout>
-  implements WorkoutRepository
-{
+  implements WorkoutRepository {
   async findById(workoutId: string): Promise<Workout> {
     const workout = await this.findOne(workoutId, {
       relations: ['exercises', 'sessions'],
