@@ -31,6 +31,4 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
     SessionModule,
   ],
 })
-
-export class AppModule {
-}
+export class AppModule {}

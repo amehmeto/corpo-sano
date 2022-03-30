@@ -17,4 +17,6 @@ export const programFixture = programDataBuilder({
   id: HardCodedValuesEnum.programId,
 })
 
-export const programFixtures = [programDataBuilder({ workouts: [workoutFixture] })]
+export const programFixtures = [
+  programDataBuilder({ workouts: [workoutFixture] }),
+]
