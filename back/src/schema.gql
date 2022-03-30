@@ -137,10 +137,10 @@ type Mutation {
   createProgram(title: String!): Program!
   registerAthlete(payload: RegisterAthleteInput!): Athlete!
   sendConfirmationEmail(athleteId: ID!): Athlete!
-  createWorkout(programId: ID!, title: String!): Workout!
+  createWorkout(title: String!, programId: ID!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!
-  updateWorkout(payload: PatchWorkoutInput!, workoutId: ID!): Workout!
+  updateWorkout(workoutId: ID!, payload: PatchWorkoutInput!): Workout!
   createSession(payload: CreateSessionInput!): Session!
 }
 

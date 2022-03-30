@@ -6,12 +6,7 @@ export class GetExerciseUseCase {
 
   async execute(exerciseId: string): Promise<Exercise | undefined> {
     try {
-      console.log('Call gateway from Exercise Gateway')
-      const temp = await this.exerciseGateway.findById(
-        'ef87e63a-0bbc-45d4-8612-6dfa366f00ea',
-      )
-      console.log(temp)
-      return temp
+      return await this.exerciseGateway.findById(exerciseId)
     } catch (e) {
       console.error(e)
     }
