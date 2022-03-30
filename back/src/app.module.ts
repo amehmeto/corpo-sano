@@ -31,6 +31,4 @@ import { PerformanceModule } from './performance/performance.module'
     SessionModule,
   ],
 })
-
-export class AppModule {
-}
+export class AppModule {}

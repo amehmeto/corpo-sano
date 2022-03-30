@@ -20,7 +20,8 @@ export class ProgramResolver {
   }
 
   @Query(() => Program)
-  async getProgram(@Args({ name: 'programId', type: () => ID }) programId: string,
+  async getProgram(
+    @Args({ name: 'programId', type: () => ID }) programId: string,
   ): Promise<Program> {
     return this.programService.getProgram(programId)
   }
