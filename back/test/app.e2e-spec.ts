@@ -19,6 +19,7 @@ import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
 import {
+  programDataBuilder,
   programFixture,
   programFixtures,
 } from '../src/program/data-builders/program.data-builder'
@@ -237,19 +238,15 @@ describe('AppController (e2e)', () => {
     })
 
     test('Get Program By Id', () => {
+
       const getProgram = {
         query: `query GetProgram($programId: ID!) {
           getProgram(programId: $programId) {
             id
             title
-            workouts: {
+            workouts {
               id
               title
-            }
-            athlete: {
-              id
-              name
-              email
             }
           }
         }`,
@@ -258,20 +255,14 @@ describe('AppController (e2e)', () => {
         },
       }
 
-      const expectedProgramInstance = programFixtures[0]
 
       const expectedProgram = {
-        id: expectedProgramInstance.id,
-        title: expectedProgramInstance.title,
-        workouts: {
-          id: expectedProgramInstance.workouts[0].id,
-          name: expectedProgramInstance.workouts[0].title,
-        },
-        athlete: {
-          id: expectedProgramInstance.athlete.id,
-          name: expectedProgramInstance.athlete.name,
-          email: expectedProgramInstance.athlete.email,
-        },
+        id: programFixtures[0].id,
+        title: programFixtures[0].title,
+        workouts: [{
+          id: programFixtures[0].workouts[0].id,
+          title: programFixtures[0].workouts[0].title,
+        }],
       }
 
       return expectGqlEndpoint(getProgram, expectedProgram)
