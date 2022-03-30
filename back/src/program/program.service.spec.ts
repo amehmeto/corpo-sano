@@ -41,11 +41,11 @@ describe('Program Service', () => {
 
   it('should get program', async () => {
     const programId = programFixtures[0].id
-    const expectedProgram = new Program({
+    const expectedProgram = {
       id: programId,
       title: expect.any(String),
       workouts: expect.arrayContaining([]),
-    })
+    }
 
     const retrievedProgram = await programService.getProgram(programId)
 
