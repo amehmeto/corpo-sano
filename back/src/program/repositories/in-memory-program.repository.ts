@@ -16,6 +16,8 @@ export class InMemoryProgramRepository implements ProgramRepository {
   }
 
   getProgram(programId: string): Promise<Program> {
-    return Promise.resolve(this.programsData.find((program) => program.id == programId))
+    return Promise.resolve(
+      this.programsData.find((program) => program.id == programId),
+    )
   }
 }

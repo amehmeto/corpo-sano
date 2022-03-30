@@ -238,7 +238,6 @@ describe('AppController (e2e)', () => {
     })
 
     test('Get Program By Id', () => {
-
       const getProgram = {
         query: `query GetProgram($programId: ID!) {
           getProgram(programId: $programId) {
@@ -255,14 +254,15 @@ describe('AppController (e2e)', () => {
         },
       }
 
-
       const expectedProgram = {
         id: programFixtures[0].id,
         title: programFixtures[0].title,
-        workouts: [{
-          id: programFixtures[0].workouts[0].id,
-          title: programFixtures[0].workouts[0].title,
-        }],
+        workouts: [
+          {
+            id: programFixtures[0].workouts[0].id,
+            title: programFixtures[0].workouts[0].title,
+          },
+        ],
       }
 
       return expectGqlEndpoint(getProgram, expectedProgram)
@@ -492,7 +492,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
     })
 
-    test('Save Exercise\'s details', () => {
+    test("Save Exercise's details", () => {
       const saveExerciseDetailsMutation = {
         query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
           saveExerciseDetails(payload: $payload) {
