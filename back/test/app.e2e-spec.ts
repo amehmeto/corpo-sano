@@ -238,7 +238,6 @@ describe('AppController (e2e)', () => {
     })
 
     test('Get Program By Id', () => {
-
       const getProgram = {
         query: `query GetProgram($programId: ID!) {
           getProgram(programId: $programId) {
@@ -521,7 +520,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
     })
 
-    test('Save Exercise\'s details', () => {
+    test("Save Exercise's details", () => {
       const saveExerciseDetailsMutation = {
         query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
           saveExerciseDetails(payload: $payload) {
