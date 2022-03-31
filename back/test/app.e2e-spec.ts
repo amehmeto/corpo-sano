@@ -381,7 +381,21 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(createWorkoutMutation, expectedCreateWorkout)
     })
 
-    test.todo('Delete Workout')
+    test('Delete Workout', () => {
+      const deleteWorkout = {
+        query: `mutation DeleteWorkout($workoutId: ID!) {
+          deleteWorkout($workoutId: $workoutId)
+        }`,
+        variables: {
+          workoutId: workoutFixture.id,
+        },
+      }
+      const expectedDeleteWorkout = {
+        deleteWorkout: false,
+      }
+
+      expectGqlEndpoint(deleteWorkout, expectedDeleteWorkout)
+    })
 
     test('Create Session', () => {
       const createWorkoutMutation = {
