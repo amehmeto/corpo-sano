@@ -8,27 +8,26 @@ on:
 
 jobs:
   jobBack:
-    build:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: back
-      steps:
-        - uses: actions/checkout@v2
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v2
-          with:
-            node-version: ${{ matrix.node-version }}
-            cache: 'yarn'
-            cache-dependency-path: '**/back/yarn.lock'
-        - run: sudo /etc/init.d/mysql start
-        - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
-        - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
-        - run: yarn
-        - run: yarn build
-        - run: yarn jest
-        - run: yarn test:inte
-        - run: yarn test:e2e
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: back
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: '**/back/yarn.lock'
+      - run: sudo /etc/init.d/mysql start
+      - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
+      - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
+      - run: yarn
+      - run: yarn build
+      - run: yarn jest
+      - run: yarn test:inte
+      - run: yarn test:e2e
   jobFront:
     name: native-front
     runs-on: ubuntu-latest
