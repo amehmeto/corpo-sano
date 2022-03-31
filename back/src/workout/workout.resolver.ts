@@ -5,6 +5,7 @@ import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import { WorkoutService } from './workout.service'
 import { PatchWorkoutInput } from './types/patch-workout.input'
 import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-exercises.use-case'
+import { GraphQLBoolean } from 'graphql'
 
 @Resolver()
 export class WorkoutResolver {
@@ -52,5 +53,12 @@ export class WorkoutResolver {
     @Args('payload') payload: PatchWorkoutInput,
   ): Promise<Workout> {
     return this.workoutService.patch(workoutId, payload)
+  }
+
+  @Mutation(() => GraphQLBoolean)
+  async deleteWorkout(
+    @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
+  ): Promise<any> {
+    return this.workoutService.softDelete(workoutId)
   }
 }
