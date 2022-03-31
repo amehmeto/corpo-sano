@@ -14,6 +14,7 @@ import {
 } from './repositories/workout.repository.interface'
 import { workoutDataBuilder } from './data-builders/workout.data-builder'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
+import { UpdateResult } from 'typeorm'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
@@ -120,5 +121,14 @@ describe('Workout Service', () => {
     )
 
     expect(patchedWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it('should soft delete a workout', async () => {
+    const [workout] = await workoutRepository.find()
+    let expectedWorkout = new UpdateResult()
+
+    const softDeletedWorkout = await workoutService.softDelete(workout.id)
+
+    expect(softDeletedWorkout).toStrictEqual(expectedWorkout)
   })
 })
