@@ -45,5 +45,3 @@ jobs:
           cache-dependency-path: '**/native-front/yarn.lock'
       - run: yarn
       - run: yarn jest
-      - run: yarn test:inte
-      - run: yarn test:e2e
