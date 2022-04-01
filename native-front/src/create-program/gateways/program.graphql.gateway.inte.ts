@@ -68,4 +68,12 @@ describe('Program Gateway', () => {
 
     expect(retrievedPrograms).toStrictEqual(expectedPrograms)
   })
+
+  it('should delete program', async () => {
+    const programId = HardCodedValuesEnum.programId
+
+    const retrievedResult = await programGateway.deleteProgram(programId)
+
+    expect(retrievedResult).toBeTruthy()
+  })
 })

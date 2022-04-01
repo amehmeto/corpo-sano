@@ -104,4 +104,23 @@ export class GraphQLProgramGateway
       throw this.handleError(e)
     }
   }
+
+  async deleteProgram(programId: string): Promise<boolean> {
+    try {
+      const deleteProgramQuery = `mutation DeleteProgram($programId: ID!) {
+      deleteProgram(programId: $programId)
+    }`
+
+      const deleteProgramMutationPayload = {
+        query: deleteProgramQuery,
+        variables: {
+          programId: programId,
+        },
+      }
+
+      return await this.request(deleteProgramMutationPayload)
+    } catch (error) {
+      return Promise.resolve(false)
+    }
+  }
 }
