@@ -4,6 +4,7 @@ import {
   PROGRAM_REPOSITORY,
   ProgramRepository,
 } from './repositories/program-repository.interface'
+import { UpdateResult } from 'typeorm'
 
 @Injectable()
 export class ProgramService {
@@ -25,5 +26,9 @@ export class ProgramService {
 
   async getAllPrograms(): Promise<Program[]> {
     return this.programRepository.getAllPrograms()
+  }
+
+  async softDelete(programId: string): Promise<UpdateResult> {
+    return this.programRepository.softDelete(programId)
   }
 }
