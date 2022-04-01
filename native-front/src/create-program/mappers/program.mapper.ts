@@ -6,10 +6,11 @@ export class ProgramMapper {
     return new Program(
       rawProgram.id,
       rawProgram.title,
-      rawProgram.description,
-      rawProgram.workouts.map((workout: any) =>
-        WorkoutMapper.mapToDomain(workout),
-      ),
+      // TODO: Program description and workouts should come from back-end.
+      // rawProgram.description,
+      // rawProgram.workouts.map((workout: any) =>
+      //   WorkoutMapper.mapToDomain(workout),
+      // ),
     )
   }
 }
