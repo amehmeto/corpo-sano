@@ -41,4 +41,12 @@ describe('Workout Gateway', () => {
 
     expect(retrievedWorkout).toStrictEqual(expectedWorkout)
   })
+
+  it('should delete workout', async () => {
+    const exerciseId = HardCodedValuesEnum.workoutId
+
+    const retrievedResult = await workoutGateway.delete(exerciseId)
+
+    expect(retrievedResult).toBeTruthy()
+  })
 })
