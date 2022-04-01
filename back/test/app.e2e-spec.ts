@@ -358,7 +358,21 @@ describe('AppController (e2e)', () => {
       expectGqlEndpoint(createProgramMutation, expectedCreateProgram)
     })
 
-    test.todo('Delete Program')
+    test('Delete Program', () => {
+      const deleteProgram = {
+        query: `mutation DeleteProgram($programId: ID!) {
+          deleteProgram(programId: $programId)
+        }`,
+        variables: {
+          programId: programFixture.id,
+        },
+      }
+      const expectedDeleteProgram = {
+        deleteProgram: false,
+      }
+
+      expectGqlEndpoint(deleteProgram, expectedDeleteProgram)
+    })
 
     test('Create Workout', () => {
       const createWorkoutMutation = {
