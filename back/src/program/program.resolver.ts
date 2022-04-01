@@ -3,6 +3,7 @@ import { Program } from './models/program.model'
 import { ProgramService } from './program.service'
 import { UseGuards } from '@nestjs/common'
 import { GqlAuthGuard } from '../auth/gql.auth.guard'
+import { GraphQLBoolean } from 'graphql'
 
 @Resolver(() => Program)
 export class ProgramResolver {
@@ -24,5 +25,13 @@ export class ProgramResolver {
     @Args({ name: 'programId', type: () => ID }) programId: string,
   ): Promise<Program> {
     return this.programService.getProgram(programId)
+  }
+
+  @Mutation(() => GraphQLBoolean)
+  async deleteProgram(
+    @Args({ name: 'programId', type: () => ID }) programId: string,
+  ): Promise<any> {
+    await this.programService.softDelete(programId)
+    return true
   }
 }
