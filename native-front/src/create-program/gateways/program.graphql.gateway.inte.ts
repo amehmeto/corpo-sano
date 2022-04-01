@@ -7,6 +7,7 @@ import {
   deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
+import { HardCodedValuesEnum } from '../../tests/hard-coded-values.enum'
 
 describe('Program Gateway', () => {
   let programGateway: ProgramGateway
@@ -34,11 +35,11 @@ describe('Program Gateway', () => {
   })
 
   it('should add a workout', async () => {
-    const programId = '23c8b6ce-9b10-465c-a581-44ca59d2c3ac'
+    const programId = HardCodedValuesEnum.programId
     const workoutInput = {
       title: 'Push Workout',
       description: '...',
-      programId: '23c8b6ce-9b10-465c-a581-44ca59d2c3ac',
+      programId: HardCodedValuesEnum.programId,
     }
     const expectedWorkout = expect.any(Workout)
 
@@ -60,7 +61,7 @@ describe('Program Gateway', () => {
 
 
   it('should get program by id', async () => {
-    const programId = '23c8b6ce-9b10-465c-a581-44ca59d2c3ac'
+    const programId = HardCodedValuesEnum.programId
     const expectedPrograms = expect.arrayContaining([])
 
     const retrievedPrograms = await programGateway.findById(programId)

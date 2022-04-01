@@ -5,6 +5,7 @@ import {
   deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
+import { HardCodedValuesEnum } from '../../tests/hard-coded-values.enum'
 
 describe('Exercise Gateway', () => {
   let exerciseGateway: GraphQLExerciseGateway
@@ -23,7 +24,7 @@ describe('Exercise Gateway', () => {
   })
 
   it('should delete exercise', async () => {
-    const exerciseId = '055ef1bd-a336-483b-8156-3d95541be909'
+    const exerciseId = HardCodedValuesEnum.exerciseId
 
     const retrievedResult = await exerciseGateway.deleteExercise(exerciseId)
 
@@ -31,7 +32,7 @@ describe('Exercise Gateway', () => {
   })
 
   it('should get exercise with id', async () => {
-    const exerciseId = '131f2162-2d58-46f3-b941-6881f00d913a'
+    const exerciseId = HardCodedValuesEnum.exerciseId
     const expectedExercise = expect.any(Exercise)
 
     const retrievedExercise = await exerciseGateway.findById(exerciseId)
