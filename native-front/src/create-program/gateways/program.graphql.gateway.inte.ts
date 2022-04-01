@@ -57,4 +57,14 @@ describe('Program Gateway', () => {
 
     expect(retrievedPrograms).toStrictEqual(expectedPrograms)
   })
+
+
+  it('should get program by id', async () => {
+    const programId = '23c8b6ce-9b10-465c-a581-44ca59d2c3ac'
+    const expectedPrograms = expect.arrayContaining([])
+
+    const retrievedPrograms = await programGateway.findById(programId)
+
+    expect(retrievedPrograms).toStrictEqual(expectedPrograms)
+  })
 })

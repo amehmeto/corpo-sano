@@ -80,7 +80,28 @@ export class GraphQLProgramGateway
     }
   }
 
-  findById(programId: string): Promise<Program | undefined> {
-    throw new Error('Method not implemented.')
+  async findById(programId: string): Promise<Program | undefined> {
+
+    try {
+      const getProgramQueryPayload = {
+        query: `query GetProgram($programId: ID!) {
+          getProgram(programId: $programId) {
+            id
+            title
+            workouts {
+              id
+              title
+            }
+          }
+        }`,
+        variables: {
+          programId,
+        },
+      }
+
+      return await this.request(getProgramQueryPayload)
+    } catch (e) {
+      throw this.handleError(e)
+    }
   }
 }
