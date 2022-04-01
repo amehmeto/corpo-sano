@@ -384,7 +384,7 @@ describe('AppController (e2e)', () => {
     test('Delete Workout', () => {
       const deleteWorkout = {
         query: `mutation DeleteWorkout($workoutId: ID!) {
-          deleteWorkout($workoutId: $workoutId)
+          deleteWorkout(workoutId: $workoutId)
         }`,
         variables: {
           workoutId: workoutFixture.id,
