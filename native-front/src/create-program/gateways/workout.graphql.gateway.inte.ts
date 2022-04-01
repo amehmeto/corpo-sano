@@ -6,7 +6,6 @@ import {
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
 import { HardCodedValuesEnum } from '../../tests/hard-coded-values.enum'
-import { programGateway } from '../../_infrastructure/dependency-injection.container'
 
 describe('Workout Gateway', () => {
   let workoutGateway: GraphQLWorkoutGateway
@@ -44,10 +43,9 @@ describe('Workout Gateway', () => {
   })
 
   it('should delete workout', async () => {
-    const programId = HardCodedValuesEnum.programId
     const workoutId = HardCodedValuesEnum.workoutId
 
-    const retrievedResult = await programGateway.deleteWorkout(programId, workoutId)
+    const retrievedResult = await workoutGateway.delete(workoutId)
 
     expect(retrievedResult).toBeTruthy()
   })

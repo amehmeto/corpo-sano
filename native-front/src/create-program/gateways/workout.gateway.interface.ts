@@ -11,4 +11,5 @@ export interface WorkoutGateway {
   findById(workoutId: string): Promise<Workout>
   find(): Promise<Workout[]>
   update(workoutId: string, workout: Workout): Promise<boolean>
+  delete(workoutId: string): Promise<boolean>
 }
