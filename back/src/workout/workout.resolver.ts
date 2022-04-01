@@ -59,6 +59,7 @@ export class WorkoutResolver {
   async deleteWorkout(
     @Args({ name: 'workoutId', type: () => ID }) workoutId: string,
   ): Promise<any> {
-    return this.workoutService.softDelete(workoutId)
+    await this.workoutService.softDelete(workoutId)
+    return true
   }
 }

@@ -12,5 +12,5 @@ export interface WorkoutRepository {
     workoutId: string,
     daysOfTheWeek: WeekDays[],
   ): Promise<Workout>
-  softDelete(workoutId: string): Promise<UpdateResult>
+  softDelete(id: string): Promise<UpdateResult>
 }
