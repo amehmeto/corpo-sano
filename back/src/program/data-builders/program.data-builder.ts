@@ -1,5 +1,5 @@
 import { Workout } from '../../workout/entities/workout.entity'
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { Program } from '../entities/program.entity'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 

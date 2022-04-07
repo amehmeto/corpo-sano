@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { biometricsDataBuilder } from '../../biometrics/data-builders/biometrics.data-builder'
 import { Biometrics } from '../../biometrics/entities/biometrics.entity'
 

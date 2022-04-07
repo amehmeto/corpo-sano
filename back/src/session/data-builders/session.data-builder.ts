@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { Session } from '../entities/session.entity'
 import { Performance } from '../../performance/entities/performance.entity'
 import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'

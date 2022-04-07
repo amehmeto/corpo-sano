@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { exerciseTemplateDataBuilder } from './exercise-template.data-builder'
 import { baseEntityDataBuilder } from '../../__infrastructure__/typeorm/base.data-builder'

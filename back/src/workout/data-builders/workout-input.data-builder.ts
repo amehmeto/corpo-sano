@@ -1,6 +1,5 @@
 import { workoutDataBuilder } from './workout.data-builder'
-import * as Faker from 'faker'
-
+import { faker as Faker } from '@faker-js/faker'
 export function workoutInputDataBuilder(workoutInput = {}) {
   const template = {
     ...workoutDataBuilder(),
