@@ -6,8 +6,8 @@ import {
   PROGRAM_REPOSITORY,
   ProgramRepository,
 } from './repositories/program-repository.interface'
-import { programFixtures } from './data-builders/program.data-builder'
 import { UpdateResult } from 'typeorm'
+import faker from '@faker-js/faker'
 
 describe('Program Service', () => {
   let programService: ProgramService
@@ -44,8 +44,8 @@ describe('Program Service', () => {
     expect(createdProgram).toStrictEqual(expectedProgram)
   })
 
-  it('should get program', async () => {
-    const programId = programFixtures[0].id
+  it('should get a program', async () => {
+    const programId = faker.datatype.uuid()
     const expectedProgram = {
       id: programId,
       title: expect.any(String),
