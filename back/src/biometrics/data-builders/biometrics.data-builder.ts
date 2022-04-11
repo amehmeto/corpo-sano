@@ -1,8 +1,7 @@
 import { UnitSystem } from '../types/metric-system.enum'
 import { Gender } from '../types/gender.enum'
 import { WeightGoal } from '../types/weight-goal.enum'
-import * as Faker from 'faker'
-
+import { faker as Faker } from '@faker-js/faker'
 const unitSystem = Object.values(UnitSystem)
 const gender = Object.values(Gender)
 const weightGoal = Object.values(WeightGoal)

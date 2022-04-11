@@ -1,7 +1,6 @@
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { ExerciseTemplateRepository } from './exercise-template-repository.interface'
-import * as Faker from 'faker'
-
+import { faker as Faker } from '@faker-js/faker'
 export class InMemoryExerciseTemplateRepository
   implements ExerciseTemplateRepository
 {

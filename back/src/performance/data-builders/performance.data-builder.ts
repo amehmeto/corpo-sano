@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { exerciseFixtures } from '../../exercise/data-builders/exercise.data-builder'
 
 export const performanceFixture = performanceDataBuilder({

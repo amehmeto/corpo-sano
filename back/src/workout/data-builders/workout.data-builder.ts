@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 export function workoutDataBuilder(workout = {}) {

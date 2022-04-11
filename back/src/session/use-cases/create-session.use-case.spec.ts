@@ -11,7 +11,7 @@ import {
   WorkoutRepository,
 } from '../../workout/repositories/workout.repository.interface'
 import { InMemoryWorkoutRepository } from '../../workout/repositories/in-memory-workout.repository'
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { PERFORMANCE_REPOSITORY } from '../../performance/repositories/performance.repository.interface'
 import { InMemoryPerformanceRepository } from '../../performance/repositories/performance.in-memory.repository'
 
