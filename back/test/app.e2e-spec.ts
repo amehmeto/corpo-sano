@@ -19,7 +19,6 @@ import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
 import {
-  programDataBuilder,
   programFixture,
   programFixtures,
 } from '../src/program/data-builders/program.data-builder'
