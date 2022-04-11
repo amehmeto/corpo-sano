@@ -1,5 +1,4 @@
-import * as Faker from 'faker'
-
+import { faker as Faker } from '@faker-js/faker'
 export function exerciseDetailsInputDataBuilder(exerciseDetailsInput = {}) {
   const template = {
     exerciseId: Faker.datatype.uuid(),

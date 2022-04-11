@@ -1,5 +1,4 @@
-import * as Faker from 'faker'
-
+import { faker as Faker } from '@faker-js/faker'
 export function dailyTaskDataBuilder(dailTask = {}) {
   const template = {
     id: Faker.datatype.uuid(),

@@ -1,5 +1,5 @@
 import { EmailGateway } from './email.gateway'
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { Athlete } from '../../athlete/entities/athlete.entity'
 
 export class InMemoryEmailGateway implements EmailGateway {

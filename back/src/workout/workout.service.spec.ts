@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { WorkoutService } from './workout.service'
 import { InMemoryExerciseTemplateRepository } from '../exercise/repositories/in-memory-exercise-template.repository'

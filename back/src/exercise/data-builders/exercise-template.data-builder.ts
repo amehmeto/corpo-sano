@@ -1,4 +1,4 @@
-import * as Faker from 'faker'
+import { faker as Faker } from '@faker-js/faker'
 import { defaultExerciseTemplatesDataBuilder } from './default-exercise-templates.data-builder'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
 
