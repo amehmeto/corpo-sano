@@ -62,7 +62,7 @@ describe('TypeOrm Program Repository', () => {
 
   it('should get a program', async () => {
     const programId = programFixtures[0].id
-    const expectedProgram = expect.any(Program)
+    const expectedProgram = new Program(programFixtures[0])
 
     const retrievedProgram = await programRepository.getProgram(programId)
 
