@@ -2,7 +2,10 @@ import { ProgramRepository } from './program-repository.interface'
 import { CreateProgramInput } from '../types/create-program-input.type'
 import { Program } from '../entities/program.entity'
 import { v4 as uuid } from 'uuid'
-import { programDataBuilder, programFixture } from '../data-builders/program.data-builder'
+import {
+  programDataBuilder,
+  programFixture,
+} from '../data-builders/program.data-builder'
 import { UpdateResult } from 'typeorm'
 
 export class InMemoryProgramRepository implements ProgramRepository {

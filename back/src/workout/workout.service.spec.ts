@@ -8,7 +8,10 @@ import { WeekDays } from './types/week-days.enum'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
 import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template-repository.interface'
 import { workoutInputDataBuilder } from './data-builders/workout-input.data-builder'
-import { WORKOUT_REPOSITORY, WorkoutRepository } from './repositories/workout.repository.interface'
+import {
+  WORKOUT_REPOSITORY,
+  WorkoutRepository,
+} from './repositories/workout.repository.interface'
 import { workoutDataBuilder } from './data-builders/workout.data-builder'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { UpdateResult } from 'typeorm'
@@ -54,11 +57,11 @@ describe('Workout Service', () => {
 
   it('should create a workout', async () => {
     const programData = programFixture
-    const workoutInput = workoutInputDataBuilder({programId: programData.id})
+    const workoutInput = workoutInputDataBuilder({ programId: programData.id })
     const expectedWorkout = new Workout({
       id: expect.any(String),
       title: workoutInput.title,
-      program: new Program({...programData}),
+      program: new Program({ ...programData }),
     })
 
     const createdWorkout = await workoutService.create(workoutInput)
@@ -132,7 +135,7 @@ describe('Workout Service', () => {
 
   it('should soft delete a workout', async () => {
     const [workout] = await workoutRepository.find()
-    let expectedWorkout = new UpdateResult()
+    const expectedWorkout = new UpdateResult()
 
     const softDeletedWorkout = await workoutService.softDelete(workout.id)
 
