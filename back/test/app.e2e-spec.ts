@@ -9,24 +9,13 @@ import { registerAthleteInputDataBuilder } from '../src/auth/data-builders/regis
 import { exerciseDetailsInputDataBuilder } from '../src/exercise/data-builders/exercise-details-input.data-builder'
 import { authCredentialsInputDataBuilder } from '../src/auth/data-builders/auth-credentials-input.data-builder'
 import { AccessToken } from '../src/auth/types/access-token.type'
-import {
-  getDataKey,
-  handleGraphQLResponse,
-  Query,
-} from './handle-graphql-response'
+import { getDataKey, handleGraphQLResponse, Query } from './handle-graphql-response'
 import { exerciseInputDataBuilder } from '../src/exercise/data-builders/exercise-input.data-builder'
 import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
-import {
-  programDataBuilder,
-  programFixture,
-  programFixtures,
-} from '../src/program/data-builders/program.data-builder'
-import {
-  workoutDataBuilder,
-  workoutFixture,
-} from '../src/workout/data-builders/workout.data-builder'
+import { programDataBuilder, programFixture, programFixtures } from '../src/program/data-builders/program.data-builder'
+import { workoutFixture } from '../src/workout/data-builders/workout.data-builder'
 import { exerciseFixtures } from '../src/exercise/data-builders/exercise.data-builder'
 import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.data-builder'
 import { dailyTaskFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
@@ -529,7 +518,7 @@ describe('AppController (e2e)', () => {
       return expectGqlEndpoint(scheduleWorkoutMutation, expectedWorkout)
     })
 
-    test("Save Exercise's details", () => {
+    test('Save Exercise\'s details', () => {
       const saveExerciseDetailsMutation = {
         query: `mutation saveExerciseDetails($payload: ExerciseDetailsInput!) {
           saveExerciseDetails(payload: $payload) {
