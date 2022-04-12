@@ -1,6 +1,5 @@
 import { CreateProgramInput } from '../types/create-program-input.type'
 import { Program } from '../entities/program.entity'
-import { Workout } from '../../workout/entities/workout.entity'
 import { UpdateResult } from 'typeorm'
 
 export const PROGRAM_REPOSITORY = 'PROGRAM_REPOSITORY'
@@ -12,7 +11,7 @@ export interface ProgramRepository {
 
   getAllPrograms(): Promise<Program[]>
 
-  find(): Promise<Workout[]>
+  find(): Promise<Program[]>
 
   softDelete(programId: string): Promise<UpdateResult>
 }

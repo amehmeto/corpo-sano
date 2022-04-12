@@ -45,14 +45,9 @@ describe('Program Service', () => {
   })
 
   it('should get a program', async () => {
-    const programId = faker.datatype.uuid()
-    const expectedProgram = {
-      id: programId,
-      title: expect.any(String),
-      workouts: expect.arrayContaining([]),
-    }
+    const [expectedProgram] = await programRepository.find()
 
-    const retrievedProgram = await programService.getProgram(programId)
+    const retrievedProgram = await programService.getProgram(expectedProgram.id)
 
     expect(retrievedProgram).toStrictEqual(expectedProgram)
   })
