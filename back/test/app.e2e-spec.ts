@@ -19,16 +19,21 @@ import { Connection } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
 import {
+  programDataBuilder,
   programFixture,
   programFixtures,
 } from '../src/program/data-builders/program.data-builder'
-import { workoutFixture } from '../src/workout/data-builders/workout.data-builder'
+import {
+  workoutDataBuilder,
+  workoutFixture,
+} from '../src/workout/data-builders/workout.data-builder'
 import { exerciseFixtures } from '../src/exercise/data-builders/exercise.data-builder'
 import { biometricsFixture } from '../src/biometrics/data-builders/biometrics.data-builder'
 import { dailyTaskFixtures } from '../src/daily-task/data-builders/daily-task.data-builder'
 import { athleteFixture } from '../src/athlete/data-builders/athlete.data-builder'
 import { sessionFixture } from '../src/session/data-builders/session.data-builder'
 import { performanceFixture } from '../src/performance/data-builders/performance.data-builder'
+import { HardCodedValuesEnum } from './fixtures/hard-coded-values.enum'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -237,6 +242,11 @@ describe('AppController (e2e)', () => {
     })
 
     test('Get Program By Id', () => {
+      const programData = programDataBuilder({
+        id: HardCodedValuesEnum.programId,
+        workouts: [workoutFixture],
+      })
+
       const getProgram = {
         query: `query GetProgram($programId: ID!) {
           getProgram(programId: $programId) {
@@ -249,17 +259,17 @@ describe('AppController (e2e)', () => {
           }
         }`,
         variables: {
-          programId: programFixtures[0].id,
+          programId: programData.id,
         },
       }
 
       const expectedProgram = {
-        id: programFixtures[0].id,
-        title: programFixtures[0].title,
+        id: programData.id,
+        title: programData.title,
         workouts: [
           {
-            id: programFixtures[0].workouts[0].id,
-            title: programFixtures[0].workouts[0].title,
+            id: programData.workouts[0].id,
+            title: programData.workouts[0].title,
           },
         ],
       }
@@ -367,7 +377,7 @@ describe('AppController (e2e)', () => {
         },
       }
       const expectedDeleteProgram = {
-        deleteProgram: false,
+        deleteProgram: true,
       }
 
       expectGqlEndpoint(deleteProgram, expectedDeleteProgram)
@@ -404,7 +414,7 @@ describe('AppController (e2e)', () => {
         },
       }
       const expectedDeleteWorkout = {
-        deleteWorkout: false,
+        deleteWorkout: true,
       }
 
       expectGqlEndpoint(deleteWorkout, expectedDeleteWorkout)
