@@ -125,7 +125,7 @@ describe('Workout Service', () => {
 
   it('should soft delete a workout', async () => {
     const [workout] = await workoutRepository.find()
-    let expectedWorkout = new UpdateResult()
+    const expectedWorkout = new UpdateResult()
 
     const softDeletedWorkout = await workoutService.softDelete(workout.id)
 
