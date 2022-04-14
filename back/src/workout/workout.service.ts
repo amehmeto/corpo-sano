@@ -17,6 +17,7 @@ import {
 import { WorkoutInput } from './types/workout-input.type'
 import { UpdateWorkoutInput } from './types/update-workout.input'
 import { PatchWorkoutInput } from './types/patch-workout.input'
+import { UpdateResult } from 'typeorm'
 
 @Injectable()
 export class WorkoutService {
@@ -64,5 +65,9 @@ export class WorkoutService {
       ...retrievedWorkout,
       ...(workoutModifications as Partial<Workout>),
     })
+  }
+
+  async softDelete(workoutId: string): Promise<UpdateResult> {
+    return this.workoutRepository.softDelete(workoutId)
   }
 }
