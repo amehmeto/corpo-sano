@@ -1,6 +1,5 @@
 import { Workout } from '../../workout/entities/workout.entity'
 import { faker as Faker } from '@faker-js/faker'
-import { Program } from '../entities/program.entity'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 export function programDataBuilder(program = {}) {
@@ -17,6 +16,7 @@ export const programFixture = programDataBuilder({
 })
 
 export const programFixtures = [
-  new Program(programDataBuilder()),
-  new Program(programDataBuilder()),
+  programDataBuilder(),
+  programDataBuilder(),
+  programDataBuilder(),
 ]
