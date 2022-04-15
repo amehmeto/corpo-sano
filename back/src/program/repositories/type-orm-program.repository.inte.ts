@@ -60,6 +60,15 @@ describe('TypeOrm Program Repository', () => {
     expect(programRepository).toBeDefined()
   })
 
+  it('should get a program', async () => {
+    const programId = programFixtures[0].id
+    const expectedProgram = new Program(programFixtures[0])
+
+    const retrievedProgram = await programRepository.getProgram(programId)
+
+    expect(retrievedProgram).toStrictEqual(expectedProgram)
+  })
+
   it('should get all programs', async () => {
     const expectedPrograms = [
       new Program(programFixtures[0]),
