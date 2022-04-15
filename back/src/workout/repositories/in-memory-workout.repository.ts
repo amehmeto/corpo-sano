@@ -5,6 +5,7 @@ import { workoutDataBuilder } from '../data-builders/workout.data-builder'
 import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-builder'
 import { sessionDataBuilder } from '../../session/data-builders/session.data-builder'
 import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
+import { UpdateResult } from 'typeorm'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
   private workoutsData = [
@@ -52,5 +53,10 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
         scheduledDays: daysOfTheWeek,
       }),
     )
+  }
+
+  softDelete(workoutId: string): Promise<UpdateResult> {
+    const softDeletedWorkout = new UpdateResult()
+    return Promise.resolve(softDeletedWorkout)
   }
 }
