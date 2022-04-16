@@ -80,7 +80,47 @@ export class GraphQLProgramGateway
     }
   }
 
-  findById(programId: string): Promise<Program | undefined> {
-    throw new Error('Method not implemented.')
+  async findById(programId: string): Promise<Program | undefined> {
+
+    try {
+      const getProgramQueryPayload = {
+        query: `query GetProgram($programId: ID!) {
+          getProgram(programId: $programId) {
+            id
+            title
+            workouts {
+              id
+              title
+            }
+          }
+        }`,
+        variables: {
+          programId,
+        },
+      }
+
+      return await this.request(getProgramQueryPayload)
+    } catch (e) {
+      throw this.handleError(e)
+    }
+  }
+
+  async deleteProgram(programId: string): Promise<boolean> {
+    try {
+      const deleteProgramQuery = `mutation DeleteProgram($programId: ID!) {
+      deleteProgram(programId: $programId)
+    }`
+
+      const deleteProgramMutationPayload = {
+        query: deleteProgramQuery,
+        variables: {
+          programId: programId,
+        },
+      }
+
+      return await this.request(deleteProgramMutationPayload)
+    } catch (error) {
+      return Promise.resolve(false)
+    }
   }
 }
