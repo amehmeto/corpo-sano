@@ -172,4 +172,21 @@ export class GraphQLWorkoutGateway
   create(workoutInput: WorkoutInput): Promise<Workout> {
     throw new Error('Method not implemented.')
   }
+
+  async delete(workoutId: string): Promise<boolean> {
+    try {
+      const deleteWorkoutPayload = {
+        query: `mutation DeleteWorkout($workoutId: ID!) {
+          deleteWorkout(workoutId: $workoutId)
+        }`,
+        variables: {
+          workoutId: workoutId,
+        },
+      }
+
+      return await this.request(deleteWorkoutPayload)
+    } catch (e) {
+      throw this.handleError(e)
+    }
+  }
 }
