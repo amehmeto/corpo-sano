@@ -6,7 +6,8 @@ export class ProgramMapper {
     return new Program(
       rawProgram.id,
       rawProgram.title,
-      rawProgram.description,
+      //TODO: Program description should come from back-end.
+      //rawProgram.description,
       rawProgram.workouts.map((workout: any) =>
         WorkoutMapper.mapToDomain(workout),
       ),
