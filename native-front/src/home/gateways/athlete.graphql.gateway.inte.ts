@@ -7,6 +7,7 @@ import {
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
 import { DailyTask } from '../entities/daily-task.entity'
+import { HardCodedValuesEnum } from '../../tests/hard-coded-values.enum'
 
 describe('Athlete Gateway', () => {
   let athleteGateway: AthleteGateway
@@ -25,7 +26,7 @@ describe('Athlete Gateway', () => {
   })
 
   it('should find an athlete by id', async () => {
-    const athleteId = '93c87b16-9c92-4440-9ce3-658050ba8dd8'
+    const athleteId = HardCodedValuesEnum.athleteId
     const expectedDailyTask = expect.any(DailyTask)
     const expectedMappedAthlete = expect.any(Athlete)
 

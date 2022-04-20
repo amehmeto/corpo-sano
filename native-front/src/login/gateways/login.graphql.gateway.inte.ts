@@ -5,6 +5,7 @@ import {
   deletePipe,
   initializeIntegrationTestEnvironment,
 } from '../../tests/initializeIntegrationTestEnvironment'
+import { HardCodedValuesEnum } from '../../tests/hard-coded-values.enum'
 
 describe('Login Gateway', () => {
   let loginGateway: LoginGateway
@@ -23,7 +24,7 @@ describe('Login Gateway', () => {
   })
 
   it('should return token', async () => {
-    const payload = { email: 'Shaniya46@hotmail.com', password: 'qwerty' }
+    const payload = { email: HardCodedValuesEnum.athleteEmail, password: HardCodedValuesEnum.athletePassword }
     const expectedToken = expect.any(String)
 
     const retrievedToken = await loginGateway.login(payload)

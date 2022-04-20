@@ -75,4 +75,12 @@ export class InMemoryWorkoutGateway implements WorkoutGateway {
       [] as Workout[],
     )
   }
+
+  async delete(workoutId: string): Promise<boolean> {
+    //await this.updateWorkouts()
+
+    /*const workout = this.workouts.find((_workout) => _workout.id === workoutId)
+    if (!workout) throw new Error('Workout not found')*/
+    return Promise.resolve(true)
+  }
 }

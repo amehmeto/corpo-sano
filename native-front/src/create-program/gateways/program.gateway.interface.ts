@@ -9,4 +9,5 @@ export interface ProgramGateway {
   findById(programId: string): Promise<Program | undefined>
   addWorkout(programId: string, workoutInput: WorkoutInput): Promise<Workout>
   deleteWorkout(programId: string, workoutId: string): Promise<boolean>
+  deleteProgram(programId: string): Promise<boolean>
 }
