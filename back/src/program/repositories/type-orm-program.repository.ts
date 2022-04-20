@@ -15,4 +15,8 @@ export class TypeOrmProgramRepository
   private sortByCreatedAt(a: Program, b: Program) {
     return a.createdAt >= b.createdAt ? 1 : -1
   }
+
+  async getProgram(programId: string): Promise<Program> {
+    return this.findOne({ id: programId })
+  }
 }
