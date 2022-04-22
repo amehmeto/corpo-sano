@@ -5,12 +5,19 @@ import {
   ProgramRepository,
 } from './repositories/program-repository.interface'
 import { UpdateResult } from 'typeorm'
+import {
+  WORKOUT_REPOSITORY,
+  WorkoutRepository,
+} from '../workout/repositories/workout.repository.interface'
 
 @Injectable()
 export class ProgramService {
   constructor(
     @Inject(PROGRAM_REPOSITORY)
     private readonly programRepository: ProgramRepository,
+
+    @Inject(WORKOUT_REPOSITORY)
+    private readonly workoutRepository: WorkoutRepository,
   ) {}
 
   async create(title: string): Promise<Program> {
@@ -21,7 +28,9 @@ export class ProgramService {
   }
 
   async getProgram(programId: string): Promise<Program> {
-    return this.programRepository.getProgram(programId)
+    const program = await this.programRepository.getProgram(programId)
+    program.workouts = await this.workoutRepository.findByProgramId(programId)
+    return program
   }
 
   async getAllPrograms(): Promise<Program[]> {

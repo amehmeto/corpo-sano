@@ -62,7 +62,7 @@ describe('Program Service', () => {
 
   it('should soft delete a program', async () => {
     const [program] = await programRepository.find()
-    let expectedProgram = new UpdateResult()
+    const expectedProgram = new UpdateResult()
 
     const softDeletedProgram = await programService.softDelete(program.id)
 
