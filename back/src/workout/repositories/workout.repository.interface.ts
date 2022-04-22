@@ -8,6 +8,7 @@ export interface WorkoutRepository {
   find(): Promise<Workout[]>
   save(workout: Partial<Workout>): Promise<Workout>
   findById(id: string): Promise<Workout>
+  findByProgramId(programId: string): Promise<Workout[]>
   scheduleWorkout(
     workoutId: string,
     daysOfTheWeek: WeekDays[],
