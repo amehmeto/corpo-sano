@@ -15,10 +15,17 @@ import {
 import { workoutDataBuilder } from './data-builders/workout.data-builder'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { UpdateResult } from 'typeorm'
+import {
+  PROGRAM_REPOSITORY,
+  ProgramRepository,
+} from '../program/repositories/program-repository.interface'
+import { InMemoryProgramRepository } from '../program/repositories/in-memory-program.repository'
+import { HardCodedValuesEnum } from '../../test/fixtures/hard-coded-values.enum'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
   let workoutRepository: WorkoutRepository
+  let programRepository: ProgramRepository
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,12 +42,17 @@ describe('Workout Service', () => {
           provide: EXERCISE_REPOSITORY,
           useClass: InMemoryExerciseRepository,
         },
+        {
+          provide: PROGRAM_REPOSITORY,
+          useClass: InMemoryProgramRepository,
+        },
         WorkoutService,
       ],
     }).compile()
 
     workoutService = module.get<WorkoutService>(WorkoutService)
     workoutRepository = module.get<WorkoutRepository>(WORKOUT_REPOSITORY)
+    programRepository = module.get<ProgramRepository>(PROGRAM_REPOSITORY)
   })
 
   it('should be defined', () => {
@@ -49,9 +61,13 @@ describe('Workout Service', () => {
 
   it('should create a workout', async () => {
     const workoutInput = workoutInputDataBuilder()
+    const expectedProgram = await programRepository.getProgram(
+      workoutInput.programId,
+    )
     const expectedWorkout = new Workout({
       id: expect.any(String),
       title: workoutInput.title,
+      program: expectedProgram,
     })
 
     const createdWorkout = await workoutService.create(workoutInput)
@@ -125,10 +141,20 @@ describe('Workout Service', () => {
 
   it('should soft delete a workout', async () => {
     const [workout] = await workoutRepository.find()
-    let expectedWorkout = new UpdateResult()
+    const expectedWorkout = new UpdateResult()
 
     const softDeletedWorkout = await workoutService.softDelete(workout.id)
 
     expect(softDeletedWorkout).toStrictEqual(expectedWorkout)
+  })
+
+  it('should get a workouts by programId', async () => {
+    const programId = HardCodedValuesEnum.programId
+
+    const [expectedWorkout] = await workoutRepository.findByProgramId(programId)
+
+    const [retrievedWorkout] = await workoutService.getByProgramId(programId)
+
+    expect(retrievedWorkout).toStrictEqual(expectedWorkout)
   })
 })

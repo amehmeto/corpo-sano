@@ -18,6 +18,10 @@ import { WorkoutInput } from './types/workout-input.type'
 import { UpdateWorkoutInput } from './types/update-workout.input'
 import { PatchWorkoutInput } from './types/patch-workout.input'
 import { UpdateResult } from 'typeorm'
+import {
+  PROGRAM_REPOSITORY,
+  ProgramRepository,
+} from '../program/repositories/program-repository.interface'
 
 @Injectable()
 export class WorkoutService {
@@ -28,12 +32,18 @@ export class WorkoutService {
     private readonly exerciseTemplateRepository: ExerciseTemplateRepository,
     @Inject(EXERCISE_REPOSITORY)
     private readonly exerciseRepository: ExerciseRepository,
+    @Inject(PROGRAM_REPOSITORY)
+    private readonly programRepository: ProgramRepository,
   ) {}
 
   async create(workoutInput: WorkoutInput): Promise<Workout> {
+    const program = await this.programRepository.getProgram(
+      workoutInput.programId,
+    )
     const workout = new Workout({
       id: uuid(),
       title: workoutInput.title,
+      program,
     })
     return this.workoutRepository.save(workout)
   }
@@ -47,6 +57,10 @@ export class WorkoutService {
 
   async getById(workoutId: string): Promise<Workout> {
     return this.workoutRepository.findById(workoutId)
+  }
+
+  async getByProgramId(programId: string): Promise<Workout[]> {
+    return this.workoutRepository.findByProgramId(programId)
   }
 
   async update(newWorkout: UpdateWorkoutInput): Promise<Workout> {

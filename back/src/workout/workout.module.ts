@@ -10,6 +10,8 @@ import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { TypeOrmSessionRepository } from '../session/repositories/session.typeorm.repository'
 import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-exercises.use-case'
+import { TypeOrmProgramRepository } from '../program/repositories/type-orm-program.repository'
+import { PROGRAM_REPOSITORY } from '../program/repositories/program-repository.interface'
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-e
       TypeOrmExerciseRepository,
       TypeOrmWorkoutRepository,
       TypeOrmSessionRepository,
+      TypeOrmProgramRepository,
     ]),
   ],
   providers: [
@@ -32,6 +35,10 @@ import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-e
     {
       provide: EXERCISE_TEMPLATE_REPOSITORY,
       useExisting: getRepositoryToken(TypeOrmExerciseTemplateRepository),
+    },
+    {
+      provide: PROGRAM_REPOSITORY,
+      useExisting: getRepositoryToken(TypeOrmProgramRepository),
     },
     WorkoutResolver,
     WorkoutService,
