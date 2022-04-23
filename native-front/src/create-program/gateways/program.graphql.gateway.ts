@@ -18,6 +18,10 @@ export class GraphQLProgramGateway
           createProgram(title: $title) {
             id
             title
+            workouts {
+              id
+              title
+            }
           }
         }`,
         variables: {
