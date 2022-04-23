@@ -7,7 +7,8 @@ import {
   ProgramRepository,
 } from './repositories/program-repository.interface'
 import { UpdateResult } from 'typeorm'
-import faker from '@faker-js/faker'
+import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
+import { InMemoryWorkoutRepository } from '../workout/repositories/in-memory-workout.repository'
 
 describe('Program Service', () => {
   let programService: ProgramService
@@ -19,6 +20,10 @@ describe('Program Service', () => {
         {
           provide: PROGRAM_REPOSITORY,
           useClass: InMemoryProgramRepository,
+        },
+        {
+          provide: WORKOUT_REPOSITORY,
+          useClass: InMemoryWorkoutRepository,
         },
         ProgramService,
       ],

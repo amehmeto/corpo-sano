@@ -15,6 +15,7 @@ import { workoutDataBuilder } from '../data-builders/workout.data-builder'
 import { InMemoryWorkoutRepository } from '../repositories/in-memory-workout.repository'
 import { Workout } from '../entities/workout.entity'
 import { Exercise } from '../../exercise/entities/exercise.entity'
+import { programFixture } from '../../program/data-builders/program.data-builder'
 
 describe('FillWorkoutWithExercises UseCase', () => {
   let fillWorkoutWithExercisesUseCase: FillWorkoutWithExercisesUseCase
@@ -60,6 +61,7 @@ describe('FillWorkoutWithExercises UseCase', () => {
     const fillWorkoutWithExercisesInput = {
       workoutId: workout.id,
       exerciseTemplateIds: exerciseTemplates.map((exercise) => exercise.id),
+      program: programFixture,
     }
     const expectedExercises = await Promise.all(
       exerciseTemplates.map(async (template, index) => {
@@ -75,6 +77,7 @@ describe('FillWorkoutWithExercises UseCase', () => {
         id: fillWorkoutWithExercisesInput.workoutId,
         exercises: expectedExercises,
         sessions: workout.sessions,
+        program: programFixture,
       }),
     )
 

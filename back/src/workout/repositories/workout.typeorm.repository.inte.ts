@@ -20,7 +20,6 @@ import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 import { programFixture } from '../../program/data-builders/program.data-builder'
-import { Connection } from 'typeorm'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
