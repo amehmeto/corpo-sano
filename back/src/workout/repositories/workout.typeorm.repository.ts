@@ -8,7 +8,16 @@ export class TypeOrmWorkoutRepository
   implements WorkoutRepository
 {
   findByProgramId(programId: string): Promise<Workout[]> {
-    throw new Error('Method not implemented.')
+    const workout = this.find({
+      relations: ['program'],
+      where: {
+        program: {
+          id: programId,
+        },
+      },
+    })
+
+    return Promise.resolve(workout)
   }
 
   async findById(workoutId: string): Promise<Workout> {
