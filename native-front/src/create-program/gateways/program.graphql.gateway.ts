@@ -18,6 +18,10 @@ export class GraphQLProgramGateway
           createProgram(title: $title) {
             id
             title
+            workouts {
+              id
+              title
+            }
           }
         }`,
         variables: {
@@ -99,7 +103,8 @@ export class GraphQLProgramGateway
         },
       }
 
-      return await this.request(getProgramQueryPayload)
+      const getProgram = await this.request(getProgramQueryPayload)
+      return ProgramMapper.mapToDomain(getProgram)
     } catch (e) {
       throw this.handleError(e)
     }
