@@ -7,7 +7,10 @@ import {
   ProgramRepository,
 } from './repositories/program-repository.interface'
 import { UpdateResult } from 'typeorm'
-import faker from '@faker-js/faker'
+import { workoutDataBuilder, workoutFixture } from '../workout/data-builders/workout.data-builder'
+import { Workout } from '../workout/entities/workout.entity'
+import { workoutInputDataBuilder } from '../workout/data-builders/workout-input.data-builder'
+import { programDataBuilder } from './data-builders/program.data-builder'
 
 describe('Program Service', () => {
   let programService: ProgramService
@@ -53,7 +56,8 @@ describe('Program Service', () => {
   })
 
   it('should get all programs', async () => {
-    const expectedPrograms = [new Program(), new Program()]
+    const workouts = [new Workout(workoutFixture)]
+    const expectedPrograms = [new Program(), new Program(), new Program({workouts})]
 
     const retrievedPrograms = await programService.getAllPrograms()
 
@@ -62,10 +66,26 @@ describe('Program Service', () => {
 
   it('should soft delete a program', async () => {
     const [program] = await programRepository.find()
-    let expectedProgram = new UpdateResult()
+    const expectedProgram = new UpdateResult()
 
     const softDeletedProgram = await programService.softDelete(program.id)
 
     expect(softDeletedProgram).toStrictEqual(expectedProgram)
+  })
+
+  it('should save workout to program', async () => {
+    const { programId } = workoutInputDataBuilder()
+    const workout = new Workout(workoutDataBuilder())
+    const expectedProgram = programDataBuilder({
+      id: programId,
+      workouts: [workout],
+    })
+
+    const receivedProgram = await programRepository.saveWorkoutToProgram(
+      programId,
+      workout,
+    )
+
+    expect(receivedProgram.workouts).toStrictEqual(expectedProgram.workouts)
   })
 })
