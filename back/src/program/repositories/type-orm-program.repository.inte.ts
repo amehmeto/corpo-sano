@@ -4,7 +4,7 @@ import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
 import { Program } from '../entities/program.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
-import { programDataBuilder } from '../data-builders/program.data-builder'
+import { programFixtures } from '../data-builders/program.data-builder'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
@@ -12,8 +12,8 @@ import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/t
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
-
-const programFixtures = [programDataBuilder(), programDataBuilder()]
+import { Workout } from '../../workout/entities/workout.entity'
+import { workoutFixture } from '../../workout/data-builders/workout.data-builder'
 
 async function createProgramFixture(
   programRepository: TypeOrmProgramRepository,
@@ -61,22 +61,40 @@ describe('TypeOrm Program Repository', () => {
   })
 
   it('should get a program', async () => {
-    const programId = programFixtures[0].id
-    const expectedProgram = new Program(programFixtures[0])
+    const programId = programFixtures[2].id
+    const expectedProgram = new Program(programFixtures[2])
 
     const retrievedProgram = await programRepository.getProgram(programId)
 
-    expect(retrievedProgram).toStrictEqual(expectedProgram)
+    expect(retrievedProgram.workouts[0]).toStrictEqual(
+      expectedProgram.workouts[0],
+    )
   })
 
   it('should get all programs', async () => {
     const expectedPrograms = [
       new Program(programFixtures[0]),
       new Program(programFixtures[1]),
+      new Program(programFixtures[2]),
     ]
 
     const retrievedPrograms = await programRepository.getAllPrograms()
 
     expect(retrievedPrograms).toStrictEqual(expectedPrograms)
+  })
+
+  it('should save workouts to program', async () => {
+    const [program] = await programRepository.find()
+    const workout = new Workout(workoutFixture)
+    program.workouts.push(workout)
+
+    const expectedProgram = program
+
+    const retrievedProgram = await programRepository.saveWorkoutToProgram(
+      program.id,
+      workout,
+    )
+
+    expect(retrievedProgram).toStrictEqual(expectedProgram)
   })
 })
