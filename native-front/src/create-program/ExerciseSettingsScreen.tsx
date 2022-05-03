@@ -37,7 +37,6 @@ export default function ExerciseSettingsScreen({
   )
 
   useEffect(() => {
-    console.log('wesh 1')
     getExerciseUseCase.execute(exerciseId).then((_exercise) => {
       if (_exercise) setExercise(_exercise)
     })
