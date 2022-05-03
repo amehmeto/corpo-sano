@@ -1,20 +1,29 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { exerciseDataBuilder } from '../_data-builders/exercise.data-builder'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
+import { Button } from '../../design-system/Button'
+import { selectWantedExercise } from './usecases/select-exercise.handler'
+import { Routes } from '../routers/HomeRouter'
+import { Colors } from '../../design-system/enums/colors.enum'
 
-export default function AddExercisesScreen() {
-  const exercisesElements = [
-    exerciseDataBuilder(),
-    exerciseDataBuilder(),
-    exerciseDataBuilder(),
-  ].map((exercise, index) => {
+export default function AddExercisesScreen({navigation}) {
+  const [exercisesData, setExercisesData] = useState([exerciseDataBuilder(), exerciseDataBuilder(), exerciseDataBuilder()])
+
+  const exercisesElements = exercisesData.map((exercise, index) => {
     return (
-      <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.exercise}>{exercise.template.title}</Text>
-      </View>
+      <TouchableOpacity key={index} style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+        setExercisesData(selectWantedExercise(exercisesData, index))
+      }}>
+        <Text
+          style={[styles.exercise, { backgroundColor: exercise.isSelected ? Colors.PRIMARY_200 : 'white' }]}>{exercise.template.title}</Text>
+      </TouchableOpacity>
     )
   })
+
+  function goToCreateExerciseScreen() {
+    navigation.navigate(Routes.CREATE_EXERCISE)
+  }
 
   return (
     <View style={screenContainerStyle.container}>
@@ -26,7 +35,8 @@ export default function AddExercisesScreen() {
         <View style={styles.exercises}>{exercisesElements}</View>
       </ScrollView>
 
-      <Button title={'Create workout'} onPress={() => {}} />
+      <Button onPress={goToCreateExerciseScreen} text={'Create Exercise'}/>
+      <Button onPress={() => {}} text={'Add Selected Exercise'}/>
     </View>
   )
 }
