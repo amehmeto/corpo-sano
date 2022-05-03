@@ -25,8 +25,6 @@ export default function AddExercisesScreen({ navigation }) {
     })
   }
 
-  const exercisesElements = getExercisesElements()
-
   function goToCreateExerciseScreen() {
     navigation.navigate(Routes.CREATE_EXERCISE)
   }
@@ -38,7 +36,7 @@ export default function AddExercisesScreen({ navigation }) {
       <Text>Choose among the exercises below :</Text>
 
       <ScrollView style={styles.scroll}>
-        <View style={styles.exercises}>{exercisesElements}</View>
+        <View style={styles.exercises}>{getExercisesElements()}</View>
       </ScrollView>
 
       <Button onPress={goToCreateExerciseScreen} text={'Create Exercise'}/>
