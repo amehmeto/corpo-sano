@@ -7,19 +7,25 @@ import { selectWantedExercise } from './usecases/select-exercise.handler'
 import { Routes } from '../routers/HomeRouter'
 import { Colors } from '../../design-system/enums/colors.enum'
 
-export default function AddExercisesScreen({navigation}) {
-  const [exercisesData, setExercisesData] = useState([exerciseDataBuilder(), exerciseDataBuilder(), exerciseDataBuilder()])
+export default function AddExercisesScreen({ navigation }) {
+  const [exercises, setExercises] = useState([exerciseDataBuilder(), exerciseDataBuilder(), exerciseDataBuilder()])
 
-  const exercisesElements = exercisesData.map((exercise, index) => {
-    return (
-      <TouchableOpacity key={index} style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
-        setExercisesData(selectWantedExercise(exercisesData, index))
-      }}>
-        <Text
-          style={[styles.exercise, { backgroundColor: exercise.isSelected ? Colors.PRIMARY_200 : 'white' }]}>{exercise.template.title}</Text>
-      </TouchableOpacity>
-    )
-  })
+  function getExercisesElements() {
+    return exercises.map((exercise, index) => {
+      const exerciseBackgroundColor = exercise.isSelected ? Colors.PRIMARY_200 : Colors.SUCCESS_100
+
+      return (
+        <TouchableOpacity key={index} style={styles.exerciseElement} onPress={() => {
+          setExercises(selectWantedExercise(exercises, index))
+        }}>
+          <Text
+            style={[styles.exercise, { backgroundColor: exerciseBackgroundColor }]}>{exercise.template.title}</Text>
+        </TouchableOpacity>
+      )
+    })
+  }
+
+  const exercisesElements = getExercisesElements()
 
   function goToCreateExerciseScreen() {
     navigation.navigate(Routes.CREATE_EXERCISE)
@@ -36,7 +42,8 @@ export default function AddExercisesScreen({navigation}) {
       </ScrollView>
 
       <Button onPress={goToCreateExerciseScreen} text={'Create Exercise'}/>
-      <Button onPress={() => {}} text={'Add Selected Exercise'}/>
+      <Button onPress={() => {
+      }} text={'Add Selected Exercise'}/>
     </View>
   )
 }
@@ -77,6 +84,10 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     margin: 10,
     flexGrow: 1,
+  },
+  exerciseElement: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   scroll: {
     maxHeight: '60%',
