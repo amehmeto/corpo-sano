@@ -52,7 +52,7 @@ export default function EditWorkoutScreen({
   const updateWorkout = async () => {
     if (workout) await updateWorkoutEditUseCase.execute(workoutId, workout)
     navigation.push(Routes.PROGRAM_PREVIEW, {
-      programId: programId,
+      programId,
     })
   }
 
