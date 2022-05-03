@@ -69,7 +69,7 @@ export default function ProgramPreviewScreen({
     getProgramUseCase.execute(programId).then((_program) => {
       setProgram(_program)
     })
-  })
+  }, [])
 
   function goToCreateWorkout() {
     navigation.navigate(Routes.CREATE_WORKOUT, {
@@ -96,6 +96,7 @@ export default function ProgramPreviewScreen({
         navigate={() => {
           navigation.navigate(Routes.EDIT_WORKOUT, {
             workoutId: workout.id,
+            programId: programId
           })
         }}
         openDeleteModal={() => {
@@ -112,7 +113,7 @@ export default function ProgramPreviewScreen({
   ) : (
     <View style={screenContainerStyle.container}>
       <Text style={styles.title}>{program.title}</Text>
-      <Text style={styles.description}>{program.description}</Text>
+      {/*<Text style={styles.description}>{program.description}</Text>*/}
       <FlatList
         style={styles.workoutPreviewList}
         data={program.workouts}
