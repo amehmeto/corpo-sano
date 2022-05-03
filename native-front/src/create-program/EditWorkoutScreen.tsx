@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { UpdateWorkoutUseCase } from './usecases/update-workout.usecase'
-import { v4 as uuid } from 'uuid'
 import { scheduleWantedDays } from './handlers/edit-workout-screen/schedule-days.handler'
 import { Button } from '../../design-system/Button'
 import { RouteParams, Routes } from '../routers/HomeRouter'
@@ -36,6 +35,7 @@ export default function EditWorkoutScreen({
   navigation,
 }: EditWorkoutScreenProps) {
   const workoutId = route.params.workoutId
+  const programId = route.params.programId
 
   const [workout, setWorkout] = useState<Workout | undefined>(undefined)
 
@@ -52,8 +52,12 @@ export default function EditWorkoutScreen({
   const updateWorkout = async () => {
     if (workout) await updateWorkoutEditUseCase.execute(workoutId, workout)
     navigation.push(Routes.PROGRAM_PREVIEW, {
-      programId: uuid(),
+      programId: programId,
     })
+  }
+
+  const addExercise = async () => {
+    navigation.push(Routes.ADD_EXERCISE)
   }
 
   const renderExerciseCard = ({
@@ -104,6 +108,7 @@ export default function EditWorkoutScreen({
         horizontal={true}
       />
 
+      <Button text={'Add Exercise'} onPress={addExercise} />
       <Button text={'Update Workout'} onPress={updateWorkout} />
     </View>
   )
