@@ -7,7 +7,10 @@ import {
   ProgramRepository,
 } from './repositories/program-repository.interface'
 import { UpdateResult } from 'typeorm'
-import { workoutDataBuilder, workoutFixture } from '../workout/data-builders/workout.data-builder'
+import {
+  workoutDataBuilder,
+  workoutFixture,
+} from '../workout/data-builders/workout.data-builder'
 import { Workout } from '../workout/entities/workout.entity'
 import { workoutInputDataBuilder } from '../workout/data-builders/workout-input.data-builder'
 import { programDataBuilder } from './data-builders/program.data-builder'
@@ -56,8 +59,7 @@ describe('Program Service', () => {
   })
 
   it('should get all programs', async () => {
-    const workouts = [new Workout(workoutFixture)]
-    const expectedPrograms = [new Program(), new Program(), new Program({workouts})]
+    const expectedPrograms = [new Program(), new Program()]
 
     const retrievedPrograms = await programService.getAllPrograms()
 

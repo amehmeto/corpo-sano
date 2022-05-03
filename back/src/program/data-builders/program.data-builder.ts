@@ -20,5 +20,5 @@ export const programFixture = programDataBuilder({
 export const programFixtures = [
   programDataBuilder(),
   programDataBuilder(),
-  programDataBuilder({ workouts: [new Workout(workoutFixture)] }),
+  programDataBuilder(),
 ]

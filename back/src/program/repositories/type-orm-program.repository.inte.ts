@@ -4,7 +4,10 @@ import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
 import { Program } from '../entities/program.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
-import { programFixtures } from '../data-builders/program.data-builder'
+import {
+  programFixture,
+  programFixtures,
+} from '../data-builders/program.data-builder'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
@@ -13,7 +16,14 @@ import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typ
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 import { Workout } from '../../workout/entities/workout.entity'
-import { workoutFixture } from '../../workout/data-builders/workout.data-builder'
+import {
+  workoutDataBuilder,
+  workoutFixture,
+} from '../../workout/data-builders/workout.data-builder'
+import { exerciseFixtures } from '../../exercise/data-builders/exercise.data-builder'
+import { sessionFixture } from '../../session/data-builders/session.data-builder'
+import { performanceFixture } from '../../performance/data-builders/performance.data-builder'
+import { Session } from '../../session/entities/session.entity'
 
 async function createProgramFixture(
   programRepository: TypeOrmProgramRepository,
@@ -66,9 +76,7 @@ describe('TypeOrm Program Repository', () => {
 
     const retrievedProgram = await programRepository.getProgram(programId)
 
-    expect(retrievedProgram.workouts[0]).toStrictEqual(
-      expectedProgram.workouts[0],
-    )
+    expect(retrievedProgram).toStrictEqual(expectedProgram)
   })
 
   it('should get all programs', async () => {
