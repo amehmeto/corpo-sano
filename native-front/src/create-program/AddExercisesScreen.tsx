@@ -16,7 +16,7 @@ type AddExerciseScreenProps = NativeStackScreenProps<
 export default function AddExercisesScreen({ navigation }: AddExerciseScreenProps) {
   const [exercises, setExercises] = useState([exerciseDataBuilder(), exerciseDataBuilder(), exerciseDataBuilder()])
 
-  const exercisesElement = exercises.map((exercise, index) => {
+  const exercisesElements = exercises.map((exercise, index) => {
       const exerciseBackgroundColor = exercise.isSelected ? Colors.PRIMARY_200 : Colors.SUCCESS_100
 
       return (
@@ -40,7 +40,7 @@ export default function AddExercisesScreen({ navigation }: AddExerciseScreenProp
       <Text>Choose among the exercises below :</Text>
 
       <ScrollView style={styles.scroll}>
-        <View style={styles.exercises}>{exercisesElement}</View>
+        <View style={styles.exercises}>{exercisesElements}</View>
       </ScrollView>
 
       <Button onPress={goToCreateExerciseScreen} text={'Create Exercise'}/>
