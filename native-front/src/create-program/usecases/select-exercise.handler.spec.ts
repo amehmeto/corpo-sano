@@ -5,17 +5,17 @@ import { selectWantedExercise } from './select-exercise.handler'
 
 describe('Select Exercise', () => {
   it('should select exercise', async () => {
-    const exercisesData = [
+    const exercises = [
       exerciseDataBuilder(),
       exerciseDataBuilder(),
     ]
 
     const expectedExercises = [
-      exerciseDataBuilder({ ...exercisesData[0], isSelected: true }),
-      exerciseDataBuilder(exercisesData[1]),
+      exerciseDataBuilder({ ...exercises[0], isSelected: true }),
+      exerciseDataBuilder(exercises[1]),
     ]
 
-    const retrievedExercises = selectWantedExercise(exercisesData, 0)
+    const retrievedExercises = selectWantedExercise(exercises, 0)
 
     expect(retrievedExercises).toStrictEqual(expectedExercises)
   })

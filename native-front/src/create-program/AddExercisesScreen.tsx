@@ -4,14 +4,19 @@ import { exerciseDataBuilder } from '../_data-builders/exercise.data-builder'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { Button } from '../../design-system/Button'
 import { selectWantedExercise } from './usecases/select-exercise.handler'
-import { Routes } from '../routers/HomeRouter'
+import { RouteParams, Routes } from '../routers/HomeRouter'
 import { Colors } from '../../design-system/enums/colors.enum'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-export default function AddExercisesScreen({ navigation }) {
+type AddExerciseScreenProps = NativeStackScreenProps<
+  RouteParams,
+  Routes.ADD_EXERCISE
+  >
+
+export default function AddExercisesScreen({ navigation }: AddExerciseScreenProps) {
   const [exercises, setExercises] = useState([exerciseDataBuilder(), exerciseDataBuilder(), exerciseDataBuilder()])
 
-  function getExercisesElements() {
-    return exercises.map((exercise, index) => {
+  const exercisesElement = exercises.map((exercise, index) => {
       const exerciseBackgroundColor = exercise.isSelected ? Colors.PRIMARY_200 : Colors.SUCCESS_100
 
       return (
@@ -23,7 +28,6 @@ export default function AddExercisesScreen({ navigation }) {
         </TouchableOpacity>
       )
     })
-  }
 
   function goToCreateExerciseScreen() {
     navigation.navigate(Routes.CREATE_EXERCISE)
@@ -36,7 +40,7 @@ export default function AddExercisesScreen({ navigation }) {
       <Text>Choose among the exercises below :</Text>
 
       <ScrollView style={styles.scroll}>
-        <View style={styles.exercises}>{getExercisesElements()}</View>
+        <View style={styles.exercises}>{exercisesElement}</View>
       </ScrollView>
 
       <Button onPress={goToCreateExerciseScreen} text={'Create Exercise'}/>

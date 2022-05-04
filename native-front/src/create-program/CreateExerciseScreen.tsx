@@ -7,21 +7,15 @@ import { FontSize } from '../../design-system/enums/font-size.enum'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { Exercise } from './entities/exercise.entity'
-import { GetExerciseUseCase } from './usecases/get-exercise.usecase'
-import { exerciseGateway } from '../_infrastructure/dependency-injection.container'
 import { ExerciseTemplate } from './entities/exercise-template.entity'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-
-const getExerciseUseCase = new GetExerciseUseCase(exerciseGateway)
 
 type CreateExerciseScreenProps = NativeStackScreenProps<
   RouteParams,
   Routes.CREATE_EXERCISE
   >
 
-export default function CreateExerciseScreen({
-                                                 navigation,
-                                               }: CreateExerciseScreenProps) {
+export default function CreateExerciseScreen({navigation}: CreateExerciseScreenProps) {
 
   const [exercise, setExercise] = useState<Exercise>(
     new Exercise(
