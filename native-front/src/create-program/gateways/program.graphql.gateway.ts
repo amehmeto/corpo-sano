@@ -29,8 +29,8 @@ export class GraphQLProgramGateway
         },
       }
 
-      const createProgram = await this.request(createProgramMutationPayload)
-      return ProgramMapper.mapToDomain(createProgram)
+      const createdProgram = await this.request(createProgramMutationPayload)
+      return ProgramMapper.mapToDomain(createdProgram)
     } catch (e) {
       throw this.handleError(e)
     }
@@ -65,7 +65,7 @@ export class GraphQLProgramGateway
     throw new Error('Method not implemented.')
   }
 
-  //TODO to be created in backend
+  // TODO: to be created in backend
   async find(): Promise<Program[]> {
     try {
       const findProgramQueryPayload = {
@@ -78,7 +78,7 @@ export class GraphQLProgramGateway
         variables: {},
       }
 
-      return await this.request(findProgramQueryPayload)
+      return this.request(findProgramQueryPayload)
     } catch (e) {
       throw this.handleError(e)
     }
@@ -103,8 +103,8 @@ export class GraphQLProgramGateway
         },
       }
 
-      const getProgram = await this.request(getProgramQueryPayload)
-      return ProgramMapper.mapToDomain(getProgram)
+      const rawProgram = await this.request(getProgramQueryPayload)
+      return ProgramMapper.mapToDomain(rawProgram)
     } catch (e) {
       throw this.handleError(e)
     }
@@ -113,8 +113,8 @@ export class GraphQLProgramGateway
   async deleteProgram(programId: string): Promise<boolean> {
     try {
       const deleteProgramQuery = `mutation DeleteProgram($programId: ID!) {
-      deleteProgram(programId: $programId)
-    }`
+        deleteProgram(programId: $programId)
+      }`
 
       const deleteProgramMutationPayload = {
         query: deleteProgramQuery,
@@ -123,7 +123,7 @@ export class GraphQLProgramGateway
         },
       }
 
-      return await this.request(deleteProgramMutationPayload)
+      return this.request(deleteProgramMutationPayload)
     } catch (error) {
       return Promise.resolve(false)
     }
