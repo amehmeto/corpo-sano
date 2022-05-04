@@ -96,7 +96,7 @@ export default function ProgramPreviewScreen({
         navigate={() => {
           navigation.navigate(Routes.EDIT_WORKOUT, {
             workoutId: workout.id,
-            programId: programId
+            programId,
           })
         }}
         openDeleteModal={() => {
