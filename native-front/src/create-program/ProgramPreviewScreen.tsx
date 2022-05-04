@@ -113,6 +113,7 @@ export default function ProgramPreviewScreen({
   ) : (
     <View style={screenContainerStyle.container}>
       <Text style={styles.title}>{program.title}</Text>
+      // TODO: remove or use it
       {/*<Text style={styles.description}>{program.description}</Text>*/}
       <FlatList
         style={styles.workoutPreviewList}
