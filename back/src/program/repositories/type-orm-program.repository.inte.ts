@@ -17,13 +17,8 @@ import { TypeOrmSessionRepository } from '../../session/repositories/session.typ
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 import { Workout } from '../../workout/entities/workout.entity'
 import {
-  workoutDataBuilder,
   workoutFixture,
 } from '../../workout/data-builders/workout.data-builder'
-import { exerciseFixtures } from '../../exercise/data-builders/exercise.data-builder'
-import { sessionFixture } from '../../session/data-builders/session.data-builder'
-import { performanceFixture } from '../../performance/data-builders/performance.data-builder'
-import { Session } from '../../session/entities/session.entity'
 
 async function createProgramFixture(
   programRepository: TypeOrmProgramRepository,
@@ -71,8 +66,8 @@ describe('TypeOrm Program Repository', () => {
   })
 
   it('should get a program', async () => {
-    const programId = programFixtures[2].id
-    const expectedProgram = new Program(programFixtures[2])
+    const programId = programFixtures[0].id
+    const expectedProgram = new Program(programFixtures[0])
 
     const retrievedProgram = await programRepository.getProgram(programId)
 
@@ -80,11 +75,7 @@ describe('TypeOrm Program Repository', () => {
   })
 
   it('should get all programs', async () => {
-    const expectedPrograms = [
-      new Program(programFixtures[0]),
-      new Program(programFixtures[1]),
-      new Program(programFixtures[2]),
-    ]
+    const expectedPrograms = programFixtures.map(fixture => new Program(fixture))
 
     const retrievedPrograms = await programRepository.getAllPrograms()
 
@@ -98,11 +89,11 @@ describe('TypeOrm Program Repository', () => {
 
     const expectedProgram = program
 
-    const retrievedProgram = await programRepository.updateProgram(
+    const updatedProgram = await programRepository.updateProgram(
       program.id,
       workout,
     )
 
-    expect(retrievedProgram).toStrictEqual(expectedProgram)
+    expect(updatedProgram).toStrictEqual(expectedProgram)
   })
 })

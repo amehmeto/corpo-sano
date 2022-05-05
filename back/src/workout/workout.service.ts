@@ -37,16 +37,18 @@ export class WorkoutService {
   ) {}
 
   async create(workoutInput: WorkoutInput): Promise<Workout> {
-    const workoutInstance = new Workout({
+    const workout = new Workout({
       id: uuid(),
       title: workoutInput.title,
     })
-    const workout = await this.workoutRepository.save(workoutInstance)
+
+    const createdWorkout = await this.workoutRepository.save(workout)
+
     await this.programRepository.updateProgram(
       workoutInput.programId,
-      workout,
+      createdWorkout,
     )
-    return workout
+    return createdWorkout
   }
 
   async scheduleWorkout(

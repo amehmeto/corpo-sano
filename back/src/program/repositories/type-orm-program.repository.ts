@@ -32,6 +32,8 @@ export class TypeOrmProgramRepository
   ): Promise<Program> {
     const program = await this.getProgram(programId)
     program.workouts.push(workout)
-    return Promise.resolve(this.save(program))
+    const savedProgram = this.save(program)
+
+    return Promise.resolve(savedProgram)
   }
 }
