@@ -26,7 +26,7 @@ export class TypeOrmProgramRepository
     )
   }
 
-  async saveWorkoutToProgram(
+  async updateProgram(
     programId: string,
     workout: Workout,
   ): Promise<Program> {

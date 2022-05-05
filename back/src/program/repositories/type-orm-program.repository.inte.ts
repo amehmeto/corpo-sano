@@ -98,7 +98,7 @@ describe('TypeOrm Program Repository', () => {
 
     const expectedProgram = program
 
-    const retrievedProgram = await programRepository.saveWorkoutToProgram(
+    const retrievedProgram = await programRepository.updateProgram(
       program.id,
       workout,
     )

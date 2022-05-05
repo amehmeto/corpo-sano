@@ -42,7 +42,7 @@ export class WorkoutService {
       title: workoutInput.title,
     })
     const workout = await this.workoutRepository.save(workoutInstance)
-    await this.programRepository.saveWorkoutToProgram(
+    await this.programRepository.updateProgram(
       workoutInput.programId,
       workout,
     )

@@ -83,7 +83,7 @@ describe('Program Service', () => {
       workouts: [workout],
     })
 
-    const receivedProgram = await programRepository.saveWorkoutToProgram(
+    const receivedProgram = await programRepository.updateProgram(
       programId,
       workout,
     )
