@@ -21,7 +21,8 @@ export default function AddExercisesScreen({ navigation }: AddExerciseScreenProp
 
       return (
         <TouchableOpacity key={index} style={styles.exerciseElement} onPress={() => {
-          setExercises(selectWantedExercise(exercises, index))
+          const selectedExercises = selectWantedExercise(exercises, index)
+          setExercises(selectedExercises)
         }}>
           <Text
             style={[styles.exercise, { backgroundColor: exerciseBackgroundColor }]}>{exercise.template.title}</Text>
