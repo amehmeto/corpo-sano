@@ -7,11 +7,10 @@ describe('Select Exercise', () => {
       exerciseDataBuilder(),
       exerciseDataBuilder(),
     ]
-
-    const selectedExercises = selectWantedExercise(exercises, 0)
-
     const expectedExercises = exercises
     expectedExercises[0].isSelected = true
+
+    const selectedExercises = selectWantedExercise(exercises, 0)
 
     expect(expectedExercises).toStrictEqual(selectedExercises)
   })
