@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { RestTimeSetter } from './components/RestTimeSetter'
 import { NumberSetter } from './components/NumberSetter'
@@ -7,28 +7,20 @@ import { FontSize } from '../../design-system/enums/font-size.enum'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { Exercise } from './entities/exercise.entity'
-import { GetExerciseUseCase } from './usecases/get-exercise.usecase'
-import { exerciseGateway } from '../_infrastructure/dependency-injection.container'
 import { ExerciseTemplate } from './entities/exercise-template.entity'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-const getExerciseUseCase = new GetExerciseUseCase(exerciseGateway)
-
-type ExerciseSettingsScreenProps = NativeStackScreenProps<
+type CreateExerciseScreenProps = NativeStackScreenProps<
   RouteParams,
-  Routes.EXERCISE_SETTINGS
->
+  Routes.CREATE_EXERCISE
+  >
 
-export default function ExerciseSettingsScreen({
-  navigation,
-  route,
-}: ExerciseSettingsScreenProps) {
-  const exerciseId = route.params.exerciseId
+export default function CreateExerciseScreen({navigation}: CreateExerciseScreenProps) {
 
   const [exercise, setExercise] = useState<Exercise>(
     new Exercise(
       '',
-      new ExerciseTemplate('', ''),
+      new ExerciseTemplate('', 'Abdominal'),
       120,
       0,
       { minutes: 0, seconds: '04' },
@@ -37,19 +29,16 @@ export default function ExerciseSettingsScreen({
   )
 
   useEffect(() => {
-    getExerciseUseCase.execute(exerciseId).then((_exercise) => {
-      if (_exercise) setExercise(_exercise)
-    })
   }, [])
 
-  function goToHomeScreen() {
-    navigation.navigate(Routes.HOME)
+  function goToAddExercise() {
+    navigation.navigate(Routes.ADD_EXERCISE)
   }
 
-  if (!exercise) return <Text> Loading exercise ... </Text>
   return (
     <View style={screenContainerStyle.container}>
-      <Text style={styles.title}>{exercise.template.title}</Text>
+      <Text style={styles.subTitle}>Exercise Title</Text>
+      <TextInput style={styles.textInput}/>
 
       <Text style={styles.subTitle}>Number of sets</Text>
       <NumberSetter _number={exercise.numberOfSets} />
@@ -63,7 +52,7 @@ export default function ExerciseSettingsScreen({
       <Text style={styles.subTitle}>Final rest time</Text>
       <RestTimeSetter time={exercise.finalRestTime} />
 
-      <Button text={'Save Exercise Settings'} onPress={goToHomeScreen} />
+      <Button text={'Save Exercise'} onPress={goToAddExercise} />
     </View>
   )
 }
@@ -77,4 +66,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: FontSize.HEADING_4,
   },
+  textInput: {
+    display: 'flex',
+    backgroundColor: 'white',
+    height: 30,
+  }
 })
