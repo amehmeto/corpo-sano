@@ -7,12 +7,15 @@ import { AuthModule } from '../auth/auth.module'
 import { PassportModule } from '@nestjs/passport'
 import { PROGRAM_REPOSITORY } from './repositories/program-repository.interface'
 import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
+import { TypeOrmWorkoutRepository } from '../workout/repositories/workout.typeorm.repository'
+import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       TypeOrmProgramRepository,
       TypeOrmAthleteRepository,
+      TypeOrmWorkoutRepository,
     ]),
     AuthModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -21,6 +24,10 @@ import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlet
     {
       provide: PROGRAM_REPOSITORY,
       useExisting: getRepositoryToken(TypeOrmProgramRepository),
+    },
+    {
+      provide: WORKOUT_REPOSITORY,
+      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
     },
     ProgramResolver,
     ProgramService,

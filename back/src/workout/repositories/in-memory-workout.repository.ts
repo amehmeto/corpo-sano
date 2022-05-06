@@ -6,10 +6,12 @@ import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-
 import { sessionDataBuilder } from '../../session/data-builders/session.data-builder'
 import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
 import { UpdateResult } from 'typeorm'
+import { programFixture } from '../../program/data-builders/program.data-builder'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
   private workoutsData = [
     workoutDataBuilder({
+      program: programFixture,
       exercises: [
         exerciseDataBuilder(),
         exerciseDataBuilder(),
@@ -32,6 +34,18 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
 
   findById(id: string): Promise<Workout> {
     return Promise.resolve(this.workouts.find((workout) => workout.id === id))
+  }
+
+  findByProgramId(programId: string): Promise<Workout[]> {
+    const workouts: Workout[] = []
+
+    this.workouts.forEach((workout) => {
+      if (workout.program !== undefined && workout.program.id === programId) {
+        workouts.push(workout)
+      }
+    })
+
+    return Promise.resolve(workouts)
   }
 
   save(workout: Workout): Promise<Workout> {

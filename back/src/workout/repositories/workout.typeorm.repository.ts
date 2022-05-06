@@ -7,6 +7,19 @@ export class TypeOrmWorkoutRepository
   extends Repository<Workout>
   implements WorkoutRepository
 {
+  findByProgramId(programId: string): Promise<Workout[]> {
+    const workout = this.find({
+      relations: ['program'],
+      where: {
+        program: {
+          id: programId,
+        },
+      },
+    })
+
+    return Promise.resolve(workout)
+  }
+
   async findById(workoutId: string): Promise<Workout> {
     const workout = await this.findOne(workoutId, {
       relations: ['exercises', 'sessions'],

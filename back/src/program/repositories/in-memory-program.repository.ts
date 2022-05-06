@@ -4,6 +4,7 @@ import { Program } from '../entities/program.entity'
 import { v4 as uuid } from 'uuid'
 import { programDataBuilder } from '../data-builders/program.data-builder'
 import { UpdateResult } from 'typeorm'
+import { Workout } from '../../workout/entities/workout.entity'
 
 export class InMemoryProgramRepository implements ProgramRepository {
   private programsData = [
@@ -17,6 +18,14 @@ export class InMemoryProgramRepository implements ProgramRepository {
 
   save(program: CreateProgramInput): Promise<Program> {
     return Promise.resolve(new Program({ ...program, id: uuid() }))
+  }
+
+  async updateProgram(
+    programId: string,
+    workout: Workout,
+  ): Promise<Program> {
+    const program = new Program({ workouts: [workout] })
+    return Promise.resolve(program)
   }
 
   getAllPrograms(): Promise<Program[]> {
