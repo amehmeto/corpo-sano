@@ -27,5 +27,7 @@ export function exerciseDataBuilder(exercise = {}) {
     interSetsRestTime: faker.datatype.number({ min: 0, max: 40 }),
     finalRestTime: faker.datatype.number({ min: 60, max: 180 }),
   }
-  return { ...template, ...exercise }
+  return {
+    isSelected: false,
+    ...template, ...exercise }
 }
