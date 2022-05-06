@@ -9,6 +9,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import CreateWorkoutScreen from '../create-program/CreateWorkoutScreen'
 import ProgramPreviewScreen from '../create-program/ProgramPreviewScreen'
 import React from 'react'
+import AddExercisesScreen from '../create-program/AddExercisesScreen'
+import CreateExerciseScreen from '../create-program/CreateExerciseScreen'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -28,6 +30,7 @@ export type RouteParams = {
   }
   EditWorkout: {
     workoutId: string
+    programId: string
   }
   ExerciseSettings: {
     exerciseId: string
@@ -35,6 +38,8 @@ export type RouteParams = {
   WorkoutPreview: {
     workoutId: string
   }
+  AddExercise: undefined
+  CreateExercise: undefined
   SetsRunner: undefined
   WorkoutSessionSummary: undefined
 }
@@ -49,6 +54,8 @@ const routes = [
   { name: 'WorkoutPreview', component: WorkoutPreviewScreen },
   { name: 'SetsRunner', component: SetsRunnerScreen },
   { name: 'WorkoutSessionSummary', component: WorkoutSessionSummaryScreen },
+  { name: 'AddExercise', component: AddExercisesScreen },
+  { name: 'CreateExercise', component: CreateExerciseScreen }
 ] as const
 
 export enum Routes {
@@ -61,6 +68,8 @@ export enum Routes {
   WORKOUT_PREVIEW = 'WorkoutPreview',
   SETS_RUNNER = 'SetsRunner',
   WORKOUT_SESSION_SUMMARY = 'WorkoutSessionSummary',
+  ADD_EXERCISE = 'AddExercise',
+  CREATE_EXERCISE = 'CreateExercise'
 }
 
 export function HomeRouter() {

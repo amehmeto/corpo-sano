@@ -1,20 +1,38 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { exerciseDataBuilder } from '../_data-builders/exercise.data-builder'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
+import { Button } from '../../design-system/Button'
+import { selectWantedExercise } from './usecases/select-exercise.handler'
+import { RouteParams, Routes } from '../routers/HomeRouter'
+import { Colors } from '../../design-system/enums/colors.enum'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-export default function AddExercisesScreen() {
-  const exercisesElements = [
-    exerciseDataBuilder(),
-    exerciseDataBuilder(),
-    exerciseDataBuilder(),
-  ].map((exercise, index) => {
-    return (
-      <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.exercise}>{exercise.template.title}</Text>
-      </View>
-    )
-  })
+type AddExerciseScreenProps = NativeStackScreenProps<
+  RouteParams,
+  Routes.ADD_EXERCISE
+  >
+
+export default function AddExercisesScreen({ navigation }: AddExerciseScreenProps) {
+  const [exercises, setExercises] = useState([exerciseDataBuilder(), exerciseDataBuilder(), exerciseDataBuilder()])
+
+  const exercisesElements = exercises.map((exercise, index) => {
+      const exerciseBackgroundColor = exercise.isSelected ? Colors.PRIMARY_200 : Colors.SUCCESS_100
+
+      return (
+        <TouchableOpacity key={index} style={styles.exerciseElement} onPress={() => {
+          const selectedExercises = selectWantedExercise(exercises, index)
+          setExercises(selectedExercises)
+        }}>
+          <Text
+            style={[styles.exercise, { backgroundColor: exerciseBackgroundColor }]}>{exercise.template.title}</Text>
+        </TouchableOpacity>
+      )
+    })
+
+  function goToCreateExerciseScreen() {
+    navigation.navigate(Routes.CREATE_EXERCISE)
+  }
 
   return (
     <View style={screenContainerStyle.container}>
@@ -26,7 +44,9 @@ export default function AddExercisesScreen() {
         <View style={styles.exercises}>{exercisesElements}</View>
       </ScrollView>
 
-      <Button title={'Create workout'} onPress={() => {}} />
+      <Button onPress={goToCreateExerciseScreen} text={'Create Exercise'}/>
+      <Button onPress={() => {
+      }} text={'Add Selected Exercise'}/>
     </View>
   )
 }
@@ -67,6 +87,10 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     margin: 10,
     flexGrow: 1,
+  },
+  exerciseElement: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   scroll: {
     maxHeight: '60%',
