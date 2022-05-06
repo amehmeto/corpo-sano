@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import Progression from '../home/components/Progression'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'

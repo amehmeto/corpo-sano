@@ -1,6 +1,6 @@
 import { Pressable } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import React from 'react'
+import * as React from 'react'
 
 type ExercisePreviewCardProps = {
   openDeleteModal: () => any

@@ -19,6 +19,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
+    'no-unused-vars': 'on',
+    'unused-imports/no-unused-imports': 'error',
     semi: [2, 'never'],
   },
 }

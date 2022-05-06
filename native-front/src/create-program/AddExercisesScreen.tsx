@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import * as React from 'react'
 import { exerciseDataBuilder } from '../_data-builders/exercise.data-builder'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { Button } from '../../design-system/Button'
@@ -7,6 +7,7 @@ import { selectWantedExercise } from './usecases/select-exercise.handler'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { Colors } from '../../design-system/enums/colors.enum'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useState } from 'react'
 
 type AddExerciseScreenProps = NativeStackScreenProps<
   RouteParams,

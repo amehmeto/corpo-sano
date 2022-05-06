@@ -8,7 +8,7 @@ import WorkoutSessionSummaryScreen from '../run-workout/WorkoutSessionSummaryScr
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import CreateWorkoutScreen from '../create-program/CreateWorkoutScreen'
 import ProgramPreviewScreen from '../create-program/ProgramPreviewScreen'
-import React from 'react'
+import * as React from 'react'
 import AddExercisesScreen from '../create-program/AddExercisesScreen'
 import CreateExerciseScreen from '../create-program/CreateExerciseScreen'
 

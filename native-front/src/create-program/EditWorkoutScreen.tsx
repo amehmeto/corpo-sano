@@ -5,7 +5,8 @@ import {
   Text,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { UpdateWorkoutUseCase } from './usecases/update-workout.usecase'
 import { scheduleWantedDays } from './handlers/edit-workout-screen/schedule-days.handler'
 import { Button } from '../../design-system/Button'

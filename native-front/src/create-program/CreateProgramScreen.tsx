@@ -1,12 +1,13 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { CreateProgramUseCase } from './usecases/create-program-use.case'
-import React, { useState } from 'react'
+import * as React from 'react'
 import { Button } from '../../design-system/Button'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { faker } from '@faker-js/faker'
 import { programGateway } from '../_infrastructure/dependency-injection.container'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
+import { useState } from 'react'
 
 const createProgramUseCase = new CreateProgramUseCase(programGateway)
 

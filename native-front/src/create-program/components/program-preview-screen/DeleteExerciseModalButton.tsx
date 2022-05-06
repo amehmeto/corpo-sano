@@ -1,6 +1,6 @@
 import { Modal, StyleSheet, Text, View } from 'react-native'
 import { Button } from '../../../../design-system/Button'
-import React from 'react'
+import * as React from 'react'
 import { Margin } from '../../../../design-system/enums/margin.enum'
 import { Padding } from '../../../../design-system/enums/padding.enum'
 
