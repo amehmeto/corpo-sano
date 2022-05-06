@@ -8,13 +8,11 @@ describe('Select Exercise', () => {
       exerciseDataBuilder(),
     ]
 
-    const expectedExercises = [
-      exerciseDataBuilder({ ...exercises[0], isSelected: true }),
-      exerciseDataBuilder(exercises[1]),
-    ]
-
     const selectedExercises = selectWantedExercise(exercises, 0)
 
-    expect(selectedExercises).toStrictEqual(expectedExercises)
+    const expectedExercises = exercises
+    expectedExercises[0].isSelected = true
+
+    expect(expectedExercises).toStrictEqual(selectedExercises)
   })
 })
