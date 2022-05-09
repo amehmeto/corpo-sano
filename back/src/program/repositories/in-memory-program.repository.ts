@@ -20,10 +20,7 @@ export class InMemoryProgramRepository implements ProgramRepository {
     return Promise.resolve(new Program({ ...program, id: uuid() }))
   }
 
-  async updateProgram(
-    programId: string,
-    workout: Workout,
-  ): Promise<Program> {
+  async updateProgram(programId: string, workout: Workout): Promise<Program> {
     const program = new Program({ workouts: [workout] })
     return Promise.resolve(program)
   }

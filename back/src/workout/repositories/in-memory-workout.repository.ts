@@ -6,12 +6,10 @@ import { exerciseDataBuilder } from '../../exercise/data-builders/exercise.data-
 import { sessionDataBuilder } from '../../session/data-builders/session.data-builder'
 import { performanceDataBuilder } from '../../performance/data-builders/performance.data-builder'
 import { UpdateResult } from 'typeorm'
-import { programFixture } from '../../program/data-builders/program.data-builder'
 
 export class InMemoryWorkoutRepository implements WorkoutRepository {
   private workoutsData = [
     workoutDataBuilder({
-      program: programFixture,
       exercises: [
         exerciseDataBuilder(),
         exerciseDataBuilder(),

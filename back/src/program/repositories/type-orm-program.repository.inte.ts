@@ -16,9 +16,7 @@ import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typ
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 import { Workout } from '../../workout/entities/workout.entity'
-import {
-  workoutFixture,
-} from '../../workout/data-builders/workout.data-builder'
+import { workoutFixture } from '../../workout/data-builders/workout.data-builder'
 
 async function createProgramFixture(
   programRepository: TypeOrmProgramRepository,
@@ -75,7 +73,9 @@ describe('TypeOrm Program Repository', () => {
   })
 
   it('should get all programs', async () => {
-    const expectedPrograms = programFixtures.map(fixture => new Program(fixture))
+    const expectedPrograms = programFixtures.map(
+      (fixture) => new Program(fixture),
+    )
 
     const retrievedPrograms = await programRepository.getAllPrograms()
 

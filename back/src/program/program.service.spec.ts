@@ -14,6 +14,9 @@ import {
 import { Workout } from '../workout/entities/workout.entity'
 import { workoutInputDataBuilder } from '../workout/data-builders/workout-input.data-builder'
 import { programDataBuilder } from './data-builders/program.data-builder'
+import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
+import { InMemoryWorkoutGateway } from '../../../native-front/src/create-program/gateways/workout.in-memory.gateway'
+import { InMemoryWorkoutRepository } from '../workout/repositories/in-memory-workout.repository'
 
 describe('Program Service', () => {
   let programService: ProgramService
@@ -25,6 +28,10 @@ describe('Program Service', () => {
         {
           provide: PROGRAM_REPOSITORY,
           useClass: InMemoryProgramRepository,
+        },
+        {
+          provide: WORKOUT_REPOSITORY,
+          useClass: InMemoryWorkoutRepository,
         },
         ProgramService,
       ],

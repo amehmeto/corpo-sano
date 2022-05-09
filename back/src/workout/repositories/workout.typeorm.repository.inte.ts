@@ -142,7 +142,7 @@ describe('TypeOrm Workout Repository', () => {
     const expectedWorkout = workoutDataBuilder({
       id: HardCodedValuesEnum.workoutId,
       title: 'Leg Workout',
-      programId: programFixture.id
+      programId: programFixture.id,
     })
 
     const programId = programFixture.id

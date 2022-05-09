@@ -26,10 +26,7 @@ export class TypeOrmProgramRepository
     )
   }
 
-  async updateProgram(
-    programId: string,
-    workout: Workout,
-  ): Promise<Program> {
+  async updateProgram(programId: string, workout: Workout): Promise<Program> {
     const program = await this.getProgram(programId)
     program.workouts.push(workout)
     const savedProgram = this.save(program)
