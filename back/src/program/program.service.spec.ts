@@ -7,7 +7,16 @@ import {
   ProgramRepository,
 } from './repositories/program-repository.interface'
 import { UpdateResult } from 'typeorm'
-import faker from '@faker-js/faker'
+import {
+  workoutDataBuilder,
+  workoutFixture,
+} from '../workout/data-builders/workout.data-builder'
+import { Workout } from '../workout/entities/workout.entity'
+import { workoutInputDataBuilder } from '../workout/data-builders/workout-input.data-builder'
+import { programDataBuilder } from './data-builders/program.data-builder'
+import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
+import { InMemoryWorkoutGateway } from '../../../native-front/src/create-program/gateways/workout.in-memory.gateway'
+import { InMemoryWorkoutRepository } from '../workout/repositories/in-memory-workout.repository'
 
 describe('Program Service', () => {
   let programService: ProgramService
@@ -19,6 +28,10 @@ describe('Program Service', () => {
         {
           provide: PROGRAM_REPOSITORY,
           useClass: InMemoryProgramRepository,
+        },
+        {
+          provide: WORKOUT_REPOSITORY,
+          useClass: InMemoryWorkoutRepository,
         },
         ProgramService,
       ],
@@ -62,10 +75,26 @@ describe('Program Service', () => {
 
   it('should soft delete a program', async () => {
     const [program] = await programRepository.find()
-    let expectedProgram = new UpdateResult()
+    const expectedProgram = new UpdateResult()
 
     const softDeletedProgram = await programService.softDelete(program.id)
 
     expect(softDeletedProgram).toStrictEqual(expectedProgram)
+  })
+
+  it('should save workout to program', async () => {
+    const { programId } = workoutInputDataBuilder()
+    const workout = new Workout(workoutDataBuilder())
+    const expectedProgram = programDataBuilder({
+      id: programId,
+      workouts: [workout],
+    })
+
+    const receivedProgram = await programRepository.updateProgram(
+      programId,
+      workout,
+    )
+
+    expect(receivedProgram.workouts).toStrictEqual(expectedProgram.workouts)
   })
 })

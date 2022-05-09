@@ -8,7 +8,7 @@ export class Program extends BaseModel {
   @Field()
   title: string
 
-  @Field(() => [Workout])
+  @Field(() => [Workout], { nullable: true })
   workouts: Workout[]
 
   @Field(() => Athlete)

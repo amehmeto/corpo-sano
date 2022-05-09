@@ -34,6 +34,18 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
     return Promise.resolve(this.workouts.find((workout) => workout.id === id))
   }
 
+  findByProgramId(programId: string): Promise<Workout[]> {
+    const workouts: Workout[] = []
+
+    this.workouts.forEach((workout) => {
+      if (workout.program !== undefined && workout.program.id === programId) {
+        workouts.push(workout)
+      }
+    })
+
+    return Promise.resolve(workouts)
+  }
+
   save(workout: Workout): Promise<Workout> {
     return Promise.resolve(
       new Workout({

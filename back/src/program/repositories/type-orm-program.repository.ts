@@ -1,6 +1,7 @@
 import { ProgramRepository } from './program-repository.interface'
 import { EntityRepository, Repository } from 'typeorm'
 import { Program } from '../entities/program.entity'
+import { Workout } from '../../workout/entities/workout.entity'
 
 @EntityRepository(Program)
 export class TypeOrmProgramRepository
@@ -17,6 +18,19 @@ export class TypeOrmProgramRepository
   }
 
   async getProgram(programId: string): Promise<Program> {
-    return this.findOne({ id: programId })
+    return this.findOne(
+      { id: programId },
+      {
+        relations: ['workouts'],
+      },
+    )
+  }
+
+  async updateProgram(programId: string, workout: Workout): Promise<Program> {
+    const program = await this.getProgram(programId)
+    program.workouts.push(workout)
+    const savedProgram = this.save(program)
+
+    return Promise.resolve(savedProgram)
   }
 }

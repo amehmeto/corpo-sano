@@ -19,6 +19,9 @@ import { exercisesTemplatesFixture } from '../../exercise/data-builders/exercise
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
+import { programFixture } from '../../program/data-builders/program.data-builder'
+import { Connection } from 'typeorm'
+import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -135,6 +138,22 @@ describe('TypeOrm Workout Repository', () => {
     expect(foundExercise).toStrictEqual(expectedWorkout)
   })
 
+  it('should find workout by program id', async () => {
+    const workout = workoutDataBuilder({
+      id: HardCodedValuesEnum.workoutId,
+      title: 'Leg Workout',
+      programId: programFixture.id,
+    })
+
+    const expectedWorkout = new Workout(workout)
+
+    const programId = programFixture.id
+
+    const [receivedWorkout] = await workoutRepository.findByProgramId(programId)
+
+    expect(receivedWorkout.id).toStrictEqual(expectedWorkout.id)
+  })
+
   it.each([
     [orderedExercisesWorkoutFixture, orderedExercisesFixture],
     [
@@ -146,7 +165,7 @@ describe('TypeOrm Workout Repository', () => {
       ],
     ],
   ])(
-    "should get workout's exercises by creation date",
+    'should get workout\'s exercises by creation date',
     async (workoutFixture, exercises) => {
       const expectedExercises = exercises.map((exercise) => {
         return new Exercise({

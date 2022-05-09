@@ -15,6 +15,8 @@ import {
 import { workoutDataBuilder } from './data-builders/workout.data-builder'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { UpdateResult } from 'typeorm'
+import { PROGRAM_REPOSITORY } from '../program/repositories/program-repository.interface'
+import { InMemoryProgramRepository } from '../program/repositories/in-memory-program.repository'
 
 describe('Workout Service', () => {
   let workoutService: WorkoutService
@@ -34,6 +36,10 @@ describe('Workout Service', () => {
         {
           provide: EXERCISE_REPOSITORY,
           useClass: InMemoryExerciseRepository,
+        },
+        {
+          provide: PROGRAM_REPOSITORY,
+          useClass: InMemoryProgramRepository,
         },
         WorkoutService,
       ],
@@ -125,7 +131,7 @@ describe('Workout Service', () => {
 
   it('should soft delete a workout', async () => {
     const [workout] = await workoutRepository.find()
-    let expectedWorkout = new UpdateResult()
+    const expectedWorkout = new UpdateResult()
 
     const softDeletedWorkout = await workoutService.softDelete(workout.id)
 

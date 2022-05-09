@@ -10,15 +10,15 @@ export class Workout extends BaseModel {
   @Field()
   title: string
 
-  @Field(() => Program)
+  @Field(() => Program, { nullable: true })
   program?: Program
 
-  @Field(() => [Exercise])
+  @Field(() => [Exercise], { nullable: true })
   exercises?: Exercise[]
 
-  @Field(() => [Session])
+  @Field(() => [Session], { nullable: true })
   sessions?: Session[]
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   scheduledDays?: WeekDays[]
 }
