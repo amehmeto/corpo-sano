@@ -139,11 +139,13 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by program id', async () => {
-    const expectedWorkout = workoutDataBuilder({
+    const workout = workoutDataBuilder({
       id: HardCodedValuesEnum.workoutId,
       title: 'Leg Workout',
       programId: programFixture.id,
     })
+
+    const expectedWorkout = new Workout(workout)
 
     const programId = programFixture.id
 
@@ -163,7 +165,7 @@ describe('TypeOrm Workout Repository', () => {
       ],
     ],
   ])(
-    "should get workout's exercises by creation date",
+    'should get workout\'s exercises by creation date',
     async (workoutFixture, exercises) => {
       const expectedExercises = exercises.map((exercise) => {
         return new Exercise({
