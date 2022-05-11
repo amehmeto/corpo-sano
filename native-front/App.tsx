@@ -1,11 +1,23 @@
 import { NativeBaseProvider } from 'native-base'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TabRouter from './src/routers/TabRouter'
+import { AuthRouter, checkAuthorization } from './src/routers/AuthRouter'
+
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  useEffect(() => {
+    checkAuthorization().then(isAuth => {
+      setIsAuthenticated(isAuth)
+    })
+  })
+
+  const router = !isAuthenticated ? <AuthRouter/> : <TabRouter/>
+
   return (
     <NativeBaseProvider>
-      <TabRouter />
+        {router}
     </NativeBaseProvider>
   )
 }
