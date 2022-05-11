@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { CreateProgramUseCase } from './usecases/create-program-use.case'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { Button } from '../../design-system/Button'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'

@@ -1,5 +1,6 @@
 import { NativeBaseProvider } from 'native-base'
-import React, { useEffect, useState } from 'react'
+import  * as React from 'react'
+import { useEffect, useState } from 'react'
 import TabRouter from './src/routers/TabRouter'
 import { AuthRouter, checkAuthorization } from './src/routers/AuthRouter'
 

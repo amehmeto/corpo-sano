@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import { Progress, Text } from 'native-base'
-import React from 'react'
-
+import  * as React from 'react'
 export default function Progression() {
   return (
     <View style={styles.container}>

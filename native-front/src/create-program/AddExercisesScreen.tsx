@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { exerciseDataBuilder } from '../_data-builders/exercise.data-builder'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { Button } from '../../design-system/Button'
