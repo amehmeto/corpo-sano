@@ -19,7 +19,7 @@ export function exerciseDataBuilder(exercise = {}) {
     id: faker.datatype.uuid(),
     template: {
       id: faker.datatype.uuid(),
-      title: faker.random.arrayElement(defaultExerciseTemplatesNames),
+      title: Faker.helpers.arrayElement(defaultExerciseTemplatesNames),
     },
     position: faker.datatype.number({ min: 0, max: 10 }),
     numberOfSets: faker.datatype.number({ min: 1, max: 4 }),
