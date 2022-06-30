@@ -4,7 +4,7 @@ import { ExerciseTemplate } from '../entities/exercise-template.entity'
 
 export function exerciseTemplateDataBuilder() {
   const defaultExerciseTemplatesNames = defaultExerciseTemplatesDataBuilder()
-  return Faker.random.arrayElement(defaultExerciseTemplatesNames)
+  return Faker.helpers.arrayElement(defaultExerciseTemplatesNames)
 }
 
 export const exercisesTemplatesFixture = [
