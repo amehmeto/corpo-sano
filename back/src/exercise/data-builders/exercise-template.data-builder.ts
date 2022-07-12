@@ -7,6 +7,7 @@ export function exerciseTemplateDataBuilder() {
   return Faker.helpers.arrayElement(defaultExerciseTemplatesNames)
 }
 
+// TODO: clean this useless mess with faker-js
 export const exercisesTemplatesFixture = [
   {
     id: '00000000-0000-0000-0000-000000000000',
