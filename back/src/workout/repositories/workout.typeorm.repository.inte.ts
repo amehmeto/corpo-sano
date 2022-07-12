@@ -165,7 +165,7 @@ describe('TypeOrm Workout Repository', () => {
       ],
     ],
   ])(
-    'should get workout\'s exercises by creation date',
+    "should get workout's exercises by creation date",
     async (workoutFixture, exercises) => {
       const expectedExercises = exercises.map((exercise) => {
         return new Exercise({

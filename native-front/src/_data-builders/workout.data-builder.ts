@@ -8,6 +8,8 @@ export function workoutDataBuilder(workout = {}) {
     title: faker.random.arrayElement(titleExamples),
     description: faker.lorem.paragraph(),
     programId: faker.datatype.uuid(),
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     exercises: [],
     scheduledDays: scheduledDaysDataBuilder(),
   }
