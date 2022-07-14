@@ -30,7 +30,7 @@
     "@nestjs/apollo": "^10.0.17",
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
-    "@nestjs/graphql": "^10.0.8",
+    "@nestjs/graphql": "^10.0.18",
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^7.6.15",
