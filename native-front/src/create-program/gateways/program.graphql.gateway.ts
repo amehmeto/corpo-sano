@@ -61,6 +61,7 @@ export class GraphQLProgramGateway
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   deleteWorkout(programId: string, workoutId: string): Promise<boolean> {
     throw new Error('Method not implemented.')
   }
@@ -85,7 +86,6 @@ export class GraphQLProgramGateway
   }
 
   async findById(programId: string): Promise<Program | undefined> {
-
     try {
       const getProgramQueryPayload = {
         query: `query GetProgram($programId: ID!) {
