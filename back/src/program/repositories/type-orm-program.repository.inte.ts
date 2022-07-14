@@ -4,10 +4,7 @@ import { config } from '../../../config'
 import { TypeOrmProgramRepository } from './type-orm-program.repository'
 import { Program } from '../entities/program.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
-import {
-  programFixture,
-  programFixtures,
-} from '../data-builders/program.data-builder'
+import { programFixtures } from '../data-builders/program.data-builder'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
 import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-task.typeorm.repository'

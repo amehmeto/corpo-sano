@@ -7,15 +7,11 @@ import {
   ProgramRepository,
 } from './repositories/program-repository.interface'
 import { UpdateResult } from 'typeorm'
-import {
-  workoutDataBuilder,
-  workoutFixture,
-} from '../workout/data-builders/workout.data-builder'
+import { workoutDataBuilder } from '../workout/data-builders/workout.data-builder'
 import { Workout } from '../workout/entities/workout.entity'
 import { workoutInputDataBuilder } from '../workout/data-builders/workout-input.data-builder'
 import { programDataBuilder } from './data-builders/program.data-builder'
 import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
-import { InMemoryWorkoutGateway } from '../../../native-front/src/create-program/gateways/workout.in-memory.gateway'
 import { InMemoryWorkoutRepository } from '../workout/repositories/in-memory-workout.repository'
 
 describe('Program Service', () => {
