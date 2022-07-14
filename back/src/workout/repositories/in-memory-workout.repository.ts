@@ -67,7 +67,8 @@ export class InMemoryWorkoutRepository implements WorkoutRepository {
     )
   }
 
-  softDelete(workoutId: string): Promise<UpdateResult> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  softDelete(_workoutId: string): Promise<UpdateResult> {
     const softDeletedWorkout = new UpdateResult()
     return Promise.resolve(softDeletedWorkout)
   }

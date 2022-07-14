@@ -20,8 +20,8 @@ import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
 import { programFixture } from '../../program/data-builders/program.data-builder'
-import { Connection } from 'typeorm'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
+import { Program } from '../../program/entities/program.entity'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -56,6 +56,7 @@ describe('TypeOrm Workout Repository', () => {
   let workoutRepository: TypeOrmWorkoutRepository
   let exerciseRepository: TypeOrmExerciseRepository
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
+  let programRepository: TypeOrmProgramRepository
 
   async function generateFixtures() {
     await exerciseTemplateRepository.save(exercisesTemplatesFixture)
@@ -103,6 +104,9 @@ describe('TypeOrm Workout Repository', () => {
     exerciseTemplateRepository = module.get<TypeOrmExerciseTemplateRepository>(
       TypeOrmExerciseTemplateRepository,
     )
+    programRepository = module.get<TypeOrmProgramRepository>(
+      TypeOrmProgramRepository,
+    )
 
     await generateFixtures()
   })
@@ -139,17 +143,19 @@ describe('TypeOrm Workout Repository', () => {
   })
 
   it('should find workout by program id', async () => {
-    const workout = workoutDataBuilder({
+    const workoutData = workoutDataBuilder({
       id: HardCodedValuesEnum.workoutId,
       title: 'Leg Workout',
-      programId: programFixture.id,
     })
+    const workout = new Workout(workoutData)
+    const program = new Program(programFixture)
+    program.workouts = [workout]
+    await programRepository.save(program)
+    const expectedWorkout = await workoutRepository.save(workout)
 
-    const expectedWorkout = new Workout(workout)
-
-    const programId = programFixture.id
-
-    const [receivedWorkout] = await workoutRepository.findByProgramId(programId)
+    const [receivedWorkout] = await workoutRepository.findByProgramId(
+      HardCodedValuesEnum.programId,
+    )
 
     expect(receivedWorkout.id).toStrictEqual(expectedWorkout.id)
   })

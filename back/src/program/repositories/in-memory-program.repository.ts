@@ -20,7 +20,7 @@ export class InMemoryProgramRepository implements ProgramRepository {
     return Promise.resolve(new Program({ ...program, id: uuid() }))
   }
 
-  async updateProgram(programId: string, workout: Workout): Promise<Program> {
+  async updateProgram(_programId: string, workout: Workout): Promise<Program> {
     const program = new Program({ workouts: [workout] })
     return Promise.resolve(program)
   }
@@ -39,7 +39,8 @@ export class InMemoryProgramRepository implements ProgramRepository {
     return Promise.resolve(this.programs)
   }
 
-  softDelete(programId: string): Promise<UpdateResult> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  softDelete(_programId: string): Promise<UpdateResult> {
     const softDeletedProgram = new UpdateResult()
     return Promise.resolve(softDeletedProgram)
   }
