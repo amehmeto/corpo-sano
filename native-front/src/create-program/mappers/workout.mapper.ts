@@ -1,8 +1,4 @@
-import {
-  ScheduledDay,
-  ScheduledDays,
-  Workout,
-} from '../entities/workout.entity'
+import { ScheduledDays, Workout } from '../entities/workout.entity'
 import { Exercise, PrintableTime } from '../entities/exercise.entity'
 
 export enum ScheduledDayGqlInput {
@@ -58,8 +54,10 @@ export class WorkoutMapper {
     return { minutes, seconds: printableSeconds }
   }
 
+  // TODO: illogical unused var, to be fixed
   private static generateDomainScheduledDays(
-    scheduledDays: ScheduledDayGqlInput[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _scheduledDays: ScheduledDayGqlInput[],
   ): ScheduledDays {
     return [
       { name: 'monday', isScheduled: false },

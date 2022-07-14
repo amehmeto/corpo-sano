@@ -169,6 +169,7 @@ export class GraphQLWorkoutGateway
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   create(workoutInput: WorkoutInput): Promise<Workout> {
     throw new Error('Method not implemented.')
   }

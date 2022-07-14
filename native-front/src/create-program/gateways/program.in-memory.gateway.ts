@@ -5,7 +5,6 @@ import { v4 as uuid } from 'uuid'
 import { WorkoutInput } from '../usecases/create-workout-use.case'
 import { Workout } from '../entities/workout.entity'
 import { ProgramInput } from '../usecases/create-program-use.case'
-import { WorkoutMapper } from '../mappers/workout.mapper'
 import { scheduledDaysDataBuilder } from '../../_data-builders/scheduled-days.data-builder'
 import { ProgramMapper } from '../mappers/program.mapper'
 
@@ -18,14 +17,7 @@ export class InMemoryProgramGateway implements ProgramGateway {
 
   create(programInput: ProgramInput): Promise<Program> {
     const newId = uuid()
-    this.programs.push(
-      new Program(
-        newId,
-        programInput.title,
-        programInput.description,
-        [] as Workout[],
-      ),
-    )
+    this.programs.push(new Program(newId, programInput.title, [] as Workout[]))
 
     const createdProgram = this.programs.find((program) => program.id === newId)
     if (!createdProgram) throw new Error('Program not created')
@@ -72,5 +64,10 @@ export class InMemoryProgramGateway implements ProgramGateway {
     )
     this.programs[programIndex].workouts.splice(workoutIndex, 1)
     return Promise.resolve(true)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  deleteProgram(programId: string): Promise<boolean> {
+    return Promise.resolve(false)
   }
 }

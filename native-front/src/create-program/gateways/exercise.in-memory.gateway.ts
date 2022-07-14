@@ -15,6 +15,7 @@ export class InMemoryExerciseGateway implements ExerciseGateway {
     ),
   ]
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   findById(exerciseId: string): Promise<Exercise> {
     return Promise.resolve(this.exercises[0])
   }
