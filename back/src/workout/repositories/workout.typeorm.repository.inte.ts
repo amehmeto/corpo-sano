@@ -150,8 +150,9 @@ describe('TypeOrm Workout Repository', () => {
     const workout = new Workout(workoutData)
     const program = new Program(programFixture)
     program.workouts = [workout]
+    const savedWorkout = await workoutRepository.save(workout)
     await programRepository.save(program)
-    const expectedWorkout = await workoutRepository.save(workout)
+    const expectedWorkout = savedWorkout
 
     const [receivedWorkout] = await workoutRepository.findByProgramId(
       HardCodedValuesEnum.programId,
