@@ -18,7 +18,8 @@ export class InMemoryAthleteGateway implements AthleteGateway {
     return Promise.resolve(this.athletes)
   }
 
-  findById(athleteId: string): Promise<Athlete> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  findById(_athleteId: string): Promise<Athlete> {
     return Promise.resolve(this.athletes[0])
   }
 

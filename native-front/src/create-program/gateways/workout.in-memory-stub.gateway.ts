@@ -25,7 +25,9 @@ export class InMemoryWorkoutGatewayStub implements WorkoutGateway {
   }
 
   fillWithExercises(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     workoutId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     exerciseTemplates: ExerciseTemplate[],
   ): Promise<boolean> {
     return Promise.resolve(false)
@@ -41,6 +43,7 @@ export class InMemoryWorkoutGatewayStub implements WorkoutGateway {
     return Promise.resolve(workout)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   scheduleDays(workoutId: string, days: ScheduledDay[]): Promise<boolean> {
     throw new Error('Method not implemented.')
     //return Promise.resolve(false)
@@ -51,8 +54,12 @@ export class InMemoryWorkoutGatewayStub implements WorkoutGateway {
       (_workout) => _workout.id === workoutId,
     )
     const updatedWorkout = { ...this.workouts[workoutIndex], ...workout }
-    const mappedWorkout = WorkoutMapper.mapToDomain(updatedWorkout)
-    this.workouts[workoutIndex] = mappedWorkout
+    this.workouts[workoutIndex] = WorkoutMapper.mapToDomain(updatedWorkout)
     return Promise.resolve(true)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  delete(workoutId: string): Promise<boolean> {
+    return Promise.resolve(false)
   }
 }

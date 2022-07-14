@@ -26,6 +26,7 @@ export class InMemoryWorkoutGateway implements WorkoutGateway {
 
   constructor(private readonly programGateway: ProgramGateway) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(workoutId: string, workout: Workout): Promise<boolean> {
     return Promise.resolve(true)
   }
@@ -35,12 +36,15 @@ export class InMemoryWorkoutGateway implements WorkoutGateway {
   }
 
   fillWithExercises(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     workoutId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     exerciseTemplates: ExerciseTemplate[],
   ): Promise<boolean> {
     return Promise.resolve(false)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   scheduleDays(workoutId: string, days: ScheduledDay[]): Promise<boolean> {
     return Promise.resolve(true)
   }
@@ -58,6 +62,7 @@ export class InMemoryWorkoutGateway implements WorkoutGateway {
     return Promise.resolve(createdWorkout)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async findById(workoutId: string): Promise<Workout> {
     //await this.updateWorkouts()
 
@@ -76,6 +81,7 @@ export class InMemoryWorkoutGateway implements WorkoutGateway {
     )
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async delete(workoutId: string): Promise<boolean> {
     //await this.updateWorkouts()
 
