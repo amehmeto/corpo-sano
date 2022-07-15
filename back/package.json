@@ -69,7 +69,7 @@
     "@typescript-eslint/parser": "^5.30.6",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^26.6.3",
     "leaked-handles": "^5.2.0",
     "prettier": "^2.6.2",
