@@ -55,7 +55,7 @@
     "typeorm": "^0.2.45"
   },
   "devDependencies": {
-    "@faker-js/faker": "^6.3.1",
+    "@faker-js/faker": "^7.3.0",
     "@nestjs/cli": "^8.2.5",
     "@nestjs/schematics": "^8.0.10",
     "@nestjs/testing": "^7.6.15",
@@ -69,7 +69,7 @@
     "@typescript-eslint/parser": "^5.30.6",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^26.6.3",
     "leaked-handles": "^5.2.0",
     "prettier": "^2.6.2",
