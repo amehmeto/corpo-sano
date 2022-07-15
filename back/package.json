@@ -73,7 +73,7 @@
     "jest": "^26.6.3",
     "leaked-handles": "^5.2.0",
     "prettier": "^2.7.1",
-    "supertest": "^6.2.3",
+    "supertest": "^6.2.4",
     "ts-jest": "^26.5.4",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
