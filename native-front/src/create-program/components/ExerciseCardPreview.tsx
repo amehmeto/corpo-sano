@@ -1,6 +1,7 @@
 import { Exercise } from '../entities/exercise.entity'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { Margin } from '../../../design-system/enums/margin.enum'
 import { Padding } from '../../../design-system/enums/padding.enum'
 import { EditExerciseButton } from './EditExerciseButton'

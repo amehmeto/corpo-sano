@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TextInput } from 'react-native'
-import React from 'react'
+import  * as React from 'react'
 import { Colors } from '../../design-system/enums/colors.enum'
 
 type SetRunnerRowProps = { index: number; set: number[]; isRunning: boolean }

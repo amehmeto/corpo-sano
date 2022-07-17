@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import  * as React from 'react'
+import { useEffect, useState } from 'react'
 import { RestTimeSetter } from './components/RestTimeSetter'
 import { NumberSetter } from './components/NumberSetter'
 import { Button } from '../../design-system/Button'

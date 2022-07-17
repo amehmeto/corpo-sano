@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { Button } from '../../design-system/Button'
 import { RouteParams, Routes } from '../routers/HomeRouter'
 import { CreateWorkoutUseCase } from './usecases/create-workout-use.case'

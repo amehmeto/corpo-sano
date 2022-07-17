@@ -8,7 +8,8 @@ import {
   Text,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import  * as React from 'react'
+import { useEffect, useState } from 'react'
 import { GetAthleteUseCase } from './usecases/get-athlete.use-case'
 import { Athlete } from './entities/athlete.entity'
 import { Margin } from '../../design-system/enums/margin.enum'

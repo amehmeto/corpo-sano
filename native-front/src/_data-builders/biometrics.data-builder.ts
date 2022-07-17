@@ -18,12 +18,12 @@ export function biometricsDataBuilder(biometrics = {}) {
   const template = {
     bodyFat: generateBodyFat(),
     height: faker.datatype.number(),
-    lengthUnit: faker.random.arrayElement(unitSystem),
+    lengthUnit: Faker.helpers.arrayElement(unitSystem),
     weight: faker.datatype.number({ min: 60, max: 120 }),
-    weightUnit: faker.random.arrayElement(unitSystem),
-    gender: faker.random.arrayElement(gender),
+    weightUnit: Faker.helpers.arrayElement(unitSystem),
+    gender: Faker.helpers.arrayElement(gender),
     birthday: faker.date.past(20),
-    weightGoal: faker.random.arrayElement(weightGoal),
+    weightGoal: Faker.helpers.arrayElement(weightGoal),
   }
   template.birthday.setMilliseconds(0)
   return { ...template, ...biometrics }

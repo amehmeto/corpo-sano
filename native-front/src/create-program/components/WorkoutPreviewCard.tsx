@@ -1,7 +1,7 @@
 import { Workout } from '../entities/workout.entity'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import React from 'react'
+import  * as React from 'react'
 import { Margin } from '../../../design-system/enums/margin.enum'
 import { Padding } from '../../../design-system/enums/padding.enum'
 

@@ -1,5 +1,6 @@
 import { StyleSheet, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { Button } from '../../../design-system/Button'
 import { FontSize } from '../../../design-system/enums/font-size.enum'
 import { IsActiveTextInputStyle } from '../../../design-system/TextInput'

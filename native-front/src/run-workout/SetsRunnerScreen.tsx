@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import  * as React from 'react'
 import { SetRunnerRow } from './SetRunnerRow'
 import { Button } from '../../design-system/Button'
 import { SetsLabelHeader } from './SetsLabelHeader'
