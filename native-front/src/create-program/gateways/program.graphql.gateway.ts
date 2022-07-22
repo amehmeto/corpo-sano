@@ -66,7 +66,6 @@ export class GraphQLProgramGateway
     throw new Error('Method not implemented.')
   }
 
-  // TODO: to be created in backend
   async find(): Promise<Program[]> {
     try {
       const findProgramQueryPayload = {

@@ -61,7 +61,6 @@ export class GraphQLWorkoutGateway
     }
   }
 
-  //TODO should to add in backend
   find(): Promise<Workout[]> {
     throw new Error('Method not implemented.')
   }
