@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
 import { GetAthleteUseCase } from './usecases/get-athlete.use-case'
 import { Athlete } from './entities/athlete.entity'
 import { Margin } from '../../design-system/enums/margin.enum'
@@ -18,6 +18,7 @@ import {
   initializeTokenCheatCode,
 } from '../_infrastructure/dependency-injection.container'
 import { Routes } from '../routers/HomeRouter'
+import { useEffect, useState } from 'react'
 
 const getAthleteUseCase = new GetAthleteUseCase(athleteGateway)
 
@@ -26,7 +27,7 @@ export function HomeScreen({ navigation }: any) {
 
   const [athlete, setAthlete] = useState<Athlete | undefined>(undefined)
 
-  //TODO: when user registered to be remove default daily task
+  // TODO: when user registered to be remove default daily task
   const defaultDailyTask: DailyTask = {
     id: '',
     description: 'Create your first program',
