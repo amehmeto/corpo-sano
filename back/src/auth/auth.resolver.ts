@@ -5,6 +5,7 @@ import { Athlete } from '../athlete/models/athlete.model'
 import { RegisterAthleteInput } from './types/register-athlete.input'
 import { AccessToken } from './types/access-token.type-2'
 import { Public } from './is-public.decorator'
+import { GraphQLBoolean } from 'graphql'
 
 @Resolver()
 export class AuthResolver {
@@ -25,10 +26,10 @@ export class AuthResolver {
   }
 
   @Public()
-  @Mutation(() => Athlete) //TODO: C'est bien de la merde de retourner un Athlete mais je trouve pas comment ne rien envoyer
+  @Mutation(() => GraphQLBoolean)
   async sendConfirmationEmail(
     @Args({ name: 'athleteId', type: () => ID }) athleteId: string,
-  ): Promise<Athlete> {
+  ): Promise<boolean> {
     return this.authService.sendConfirmationEmail(athleteId)
   }
 }

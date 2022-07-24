@@ -138,7 +138,7 @@ type Mutation {
   createProgram(title: String!): Program!
   deleteProgram(programId: ID!): Boolean!
   registerAthlete(payload: RegisterAthleteInput!): Athlete!
-  sendConfirmationEmail(athleteId: ID!): Athlete!
+  sendConfirmationEmail(athleteId: ID!): Boolean!
   createWorkout(title: String!, programId: ID!): Workout!
   fillWorkoutWithExercises(payload: FillWorkoutWithExercisesInput!): Workout!
   scheduleWorkout(payload: ScheduleWorkoutInput!): Workout!

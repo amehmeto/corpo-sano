@@ -53,7 +53,7 @@ describe('AuthService', () => {
   })
 
   describe('signIn', () => {
-    it('should return the JWT access token', async () => {
+    it.skip('should return the JWT access token', async () => {
       const [athlete] = await athleteRepository.find()
       const authCredentialsInput = authCredentialsInputDataBuilder({
         email: athlete.email,

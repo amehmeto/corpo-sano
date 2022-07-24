@@ -39,7 +39,10 @@ describe('AppController (e2e)', () => {
 
   function expectGqlEndpoint(
     query: Query,
-    expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
+    expectedData:
+      | Record<string, unknown>
+      | Array<Record<string, unknown>>
+      | boolean,
     isAuthenticated = true,
   ) {
     const tokenJwt = isAuthenticated ? token.token : undefined
@@ -124,15 +127,13 @@ describe('AppController (e2e)', () => {
     test('Send Confirmation Email', () => {
       const sendConfirmationEmailMutation = {
         query: `mutation SendConfirmationEmail($athleteId: ID!) {
-          sendConfirmationEmail(athleteId: $athleteId) {
-            id
-          }
+          sendConfirmationEmail(athleteId: $athleteId)
         }`,
         variables: {
           athleteId: athleteFixture.id,
         },
       }
-      const expectedResponse = { id: athleteFixture.id }
+      const expectedResponse = true
       return expectGqlEndpoint(
         sendConfirmationEmailMutation,
         expectedResponse,

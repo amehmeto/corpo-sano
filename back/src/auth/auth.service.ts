@@ -77,9 +77,9 @@ export class AuthService {
       : e
   }
 
-  async sendConfirmationEmail(athleteId: string): Promise<Athlete> {
+  async sendConfirmationEmail(athleteId: string): Promise<boolean> {
     const athlete = await this.athleteRepository.findById(athleteId)
     await this.emailGateway.sendConfirmationEmail(athlete)
-    return athlete
+    return true
   }
 }
