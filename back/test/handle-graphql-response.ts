@@ -28,7 +28,10 @@ function getResponseData(response: any, dataKey: string) {
 export function handleGraphQLResponse(
   response: any,
   dataKey: string,
-  expectedData: Record<string, unknown> | Array<Record<string, unknown>>,
+  expectedData:
+    | Record<string, unknown>
+    | Array<Record<string, unknown>>
+    | boolean,
 ) {
   displayErrors(response)
   const retrievedData = getResponseData(response, dataKey)
