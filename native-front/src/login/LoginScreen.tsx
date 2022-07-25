@@ -25,6 +25,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   async function login() {
     try {
       await loginUseCase.execute({ email, password })
+      //TODO When we give wrong email or password application should be breaking also we have to put error.
       window.location.reload()
     } catch (e) {
       throw new Error(e)

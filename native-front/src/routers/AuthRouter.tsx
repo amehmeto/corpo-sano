@@ -20,8 +20,9 @@ export enum Routes {
 
 
 export async function checkAuthorization(): Promise<boolean> {
-  const isAuth = await AsyncStorage.getItem('token')
-  return Promise.resolve(!!isAuth)
+  const token = await AsyncStorage.getItem('token')
+  //TODO We should check if the token is timed out
+  return Promise.resolve(!!token)
 }
 
 export function AuthRouter() {
