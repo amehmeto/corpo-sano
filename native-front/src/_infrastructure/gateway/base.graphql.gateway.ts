@@ -5,12 +5,14 @@ import {
   handleGraphQLResponse,
   Query,
 } from './handle-graphql-response'
+import * as env from 'env-var'
 
 export class GraphQLGateway {
-  protected readonly port = 3005
-  // TODO: utiliser les variables d'environnements dès que possible. Issue Jest ouverte, bloqué pour l'instant
-  protected readonly backendApi = 'localhost'
-  // protected readonly backendApi = '51.159.164.130'
+  protected readonly port = env.get('PORT').default('3005').asPortNumber()
+  protected readonly backendApi = env
+    .get('URL')
+    .default('localhost')
+    .asUrlString()
   protected readonly gatewayUrl = `http://${this.backendApi}:${this.port}/graphql`
 
   protected async request(queryPayload: Query): Promise<any> {
