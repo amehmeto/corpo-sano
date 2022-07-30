@@ -19,6 +19,7 @@ import {
 } from '../_infrastructure/dependency-injection.container'
 import { Routes } from '../routers/HomeRouter'
 import { useEffect, useState } from 'react'
+import { v4 as uuid } from 'uuid'
 
 const getAthleteUseCase = new GetAthleteUseCase(athleteGateway)
 
@@ -29,7 +30,7 @@ export function HomeScreen({ navigation }: any) {
 
   // TODO: when user registered to be remove default daily task
   const defaultDailyTask: DailyTask = {
-    id: '',
+    id: uuid(),
     description: 'Create your first program',
     route: Routes.CREATE_PROGRAM,
   }
