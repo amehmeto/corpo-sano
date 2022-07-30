@@ -5,5 +5,9 @@
   },
   "include": [
     ".eslintrc.js"
-  ]
+  ],
+  "outDir": "./dist",
+  "removeComments": true,
+  "noImplicitAny": true,
+  "noImplicitReturns": true,
 }
