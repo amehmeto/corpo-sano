@@ -32,6 +32,7 @@ export class GraphQLAthleteGateway
             weightGoal
           }
           dailyTasks {
+            id
             description
           }
         }
