@@ -5,7 +5,7 @@ export function workoutDataBuilder(workout = {}) {
   const titleExamples = ['Upper body', 'Legs', 'Pull workout', 'Cardio']
   const template = {
     id: faker.datatype.uuid(),
-    title: faker.random.arrayElement(titleExamples),
+    title: faker.helpers.arrayElement(titleExamples),
     description: faker.lorem.paragraph(),
     programId: faker.datatype.uuid(),
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
