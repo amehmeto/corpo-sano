@@ -1,10 +1,14 @@
 import { Pressable, StyleSheet, Text } from 'react-native'
-import React from 'react'
+import * as React from 'react'
 import { Colors } from './enums/colors.enum'
 import { Padding } from './enums/padding.enum'
 import { FontSize } from './enums/font-size.enum'
 
-type ButtonProps = { text: string; onPress: any; style?: {} }
+type ButtonProps = {
+  text: string
+  onPress: any
+  style?: Record<string, unknown>
+}
 
 export function Button({
   text,

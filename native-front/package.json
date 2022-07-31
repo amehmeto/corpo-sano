@@ -50,7 +50,7 @@
     "@faker-js/faker": "^6.0.0-alpha.5",
     "@types/faker": "^6.6.9",
     "@types/jest": "^27.4.0",
-    "@types/react-native": "~0.64.12",
+    "@types/react-native": "^0.69.4",
     "@types/uuid": "^8.3.4",
     "concurrently": "^7.0.0",
     "eslint": "^8.14.0",

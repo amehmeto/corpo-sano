@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { RestTimeSetter } from './components/RestTimeSetter'
 import { NumberSetter } from './components/NumberSetter'
 import { Button } from '../../design-system/Button'
@@ -13,10 +14,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 type CreateExerciseScreenProps = NativeStackScreenProps<
   RouteParams,
   Routes.CREATE_EXERCISE
-  >
+>
 
-export default function CreateExerciseScreen({navigation}: CreateExerciseScreenProps) {
-
+export default function CreateExerciseScreen({
+  navigation,
+}: CreateExerciseScreenProps) {
   const [exercise, setExercise] = useState<Exercise>(
     new Exercise(
       '',
@@ -29,6 +31,7 @@ export default function CreateExerciseScreen({navigation}: CreateExerciseScreenP
   )
 
   useEffect(() => {
+    // TODO: why is it void?
   }, [])
 
   function goToAddExercise() {
@@ -38,7 +41,7 @@ export default function CreateExerciseScreen({navigation}: CreateExerciseScreenP
   return (
     <View style={screenContainerStyle.container}>
       <Text style={styles.subTitle}>Exercise Title</Text>
-      <TextInput style={styles.textInput}/>
+      <TextInput style={styles.textInput} />
 
       <Text style={styles.subTitle}>Number of sets</Text>
       <NumberSetter _number={exercise.numberOfSets} />
@@ -70,5 +73,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     backgroundColor: 'white',
     height: 30,
-  }
+  },
 })
