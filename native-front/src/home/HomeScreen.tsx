@@ -41,7 +41,7 @@ export function HomeScreen({ navigation }: any) {
         _athlete.dailyTasks.unshift(defaultDailyTask)
         setAthlete(_athlete)
       })
-  }, [])
+  })
 
   const renderDailyTask = ({
     item: dailyTask,

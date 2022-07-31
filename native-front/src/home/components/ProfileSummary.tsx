@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { FontSize } from '../../../design-system/enums/font-size.enum'
 import { Avatar } from '../../../design-system/Avatar'
 import { Athlete } from '../entities/athlete.entity'
+import { Margin } from '../../../design-system/enums/margin.enum'
+import { Padding } from '../../../design-system/enums/padding.enum'
 
 type ProfileSummaryProps = { athlete: Athlete }
 
@@ -12,6 +14,9 @@ export default function ProfileSummary({ athlete }: ProfileSummaryProps) {
     biometrics: { weight, bodyFat, weightUnit },
   } = athlete
 
+  const displayWeight = weight / 100
+  const displayBodyFat = bodyFat / 100
+
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{name}</Text>
@@ -19,8 +24,12 @@ export default function ProfileSummary({ athlete }: ProfileSummaryProps) {
       <Avatar source={avatar} />
 
       <View style={styles.biometrics}>
-        <Text style={styles.biometricsData}>{`${weight}\n${weightUnit}`}</Text>
-        <Text style={styles.biometricsData}>{`${bodyFat}%\nb. fat`}</Text>
+        <Text
+          style={styles.biometricsData}
+        >{`${displayWeight}\n${weightUnit}`}</Text>
+        <Text
+          style={styles.biometricsData}
+        >{`${displayBodyFat}%\nb. fat`}</Text>
       </View>
     </View>
   )
@@ -32,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 16,
+    margin: Margin.LARGE,
     width: '20%',
   },
   name: {
@@ -43,8 +52,8 @@ const styles = StyleSheet.create({
   biometrics: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: Padding.SMALL,
+    paddingBottom: Padding.SMALL,
     width: '100%',
   },
   biometricsData: {

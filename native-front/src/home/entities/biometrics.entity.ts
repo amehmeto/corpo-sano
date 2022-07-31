@@ -4,7 +4,7 @@ import { WeightGoal } from '../../_data-builders/types/weight-goal.enum'
 
 export class Biometrics {
   constructor(
-    public bodyFat: string,
+    public readonly bodyFat: number,
     public readonly height: number,
     public readonly weight: number,
     public readonly lengthUnit: UnitSystem,
