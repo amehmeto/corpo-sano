@@ -8,7 +8,7 @@ const weightGoal = Object.values(WeightGoal)
 
 export function biometricsDataBuilder(biometrics = {}) {
   const template = {
-    bodyFat: Faker.datatype.number({ min: 0, max: 10000 }),
+    bodyFat: Faker.datatype.number({ min: 5000, max: 12000 }),
     height: Faker.datatype.number(),
     lengthUnit: Faker.helpers.arrayElement(unitSystem),
     weight: Faker.datatype.number(),
