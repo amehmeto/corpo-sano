@@ -9,17 +9,16 @@ import {
   View,
 } from 'react-native'
 import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { GetAthleteUseCase } from './usecases/get-athlete.use-case'
 import { Athlete } from './entities/athlete.entity'
 import { Margin } from '../../design-system/enums/margin.enum'
 import { DailyTask } from './entities/daily-task.entity'
-import {
-  athleteGateway,
-  initializeTokenCheatCode,
-} from '../_infrastructure/dependency-injection.container'
+import { athleteGateway } from '../_infrastructure/dependency-injection.container'
 import { Routes } from '../routers/HomeRouter'
-import { useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Padding } from '../../design-system/enums/padding.enum'
 
 const getAthleteUseCase = new GetAthleteUseCase(athleteGateway)
 
@@ -36,7 +35,7 @@ export function HomeScreen({ navigation }: any) {
   }
 
   useEffect(() => {
-    initializeTokenCheatCode()
+    AsyncStorage.getItem('token')
       .then(() => getAthleteUseCase.execute(athleteId))
       .then((_athlete) => {
         _athlete.dailyTasks.unshift(defaultDailyTask)
@@ -92,16 +91,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: Padding.MEDIUM,
   },
   card: {
-    padding: 10,
-    paddingLeft: 30,
+    padding: Padding.MEDIUM,
+    paddingLeft: Padding.EXTRA_LARGE,
     borderRadius: 10,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'gray',
-    margin: 10,
+    margin: Margin.MEDIUM,
     width: '90%',
   },
 })

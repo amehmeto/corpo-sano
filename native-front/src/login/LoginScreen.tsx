@@ -3,26 +3,23 @@ import { useState } from 'react'
 import {
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RouteParams, Routes } from '../routers/AuthRouter'
 import { loginGateway } from '../_infrastructure/dependency-injection.container'
-import { LoginUseCase } from './usecases/login.handler'
-
-type LoginScreenProps = NativeStackScreenProps<RouteParams,
-  Routes.LOGIN>
-
+import { LoginUseCase } from './usecases/log-in.usecase'
+import { Margin } from '../../design-system/enums/margin.enum'
+import { Padding } from '../../design-system/enums/padding.enum'
+import { Button } from '../../design-system/Button'
 
 const loginUseCase = new LoginUseCase(loginGateway)
 
-export default function LoginScreen({ navigation }: LoginScreenProps) {
+export default function LoginScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  async function login() {
+  async function logIn() {
     try {
       await loginUseCase.execute({ email, password })
       window.location.reload()
@@ -33,7 +30,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.image}/>
+      <View style={styles.image} />
 
       <Text style={styles.inputTitle}>Email</Text>
       <View style={styles.inputView}>
@@ -54,9 +51,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         />
       </View>
 
-      <TouchableOpacity style={styles.loginButton} onPress={login}>
-        <Text>LOGIN</Text>
-      </TouchableOpacity>
+      <Button text={'Log In'} onPress={logIn} />
 
       <View style={styles.bottomContainer}>
         <TouchableOpacity>
@@ -84,14 +79,14 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 100,
-    marginBottom: 40,
+    marginBottom: Margin.EXTRA_LARGE,
   },
 
   inputView: {
     width: '80%',
     backgroundColor: '#fff',
     height: 45,
-    marginBottom: 20,
+    marginBottom: Margin.LARGE,
     alignItems: 'center',
   },
 
@@ -99,14 +94,14 @@ const styles = StyleSheet.create({
     width: '80%',
     textAlign: 'left',
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: Margin.MEDIUM,
   },
 
   inputText: {
     width: '100%',
     height: 50,
     flex: 1,
-    padding: 10,
+    padding: Padding.MEDIUM,
   },
 
   loginButton: {
@@ -114,14 +109,14 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: Margin.MEDIUM,
     backgroundColor: 'gray',
   },
 
   bottomContainer: {
     flexDirection: 'row',
     width: '80%',
-    marginTop: 10,
+    marginTop: Margin.MEDIUM,
     justifyContent: 'space-between',
   },
 
