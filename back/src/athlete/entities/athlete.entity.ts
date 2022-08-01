@@ -12,6 +12,9 @@ export class Athlete extends BaseEntity {
   @Column({ unique: true })
   email: string
 
+  @Column({ default: 'default' })
+  avatar: string
+
   @Column()
   password: string
 

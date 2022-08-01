@@ -12,6 +12,7 @@ import { BiometricsModule } from './biometrics/biometrics.module'
 import { DailyTaskModule } from './daily-task/daily-task.module'
 import { SessionModule } from './session/session.module'
 import { PerformanceModule } from './performance/performance.module'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PerformanceModule } from './performance/performance.module'
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
     }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot(config.db),
     ExerciseModule,
     ProgramModule,
