@@ -27,21 +27,21 @@ export function HomeScreen({ navigation }: any) {
 
   const [athlete, setAthlete] = useState<Athlete | undefined>(undefined)
 
-  // TODO: when user registered to be remove default daily task
-  const defaultDailyTask: DailyTask = {
-    id: uuid(),
-    description: 'Create your first program',
-    route: Routes.CREATE_PROGRAM,
-  }
-
   useEffect(() => {
+    // TODO: to be remove when user registered with default daily task from backend
+    const defaultDailyTask: DailyTask = {
+      id: uuid(),
+      description: 'Create your first program',
+      route: Routes.CREATE_PROGRAM,
+    }
+
     AsyncStorage.getItem('token')
       .then(() => getAthleteUseCase.execute(athleteId))
       .then((_athlete) => {
         _athlete.dailyTasks.unshift(defaultDailyTask)
         setAthlete(_athlete)
       })
-  })
+  }, [])
 
   const renderDailyTask = ({
     item: dailyTask,
