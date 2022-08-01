@@ -16,6 +16,7 @@ export function athleteDataBuilder(athlete = {}) {
     name: Faker.name.firstName(),
     email: Faker.internet.email(),
     password: hashedPassword,
+    avatar: Faker.image.avatar(),
     biometrics: new Biometrics(biometricsDataBuilder()),
     dailyTasks: [
       new DailyTask(dailyTaskDataBuilder()),

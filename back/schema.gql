@@ -96,6 +96,7 @@ type Athlete {
   version: Float!
   name: String!
   email: String!
+  avatar: String!
   password: String!
   biometrics: Biometrics!
   dailyTasks: [DailyTask!]

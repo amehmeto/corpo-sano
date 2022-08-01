@@ -26,7 +26,7 @@ describe('AuthService', () => {
       imports: [
         JwtModule.register({
           secret: 'should be an env var',
-          signOptions: { expiresIn: 3600 },
+          signOptions: { expiresIn: 3600 * 24 },
         }),
       ],
       providers: [
@@ -53,6 +53,7 @@ describe('AuthService', () => {
   })
 
   describe('signIn', () => {
+    // Fragile test, hence the skipping
     it.skip('should return the JWT access token', async () => {
       const [athlete] = await athleteRepository.find()
       const authCredentialsInput = authCredentialsInputDataBuilder({

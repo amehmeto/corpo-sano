@@ -11,6 +11,9 @@ import { JwtStrategy } from './jwt.strategy'
 import { APP_GUARD } from '@nestjs/core'
 import { GqlAuthGuard } from './gql.auth.guard'
 import { ATHLETE_REPOSITORY } from '../athlete/repositories/athlete-repository.interface'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as env from 'env-var'
+// TODO: still can't use env-var here. Bug to fix
 
 @Module({
   imports: [
@@ -24,7 +27,7 @@ import { ATHLETE_REPOSITORY } from '../athlete/repositories/athlete-repository.i
         'pzfykOtufD2j/XTEUWUCIQCRdXoN/KAQRKKrL+J+GoP9i2PAUvaUKTvrySToTnhgMQI' +
         'hAJ+ML426fgK2UcXrs7AoAb/EPQJ+ZAz2sTZESr4I5x91AiBvRlMtGLiArdWNKgdLpv' +
         'YU7O6F1L5cFR09QnD9jBQURQ==',
-      signOptions: { expiresIn: 3600 },
+      signOptions: { expiresIn: 3600 * 24 },
     }),
     PassportModule,
   ],

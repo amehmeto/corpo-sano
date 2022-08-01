@@ -9,8 +9,8 @@ import * as env from 'env-var'
 
 export class GraphQLGateway {
   protected readonly port = env.get('PORT').default('3005').asPortNumber()
-  protected readonly backendApi = env.get('URL').default('localhost').asString()
-  protected readonly gatewayUrl = `http://${this.backendApi}:${this.port}/graphql`
+  protected readonly backendApiDomain = env.get('URL').default('localhost').asString()
+  protected readonly gatewayUrl = `http://${this.backendApiDomain}:${this.port}/graphql`
 
   protected async request(queryPayload: Query): Promise<any> {
     const token = await AsyncStorage.getItem('token')

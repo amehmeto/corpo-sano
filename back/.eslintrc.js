@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     'prettier/prettier': 'error',
+    'object-shorthand': ['error', 'always'],
     semi: [2, 'never'],
   },
 }

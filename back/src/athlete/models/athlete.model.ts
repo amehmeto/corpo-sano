@@ -13,6 +13,9 @@ export class Athlete extends BaseModel {
   email: string
 
   @Field()
+  avatar: string
+
+  @Field()
   password: string
 
   @Field(() => Biometrics)
