@@ -6,6 +6,9 @@
   "include": [
     ".eslintrc.js"
   ],
+  "exclude": [
+    "node_modules"
+  ],
   "outDir": "./dist",
   "removeComments": true,
   "noImplicitAny": true,

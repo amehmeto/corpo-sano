@@ -6,8 +6,6 @@ type AvatarProps = {
 }
 
 export function Avatar({ source }: AvatarProps) {
-  console.log(source)
-  // TODO: reloading non stop
   if (source === 'default') source = require('../assets/default-picture.png')
   return (
     <Image

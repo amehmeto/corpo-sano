@@ -14,6 +14,6 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "allowJs": true,
-    "types": ["jest"]
+    "types": ["jest"],
   }
 }
