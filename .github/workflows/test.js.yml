@@ -23,11 +23,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
         cache-dependency-path: '**/back/yarn.lock'
-    - run: sudo /etc/init.d/mysql start
-    - run: mysql -e 'CREATE DATABASE corposano' -uroot -proot
-    - run: mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -proot
+
     - run: yarn
     - run: yarn build
     - run: yarn jest
-    - run: yarn test:inte
+    - run: | 
+        sudo /etc/init.d/mysql start
+        mysql -e 'CREATE DATABASE corposano' -uroot -proot
+        mysql -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY ""' -uroot -prootyarn test:inte
+        yarn test:inte
     - run: yarn test:e2e
