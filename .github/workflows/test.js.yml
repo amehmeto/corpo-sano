@@ -30,6 +30,4 @@ jobs:
     - run: yarn build
     - run: yarn jest
     - run: yarn test:inte
-    - run: |
-        echo The JWT secret is:$JWT_SECRET
-        yarn test:e2e
+    - run: yarn test:e2e
