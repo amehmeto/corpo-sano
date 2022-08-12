@@ -7,6 +7,9 @@ import { CreateWorkoutUseCase } from './usecases/create-workout-use.case'
 import { programGateway } from '../_infrastructure/dependency-injection.container'
 import { screenContainerStyle } from '../../design-system/screen-container.style'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { FontSize } from '../../design-system/enums/font-size.enum'
+import { Margin } from '../../design-system/enums/margin.enum'
+import { Padding } from '../../design-system/enums/padding.enum'
 
 const createWorkoutUseCase = new CreateWorkoutUseCase(programGateway)
 
@@ -70,14 +73,14 @@ export default function CreateWorkoutScreen({
 const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: FontSize.HEADING_4,
   },
   input: {
     height: 40,
-    margin: 12,
+    margin: Margin.MEDIUM,
     borderWidth: 1,
     borderRadius: 5,
-    padding: 5,
+    padding: Padding.SMALL,
     color: 'gray',
   },
   fields: {

@@ -15,16 +15,18 @@ import { Athlete } from './entities/athlete.entity'
 import { Margin } from '../../design-system/enums/margin.enum'
 import { DailyTask } from './entities/daily-task.entity'
 import { athleteGateway } from '../_infrastructure/dependency-injection.container'
-import { Routes } from '../routers/HomeRouter'
+import { RouteParams, Routes } from '../routers/HomeRouter'
 import { v4 as uuid } from 'uuid'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Padding } from '../../design-system/enums/padding.enum'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import decodeJwt from 'jwt-decode'
 
 const getAthleteUseCase = new GetAthleteUseCase(athleteGateway)
 
-export function HomeScreen({ navigation }: any) {
-  const athleteId = '93c87b16-9c92-4440-9ce3-658050ba8dd8'
+type HomeScreenProps = NativeStackScreenProps<RouteParams, Routes.HOME>
 
+export function HomeScreen({ navigation }: HomeScreenProps) {
   const [athlete, setAthlete] = useState<Athlete | undefined>(undefined)
 
   useEffect(() => {
@@ -36,7 +38,8 @@ export function HomeScreen({ navigation }: any) {
     }
 
     AsyncStorage.getItem('token')
-      .then(() => getAthleteUseCase.execute(athleteId))
+      .then((token) => decodeJwt(token))
+      .then((payload: any) => getAthleteUseCase.execute(payload.athleteId))
       .then((_athlete) => {
         _athlete.dailyTasks.unshift(defaultDailyTask)
         setAthlete(_athlete)
