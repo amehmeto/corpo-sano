@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import {
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -12,6 +13,7 @@ import { LoginUseCase } from './usecases/log-in.usecase'
 import { Margin } from '../../design-system/enums/margin.enum'
 import { Padding } from '../../design-system/enums/padding.enum'
 import { Button } from '../../design-system/Button'
+import { FontSize } from '../../design-system/enums/font-size.enum'
 
 const loginUseCase = new LoginUseCase(loginGateway)
 
@@ -30,7 +32,18 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.image} />
+      <View style={styles.welcome}>
+        <Image
+          style={styles.image}
+          source={require('../../assets/corpo-sano-temp-logo.png')}
+        />
+        <View style={styles.welcomeText}>
+          <Text style={styles.title}>Corpo Sano</Text>
+          <Text style={styles.subtitle}>
+            Toward the best shape of your life.
+          </Text>
+        </View>
+      </View>
 
       <Text style={styles.inputTitle}>Email</Text>
       <View style={styles.inputView}>
@@ -51,7 +64,7 @@ export default function LoginScreen() {
         />
       </View>
 
-      <Button text={'Log In'} onPress={logIn} />
+      <Button style={styles.loginButton} text={'Log In'} onPress={logIn} />
 
       <View style={styles.bottomContainer}>
         <TouchableOpacity>
@@ -71,15 +84,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E2E2E0',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+
+  welcome: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '80%',
+    margin: Margin.EXTRA_EXTRA_LARGE,
+  },
+
+  welcomeText: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   image: {
-    backgroundColor: '#fff',
-    width: 150,
-    height: 150,
+    width: 75,
+    height: 75,
     borderRadius: 100,
-    marginBottom: Margin.EXTRA_LARGE,
+  },
+
+  title: {
+    fontWeight: 'bold',
+    fontFamily: 'Avenir-Roman',
+    fontSize: FontSize.HEADING_1,
+    marginBottom: Margin.MEDIUM,
+  },
+
+  subtitle: {
+    fontWeight: 'bold',
+    fontSize: FontSize.BODY_TEXT_SMALL,
+    marginBottom: Margin.MEDIUM,
   },
 
   inputView: {
@@ -106,11 +141,9 @@ const styles = StyleSheet.create({
 
   loginButton: {
     width: '80%',
-    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: Margin.MEDIUM,
-    backgroundColor: 'gray',
   },
 
   bottomContainer: {
