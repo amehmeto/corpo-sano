@@ -8,9 +8,22 @@ import { GraphQLAthleteGateway } from '../home/gateways/athlete.graphql.gateway'
 import { GraphQLProgramGateway } from '../create-program/gateways/program.graphql.gateway'
 import { GraphQLWorkoutGateway } from '../create-program/gateways/workout.graphql.gateway'
 import { GraphQLExerciseGateway } from '../create-program/gateways/exercise.graphql.gateway'
+import { HardCodedValuesEnum } from '../tests/hard-coded-values.enum'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const athleteGateway: AthleteGateway = new GraphQLAthleteGateway()
 export const programGateway: ProgramGateway = new GraphQLProgramGateway()
 export const workoutGateway: WorkoutGateway = new GraphQLWorkoutGateway()
 export const exerciseGateway: ExerciseGateway = new GraphQLExerciseGateway()
 export const loginGateway: LoginGateway = new GraphqlLoginGateway()
+
+// TODO: to be remove and done correctly in the (near) future
+export async function initializeTokenCheatCode() {
+  const token = await loginGateway.login({
+    email: HardCodedValuesEnum.athleteEmail,
+    password: HardCodedValuesEnum.athletePassword,
+  })
+
+  await AsyncStorage.setItem('token', token)
+  return token
+}
