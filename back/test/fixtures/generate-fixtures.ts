@@ -28,7 +28,7 @@ async function saveFixtures(
   const [repository, fixture] = entityRepoFixturePair
   const customRepository = connection.getCustomRepository(repository)
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-ignore 👀 Bah ?
   await customRepository.save(fixture)
 }
 
