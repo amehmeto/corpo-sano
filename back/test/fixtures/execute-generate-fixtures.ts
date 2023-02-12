@@ -9,12 +9,14 @@ import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { generateFixtures } from './generate-fixtures'
 import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
 import { Session } from '../../src/session/entities/session.entity'
+import * as env from 'env-var'
 ;(async function () {
   console.log('Connection to DB')
+
   const connection = await createConnection({
     type: 'mysql',
     host: 'localhost',
-    port: 3306,
+    port: env.get('DB_PORT').default(3306).asPortNumber(),
     username: 'root',
     password: '',
     database: 'corposano',
@@ -33,8 +35,10 @@ import { Session } from '../../src/session/entities/session.entity'
     autoLoadEntities: false,
     keepConnectionAlive: true,
   } as ConnectionOptions)
+
   console.log('Generating fixtures 💽')
   await generateFixtures(connection)
+
   console.log('Closing connection')
   await connection.close()
 })()

@@ -20,10 +20,9 @@
     "test:inte": "jest --testTimeout=10000 -c jest-inte.json --runInBand --forceExit",
     "test:e2e": "jest -c ./test/jest-e2e.json --runInBand --forceExit",
     "test:cov": "jest -c jest-all.json --coverage --runInBand --forceExit",
-    "fixt:gen": "ts-node test/fixtures/execute-generate-fixtures.ts",
-    "fixt:del": "ts-node test/fixtures/execute-delete-fixtures.ts",
-    "ci": "./tmtc-ci.sh",
-    "db:seed": "node seed.js"
+    "fixt:gen": "ts-node -P tsconfig.json test/fixtures/execute-generate-fixtures.ts",
+    "fixt:del": "ts-node -P tsconfig.json test/fixtures/execute-delete-fixtures.ts",
+    "ci": "./tmtc-ci.sh"
   },
   "dependencies": {
     "@apollo/gateway": "^0.51.0",
@@ -43,7 +42,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.1",
-    "env-var": "^7.1.1",
+    "env-var": "^7.3.0",
     "faker": "^5.5.3",
     "graphql": "^15.8.0",
     "graphql-tools": "^8.3.3",
