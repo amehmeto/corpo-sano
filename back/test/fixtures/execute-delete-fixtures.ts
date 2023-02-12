@@ -9,12 +9,13 @@ import { Biometrics } from '../../src/biometrics/entities/biometrics.entity'
 import { DailyTask } from '../../src/daily-task/entities/daily-task.entity'
 import { Session } from '../../src/session/entities/session.entity'
 import { Performance } from '../../src/performance/entities/performance.entity'
+import * as env from 'env-var'
 ;(async function () {
   console.log('Connection to DB')
   const connection = await createConnection({
     type: 'mysql',
     host: 'localhost',
-    port: 3306,
+    port: env.get('DB_PORT').default(3306).asPortNumber(),
     username: 'root',
     password: '',
     database: 'corposano',
@@ -33,8 +34,10 @@ import { Performance } from '../../src/performance/entities/performance.entity'
     autoLoadEntities: true,
     keepConnectionAlive: true,
   } as ConnectionOptions)
+
   console.log('Deleting fixtures 🔥')
   await deleteFixtures(connection)
+
   console.log('Closing connection')
   await connection.close()
 })()
