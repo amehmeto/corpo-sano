@@ -8,6 +8,6 @@ export class TypeOrmExerciseTemplateRepository
   implements ExerciseTemplateRepository
 {
   async findById(id: string): Promise<ExerciseTemplate> {
-    return this.findOne(id)
+    return this.findOneBy({ id })
   }
 }

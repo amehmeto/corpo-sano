@@ -10,6 +10,6 @@ export class TypeOrmBiometricsRepository
   implements BiometricsRepository
 {
   async findById(id: string): Promise<Biometrics> {
-    return this.findOne(id)
+    return this.findOneBy({ id })
   }
 }
