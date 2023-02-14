@@ -8,8 +8,13 @@ export class TypeOrmAthleteRepository
   implements AthleteRepository
 {
   async findById(athleteId: string): Promise<Athlete> {
-    const athlete = await this.findOne(athleteId, {
-      relations: ['biometrics', 'dailyTasks', 'programs'],
+    const athlete = await this.findOne({
+      where: { id: athleteId },
+      relations: {
+        biometrics: true,
+        dailyTasks: true,
+        programs: true,
+      },
     })
     athlete.programs = [...athlete.programs].sort((a, b) =>
       this.sortByCreatedAt(a, b),
@@ -21,12 +26,10 @@ export class TypeOrmAthleteRepository
   }
 
   async findByEmail(athleteEmail: string): Promise<Athlete> {
-    const athlete = await this.findOne(
-      { email: athleteEmail },
-      {
-        relations: ['biometrics', 'dailyTasks', 'programs'],
-      },
-    )
+    const athlete = await this.findOne({
+      where: { email: athleteEmail },
+      relations: { biometrics: true, dailyTasks: true, programs: true },
+    })
     if (athlete.programs)
       athlete.programs = [...athlete.programs].sort((a, b) =>
         this.sortByCreatedAt(a, b),

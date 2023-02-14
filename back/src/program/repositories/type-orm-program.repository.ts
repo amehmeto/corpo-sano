@@ -18,12 +18,12 @@ export class TypeOrmProgramRepository
   }
 
   async getProgram(programId: string): Promise<Program> {
-    return this.findOne(
-      { id: programId },
-      {
-        relations: ['workouts'],
+    return this.findOne({
+      where: { id: programId },
+      relations: {
+        workouts: true,
       },
-    )
+    })
   }
 
   async updateProgram(programId: string, workout: Workout): Promise<Program> {
