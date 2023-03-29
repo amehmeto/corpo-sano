@@ -13,6 +13,7 @@ import { DailyTaskModule } from './daily-task/daily-task.module'
 import { SessionModule } from './session/session.module'
 import { PerformanceModule } from './performance/performance.module'
 import { ConfigModule } from '@nestjs/config'
+import { DataSource } from 'typeorm'
 
 @Module({
   imports: [
@@ -33,4 +34,6 @@ import { ConfigModule } from '@nestjs/config'
     SessionModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

@@ -1,12 +1,17 @@
-import { EntityRepository, Repository } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { Athlete } from '../entities/athlete.entity'
 import { AthleteRepository } from './athlete-repository.interface'
+import { Injectable } from '@nestjs/common'
 
-@EntityRepository(Athlete)
+@Injectable()
 export class TypeOrmAthleteRepository
   extends Repository<Athlete>
   implements AthleteRepository
 {
+  constructor(private readonly dataSource: DataSource) {
+    super(Athlete, dataSource.manager)
+  }
+
   async findById(athleteId: string): Promise<Athlete> {
     const athlete = await this.findOne({
       where: { id: athleteId },

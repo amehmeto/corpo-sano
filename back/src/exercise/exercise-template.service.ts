@@ -3,7 +3,7 @@ import { ExerciseTemplate } from './entities/exercise-template.entity'
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
   ExerciseTemplateRepository,
-} from './repositories/exercise-template-repository.interface'
+} from './repositories/exercise-template.repository.interface'
 
 @Injectable()
 export class ExerciseTemplateService {
