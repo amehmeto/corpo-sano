@@ -22,28 +22,17 @@ async function exec() {
     username: 'root',
     password: '',
     database: 'corposano',
-    entities: [
-      Athlete,
-      Biometrics,
-      DailyTask,
-      Exercise,
-      ExerciseTemplate,
-      Program,
-      Workout,
-      Session,
-      Performance,
-      TypeOrmExerciseTemplateRepository,
-    ],
+    entities: ['src/**/*.entity.ts'],
     synchronize: true,
-    //autoLoadEntities: false,
-    //keepConnectionAlive: true,
+    // autoLoadEntities: true,
+    // keepConnectionAlive: true,
   })
 
   console.log('Generating fixtures 💽')
   await generateFixtures(dataSource)
 
   console.log('Closing dataSource')
-  await dataSource.close()
+  await dataSource.destroy()
 }
 
 exec().then((r) => console.log(r))

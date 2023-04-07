@@ -12,24 +12,21 @@ import { APP_GUARD } from '@nestjs/core'
 import { GqlAuthGuard } from './gql.auth.guard'
 import { ATHLETE_REPOSITORY } from '../athlete/repositories/athlete-repository.interface'
 import * as env from 'env-var'
+import { AthleteModule } from '../athlete/athlete.module'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TypeOrmAthleteRepository]),
     JwtModule.register({
       secret: env.get('JWT_SECRET').required().asString(),
       signOptions: { expiresIn: 3600 * 24 },
     }),
     PassportModule,
+    AthleteModule,
   ],
   providers: [
     {
       provide: EmailGatewayToken,
       useClass: InMemoryEmailGateway,
-    },
-    {
-      provide: ATHLETE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmAthleteRepository),
     },
     {
       provide: APP_GUARD,

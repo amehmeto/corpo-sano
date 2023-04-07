@@ -1,5 +1,5 @@
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { config } from '../../../config'
+import { databaseConfig } from '../../../databaseConfig'
 import { Test } from '@nestjs/testing'
 import { TypeOrmDailyTaskRepository } from './daily-task.typeorm.repository'
 import { dailyTaskDataBuilder } from '../data-builders/daily-task.data-builder'
@@ -35,7 +35,7 @@ describe('TypeOrm DailyTask Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db),
+        TypeOrmModule.forRoot(databaseConfig.db),
         TypeOrmModule.forFeature([
           DailyTask,
           Athlete,

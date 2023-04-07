@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { TypeOrmWorkoutRepository } from './workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
-import { config } from '../../../config'
+import { databaseConfig } from '../../../databaseConfig'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
@@ -86,7 +86,7 @@ describe('TypeOrm Workout Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db),
+        TypeOrmModule.forRoot(databaseConfig),
         TypeOrmModule.forFeature([
           Athlete,
           Biometrics,

@@ -2,14 +2,22 @@ import { DataSource, Repository } from 'typeorm'
 import { Athlete } from '../entities/athlete.entity'
 import { AthleteRepository } from './athlete-repository.interface'
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 
 @Injectable()
 export class TypeOrmAthleteRepository
   extends Repository<Athlete>
   implements AthleteRepository
 {
-  constructor(private readonly dataSource: DataSource) {
-    super(Athlete, dataSource.manager)
+  public boubakar = 'lol'
+  constructor(
+    @InjectRepository(Athlete) private athleteRepository: Repository<Athlete>,
+  ) {
+    super(
+      athleteRepository.target,
+      athleteRepository.manager,
+      athleteRepository.queryRunner,
+    )
   }
 
   async findById(athleteId: string): Promise<Athlete> {

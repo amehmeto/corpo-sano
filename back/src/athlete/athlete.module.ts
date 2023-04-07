@@ -31,60 +31,23 @@ import { TypeOrmProgramRepository } from '../program/repositories/type-orm-progr
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { TypeOrmPerformanceRepository } from '../performance/repositories/performance.typeorm.repository'
 import { PERFORMANCE_REPOSITORY } from '../performance/repositories/performance.repository.interface'
+import { BiometricsModule } from '../biometrics/biometrics.module'
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      TypeOrmAthleteRepository,
-      TypeOrmBiometricsRepository,
-      TypeOrmDailyTaskRepository,
-      TypeOrmExerciseRepository,
-      TypeOrmExerciseTemplateRepository,
-      TypeOrmProgramRepository,
-      TypeOrmWorkoutRepository,
-      TypeOrmSessionRepository,
-      TypeOrmPerformanceRepository,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([Athlete]), BiometricsModule],
   providers: [
+    {
+      provide: ATHLETE_REPOSITORY,
+      useClass: TypeOrmAthleteRepository,
+    },
+    AthleteResolver,
+    AthleteService,
+  ],
+  exports: [
     {
       provide: ATHLETE_REPOSITORY,
       useExisting: getRepositoryToken(TypeOrmAthleteRepository),
     },
-    {
-      provide: BIOMETRICS_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmBiometricsRepository),
-    },
-    {
-      provide: DAILY_TASK_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmDailyTaskRepository),
-    },
-    {
-      provide: EXERCISE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmExerciseRepository),
-    },
-    {
-      provide: EXERCISE_TEMPLATE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmExerciseTemplateRepository),
-    },
-    {
-      provide: PROGRAM_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmProgramRepository),
-    },
-    {
-      provide: WORKOUT_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
-    },
-    {
-      provide: SESSION_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmSessionRepository),
-    },
-    {
-      provide: PERFORMANCE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmPerformanceRepository),
-    },
-    AthleteResolver,
-    AthleteService,
   ],
 })
 export class AthleteModule {}

@@ -8,10 +8,14 @@ import { ExerciseResolver } from './exercise.resolver'
 import { ExerciseService } from './exercise.service'
 import { EXERCISE_REPOSITORY } from './repositories/exercise-repository.interface'
 import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template.repository.interface'
+import { Exercise } from './entities/exercise.entity'
+import { ExerciseTemplate } from './entities/exercise-template.entity'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      Exercise,
+      ExerciseTemplate,
       TypeOrmExerciseTemplateRepository,
       TypeOrmExerciseRepository,
     ]),
@@ -30,5 +34,6 @@ import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template.r
     ExerciseResolver,
     ExerciseService,
   ],
+  exports: [EXERCISE_REPOSITORY, EXERCISE_TEMPLATE_REPOSITORY],
 })
 export class ExerciseModule {}

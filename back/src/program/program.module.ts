@@ -9,10 +9,12 @@ import { PROGRAM_REPOSITORY } from './repositories/program-repository.interface'
 import { TypeOrmAthleteRepository } from '../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmWorkoutRepository } from '../workout/repositories/workout.typeorm.repository'
 import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.interface'
+import { Program } from './entities/program.entity'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      Program,
       TypeOrmProgramRepository,
       TypeOrmAthleteRepository,
       TypeOrmWorkoutRepository,
@@ -32,5 +34,6 @@ import { WORKOUT_REPOSITORY } from '../workout/repositories/workout.repository.i
     ProgramResolver,
     ProgramService,
   ],
+  exports: [PROGRAM_REPOSITORY],
 })
 export class ProgramModule {}

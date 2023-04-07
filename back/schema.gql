@@ -124,8 +124,8 @@ type Query {
   getAllPrograms: [Program!]!
   getProgram(programId: ID!): Program!
   signIn(payload: AuthCredentialsInput!): AccessToken!
-  getWorkout(workoutId: ID!): Workout!
   getAthlete(athleteId: ID!): Athlete!
+  getWorkout(workoutId: ID!): Workout!
 }
 
 input AuthCredentialsInput {

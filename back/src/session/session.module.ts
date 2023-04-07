@@ -8,30 +8,24 @@ import { TypeOrmSessionRepository } from './repositories/session.typeorm.reposit
 import { TypeOrmWorkoutRepository } from '../workout/repositories/workout.typeorm.repository'
 import { CreateSessionResolver } from './resolvers/create-session.resolver'
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
+import { Session } from './entities/session.entity'
+import { PerformanceModule } from '../performance/performance.module'
+import { WorkoutModule } from '../workout/workout.module'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      TypeOrmPerformanceRepository,
-      TypeOrmSessionRepository,
-      TypeOrmWorkoutRepository,
-    ]),
+    TypeOrmModule.forFeature([Session, TypeOrmSessionRepository]),
+    PerformanceModule,
+    WorkoutModule,
   ],
   providers: [
-    {
-      provide: PERFORMANCE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmPerformanceRepository),
-    },
     {
       provide: SESSION_REPOSITORY,
       useExisting: getRepositoryToken(TypeOrmSessionRepository),
     },
-    {
-      provide: WORKOUT_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
-    },
     CreateSessionUseCase,
     CreateSessionResolver,
   ],
+  exports: [SESSION_REPOSITORY],
 })
 export class SessionModule {}

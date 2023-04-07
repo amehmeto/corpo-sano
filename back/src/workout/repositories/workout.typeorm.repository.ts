@@ -2,14 +2,22 @@ import { DataSource, Repository } from 'typeorm'
 import { Workout } from '../entities/workout.entity'
 import { WorkoutRepository } from './workout.repository.interface'
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 
 @Injectable()
 export class TypeOrmWorkoutRepository
   extends Repository<Workout>
   implements WorkoutRepository
 {
-  constructor(private readonly dataSource: DataSource) {
-    super(Workout, dataSource.manager)
+  constructor(
+    @InjectRepository(Workout)
+    private readonly workoutRepositoryNTM: Repository<Workout>,
+  ) {
+    super(
+      workoutRepositoryNTM.target,
+      workoutRepositoryNTM.manager,
+      workoutRepositoryNTM.queryRunner,
+    )
   }
   findByProgramId(programId: string): Promise<Workout[]> {
     const workout = this.find({

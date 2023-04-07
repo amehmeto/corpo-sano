@@ -12,37 +12,25 @@ import { TypeOrmSessionRepository } from '../session/repositories/session.typeor
 import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-exercises.use-case'
 import { PROGRAM_REPOSITORY } from '../program/repositories/program-repository.interface'
 import { TypeOrmProgramRepository } from '../program/repositories/type-orm-program.repository'
+import { Workout } from './entities/workout.entity'
+import { ExerciseModule } from '../exercise/exercise.module'
+import { ProgramModule } from '../program/program.module'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      TypeOrmExerciseTemplateRepository,
-      TypeOrmExerciseRepository,
-      TypeOrmWorkoutRepository,
-      TypeOrmSessionRepository,
-      TypeOrmProgramRepository,
-    ]),
+    TypeOrmModule.forFeature([Workout, TypeOrmWorkoutRepository]),
+    ExerciseModule,
+    ProgramModule,
   ],
   providers: [
     {
       provide: WORKOUT_REPOSITORY,
       useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
     },
-    {
-      provide: EXERCISE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmExerciseRepository),
-    },
-    {
-      provide: EXERCISE_TEMPLATE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmExerciseTemplateRepository),
-    },
-    {
-      provide: PROGRAM_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmProgramRepository),
-    },
     WorkoutResolver,
     WorkoutService,
     FillWorkoutWithExercisesUseCase,
   ],
+  exports: [WORKOUT_REPOSITORY],
 })
 export class WorkoutModule {}

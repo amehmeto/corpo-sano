@@ -1,6 +1,6 @@
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
 import { Test } from '@nestjs/testing'
-import { config } from '../../../config'
+import { databaseConfig } from '../../../databaseConfig'
 import { TypeOrmAthleteRepository } from './typeorm-athlete.repository'
 import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
 import { RepositoryErrors } from '../types/repository-errors.enum'
@@ -46,7 +46,7 @@ describe('TypeOrmAthleteRepository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db),
+        TypeOrmModule.forRoot(databaseConfig.db),
         TypeOrmModule.forFeature([
           Athlete,
           Biometrics,
