@@ -34,7 +34,7 @@ describe('TypeOrm Program Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(databaseConfig.db),
+        TypeOrmModule.forRoot(databaseConfig),
         TypeOrmModule.forFeature([
           Athlete,
           Biometrics,

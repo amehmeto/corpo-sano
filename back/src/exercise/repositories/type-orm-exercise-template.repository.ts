@@ -9,8 +9,6 @@ export class TypeOrmExerciseTemplateRepository
   extends Repository<ExerciseTemplate>
   implements ExerciseTemplateRepository
 {
-  public entity = ExerciseTemplate
-
   constructor(
     @InjectRepository(ExerciseTemplate)
     private readonly exerciseTemplateRepository: Repository<ExerciseTemplate>,

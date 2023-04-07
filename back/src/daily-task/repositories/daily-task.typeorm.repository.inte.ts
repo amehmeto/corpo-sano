@@ -35,7 +35,7 @@ describe('TypeOrm DailyTask Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(databaseConfig.db),
+        TypeOrmModule.forRoot(databaseConfig),
         TypeOrmModule.forFeature([
           DailyTask,
           Athlete,

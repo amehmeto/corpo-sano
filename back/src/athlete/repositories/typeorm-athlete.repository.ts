@@ -9,7 +9,6 @@ export class TypeOrmAthleteRepository
   extends Repository<Athlete>
   implements AthleteRepository
 {
-  public boubakar = 'lol'
   constructor(
     @InjectRepository(Athlete) private athleteRepository: Repository<Athlete>,
   ) {

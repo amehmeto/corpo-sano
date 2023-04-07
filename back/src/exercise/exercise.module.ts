@@ -12,22 +12,15 @@ import { Exercise } from './entities/exercise.entity'
 import { ExerciseTemplate } from './entities/exercise-template.entity'
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      Exercise,
-      ExerciseTemplate,
-      TypeOrmExerciseTemplateRepository,
-      TypeOrmExerciseRepository,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([Exercise, ExerciseTemplate])],
   providers: [
     {
       provide: EXERCISE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmExerciseRepository),
+      useClass: TypeOrmExerciseRepository,
     },
     {
       provide: EXERCISE_TEMPLATE_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmExerciseTemplateRepository),
+      useClass: TypeOrmExerciseTemplateRepository,
     },
     ExerciseTemplateResolver,
     ExerciseTemplateService,

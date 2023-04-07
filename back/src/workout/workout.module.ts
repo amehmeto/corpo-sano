@@ -17,15 +17,11 @@ import { ExerciseModule } from '../exercise/exercise.module'
 import { ProgramModule } from '../program/program.module'
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Workout, TypeOrmWorkoutRepository]),
-    ExerciseModule,
-    ProgramModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Workout]), ExerciseModule, ProgramModule],
   providers: [
     {
       provide: WORKOUT_REPOSITORY,
-      useExisting: getRepositoryToken(TypeOrmWorkoutRepository),
+      useClass: TypeOrmWorkoutRepository,
     },
     WorkoutResolver,
     WorkoutService,
