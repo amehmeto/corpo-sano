@@ -2,7 +2,6 @@ import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm'
 import { Test } from '@nestjs/testing'
 import { config } from '../../../config'
 import { TypeOrmAthleteRepository } from './typeorm-athlete.repository'
-import { Athlete } from '../entities/athlete.entity'
 import { athleteDataBuilder } from '../data-builders/athlete.data-builder'
 import { RepositoryErrors } from '../types/repository-errors.enum'
 import { Biometrics } from '../../biometrics/entities/biometrics.entity'
@@ -15,11 +14,17 @@ import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
 import { DailyTask } from '../../daily-task/entities/daily-task.entity'
 import { dailyTaskDataBuilder } from '../../daily-task/data-builders/daily-task.data-builder'
-import { Program } from '../../program/entities/program.entity'
 import { programDataBuilder } from '../../program/data-builders/program.data-builder'
 import { expectedBaseEntity } from '../../__infrastructure__/typeorm/expected-base-entity.data-builder'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
+import { Athlete } from '../entities/athlete.entity'
+import { Exercise } from '../../exercise/entities/exercise.entity'
+import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
+import { Session } from '../../session/entities/session.entity'
+import { Performance } from '../../performance/entities/performance.entity'
+import { Workout } from '../../workout/entities/workout.entity'
+import { Program } from '../../program/entities/program.entity'
 
 const programFixtures = [
   new Program(programDataBuilder()),
@@ -43,16 +48,27 @@ describe('TypeOrmAthleteRepository', () => {
       imports: [
         TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
-          TypeOrmAthleteRepository,
-          TypeOrmBiometricsRepository,
-          TypeOrmDailyTaskRepository,
-          TypeOrmExerciseRepository,
-          TypeOrmExerciseTemplateRepository,
-          TypeOrmProgramRepository,
-          TypeOrmWorkoutRepository,
-          TypeOrmSessionRepository,
-          TypeOrmPerformanceRepository,
+          Athlete,
+          Biometrics,
+          DailyTask,
+          Exercise,
+          ExerciseTemplate,
+          Program,
+          Workout,
+          Session,
+          Performance,
         ]),
+      ],
+      providers: [
+        TypeOrmAthleteRepository,
+        TypeOrmBiometricsRepository,
+        TypeOrmDailyTaskRepository,
+        TypeOrmExerciseRepository,
+        TypeOrmExerciseTemplateRepository,
+        TypeOrmProgramRepository,
+        TypeOrmWorkoutRepository,
+        TypeOrmSessionRepository,
+        TypeOrmPerformanceRepository,
       ],
     }).compile()
 

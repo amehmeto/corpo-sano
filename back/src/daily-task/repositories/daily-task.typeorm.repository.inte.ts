@@ -12,6 +12,14 @@ import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/t
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
+import { Athlete } from '../../athlete/entities/athlete.entity'
+import { Workout } from '../../workout/entities/workout.entity'
+import { Exercise } from '../../exercise/entities/exercise.entity'
+import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
+import { Program } from '../../program/entities/program.entity'
+import { Session } from '../../session/entities/session.entity'
+import { Biometrics } from '../../biometrics/entities/biometrics.entity'
+import { Performance } from '../../performance/entities/performance.entity'
 
 const dailyTasksFixtures = [dailyTaskDataBuilder(), dailyTaskDataBuilder()]
 
@@ -29,16 +37,28 @@ describe('TypeOrm DailyTask Repository', () => {
       imports: [
         TypeOrmModule.forRoot(config.db),
         TypeOrmModule.forFeature([
-          TypeOrmAthleteRepository,
-          TypeOrmBiometricsRepository,
-          TypeOrmDailyTaskRepository,
-          TypeOrmExerciseRepository,
-          TypeOrmExerciseTemplateRepository,
-          TypeOrmProgramRepository,
-          TypeOrmWorkoutRepository,
-          TypeOrmSessionRepository,
-          TypeOrmPerformanceRepository,
+          DailyTask,
+          Athlete,
+          Biometrics,
+          DailyTask,
+          Exercise,
+          ExerciseTemplate,
+          Program,
+          Workout,
+          Session,
+          Performance,
         ]),
+      ],
+      providers: [
+        TypeOrmAthleteRepository,
+        TypeOrmBiometricsRepository,
+        TypeOrmDailyTaskRepository,
+        TypeOrmExerciseRepository,
+        TypeOrmExerciseTemplateRepository,
+        TypeOrmProgramRepository,
+        TypeOrmWorkoutRepository,
+        TypeOrmSessionRepository,
+        TypeOrmPerformanceRepository,
       ],
     }).compile()
 

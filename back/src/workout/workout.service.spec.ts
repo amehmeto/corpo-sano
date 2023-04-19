@@ -6,7 +6,7 @@ import { InMemoryWorkoutRepository } from './repositories/in-memory-workout.repo
 import { Workout } from './entities/workout.entity'
 import { WeekDays } from './types/week-days.enum'
 import { InMemoryExerciseRepository } from '../exercise/repositories/in-memory-exercise.repository'
-import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template-repository.interface'
+import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template.repository.interface'
 import { workoutInputDataBuilder } from './data-builders/workout-input.data-builder'
 import {
   WORKOUT_REPOSITORY,

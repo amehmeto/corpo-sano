@@ -7,7 +7,7 @@ import { TypeOrmExerciseRepository } from './repositories/type-orm-exercise.repo
 import { ExerciseResolver } from './exercise.resolver'
 import { ExerciseService } from './exercise.service'
 import { EXERCISE_REPOSITORY } from './repositories/exercise-repository.interface'
-import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template-repository.interface'
+import { EXERCISE_TEMPLATE_REPOSITORY } from './repositories/exercise-template.repository.interface'
 
 @Module({
   imports: [

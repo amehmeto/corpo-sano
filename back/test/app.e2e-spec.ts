@@ -66,14 +66,14 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
 
-    connection = app.get(Connection)
-    await deleteFixtures(connection)
-    await generateFixtures(connection)
-    token = await generateJwtToken(app)
+    //connection = app.get(Connection)
+    //await deleteFixtures(connection)
+    //await generateFixtures(connection)
+    //token = await generateJwtToken(app)
   })
 
   afterAll(async () => {
-    await deleteFixtures(connection)
+    //await deleteFixtures(connection)
     await app.close()
   })
 

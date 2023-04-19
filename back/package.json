@@ -34,7 +34,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^7.6.15",
-    "@nestjs/typeorm": "^8.0.3",
+    "@nestjs/typeorm": "^9.0.1",
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
     "apollo-server-express": "^2",
@@ -54,7 +54,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7",
     "ts-morph": "^15.1.0",
-    "typeorm": "^0.2.45"
+    "typeorm": "^0.3.12"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",

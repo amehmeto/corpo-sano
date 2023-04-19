@@ -6,7 +6,7 @@ import { TypeOrmExerciseTemplateRepository } from '../exercise/repositories/type
 import { TypeOrmWorkoutRepository } from './repositories/workout.typeorm.repository'
 import { TypeOrmExerciseRepository } from '../exercise/repositories/type-orm-exercise.repository'
 import { WORKOUT_REPOSITORY } from './repositories/workout.repository.interface'
-import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template-repository.interface'
+import { EXERCISE_TEMPLATE_REPOSITORY } from '../exercise/repositories/exercise-template.repository.interface'
 import { EXERCISE_REPOSITORY } from '../exercise/repositories/exercise-repository.interface'
 import { TypeOrmSessionRepository } from '../session/repositories/session.typeorm.repository'
 import { FillWorkoutWithExercisesUseCase } from './use-cases/fill-workout-with-exercises.use-case'

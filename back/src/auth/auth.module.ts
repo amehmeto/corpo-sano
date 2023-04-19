@@ -23,7 +23,10 @@ import * as env from 'env-var'
     PassportModule,
   ],
   providers: [
-    { provide: EmailGatewayToken, useClass: InMemoryEmailGateway },
+    {
+      provide: EmailGatewayToken,
+      useClass: InMemoryEmailGateway,
+    },
     {
       provide: ATHLETE_REPOSITORY,
       useExisting: getRepositoryToken(TypeOrmAthleteRepository),
