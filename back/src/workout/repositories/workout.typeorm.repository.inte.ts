@@ -1,10 +1,9 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Workout } from '../entities/workout.entity'
 import { TypeOrmWorkoutRepository } from './workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
 import { TypeOrmExerciseTemplateRepository } from '../../exercise/repositories/type-orm-exercise-template.repository'
-import { config } from '../../../config'
+import { databaseConfig } from '../../../databaseConfig'
 import { WeekDays } from '../types/week-days.enum'
 import { Exercise } from '../../exercise/entities/exercise.entity'
 import { TypeOrmExerciseRepository } from '../../exercise/repositories/type-orm-exercise.repository'
@@ -22,6 +21,13 @@ import { TypeOrmPerformanceRepository } from '../../performance/repositories/per
 import { programFixture } from '../../program/data-builders/program.data-builder'
 import { HardCodedValuesEnum } from '../../../test/fixtures/hard-coded-values.enum'
 import { Program } from '../../program/entities/program.entity'
+import { Athlete } from '../../athlete/entities/athlete.entity'
+import { Workout } from '../entities/workout.entity'
+import { ExerciseTemplate } from '../../exercise/entities/exercise-template.entity'
+import { Session } from '../../session/entities/session.entity'
+import { Biometrics } from '../../biometrics/entities/biometrics.entity'
+import { Performance } from '../../performance/entities/performance.entity'
+import { DailyTask } from '../../daily-task/entities/daily-task.entity'
 
 const orderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
 const unorderedExercisesWorkoutFixture = new Workout(workoutDataBuilder())
@@ -80,18 +86,29 @@ describe('TypeOrm Workout Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db),
+        TypeOrmModule.forRoot(databaseConfig),
         TypeOrmModule.forFeature([
-          TypeOrmAthleteRepository,
-          TypeOrmBiometricsRepository,
-          TypeOrmDailyTaskRepository,
-          TypeOrmExerciseRepository,
-          TypeOrmExerciseTemplateRepository,
-          TypeOrmProgramRepository,
-          TypeOrmWorkoutRepository,
-          TypeOrmSessionRepository,
-          TypeOrmPerformanceRepository,
+          Athlete,
+          Biometrics,
+          DailyTask,
+          Exercise,
+          ExerciseTemplate,
+          Program,
+          Workout,
+          Session,
+          Performance,
         ]),
+      ],
+      providers: [
+        TypeOrmAthleteRepository,
+        TypeOrmBiometricsRepository,
+        TypeOrmDailyTaskRepository,
+        TypeOrmExerciseRepository,
+        TypeOrmExerciseTemplateRepository,
+        TypeOrmProgramRepository,
+        TypeOrmWorkoutRepository,
+        TypeOrmSessionRepository,
+        TypeOrmPerformanceRepository,
       ],
     }).compile()
 

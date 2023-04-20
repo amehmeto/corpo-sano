@@ -3,7 +3,7 @@ import { ExerciseTemplateService } from './exercise-template.service'
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
   ExerciseTemplateRepository,
-} from './repositories/exercise-template-repository.interface'
+} from './repositories/exercise-template.repository.interface'
 import { InMemoryExerciseTemplateRepository } from './repositories/in-memory-exercise-template.repository'
 
 describe('ExerciseTemplateService', () => {

@@ -16,7 +16,7 @@ import {
   Query,
 } from './handle-graphql-response'
 import { exerciseInputDataBuilder } from '../src/exercise/data-builders/exercise-input.data-builder'
-import { Connection } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { deleteFixtures } from './fixtures/delete-fixtures'
 import { generateJwtToken } from './generate-jwt-token'
 import {
@@ -35,7 +35,7 @@ import { HardCodedValuesEnum } from './fixtures/hard-coded-values.enum'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
-  let connection: Connection
+  let dataSource: DataSource
   let token: AccessToken
 
   function expectGqlEndpoint(
@@ -66,14 +66,14 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
 
-    connection = app.get(Connection)
-    await deleteFixtures(connection)
-    await generateFixtures(connection)
+    dataSource = app.get(DataSource)
+    //await deleteFixtures(dataSource)
+    //await generateFixtures(dataSource)
     token = await generateJwtToken(app)
   })
 
   afterAll(async () => {
-    await deleteFixtures(connection)
+    //await deleteFixtures(dataSource)
     await app.close()
   })
 

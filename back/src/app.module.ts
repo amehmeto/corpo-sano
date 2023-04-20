@@ -5,7 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { WorkoutModule } from './workout/workout.module'
 import { ExerciseModule } from './exercise/exercise.module'
-import { config } from '../config'
+import { databaseConfig } from '../databaseConfig'
 import { AthleteModule } from './athlete/athlete.module'
 import { AuthModule } from './auth/auth.module'
 import { BiometricsModule } from './biometrics/biometrics.module'
@@ -13,6 +13,8 @@ import { DailyTaskModule } from './daily-task/daily-task.module'
 import { SessionModule } from './session/session.module'
 import { PerformanceModule } from './performance/performance.module'
 import { ConfigModule } from '@nestjs/config'
+import { DataSource } from 'typeorm'
+import { TypeOrmAthleteRepository } from './athlete/repositories/typeorm-athlete.repository'
 
 @Module({
   imports: [
@@ -21,7 +23,8 @@ import { ConfigModule } from '@nestjs/config'
       autoSchemaFile: 'schema.gql',
     }),
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(config.db),
+    TypeOrmModule.forRoot(databaseConfig),
+    TypeOrmModule.forFeature([TypeOrmAthleteRepository]),
     ExerciseModule,
     ProgramModule,
     WorkoutModule,
@@ -33,4 +36,6 @@ import { ConfigModule } from '@nestjs/config'
     SessionModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

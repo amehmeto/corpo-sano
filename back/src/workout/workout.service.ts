@@ -8,7 +8,7 @@ import {
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
   ExerciseTemplateRepository,
-} from '../exercise/repositories/exercise-template-repository.interface'
+} from '../exercise/repositories/exercise-template.repository.interface'
 import { ScheduleWorkoutInput } from './types/schedule-workout.input'
 import {
   EXERCISE_REPOSITORY,

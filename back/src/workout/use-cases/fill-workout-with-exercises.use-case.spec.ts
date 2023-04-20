@@ -10,7 +10,7 @@ import {
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
   ExerciseTemplateRepository,
-} from '../../exercise/repositories/exercise-template-repository.interface'
+} from '../../exercise/repositories/exercise-template.repository.interface'
 import { workoutDataBuilder } from '../data-builders/workout.data-builder'
 import { InMemoryWorkoutRepository } from '../repositories/in-memory-workout.repository'
 import { Workout } from '../entities/workout.entity'

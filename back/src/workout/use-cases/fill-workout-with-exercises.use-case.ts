@@ -6,7 +6,7 @@ import {
 import {
   EXERCISE_TEMPLATE_REPOSITORY,
   ExerciseTemplateRepository,
-} from '../../exercise/repositories/exercise-template-repository.interface'
+} from '../../exercise/repositories/exercise-template.repository.interface'
 import {
   EXERCISE_REPOSITORY,
   ExerciseRepository,

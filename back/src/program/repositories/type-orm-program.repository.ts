@@ -1,13 +1,17 @@
 import { ProgramRepository } from './program-repository.interface'
-import { EntityRepository, Repository } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { Program } from '../entities/program.entity'
 import { Workout } from '../../workout/entities/workout.entity'
+import { Injectable } from '@nestjs/common'
 
-@EntityRepository(Program)
+@Injectable()
 export class TypeOrmProgramRepository
   extends Repository<Program>
   implements ProgramRepository
 {
+  constructor(private readonly dataSource: DataSource) {
+    super(Program, dataSource.manager)
+  }
   async getAllPrograms(): Promise<Program[]> {
     const programs = await this.find()
     return programs.sort((a, b) => this.sortByCreatedAt(a, b))
@@ -18,12 +22,12 @@ export class TypeOrmProgramRepository
   }
 
   async getProgram(programId: string): Promise<Program> {
-    return this.findOne(
-      { id: programId },
-      {
-        relations: ['workouts'],
+    return this.findOne({
+      where: { id: programId },
+      relations: {
+        workouts: true,
       },
-    )
+    })
   }
 
   async updateProgram(programId: string, workout: Workout): Promise<Program> {

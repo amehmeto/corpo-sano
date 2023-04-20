@@ -1,15 +1,32 @@
-import { EntityRepository, Repository } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { Athlete } from '../entities/athlete.entity'
 import { AthleteRepository } from './athlete-repository.interface'
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 
-@EntityRepository(Athlete)
+@Injectable()
 export class TypeOrmAthleteRepository
   extends Repository<Athlete>
   implements AthleteRepository
 {
+  constructor(
+    @InjectRepository(Athlete) private athleteRepository: Repository<Athlete>,
+  ) {
+    super(
+      athleteRepository.target,
+      athleteRepository.manager,
+      athleteRepository.queryRunner,
+    )
+  }
+
   async findById(athleteId: string): Promise<Athlete> {
-    const athlete = await this.findOne(athleteId, {
-      relations: ['biometrics', 'dailyTasks', 'programs'],
+    const athlete = await this.findOne({
+      where: { id: athleteId },
+      relations: {
+        biometrics: true,
+        dailyTasks: true,
+        programs: true,
+      },
     })
     athlete.programs = [...athlete.programs].sort((a, b) =>
       this.sortByCreatedAt(a, b),
@@ -21,12 +38,10 @@ export class TypeOrmAthleteRepository
   }
 
   async findByEmail(athleteEmail: string): Promise<Athlete> {
-    const athlete = await this.findOne(
-      { email: athleteEmail },
-      {
-        relations: ['biometrics', 'dailyTasks', 'programs'],
-      },
-    )
+    const athlete = await this.findOne({
+      where: { email: athleteEmail },
+      relations: { biometrics: true, dailyTasks: true, programs: true },
+    })
     if (athlete.programs)
       athlete.programs = [...athlete.programs].sort((a, b) =>
         this.sortByCreatedAt(a, b),

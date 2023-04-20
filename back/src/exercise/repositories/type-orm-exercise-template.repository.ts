@@ -1,13 +1,25 @@
-import { EntityRepository, Repository } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { ExerciseTemplate } from '../entities/exercise-template.entity'
-import { ExerciseTemplateRepository } from './exercise-template-repository.interface'
+import { ExerciseTemplateRepository } from './exercise-template.repository.interface'
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 
-@EntityRepository(ExerciseTemplate)
+@Injectable()
 export class TypeOrmExerciseTemplateRepository
   extends Repository<ExerciseTemplate>
   implements ExerciseTemplateRepository
 {
+  constructor(
+    @InjectRepository(ExerciseTemplate)
+    private readonly exerciseTemplateRepository: Repository<ExerciseTemplate>,
+  ) {
+    super(
+      exerciseTemplateRepository.target,
+      exerciseTemplateRepository.manager,
+      exerciseTemplateRepository.queryRunner,
+    )
+  }
   async findById(id: string): Promise<ExerciseTemplate> {
-    return this.findOne(id)
+    return this.findOneBy({ id })
   }
 }

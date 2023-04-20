@@ -1,10 +1,9 @@
 import { Test } from '@nestjs/testing'
 import { TypeOrmExerciseTemplateRepository } from './type-orm-exercise-template.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ExerciseTemplate } from '../entities/exercise-template.entity'
 import { TypeOrmWorkoutRepository } from '../../workout/repositories/workout.typeorm.repository'
 import { TypeOrmProgramRepository } from '../../program/repositories/type-orm-program.repository'
-import { config } from '../../../config'
+import { databaseConfig } from '../../../databaseConfig'
 import { TypeOrmExerciseRepository } from './type-orm-exercise.repository'
 import { TypeOrmAthleteRepository } from '../../athlete/repositories/typeorm-athlete.repository'
 import { TypeOrmBiometricsRepository } from '../../biometrics/repositories/typeorm-biometrics.repository'
@@ -12,6 +11,15 @@ import { TypeOrmDailyTaskRepository } from '../../daily-task/repositories/daily-
 import { exercisesTemplatesFixture } from '../data-builders/exercise-template.data-builder'
 import { TypeOrmSessionRepository } from '../../session/repositories/session.typeorm.repository'
 import { TypeOrmPerformanceRepository } from '../../performance/repositories/performance.typeorm.repository'
+import { Athlete } from '../../athlete/entities/athlete.entity'
+import { Exercise } from '../entities/exercise.entity'
+import { ExerciseTemplate } from '../entities/exercise-template.entity'
+import { Session } from '../../session/entities/session.entity'
+import { Biometrics } from '../../biometrics/entities/biometrics.entity'
+import { Performance } from '../../performance/entities/performance.entity'
+import { DailyTask } from '../../daily-task/entities/daily-task.entity'
+import { Program } from '../../program/entities/program.entity'
+import { Workout } from '../../workout/entities/workout.entity'
 
 describe('TypeOrm Exercise Template Repository', () => {
   let exerciseTemplateRepository: TypeOrmExerciseTemplateRepository
@@ -19,18 +27,29 @@ describe('TypeOrm Exercise Template Repository', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot(config.db),
+        TypeOrmModule.forRoot(databaseConfig),
         TypeOrmModule.forFeature([
-          TypeOrmAthleteRepository,
-          TypeOrmBiometricsRepository,
-          TypeOrmDailyTaskRepository,
-          TypeOrmExerciseRepository,
-          TypeOrmExerciseTemplateRepository,
-          TypeOrmProgramRepository,
-          TypeOrmWorkoutRepository,
-          TypeOrmSessionRepository,
-          TypeOrmPerformanceRepository,
+          Athlete,
+          Biometrics,
+          DailyTask,
+          Exercise,
+          ExerciseTemplate,
+          Program,
+          Workout,
+          Session,
+          Performance,
         ]),
+      ],
+      providers: [
+        TypeOrmAthleteRepository,
+        TypeOrmBiometricsRepository,
+        TypeOrmDailyTaskRepository,
+        TypeOrmExerciseRepository,
+        TypeOrmExerciseTemplateRepository,
+        TypeOrmProgramRepository,
+        TypeOrmWorkoutRepository,
+        TypeOrmSessionRepository,
+        TypeOrmPerformanceRepository,
       ],
     }).compile()
 

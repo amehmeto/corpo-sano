@@ -33,6 +33,7 @@ export class AuthService {
     authCredentialsInput: AuthCredentialsInput,
   ): Promise<AccessToken> {
     const { email, password } = authCredentialsInput
+    console.log(this.athleteRepository.boubakar)
     const athlete = await this.athleteRepository.findByEmail(email)
 
     if (!athlete || (await this.isWrongPassword(password, athlete.password)))
