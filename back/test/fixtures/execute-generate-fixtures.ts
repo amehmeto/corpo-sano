@@ -32,7 +32,6 @@ async function exec() {
       Workout,
       Session,
       Performance,
-      TypeOrmExerciseTemplateRepository,
     ],
     synchronize: true,
     //autoLoadEntities: false,

@@ -19,10 +19,10 @@ async function saveFixtures(
   dataSource: DataSource,
   entityRepoFixturePair: EntityRepoFixturePair<any>,
 ) {
-  const [repository, fixture] = entityRepoFixturePair
-  console.log('REPO', repository)
-  const customRepository = dataSource.manager.withRepository(repository)
-  console.log('C REPO', customRepository)
+  const [repositoryClass, fixture] = entityRepoFixturePair
+
+  const customRepository = dataSource.withRepository(repositoryClass)
+
   await customRepository.save(fixture)
 }
 
